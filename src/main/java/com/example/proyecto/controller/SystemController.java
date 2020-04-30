@@ -12,6 +12,19 @@ public class SystemController {
     public String listar(){
         return "base/basePag";
     }
+    @GetMapping("usede")
+    public String gaa(){
+        return "UsuarioSede/Principal";
+    }
+    @GetMapping("personal")
+    public String ga(){
+        return "UsuarioSede/InformPerso";
+    }
+
+    @GetMapping("proconf")
+    public String gaaaa(){
+        return "UsuarioSede/ProductoEspera";
+    }
 
     @GetMapping(value = {"","iniciosesion"})
     public String inicioSesion(){

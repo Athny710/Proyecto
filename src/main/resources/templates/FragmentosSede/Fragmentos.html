@@ -34,7 +34,7 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item text-gray-100">
-        <a class="nav-link collapsed text-gray-100" href="#"  data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed text-gray-100" th:href="@{/system/usede}"  data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-table text-gray-100"></i>
             <span>Lista de Productos</span>
         </a>
@@ -44,7 +44,7 @@
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed text-gray-100" href="#"  data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+        <a class="nav-link collapsed text-gray-100" th:href="@{/system/proconf}"  data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-folder text-gray-100"></i>
             <span>Productos sin Confirmar</span>
         </a>
@@ -79,15 +79,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <h5 class="modal-title" id="exampleModalLabel">¿Listo para salir?</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" th:href="@{/sytem/iniciosesion}">Logout</a>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <a class="btn btn-primary" th:href="@{/system/}">Cerrar Sesión</a>
             </div>
         </div>
     </div>
@@ -102,8 +101,8 @@
     </button>
 
     <!-- Topbar Search -->
-    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-        <h3 class="h3 mb-4 text-gray-800">Usuario Sede: Apellidos, Nombres </h3>
+    <form class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 ">
+        <h5 class="h3 mb-4 text-gray-800">Usuario Sede: Apellidos, Nombres </h5>
     </form>
 
     <!-- Topbar Navbar -->
@@ -139,13 +138,9 @@
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in bg-orangeM" aria-labelledby="userDropdown">
-                <a class="dropdown-item text-white" href="#">
+                <a class="dropdown-item text-white" th:href="@{/system/personal}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-100"></i>
                     Información Personal
-                </a>
-                <a class="dropdown-item text-white" href="#">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-100"></i>
-                    Settings
                 </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item text-white" href="#" data-toggle="modal" data-target="#logoutModal">
