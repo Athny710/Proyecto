@@ -31,10 +31,13 @@ public class SystemController {
 
     @GetMapping("gestorRegCompra")
     public String RegistroCompra(){return "Gestor/G-RegCompra";}
-    @GetMapping("gestorRegConsig")
-    public String RegistroConsig(){return "Gestor/G-RegConsig";}
     @GetMapping("gestorEditProdCompra")
     public String EditProdCompra(){return "Gestor/G-EditProdCompra";}
-    @GetMapping("gestorEditProdConsig")
-    public String EditProdConsig(){return "Gestor/G-EditProdConsig";}
+    @GetMapping("gestorRegistroUsuarioSede")
+    public String registroUsuarioSede(){return "Gestor/G-RegistroUsuarioSede";}
+    @GetMapping("gestorGestionVentas")
+    public String registroVentas(){return "Gestor/G-GestiónVentas";}
+    @GetMapping("gestorRegistroSede")
+    public String registroSede(){return "Gestor/G-RegistroSede";}
+
 }
