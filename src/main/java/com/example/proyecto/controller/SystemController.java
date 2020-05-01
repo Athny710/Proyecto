@@ -20,15 +20,21 @@ public class SystemController {
     public String ga(){
         return "UsuarioSede/InformPerso";
     }
-
     @GetMapping("proconf")
     public String gaaaa(){
         return "UsuarioSede/ProductoEspera";
     }
-
     @GetMapping(value = {"","iniciosesion"})
     public String inicioSesion(){
         return "index";
     }
 
+    @GetMapping("gestorRegCompra")
+    public String RegistroCompra(){return "Gestor/G-RegCompra";}
+    @GetMapping("gestorRegConsig")
+    public String RegistroConsig(){return "Gestor/G-RegConsig";}
+    @GetMapping("gestorEditProdCompra")
+    public String EditProdCompra(){return "Gestor/G-EditProdCompra";}
+    @GetMapping("gestorEditProdConsig")
+    public String EditProdConsig(){return "Gestor/G-EditProdConsig";}
 }
