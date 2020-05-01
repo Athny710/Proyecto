@@ -43,11 +43,17 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h4 class="m-0 font-weight-bold text-gray-900">Registrando un Producto</h4>
-                        <h6 class="m-0 font-weight-bold text-gray-600">Modalidad : Compra</h6>
                     </div>
                     <div class="card-body">
 
                         <form>
+                            <div class="form-group col-md-6">
+                                <label for="rfc">Modalidad</label>
+                                <select class="form-control" name="supplier" id="rfc">
+                                    <option >Compra</option>
+                                    <option >Consignación</option>
+                                </select>
+                            </div>
                             <div class="form-group col-md-6">
                                 <label for="inputEmail4">Número de pedido</label>
                                 <input type="email" class="form-control" id="inputEmail4" >
@@ -112,7 +118,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="wer">Fecha</label>
-                                <input type="text" class="form-control" id="wer" >
+                                <input type="date" class="form-control" id="wer" >
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="tyu">Color</label>
@@ -152,12 +158,13 @@
 
             </div>
             <!-- /.container-fluid -->
-
         </div>
         <!-- End of Main Content -->
-
     </div>
     <!-- End of Content Wrapper -->
+</div>
+
+<div th:replace="FragmentosGestor/Fragmentos.html :: ModalCerrarSesion">
 
 </div>
 <!-- Bootstrap core JavaScript-->
