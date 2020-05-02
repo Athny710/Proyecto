@@ -42,4 +42,15 @@ public class SystemController {
     @GetMapping("gestorRegistroSede")
     public String registroSede(){return "Gestor/G-RegistroSede";}
 
+    @GetMapping("recuperarContraseña")
+    public String recuperarContrasela (){return "Sistema/S-RecupContra";}
+    @GetMapping("nuevaContraseña")
+    public String nuevaContrasela (){return "Sistema/S-NuevContra";}
+    @GetMapping("listarSinStock")
+    public String listaSinStock (){return "Gestor/G-ListaSinStock";}
+    @GetMapping("productosAceptados")
+    public String productosAceptados (){return "Gestor/G-ProdAcep";}
+
+
+
 }
