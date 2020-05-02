@@ -12,6 +12,8 @@ public class SystemController {
     public String listar(){
         return "base/basePag";
     }
+    @GetMapping("admin")
+    public String principalAdmin(){return "Administrador/PagPrincipal";}
     @GetMapping("usede")
     public String gaa(){
         return "UsuarioSede/Principal";
@@ -55,5 +57,16 @@ public class SystemController {
     public String registroSede(){return "Gestor/G-RegistroSede";}
     @GetMapping("cambiarContrasena")
     public String cambiarContrasena(){return "cambiarContrasena";}
+
+    @GetMapping("recuperarContraseña")
+    public String recuperarContrasela (){return "Sistema/S-RecupContra";}
+    @GetMapping("nuevaContraseña")
+    public String nuevaContrasela (){return "Sistema/S-NuevContra";}
+    @GetMapping("listarSinStock")
+    public String listaSinStock (){return "Gestor/G-ListaSinStock";}
+    @GetMapping("productosAceptados")
+    public String productosAceptados (){return "Gestor/G-ProdAcep";}
+
+
 
 }
