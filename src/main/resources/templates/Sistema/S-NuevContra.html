@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Recuperar Contraseña</title>
+    <title>Nueva Contraseña</title>
 
     <!-- Custom fonts for this template-->
     <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
@@ -34,27 +34,29 @@
                     <!-- Nested Row within Card Body -->
                     <div class="row h-25">
                         <div class="col-lg-6 d-none d-lg-block bg-login-image h-25">
-                            <img th:src="@{/img/imgse.png}" width="372px" height="664.8px">
+                            <img th:src="@{/img/imgse.png}" width="362px" height="716.8px">
                         </div>
                         <div class="col-lg-6 bg-gray-100 h-25">
                             <div class="p-5">
                                 <div class="text-center">
                                     <img th:src="@{/img/logofinal.jpg}" height="120px" width="240px">
-                                    <h1 class="h4 text-gray-900 mb-2">Se olvidó su contraseña?</h1>
-                                    <p class="mb-4">Por favor, ingrese su identificación de usuario para restablecer su contraseña!</p>
+                                    <h1 class="h4 text-gray-900 mb-2">Nueva Contraseña</h1>
+                                    <p class="mb-4">Su contraseña deberá contener los siguientes parámetros:</p>
+                                    <p class="mb-4">- Mínimo una letra mayúscula</p>
+                                    <p class="mb-4">- Mínimo dos números</p>
                                 </div>
-
                                 <form class="user">
                                     <div class="form-group">
-                                        <input type="email" class="form-control-log form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Ingresar correo electrónico...">
+                                        <input type="email" class="form-control-log form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Ingrese la nueva contraseña">
                                     </div>
-                                    <p class="mb-4">Luego de hacer click en "Enviar", llegará a su correo electrónico una series de instrucciones que debe seguir para recuperar su cuenta</p>
-                                    <a class="btn btn-log btn-user btn-block" th:href="@{/system/}">Enviar</a>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control-log form-control-user" id="exampleInputPassword" placeholder="Repita la contraseña">
+                                    </div>
+                                    <div class="text-center">Luego de hacer click en "Confirmar", su contraseña será automaticamente actualizada para loguearse.
+                                        </div>
+                                    <br>
+                                    <a class="btn btn-log btn-user btn-block" th:href="@{/system/}">Confirmar</a>
                                 </form>
-                                <hr>
-                                <div class="text-center">
-                                    <a class="small" href="forgot-password.html" th:href="@{/system/}">Volver a pagina principal</a>
-                                </div>
 
                             </div>
                         </div>
