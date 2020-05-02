@@ -40,4 +40,7 @@ public class SystemController {
     @GetMapping("gestorRegistroSede")
     public String registroSede(){return "Gestor/G-RegistroSede";}
 
+    @GetMapping("recuperarContraseña")
+    public String recuperarContrasela (){return "Sistema/S-RecupContra";}
+
 }
