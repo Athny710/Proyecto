@@ -49,15 +49,12 @@ public class SystemController {
     @GetMapping("gestorGestionVentas")
     public String registroVentas(){return "Gestor/G-GestiónVentas";}
 
-    @GetMapping("gestorGenerarReporte")
-    public String reporteVentas(){return "Gestor/G-GenReporte";}
-    @GetMapping("gestorGenerarReporte2")
-    public String reporteVentas2(){return "Gestor/G-GenReporte2";}
-    @GetMapping("gestorRegistroSede")
+
     public String registroSede(){return "Gestor/G-RegistroSede";}
     @GetMapping("cambiarContrasena")
     public String cambiarContrasena(){return "cambiarContrasena";}
 
+    //ruth
     @GetMapping("gestorRecuperarContraseña")
     public String recuperarContrasela (){return "Sistema/S-RecupContra";}
     @GetMapping("gestorNuevaContraseña")
@@ -71,7 +68,7 @@ public class SystemController {
     @GetMapping("gestorProductosRechazados")
     public String productosRechazados (){return "Gestor/G-ProdRecha";}
 
-
+    //Ivan
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede (){return "Gestor/G-ListaUsuarioSede";}
     @GetMapping("gestorListaComunidad")
@@ -89,4 +86,7 @@ public class SystemController {
     @GetMapping("gestorDetallesProdcutoConsignacion")
     public String DetallesProdcutoConsignacion (){return "Gestor/G-DetallesProdcutoConsignacion";}
 
+
+
+    
 }
