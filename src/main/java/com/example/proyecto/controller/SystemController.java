@@ -72,5 +72,6 @@ public class SystemController {
     public String productosRechazados (){return "Gestor/G-ProdRecha";}
 
 
-
+    @GetMapping("gestorListaUsuarioSede")
+    public String listaUsuarioSede (){return "Gestor/G-ListaUsuarioSede";}
 }
