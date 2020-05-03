@@ -44,7 +44,7 @@
 
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-gray-900">Lista De Usuarios Sede</h6>
+                        <h6 class="m-0 font-weight-bold text-gray-900">Lista De Categorías</h6>
                         <form class="-angle-double-right d-none d-sm-inline-block form-inline mr-auto ml-md-20 my-2 my-md-30 mw-100 navbar-search">
                             <div class="input-group">
                                 <input type="text" class="form-control bg-light border-10 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
@@ -60,52 +60,38 @@
                     <div class="card-body">
                         <div class="table-responsive">
 
-
-
                             <div class="row">
                                 <div class="col-sm-12 col-md-6">
                                     <a href="#" class="btn btn-warning btn-icon-split">
-                                        <span class="text">Añadir nueva sede</span>
-                                    </a>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <a href="#" class="btn btn-warning btn-icon-split">
-                                        <span class="text">Añadir nuevo usuario</span>
+                                        <span class="text">Añadir categoría</span>
                                     </a>
                                 </div>
                             </div>
+                            <br>
 
-                               <br>
+
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>Nombres</th>
-                                    <th>Apellidos</th>
-                                    <th>DNI</th>
-                                    <th>E-mail</th>
-                                    <th>Teléfono</th>
-                                    <th>Sede</th>
+                                    <th>Nombre</th>
+                                    <th>Código</th>
                                     <th>Editar/Borrar</th>
                                 </tr>
                                 </thead>
-                             <!--   <tfoot>
-                                <tr>
-                                    <th>Sergio andres</th>
-                                    <th>Muro calvo</th>
-                                    <th>58678994</th>
-                                    <th>sergio.muroc@pucp.pe</th>
-                                    <th>937568931</th>
-                                    <th>Lima</th>
-                                </tr>
-                                </tfoot>    -->
+                                <!--   <tfoot>
+                                   <tr>
+                                       <th>Sergio andres</th>
+                                       <th>Muro calvo</th>
+                                       <th>58678994</th>
+                                       <th>sergio.muroc@pucp.pe</th>
+                                       <th>937568931</th>
+                                       <th>Lima</th>
+                                   </tr>
+                                   </tfoot>    -->
                                 <tbody>
                                 <tr>
-                                    <td>Julio renato</td>
-                                    <td>Carrion pardo</td>
-                                    <td>59639024</td>
-                                    <td>a20161448@pucp.pe</td>
-                                    <td>945378628</td>
-                                    <td>Ica</td>
+                                    <td>Home</td>
+                                    <td>H</td>
                                     <td><a href="#" class="btn btn-success btn-circle">
                                         <i class="fas fa-check"></i>
                                     </a><a href="#" class="btn btn-danger btn-circle">
@@ -113,12 +99,8 @@
                                     </a></td>
                                 </tr>
                                 <tr>
-                                    <td>Sergio andres</td>
-                                    <td>Muro calvo</td>
-                                    <td>58678994</td>
-                                    <td>sergio.muroc@pucp.pe</td>
-                                    <td>937568931</td>
-                                    <td>Lima</td>
+                                    <td>Usable</td>
+                                    <td>U</td>
                                     <td><a href="#" class="btn btn-success btn-circle">
                                         <i class="fas fa-check"></i>
                                     </a><a href="#" class="btn btn-danger btn-circle">
@@ -126,12 +108,8 @@
                                     </a></td>
                                 </tr>
                                 <tr>
-                                    <td>Jhon Branko</td>
-                                    <td>Zambrano Linares</td>
-                                    <td>44870124</td>
-                                    <td>jbzambrano@pucp.pe</td>
-                                    <td>923746291</td>
-                                    <td>Arequipa</td>
+                                    <td>Custom</td>
+                                    <td>C</td>
                                     <td><a href="#" class="btn btn-success btn-circle">
                                         <i class="fas fa-check"></i>
                                     </a><a href="#" class="btn btn-danger btn-circle">
@@ -152,11 +130,10 @@
     </div>
     <!-- End of Content Wrapper -->
 </div>
-<!--
+
 <div th:replace="FragmentosGestor/Fragmentos.html :: ModalCerrarSesion">
 
 </div>
--->
 <!-- Bootstrap core JavaScript-->
 <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
 <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>

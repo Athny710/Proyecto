@@ -74,4 +74,19 @@ public class SystemController {
 
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede (){return "Gestor/G-ListaUsuarioSede";}
+    @GetMapping("gestorListaComunidad")
+    public String listaComunidad (){return "Gestor/G-ListaComunidad";}
+    @GetMapping("gestorListaArtesano")
+    public String listaArtesano (){return "Gestor/G-ListaArtesano";}
+    @GetMapping("gestorListaCategoria")
+    public String listaCategoria (){return "Gestor/G-ListaCategoria";}
+    @GetMapping("gestorRegistroArtesano")
+    public String registroArtesano (){return "Gestor/G-RegistroArtesano";}
+    @GetMapping("gestorRegistroComunidad")
+    public String registroComunidad (){return "Gestor/G-RegistroComunidad";}
+    @GetMapping("gestorDetallesProdcutoCompra")
+    public String detallesProdcutoCompra (){return "Gestor/G-DetallesProdcutoCompra";}
+    @GetMapping("gestorDetallesProdcutoConsignacion")
+    public String DetallesProdcutoConsignacion (){return "Gestor/G-DetallesProdcutoConsignacion";}
+
 }
