@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Blank</title>
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/css/sb-admin-2.css}" rel="stylesheet">
+</head>
+<body id="page-top">
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <div th:replace="FragmentosGestor/Fragmentos.html :: NadvarGestor1">
+
+    </div>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column bg-white">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <div th:replace="FragmentosGestor/Fragmentos.html :: TopbarGestor">
+
+            </div>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h4 class="m-0 font-weight-bold text-gray-900">Registrando un Producto</h4>
+                    </div>
+                    <div class="card-body">
+
+                        <form>
+                            <div class="form-group col-md-6">
+                                <label for="rfc">Modalidad</label>
+                                <select class="form-control" name="supplier" id="rfc">
+                                    <option >Compra</option>
+                                    <option >Consignación</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputEmail4">Número de pedido</label>
+                                <input type="email" class="form-control" id="inputEmail4" >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="supplier">Línea</label>
+                                <select class="form-control" name="supplier" id="supplier">
+                                    <option >uno</option>
+                                    <option >dos</option>
+                                    <option >tres</option>
+                                    <option >cuatro</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="efe">Categoría</label>
+                                <select class="form-control" name="efe" id="efe">
+                                    <option >uno</option>
+                                    <option >dos</option>
+                                    <option >tres</option>
+                                    <option >cuatro</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="adasas">Nombre del Producto</label>
+                                <select class="form-control" name="supplier" id="adasas">
+                                    <option >uno</option>
+                                    <option >dos</option>
+                                    <option >tres</option>
+                                    <option >cuatro</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="qwe">Descripción</label>
+                                <input type="text" class="form-control" id="qwe" >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="rew">Tamaño</label>
+                                <select class="form-control" name="supplier" id="rew">
+                                    <option >uno</option>
+                                    <option >dos</option>
+                                    <option >tres</option>
+                                    <option >cuatro</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="dsa">Comunidad a la que pertenece</label>
+                                <select class="form-control" name="supplier" id="dsa">
+                                    <option >uno</option>
+                                    <option >dos</option>
+                                    <option >tres</option>
+                                    <option >cuatro</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="zxc">Cantidad</label>
+                                <input type="text" class="form-control" id="zxc" >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="ert">Tipo</label>
+                                <input type="text" class="form-control" id="ert" >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="wer">Fecha</label>
+                                <input type="date" class="form-control" id="wer" >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="tyu">Color</label>
+                                <input type="text" class="form-control" id="tyu" >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="uio">Foto</label>
+                                <p><input type="file" accept="image/*" id="uio"></p>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="ef">Costo Tejedor (S/.)</label>
+                                <input type="text" class="form-control" id="ef" >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="ghj">Costo Mosqoy (S/.)</label>
+                                <input type="text" class="form-control" id="ghj" >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="az">Facilitador</label>
+                                <input type="text" class="form-control" id="az" >
+                            </div>
+
+                            <div class="form-row col-md-2">
+                            <div class="form-group col-md-8">
+                                <a href="#" class="btn btn-danger">Cancelar</a>
+                            </div>
+                            <div class="form-group col-md-2"  >
+                                <a href="#" class="btn btn-primary">Guardar</a>
+                            </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+
+<div th:replace="FragmentosGestor/Fragmentos.html :: ModalCerrarSesion">
+
+</div>
+<!-- Bootstrap core JavaScript-->
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/js/sb-admin-2.min.js}"></script>
+
+
+</body>
+</html>

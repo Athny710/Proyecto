@@ -33,30 +33,24 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row h-25">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image h-25">
-                                <img th:src="@{/img/imgse.png}" width="362px" height="522.2px">
-                            </div>
-                            <div class="col-lg-6 bg-gray-100 h-25">
+                            <div class="col-lg-12 bg-gray-100 h-25">
                                 <div class="p-5">
                                     <div class="text-center">
                                         <img th:src="@{/img/logofinal.jpg}" height="120px" width="240px">
                                     </div>
                                     <br><br><br>
                                     <form class="user">
+                                        <h4>Cambiar contraseña</h4>
                                         <div class="form-group">
-                                            <input type="email" class="form-control-log form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                                            <label> Ingresar nueva contraseña</label>
+                                            <input type="password" class="form-control-log form-control-user" id="exampleInputPassword1"placeholder="Password">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control-log form-control-user" id="exampleInputPassword" placeholder="Password">
+                                            <label> Confirmar nueva contraseña</label>
+                                            <input type="password" class="form-control-log form-control-user" id="exampleInputPassword2" placeholder="Password">
                                         </div>
-                                        <a class="btn btn-log btn-user btn-block" th:href="@{/system/usede}">Ingresar Sede</a>
-                                        <a class="btn btn-log btn-user btn-block" th:href="@{/system/principal}">Ingresar Admin</a>
-                                        <a class="btn btn-log btn-user btn-block" th:href="@{/system/gestorPrincipal}">Ingresar Gestor</a>
+                                        <a class="btn btn-log btn-user btn-block" th:href="@{/system/usede}">Confirmar</a>
                                     </form>
-                                    <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="forgot-password.html" th:href="@{/system/recuperarContraseña}">Recuperar Contraseña</a>
-                                    </div>
 
                                 </div>
                             </div>

@@ -4414,7 +4414,12 @@ input[type="button"].btn-block {
 .card-link + .card-link {
   margin-left: 1.25rem;
 }
-
+.card-header2{
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: #f8f9fc;
+  border-bottom: 1px solid #e3e6f0;
+}
 .card-header {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
@@ -9816,8 +9821,15 @@ a:focus {
 }
 .text-pink{
   color: #e7bb7a !important;
-
 }
+
+.text-redM{
+  color: #75314a !important;
+}
+.text-greenM{
+  color: #8d8f4c !important;
+}
+
 .text-gray-100 {
   color: #f8f9fc !important;
 }
@@ -9988,6 +10000,10 @@ a:focus {
 .topbar .nav-item .nav-link .img-profile {
   height: 2rem;
   width: 2rem;
+}
+.centrado{
+  display: flex;
+  align-items: center;
 }
 
 .topbar {
@@ -11053,3 +11069,4 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
