@@ -12,8 +12,7 @@ public class SystemController {
     public String listar(){
         return "base/basePag";
     }
-    @GetMapping("admin")
-    public String principalAdmin(){return "Administrador/PagPrincipal";}
+
     @GetMapping("usede")
     public String gaa(){
         return "UsuarioSede/Principal";
