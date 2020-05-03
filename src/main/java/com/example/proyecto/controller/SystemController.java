@@ -68,6 +68,8 @@ public class SystemController {
     public String productosAceptados (){return "Gestor/G-ProdAcep";}
     @GetMapping("gestorPrincipal")
     public String inventarioGestor (){return "Gestor/G-Inventario";}
+    @GetMapping("gestorProductosRechazados")
+    public String productosRechazados (){return "Gestor/G-ProdRecha";}
 
 
 
