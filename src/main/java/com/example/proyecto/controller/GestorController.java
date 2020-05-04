@@ -30,7 +30,11 @@ public class GestorController {
     @GetMapping("gestorResgistroSede")
     public String registroSede(){return "Gestor/G-RegistroSede";}
 
+    @GetMapping("gestorReporteVentas")
+    public String reporteVentas1(){return "Gestor/G-GenReporte";}
 
+    @GetMapping("gestorReporteVentas2")
+    public String reporteVentas2(){return "Gestor/G-GenReporte2";}
 
 
     @GetMapping("gestorListarSinStock")
