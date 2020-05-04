@@ -44,54 +44,32 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Inventario</h1>
-                <p class="mb-4">AQUI DEBERÍA APARECER EL AVISO DE QUE TIENE PRODUCTOS SIN STOCK</p>
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 text-gray-900 font-weight-bold text-primary">Inventario</h6>
+                        <form class="-angle-double-right d-none d-sm-inline-block form-inline mr-auto ml-md-20 my-2 my-md-30 mw-100 navbar-search">
+                            <div class="input-group">
+                                <input type="text" class="form-control bg-light border-10 small bg-white" placeholder="Filtrar for..." aria-label="Search" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-log text-gray-900" type="button">
+                                        <i class="fas fa-search fa-sm text-gray-100"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-6">
-                                        <div class="dataTables_length" id="dataTable_length">
-                                            <label>Mostrar
-                                                <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
-                                                    <option value="10">10</option>
-                                                    <option value="25">25</option>
-                                                    <option value="50">50</option>
-                                                    <option value="100">100</option>
-                                                </select>
-                                            </label>  entradas:
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-6">
-                                        <div id="dataTable_filter" class="dataTables_filter">
-                                            <label>Filtrar por sede:
-                                                <input class="form-control form-control-sm"  type="search" placeholder="" aria-controls="dataTable">
-                                            </label>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12 col-md-6">
-                                    <a href="#" class="btn btn-warning btn-icon-split">
-                                        <span class="icon text-white-50">
-                                          <i class="fas fa-exclamation-triangle"></i>
-                                        </span>
-                                        <span class="text">Lista de productos sin stock</span>
-                                    </a>
+                                        <a class="btn btn-warning mt-4 mb-4" th:href="@{/gestor/gestorListarSinStock}">Lista de Productos sin Stock</a>
                                     </div>
                                     <div class="col-sm-12 col-md-6">
-                                    <a href="#" class="btn btn-warning btn-icon-split">
-                                        <span class="icon text-white-50">
-                                          <i class="fas fa-arrow-right"></i>
-                                        </span>
-                                        <span class="text">Agregar nueva compra</span>
-                                    </a>
+                                        <a class="btn btn-warning mt-4 mb-4" th:href="@{/gestor/gestorRegCompra}">Agregar Nueva Compra</a>
                                     </div>
                                 </div>
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -136,10 +114,10 @@
                                         <td>Consignado</td>
                                         <td>Recibido</td>
                                         <td>4</td>
-                                        <td><a href="#" class="btn btn-info btn-circle">
+                                        <td><a th:href="@{/gestor/gestorEditProdCompra}" class="btn btn-info btn-circle">
                                             <i class="fas fa-info-circle"></i>
                                         </a></td>
-                                        <td><a href="#" class="btn btn-success btn-circle">
+                                        <td><a th:href="@{/gestor/gestorEditProdCompra}" class="btn btn-success btn-circle">
                                             <i class="fas fa-check"></i>
                                         </a><a href="#" class="btn btn-danger btn-circle">
                                             <i class="fas fa-trash"></i>
@@ -155,10 +133,10 @@
                                         <td>Comprado</td>
                                         <td>Agotado</td>
                                         <td>0</td>
-                                        <td><a href="#" class="btn btn-info btn-circle">
+                                        <td><a th:href="@{/gestor/gestorEditProdCompra}" class="btn btn-info btn-circle">
                                             <i class="fas fa-info-circle"></i>
                                         </a></td>
-                                        <td><a href="#" class="btn btn-success btn-circle">
+                                        <td><a th:href="@{/gestor/gestorEditProdCompra}" class="btn btn-success btn-circle">
                                             <i class="fas fa-check"></i>
                                         </a><a href="#" class="btn btn-danger btn-circle">
                                             <i class="fas fa-trash"></i>
