@@ -17,6 +17,26 @@ public class SystemController {
     public String gaa(){
         return "UsuarioSede/Principal";
     }
+
+    @GetMapping("usedeAlerta")
+    public String gaaaaaaaa(){
+        return "UsuarioSede/PrincipalAlerta";
+    }
+
+    @GetMapping("/registroVentas")
+    public String gaaaaaaaaaaaaa(){
+        return "UsuarioSede/GestionVentas";
+    }
+
+    @GetMapping("/registroVentasAlerta")
+    public String gaaaaaaaaaaaaaaaaaa(){
+        return "UsuarioSede/GestionVentasAlerta";
+    }
+    @GetMapping("/TiendaDistribuidor")
+    public String gaaaaaaaaaaaaaaaaaaaaaaaa(){
+        return "UsuarioSede/TiendaDistribuidor";
+    }
+
     @GetMapping("personal")
     public String ga(){
         return "UsuarioSede/InformPerso";
