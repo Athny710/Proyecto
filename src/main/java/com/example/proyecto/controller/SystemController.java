@@ -36,7 +36,8 @@ public class SystemController {
     public String recuperarContrasela (){return "Sistema/S-RecupContra";}
     @GetMapping("NuevaContraseña")
     public String nuevaContrasela (){return "Sistema/S-NuevContra";}
-
+    @GetMapping("cambiarContrasena")
+    public String cambiarContrasena(){return "cambiarContrasena";}
 
 
 
