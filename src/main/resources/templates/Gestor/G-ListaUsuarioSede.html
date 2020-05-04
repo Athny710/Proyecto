@@ -61,7 +61,7 @@
                         <div class="table-responsive">
 
 
-
+<!--
                             <div class="row">
                                 <div class="col-sm-12 col-md-6">
                                     <a href="#" class="btn btn-warning btn-icon-split">
@@ -74,8 +74,17 @@
                                     </a>
                                 </div>
                             </div>
-
                                <br>
+   -->
+                            <div class="row">
+                                   <div class="col-sm-12 col-md-3">
+                                        <a class="btn btn-warning mt-4 mb-4"  th:href="@{/gestor/gestorRegistroUsuarioSede}">Añadir nuevo usuario</a>
+                                   </div>
+                                   <div class="col-sm-12 col-md-3">
+                                        <a class="btn btn-warning mt-4 mb-4" href="#">Añadir nueva sede</a>
+                                   </div>
+                            </div>
+
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
@@ -88,7 +97,7 @@
                                     <th>Editar/Borrar</th>
                                 </tr>
                                 </thead>
-                             <!--   <tfoot>
+                     <!--         <tfoot>
                                 <tr>
                                     <th>Sergio andres</th>
                                     <th>Muro calvo</th>
@@ -97,7 +106,8 @@
                                     <th>937568931</th>
                                     <th>Lima</th>
                                 </tr>
-                                </tfoot>    -->
+                                </tfoot>
+                       -->
                                 <tbody>
                                 <tr>
                                     <td>Julio renato</td>
@@ -106,9 +116,9 @@
                                     <td>a20161448@pucp.pe</td>
                                     <td>945378628</td>
                                     <td>Ica</td>
-                                    <td><a href="#" class="btn btn-success btn-circle">
+                                    <td><a th:href="@{/gestor/gestorRegistroUsuarioSede}" class="btn btn-success btn-circle ">
                                         <i class="fas fa-check"></i>
-                                    </a><a href="#" class="btn btn-danger btn-circle">
+                                    </a><a href="#" class="btn btn-danger btn-circle ">
                                         <i class="fas fa-trash"></i>
                                     </a></td>
                                 </tr>
@@ -119,7 +129,7 @@
                                     <td>sergio.muroc@pucp.pe</td>
                                     <td>937568931</td>
                                     <td>Lima</td>
-                                    <td><a href="#" class="btn btn-success btn-circle">
+                                    <td><a th:href="@{/gestor/gestorRegistroUsuarioSede}" class="btn btn-success btn-circle">
                                         <i class="fas fa-check"></i>
                                     </a><a href="#" class="btn btn-danger btn-circle">
                                         <i class="fas fa-trash"></i>
@@ -132,7 +142,7 @@
                                     <td>jbzambrano@pucp.pe</td>
                                     <td>923746291</td>
                                     <td>Arequipa</td>
-                                    <td><a href="#" class="btn btn-success btn-circle">
+                                    <td><a th:href="@{/gestor/gestorRegistroUsuarioSede}" class="btn btn-success btn-circle">
                                         <i class="fas fa-check"></i>
                                     </a><a href="#" class="btn btn-danger btn-circle">
                                         <i class="fas fa-trash"></i>
@@ -152,10 +162,10 @@
     </div>
     <!-- End of Content Wrapper -->
 </div>
-<!--
+
 <div th:replace="FragmentosGestor/Fragmentos.html :: ModalCerrarSesion">
 
-</div>
+
 -->
 <!-- Bootstrap core JavaScript-->
 <script th:src="@{/vendor/jquery/jquery.min.js}"></script>

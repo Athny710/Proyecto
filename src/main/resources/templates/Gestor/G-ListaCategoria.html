@@ -44,7 +44,7 @@
 
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-gray-900">Lista De Categorías</h6>
+                        <h6 class="m-0 font-weight-bold text-gray-900">Lista de categorías</h6>
                         <form class="-angle-double-right d-none d-sm-inline-block form-inline mr-auto ml-md-20 my-2 my-md-30 mw-100 navbar-search">
                             <div class="input-group">
                                 <input type="text" class="form-control bg-light border-10 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
@@ -59,16 +59,20 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
+         <!-- codigo para que salga en la parte superior
 
                             <div class="row">
                                 <div class="col-sm-12 col-md-6">
                                     <a href="#" class="btn btn-warning btn-icon-split">
-                                        <span class="text">Añadir categoría</span>
+                                        <span  class="text">Añadir categoría</span>
                                     </a>
                                 </div>
                             </div>
                             <br>
-
+-->
+                            <div class="col-sm-12 col-md-6">
+                                  <a class="btn btn-warning mt-4 mb-4" th:href="@{/gestor/gestorRegCategoria}">Añadir categoría</a>
+                            </div>
 
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
@@ -78,55 +82,54 @@
                                     <th>Editar/Borrar</th>
                                 </tr>
                                 </thead>
-                                <!--   <tfoot>
-                                   <tr>
-                                       <th>Sergio andres</th>
-                                       <th>Muro calvo</th>
-                                       <th>58678994</th>
-                                       <th>sergio.muroc@pucp.pe</th>
-                                       <th>937568931</th>
-                                       <th>Lima</th>
-                                   </tr>
-                                   </tfoot>    -->
-                                <tbody>
-                                <tr>
-                                    <td>Home</td>
-                                    <td>H</td>
-                                    <td><a href="#" class="btn btn-success btn-circle">
-                                        <i class="fas fa-check"></i>
-                                    </a><a href="#" class="btn btn-danger btn-circle">
-                                        <i class="fas fa-trash"></i>
-                                    </a></td>
-                                </tr>
-                                <tr>
-                                    <td>Usable</td>
-                                    <td>U</td>
-                                    <td><a href="#" class="btn btn-success btn-circle">
-                                        <i class="fas fa-check"></i>
-                                    </a><a href="#" class="btn btn-danger btn-circle">
-                                        <i class="fas fa-trash"></i>
-                                    </a></td>
-                                </tr>
-                                <tr>
-                                    <td>Custom</td>
-                                    <td>C</td>
-                                    <td><a href="#" class="btn btn-success btn-circle">
-                                        <i class="fas fa-check"></i>
-                                    </a><a href="#" class="btn btn-danger btn-circle">
-                                        <i class="fas fa-trash"></i>
-                                    </a></td>
-                                </tr>
+                                <!--       <tfoot>
+                                      <tr>
+                                          <th>Nombre del Producto</th>
+                                          <th>Color</th>
+                                          <th>Tamaño</th>
+                                          <th>Comunidad</th>
+                                          <th>Foto</th>
+                                      </tr>
+                                     </tfoot>   -->
+                                      <tbody>
+                                      <tr>
+                                          <td>Home</td>
+                                          <td>H</td>
+                                          <td><a  th:href="@{/gestor/gestorEditCategoria}" class="btn btn-success btn-circle">
+                                              <i class="fas fa-check"></i>
+                                          </a><a href="#" class="btn btn-danger btn-circle">
+                                              <i class="fas fa-trash"></i>
+                                          </a></td>
+                                      </tr>
+                                      <tr>
+                                          <td>Usable</td>
+                                          <td>U</td>
+                                          <td><a  th:href="@{/gestor/gestorEditCategoria}" class="btn btn-success btn-circle">
+                                              <i class="fas fa-check"></i>
+                                          </a><a href="#" class="btn btn-danger btn-circle">
+                                              <i class="fas fa-trash"></i>
+                                          </a></td>
+                                      </tr>
+                                      <tr>
+                                          <td>Custom</td>
+                                          <td>C</td>
+                                          <td><a  th:href="@{/gestor/gestorEditCategoria}" class="btn btn-success btn-circle">
+                                              <i class="fas fa-check"></i>
+                                          </a><a href="#" class="btn btn-danger btn-circle">
+                                              <i class="fas fa-trash"></i>
+                                          </a></td>
+                                      </tr>
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
 
 
-            </div>
-        </div>
-        <!-- End of Main Content -->
+                  </div>
+              </div>
+              <!-- End of Main Content -->
     </div>
     <!-- End of Content Wrapper -->
 </div>

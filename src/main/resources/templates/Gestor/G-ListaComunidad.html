@@ -59,16 +59,20 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-
+                            <!--
 
                             <div class="row">
                                 <div class="col-sm-12 col-md-6">
-                                    <a href="#" class="btn btn-warning btn-icon-split">
+                                    <a th:href="@{/system/gestorRegistroComunidad}"  class="btn btn-warning btn-icon-split">
                                         <span class="text">Añadir comunidad</span>
                                     </a>
                                 </div>
+                            </div>   -->
+
+                            <div class="col-sm-12 col-md-6">
+                                <a class="btn btn-warning mt-4 mb-4" th:href="@{/gestor/gestorRegistroComunidad}">Añadir comunidad</a>
                             </div>
-                             <br>
+
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
@@ -91,7 +95,7 @@
                                 <tr>
                                     <td>Amaru</td>
                                     <td>AM</td>
-                                    <td><a href="#" class="btn btn-success btn-circle">
+                                    <td><a th:href="@{/gestor/gestorEditComunidad}" class="btn btn-success btn-circle">
                                         <i class="fas fa-check"></i>
                                     </a><a href="#" class="btn btn-danger btn-circle">
                                         <i class="fas fa-trash"></i>
@@ -100,7 +104,7 @@
                                 <tr>
                                     <td>Huaran</td>
                                     <td>HU</td>
-                                    <td><a href="#" class="btn btn-success btn-circle">
+                                    <td><a th:href="@{/gestor/gestorEditComunidad}" class="btn btn-success btn-circle">
                                         <i class="fas fa-check"></i>
                                     </a><a href="#" class="btn btn-danger btn-circle">
                                         <i class="fas fa-trash"></i>
@@ -109,7 +113,7 @@
                                 <tr>
                                     <td>Parobamba</td>
                                     <td>PA</td>
-                                    <td><a href="#" class="btn btn-success btn-circle">
+                                    <td><a th:href="@{/gestor/gestorEditComunidad}" class="btn btn-success btn-circle">
                                         <i class="fas fa-check"></i>
                                     </a><a href="#" class="btn btn-danger btn-circle">
                                         <i class="fas fa-trash"></i>
