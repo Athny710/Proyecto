@@ -27,10 +27,9 @@ public class GestorController {
     public String registroVentas(){return "Gestor/G-GestiónVentas";}
 
 
-
+    @GetMapping("gestorResgistroSede")
     public String registroSede(){return "Gestor/G-RegistroSede";}
-    @GetMapping("cambiarContrasena")
-    public String cambiarContrasena(){return "cambiarContrasena";}
+
 
 
 
@@ -42,6 +41,8 @@ public class GestorController {
     public String inventarioGestor (){return "Gestor/G-Inventario";}
     @GetMapping("gestorProductosRechazados")
     public String productosRechazados (){return "Gestor/G-ProdRecha";}
+    @GetMapping("gestorProductosEnviados")
+    public String productosEnviados (){return "Gestor/G-ProdEnv";}
 
 
 

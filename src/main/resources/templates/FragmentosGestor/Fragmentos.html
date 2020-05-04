@@ -33,7 +33,7 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item text-gray-100">
-        <a class="nav-link collapsed text-gray-100" th:href="@{/system/gestorPrincipal}"  data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed text-gray-100" th:href="@{/gestor/gestorPrincipal}"  data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-table text-gray-100"></i>
             <span>Inventario</span>
         </a>
@@ -41,15 +41,15 @@
 
     <hr class="sidebar-divider my-0 bg-gray-900">
     <li class="nav-item active">
-        <a class="nav-link text-gray-100" th:href="@{/system/gestorPrincipal}" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+        <a class="nav-link text-gray-100" th:href="@{/gestor/gestorPrincipal}" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
             <i class="fas fa-fw fa-folder text-gray-100"></i>
             <span>Gestionar Atributos</span>
         </a>
         <div id="collapsePages" class="collapse show bg-greenM" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-greenM py-2 collapse-inner rounded">
-                <a class="collapse-item text-white" th:href="@{/system/gestorEditComunidad}">Comunidades</a>
-                <a class="collapse-item text-white" th:href="@{/system/gestorEditArtesano}">Artesanos</a>
-                <a class="collapse-item text-white" th:href="@{/system/gestorEditCategoria}">Categorías</a>
+                <a class="collapse-item text-white" th:href="@{/gestor/gestorListaComunidad}">Comunidades</a>
+                <a class="collapse-item text-white" th:href="@{/gestor/gestorListaArtesano}">Artesanos</a>
+                <a class="collapse-item text-white" th:href="@{/gestor/gestorListaCategoria}">Categorías</a>
             </div>
         </div>
     </li>
@@ -57,7 +57,7 @@
     <hr class="sidebar-divider my-0 bg-gray-100">
 
     <li class="nav-item">
-        <a class="nav-link collapsed text-gray-100" th:href="@{/system/gestorRegistroUsuarioSede}"  data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+        <a class="nav-link collapsed text-gray-100" th:href="@{/gestor/gestorListaUsuarioSede}"  data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-folder text-gray-100"></i>
             <span>Usuarios Sedes</span>
         </a>
@@ -65,17 +65,11 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider my-0 bg-gray-900">
-    <li class="nav-item active">
-        <a class="nav-link text-gray-100" th:href="@{/system/gestorGestionVentas}" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+    <li class="nav-item">
+        <a class="nav-link text-gray-100" th:href="@{/gestor/gestorGestionVentas}" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
             <i class="fas fa-fw fa-folder text-gray-100"></i>
             <span>Gestionar Ventas</span>
         </a>
-        <div id="collapsePages2" class="collapse show bg-greenM" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-greenM py-2 collapse-inner rounded">
-                <a class="collapse-item text-white" href="#">Registrar Venta</a>
-                <a class="collapse-item text-white" th:href="@{/system/gestorGenerarReporte}">Reportes de Ventas</a>
-            </div>
-        </div>
     </li>
 
     <hr class="sidebar-divider my-0 bg-gray-100">
@@ -86,9 +80,9 @@
         </a>
         <div id="collapsePages3" class="collapse show bg-greenM" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-greenM py-2 collapse-inner rounded">
-                <a class="collapse-item text-white" th:href="@{/system/gestorGenerarReporte}">Enviados</a>
-                <a class="collapse-item text-white" th:href="@{/system/gestorProductosAceptados}">Aceptados</a>
-                <a class="collapse-item text-white" th:href="@{/system/gestorProductosRechazados}">Rechazados</a>
+                <a class="collapse-item text-white" th:href="@{/gestor/gestorProductosEnviados}">Enviados</a>
+                <a class="collapse-item text-white" th:href="@{/gestor/gestorProductosAceptados}">Aceptados</a>
+                <a class="collapse-item text-white" th:href="@{/gestor/gestorProductosRechazados}">Rechazados</a>
             </div>
         </div>
     </li>
