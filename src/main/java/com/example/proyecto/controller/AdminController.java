@@ -17,9 +17,15 @@ public class AdminController {
     public String listaUsuarios(){
         return "Administrador/ListaUsuariosSede";
     }
+
     @GetMapping("listaGestores")
     public String listaGestores(){
         return "Administrador/ListaGestores";
+    }
+
+    @GetMapping("generarCuenta")
+    public String generarCuenta(){
+        return "Administrador/GenerarCuenta";
     }
 
 }

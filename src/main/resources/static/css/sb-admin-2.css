@@ -2289,6 +2289,11 @@ fieldset:disabled a.btn {
   pointer-events: none;
 }
 
+ .btn-greenM{
+   color: #fff;
+   background-color: #8d8f4c;
+   border-color: #8d8f4c;
+ }
 
 .btn-searchTop{
   color: #fff;
@@ -9803,6 +9808,9 @@ a:focus {
 .bg-gray-800 {
   background-color: #5a5c69 !important;
 }
+.bg-redM{
+  background-color: #75314a !important;
+}
 
 .bg-gray-900 {
   background-color: #3a3b45 !important;
@@ -9828,6 +9836,10 @@ a:focus {
 }
 .text-greenM{
   color: #8d8f4c !important;
+}
+
+.text-orangeM{
+  color: #d9a127 !important;
 }
 
 .text-gray-100 {
@@ -10502,7 +10514,7 @@ a:focus {
 }
 
 .sidebar-dark .nav-item .nav-link[data-toggle="collapse"]::after {
-  color: rgba(150, 133, 135, 0.5);
+  color: rgba(248, 249, 252);
 }
 
 .sidebar-dark .nav-item.active .nav-link {
