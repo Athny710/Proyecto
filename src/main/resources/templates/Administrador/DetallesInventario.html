@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="FragmentosAdmin/Fragmentos.html::cabecera(titulo='Página Principal')">
+</head>
+
+<body id="page-top">
+
+    <div id="wrapper">
+        <div th:replace="FragmentosAdmin/Fragmentos.html::SideBarAdmin"></div>
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column bg-white">
+
+            <!-- Main Content -->
+            <div id="content">
+                <div th:insert="FragmentosAdmin/Fragmentos.html::TopBar"></div>
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="card shadowA mb-4">
+                        <div class="card-header2 py-3">
+                            <div class="d-flex justify-content-between centrado">
+                                <h5 class="m-0 font-weight-bold text-redM">Detalles Producto</h5>
+                            </div>
+                        </div>
+                        <div class="card-body bg-gray-100">
+                            <div class="table-responsive bg-white d-flex">
+                                <div class="col-lg-6 ">
+                                    <br>
+                                    <div class="d-flex">
+                                        <div class="col-lg-5 centrado">
+                                            <p>Nombre del Producto:</p>
+                                        </div>
+                                        <div class="col-lg-6"><p th:text="Chalina"></p></div>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex">
+                                        <div class="col-lg-5 centrado">
+                                            <p>Código del Producto:</p>
+                                        </div>
+                                        <div class="col-lg-6"><p th:text="ASDDS45"></p></div>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex">
+                                        <div class="col-lg-5 centrado">
+                                            <p>Número de Pedido:</p>
+                                        </div>
+                                        <div class="col-lg-6"><p th:text="54658"></p></div>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex">
+                                        <div class="col-lg-5 centrado">
+                                            <p>Línea:</p>
+                                        </div>
+                                        <div class="col-lg-6"><p th:text="Tradicional"></p></div>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex">
+                                        <div class="col-lg-5 centrado">
+                                            <p>Categoría:</p>
+                                        </div>
+                                        <div class="col-lg-6"><p th:text="Home"></p></div>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex">
+                                        <div class="col-lg-5 centrado">
+                                            <p>Comunidad:</p>
+                                        </div>
+                                        <div class="col-lg-6"><p th:text="Amaru"></p></div>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex">
+                                        <div class="col-lg-5 centrado">
+                                            <p>Artesano:</p>
+                                        </div>
+                                        <div class="col-lg-6"><p>Anthony Rojas Lopez</p></div>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex">
+                                        <div class="col-lg-5 centrado">
+                                            <p>Cantidad:</p>
+                                        </div>
+                                        <div class="col-lg-6"><p th:text="5"></p></div>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex">
+                                        <div class="col-lg-5 centrado">
+                                            <p>Tamaño:</p>
+                                        </div>
+                                        <div class="col-lg-6"><p th:text="Small"></p></div>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex">
+                                        <div class="col-lg-5 centrado">
+                                            <p>Color:</p>
+                                        </div>
+                                        <div class="col-lg-6"><p th:text="Negro"></p></div>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex">
+                                        <div class="col-lg-5 centrado">
+                                            <p>Fecha:</p>
+                                        </div>
+                                        <div class="col-lg-6"><p>09/04/19</p></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 ">
+                                    <br>
+                                    <div class="d-flex">
+                                        <div class="col-lg-5 centrado">
+                                            <p>Tipo de Adquisicion:</p>
+                                        </div>
+                                        <div class="col-lg-6"><p th:text="Compra"></p></div>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex">
+                                        <div class="col-lg-5 centrado">
+                                            <p>Costo Tejedor(S/.):</p>
+                                        </div>
+                                        <div class="col-lg-6"><p th:text="200"></p></div>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex">
+                                        <div class="col-lg-5 centrado">
+                                            <p>Costo Mosqoy(S/.):</p>
+                                        </div>
+                                        <div class="col-lg-6"><p th:text="300"></p></div>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex">
+                                        <div class="col-lg-5 centrado">
+                                            <p>Descripción:</p>
+                                        </div>
+                                        <div class="col-lg-6"><p>Chalina de 50cm de largo</p></div>
+                                    </div>
+                                    <hr>
+                                    <br>
+                                    <br>
+                                    <div class="d-flex">
+                                        <div class="col-lg-2"></div>
+                                        <div class="col-xl-7 col-md-6 mb-4">
+                                            <div class="card border-left-warning shadow h-100 py-2">
+                                                <div class="card-body">
+                                                    <img th:src="@{/img/bufanda.png}" width="210px" height="250">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="FragmentosAdmin/Fragmentos.html::script"></div>
+
+</body>
+
+</html>

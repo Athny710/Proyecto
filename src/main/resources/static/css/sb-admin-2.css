@@ -91,10 +91,13 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 0.5rem;
 }
-
+label{
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
 p {
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: 0rem;
 }
 
 abbr[title],
@@ -2288,6 +2291,11 @@ a.btn.disabled,
 fieldset:disabled a.btn {
   pointer-events: none;
 }
+ .btn-gray-900{
+    color: #fff;
+    background-color: #3a3b45;
+    border-color: #3a3b45;
+}
 
  .btn-greenM{
    color: #fff;
@@ -4373,7 +4381,7 @@ input[type="button"].btn-block {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #fff;
+  background-color: #f8f9fc;
   background-clip: border-box;
   border: 1px solid #e3e6f0;
   border-radius: 0.35rem;
@@ -10692,7 +10700,11 @@ a:focus {
 form.user .custom-checkbox.small label {
   line-height: 1.5rem;
 }
-
+form.user .form-control-user2 {
+  font-size: 0.8rem;
+  border-radius: 10rem;
+  padding: 1.2rem 1rem;
+}
 form.user .form-control-user {
   font-size: 0.8rem;
   border-radius: 10rem;

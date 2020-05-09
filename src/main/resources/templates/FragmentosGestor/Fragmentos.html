@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:fragment="cabecera(titulo)">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <title>SB Admin 2 - Blank</title>
+    <title th:text="${titulo}"></title>
 
     <!-- Custom fonts for this template-->
     <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
@@ -16,7 +15,6 @@
     <!-- Custom styles for this template-->
     <link th:href="@{/css/sb-admin-2.css}" rel="stylesheet">
 </head>
-<body>
 
 <ul th:fragment="NadvarGestor1" class="navbar-nav bg-gray-900 sidebar sidebar-dark accordion" id="accordionSidebar">
 

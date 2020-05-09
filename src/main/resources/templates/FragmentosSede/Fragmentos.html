@@ -1,113 +1,78 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+
+<head th:fragment="cabecera(titulo)">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <title>SB Admin 2 - Blank</title>
-
+    <title th:text="${titulo}"></title>
     <!-- Custom fonts for this template-->
     <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
     <!-- Custom styles for this template-->
     <link th:href="@{/css/sb-admin-2.css}" rel="stylesheet">
 </head>
-<body>
 
-<ul th:fragment="NadvarSede1" class="navbar-nav bg-gray-900 sidebar sidebar-dark accordion" id="accordionSidebar">
-
+<!-- Sidebar -->
+<ul th:fragment="SideBarSede" class="navbar-nav bg-redM sidebar sidebar-dark accordion shadow" id="accordionSidebar">
     <!-- Sidebar - Logo -->
-    <a class="sidebar-brand align-items-center justify-content-center" href="index.html">
-        <img th:src="@{/img/logofinal.jpg}" width="150px" height="90px" />
+    <a class="sidebar-brand align-items-center justify-content-center" th:href="@{/system}">
+        <img th:src="@{/img/logoRed.png}" width="150px" height="90px" />
     </a>
-
     <!-- Divider
     <hr class="sidebar-divider2">-->
     <hr>
     <hr>
     <hr>
-
-
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item text-gray-100">
-        <a class="nav-link collapsed text-gray-100" th:href="@{/system/usede}"  data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-table text-gray-100"></i>
-            <span>Lista de Productos</span>
+    <li class="nav-item">
+        <a class="nav-link text-gray-100" th:href="@{/sede/principal}">
+            <i class="fas fa-fw fa-bars text-gray-100"></i>
+            <span>Inventario</span>
         </a>
     </li>
-
     <hr class="sidebar-divider my-0 bg-gray-100">
-
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed text-gray-100" th:href="@{/system/proconf}"  data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fas fa-fw fa-folder text-gray-100"></i>
-            <span>Productos sin Confirmar</span>
+        <a class="nav-link text-gray-100" th:href="@{/admin/generarCuenta}">
+            <i class="fas fa-fw fa-plus-square text-gray-100"></i>
+            <span>Productos sin confirmar</span>
         </a>
     </li>
-
+    <hr class="sidebar-divider my-0 bg-gray-100">
+    <!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link text-gray-100" th:href="@{/admin/generarCuenta}">
+            <i class="fas fa-fw fa-plus-square text-gray-100"></i>
+            <span>Registro de ventas</span>
+        </a>
+    </li>
+    <hr class="sidebar-divider my-0 bg-gray-100">
+    <!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link text-gray-100" th:href="@{/admin/generarCuenta}">
+            <i class="fas fa-fw fa-plus-square text-gray-100"></i>
+            <span>Registro de tiendas</span>
+        </a>
+    </li>
     <!-- Divider -->
     <hr class="sidebar-divider my-0 bg-gray-100">
-
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item active">
-        <a class="nav-link text-gray-100" th:href="@{/system/registroVentas}"  data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder text-gray-100"></i>
-            <span>Registro Ventas</span>
-        </a>
-
-    </li>
-
-    <hr class="sidebar-divider my-0 bg-gray-100">
-
-    <li class="nav-item active">
-        <a class="nav-link text-gray-100" th:href="@{/system/TiendaDistribuidor}"  data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder text-gray-100"></i>
-            <span>Registro Tienda/Distribuidor</span>
-        </a>
-
-    </li>
-    <!-- Divider -->
-
 </ul>
-
-<div th:fragment="NadvarSede2" class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">¿Listo para salir?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <a class="btn btn-primary" th:href="@{/system/}">Cerrar Sesión</a>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- End of Sidebar -->
 
 
-<nav th:fragment="NadvarSede3" class="navbar navbar-expand navbar-light topbar mb-4 static-top shadow bg-gray-100">
 
+<!-- Topbar -->
+<nav th:fragment="TopBar" class="navbar navbar-expand navbar-light topbar mb-4 static-top shadowA bg-gray-100">
     <!-- Sidebar Toggle (Topbar) -->
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i class="fa fa-bars"></i>
     </button>
-
-    <!-- Topbar Search -->
-    <form class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 ">
-        <h5 class="h3 mb-4 text-gray-800">Usuario Sede: Apellidos, Nombres </h5>
-    </form>
-
+    <h4 class="text-gray-900"><b>Usuario Sede</b></h4>
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
-
         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
         <li class="nav-item dropdown no-arrow d-sm-none">
             <a class="nav-link dropdown-toggle text-gray-900" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -127,9 +92,7 @@
                 </form>
             </div>
         </li>
-
         <div class="topbar-divider d-none d-sm-block"></div>
-
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -138,21 +101,46 @@
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in bg-orangeM" aria-labelledby="userDropdown">
-                <a class="dropdown-item text-white" th:href="@{/system/personal}">
+                <a class="dropdown-item text-white" th:href="@{/admin/perfil}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-100"></i>
-                    Información Personal
+                    Perfil
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-white" href="#" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item text-white" th:href="@{/system}" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-100"></i>
-                    Logout
+                    Cerrar Sesión
                 </a>
             </div>
         </li>
-
     </ul>
-
 </nav>
+<!-- End of Topbar -->
 
-</body>
-</html>
+<!-- Logout Modal-->
+<div th:fragment="LogOut" class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" th:href="@{/system}">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<div th:fragment="script">
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <!-- Core plugin JavaScript-->
+    <script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+    <!-- Custom scripts for all pages-->
+    <script th:src="@{/js/sb-admin-2.min.js}"></script>
+</div>
