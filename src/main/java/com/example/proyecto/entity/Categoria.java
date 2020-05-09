@@ -9,7 +9,7 @@ import javax.persistence.Table;
 @Table(name = "categoria")
 public class Categoria {
     @Id
-    private int idCategoria;
+    private int idcategoria;
     @Column(nullable = false)
     private String nombre;
     @Column(nullable = false)
@@ -17,11 +17,11 @@ public class Categoria {
 
 
     public int getIdCategoria() {
-        return idCategoria;
+        return idcategoria;
     }
 
     public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
+        this.idcategoria = idCategoria;
     }
 
     public String getNombre() {

@@ -7,26 +7,26 @@ import javax.persistence.*;
 public class Denominacion {
 
     @Id
-    private int idDenominacion;
+    private int iddenominacion;
     @Column(nullable = false)
     private String nombre;
     @Column(nullable = false)
-    private String codigoNombre;
+    private String codigonombre;
     @Column(nullable = false)
     private String descripcion;
     @Column(nullable = false)
-    private String codigoDescripcion;
+    private String codigodescripcion;
     @ManyToOne
-    @JoinColumn(name="idLinea")
+    @JoinColumn(name="idlinea")
     private Linea linea;
 
 
     public int getIdDenominacion() {
-        return idDenominacion;
+        return iddenominacion;
     }
 
     public void setIdDenominacion(int idDenominacion) {
-        this.idDenominacion = idDenominacion;
+        this.iddenominacion = idDenominacion;
     }
 
     public String getNombre() {
@@ -38,11 +38,11 @@ public class Denominacion {
     }
 
     public String getCodigoNombre() {
-        return codigoNombre;
+        return codigonombre;
     }
 
     public void setCodigoNombre(String codigoNombre) {
-        this.codigoNombre = codigoNombre;
+        this.codigonombre = codigoNombre;
     }
 
     public String getDescripcion() {
@@ -54,11 +54,11 @@ public class Denominacion {
     }
 
     public String getCodigoDescripcion() {
-        return codigoDescripcion;
+        return codigodescripcion;
     }
 
     public void setCodigoDescripcion(String codigoDescripcion) {
-        this.codigoDescripcion = codigoDescripcion;
+        this.codigodescripcion = codigoDescripcion;
     }
 
     public Linea getLinea() {

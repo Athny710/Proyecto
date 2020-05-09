@@ -7,27 +7,27 @@ import javax.persistence.*;
 public class Inventario {
 
     @Id
-    private int idInventario;
+    private int idinventario;
     private int stock;
     private String comentario;
     private String foto;
     private String color;
-    private String precioMosqoy;
-    private String costoTejedor;
-    private String numeroPedido;
+    private String preciomosqoy;
+    private String costotejedor;
+    private String numeropedido;
     private String facilitador;
     private String fecha;
     @ManyToOne
-    @JoinColumn(name = "idProducto")
+    @JoinColumn(name = "idproducto")
     private Producto producto;
 
 
     public int getIdInventario() {
-        return idInventario;
+        return idinventario;
     }
 
     public void setIdInventario(int idInventario) {
-        this.idInventario = idInventario;
+        this.idinventario = idInventario;
     }
 
     public int getStock() {
@@ -63,27 +63,27 @@ public class Inventario {
     }
 
     public String getPrecioMosqoy() {
-        return precioMosqoy;
+        return preciomosqoy;
     }
 
     public void setPrecioMosqoy(String precioMosqoy) {
-        this.precioMosqoy = precioMosqoy;
+        this.preciomosqoy = precioMosqoy;
     }
 
     public String getCostoTejedor() {
-        return costoTejedor;
+        return costotejedor;
     }
 
     public void setCostoTejedor(String costoTejedor) {
-        this.costoTejedor = costoTejedor;
+        this.costotejedor = costoTejedor;
     }
 
     public String getNumeroPedido() {
-        return numeroPedido;
+        return numeropedido;
     }
 
     public void setNumeroPedido(String numeroPedido) {
-        this.numeroPedido = numeroPedido;
+        this.numeropedido = numeroPedido;
     }
 
     public String getFacilitador() {

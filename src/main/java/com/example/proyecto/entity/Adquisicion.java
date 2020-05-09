@@ -7,23 +7,23 @@ import javax.persistence.*;
 public class Adquisicion {
 
     @Id
-    private int idAdquisicion;
+    private int idadquisicion;
     @Column(nullable = false)
     private String modalidad;
     @Column(nullable = false)
     private String fecha;
-    private String fechaFin;
+    private String fechafin;
     @ManyToOne
-    @JoinColumn(name = "idArtesano")
+    @JoinColumn(name = "idartesano")
     private Artesano artesano;
 
 
     public int getIdAdquisicion() {
-        return idAdquisicion;
+        return idadquisicion;
     }
 
     public void setIdAdquisicion(int idAdquisicion) {
-        this.idAdquisicion = idAdquisicion;
+        this.idadquisicion = idAdquisicion;
     }
 
     public String getModalidad() {
@@ -43,11 +43,11 @@ public class Adquisicion {
     }
 
     public String getFechaFin() {
-        return fechaFin;
+        return fechafin;
     }
 
     public void setFechaFin(String fechaFin) {
-        this.fechaFin = fechaFin;
+        this.fechafin = fechaFin;
     }
 
     public Artesano getArtesano() {

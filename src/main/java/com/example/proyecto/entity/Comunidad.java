@@ -10,7 +10,7 @@ import javax.persistence.Table;
 public class Comunidad {
 
     @Id
-    private int idComunidad;
+    private int idcomunidad;
     @Column(nullable = false)
     private String nombre;
     @Column(nullable = false)
@@ -18,11 +18,11 @@ public class Comunidad {
 
 
     public int getIdComunidad() {
-        return idComunidad;
+        return idcomunidad;
     }
 
     public void setIdComunidad(int idComunidad) {
-        this.idComunidad = idComunidad;
+        this.idcomunidad = idComunidad;
     }
 
     public String getNombre() {

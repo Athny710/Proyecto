@@ -7,29 +7,31 @@ import javax.persistence.*;
 public class Producto {
 
     @Id
-    private int idProducto;
+    private int idproducto;
     @ManyToOne
-    @JoinColumn(name = "idCategoria")
+    @JoinColumn(name = "idcategoria")
     private Categoria categoria;
     @ManyToOne
-    @JoinColumn(name = "idTamanho")
+    @JoinColumn(name = "idtamaño")
     private Tamaño tamanho;
     @ManyToOne
-    @JoinColumn(name = "idComunidad")
+    @JoinColumn(name = "idcomunidad")
     private Comunidad comunidad;
     @ManyToOne
-    @JoinColumn(name = "idDenominacion")
+    @JoinColumn(name = "iddenominacion")
     private Denominacion denominacion;
     @ManyToOne
-    @JoinColumn(name = "idAdquisicion")
+    @JoinColumn(name = "idadquisicion")
     private Adquisicion adquisicion;
+    @Column(nullable = false)
+    private String codigogenerado;
 
     public int getIdProducto() {
-        return idProducto;
+        return idproducto;
     }
 
     public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
+        this.idproducto = idProducto;
     }
 
     public Categoria getCategoria() {
@@ -73,17 +75,12 @@ public class Producto {
     }
 
     public String getCodigoGenerado() {
-        return codigoGenerado;
+        return codigogenerado;
     }
 
     public void setCodigoGenerado(String codigoGenerado) {
-        this.codigoGenerado = codigoGenerado;
+        this.codigogenerado = codigoGenerado;
     }
-
-    @Column(nullable = false)
-    private String codigoGenerado;
-
-
 
 
 }

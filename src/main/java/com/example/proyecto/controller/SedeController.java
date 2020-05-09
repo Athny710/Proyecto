@@ -22,7 +22,9 @@ public class SedeController {
     public String detalleProducto(){
         return "UsuarioSede/DetallesProducto";
     }
-    @GetMapping(value = {"principal", "listar"})
+
+
+    @GetMapping("principal")
     public String principal(Model model){
         List<Inventario> lista = inventarioRepository.findAll();
         model.addAttribute("listaProductos", lista);

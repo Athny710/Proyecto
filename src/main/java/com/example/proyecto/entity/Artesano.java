@@ -6,14 +6,14 @@ import javax.persistence.*;
 @Table(name = "artesano")
 public class Artesano {
     @Id
-    private int idArtesano;
+    private int idartesano;
     @Column(nullable = false)
     private String nombre;
     @Column(nullable = false)
-    private String apellidoPaterno;
-    private String apellidoMaterno;
+    private String apellidopaterno;
+    private String apellidomaterno;
     @ManyToOne
-    @JoinColumn(name = "idComunidad")
+    @JoinColumn(name = "idcomunidad")
     private Comunidad comunidad;
 
 
@@ -27,11 +27,11 @@ public class Artesano {
     }
 
     public int getIdArtesano() {
-        return idArtesano;
+        return idartesano;
     }
 
     public void setIdArtesano(int idArtesano) {
-        this.idArtesano = idArtesano;
+        this.idartesano = idArtesano;
     }
 
     public String getNombre() {
@@ -43,19 +43,19 @@ public class Artesano {
     }
 
     public String getApellidoPaterno() {
-        return apellidoPaterno;
+        return apellidopaterno;
     }
 
     public void setApellidoPaterno(String apellidoPaterno) {
-        this.apellidoPaterno = apellidoPaterno;
+        this.apellidopaterno = apellidoPaterno;
     }
 
     public String getApellidoMaterno() {
-        return apellidoMaterno;
+        return apellidomaterno;
     }
 
     public void setApellidoMaterno(String apellidoMaterno) {
-        this.apellidoMaterno = apellidoMaterno;
+        this.apellidomaterno = apellidoMaterno;
     }
 
 

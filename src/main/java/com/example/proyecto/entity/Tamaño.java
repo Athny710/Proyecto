@@ -10,18 +10,18 @@ import javax.persistence.Table;
 public class Tamaño {
 
     @Id
-    private int idTamanho;
+    private int idtamanho;
     @Column(nullable = false)
     private String nombre;
     @Column(nullable = false)
     private String codigo;
 
     public int getIdTamanho() {
-        return idTamanho;
+        return idtamanho;
     }
 
     public void setIdTamanho(int idTamanho) {
-        this.idTamanho = idTamanho;
+        this.idtamanho = idTamanho;
     }
 
     public String getNombre() {

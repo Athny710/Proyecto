@@ -10,7 +10,7 @@ import javax.persistence.Table;
 public class Linea {
 
     @Id
-    private int idLinea;
+    private int idlinea;
     @Column(nullable = false)
     private String nombre;
     @Column(nullable = false)
@@ -18,11 +18,11 @@ public class Linea {
 
 
     public int getIdLinea() {
-        return idLinea;
+        return idlinea;
     }
 
     public void setIdLinea(int idLinea) {
-        this.idLinea = idLinea;
+        this.idlinea = idLinea;
     }
 
     public String getNombre() {
