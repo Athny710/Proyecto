@@ -1,13 +1,20 @@
 package com.example.proyecto.controller;
 
 
+import com.example.proyecto.entity.Comunidad;
+import com.example.proyecto.repository.ComunidadRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/gestor")
 public class GestorController {
+
+    @Autowired
+    ComunidadRepository comunidadRepository;
 
     @GetMapping("gestorRegCompra")
     public String RegistroCompra(){return "Gestor/G-RegCompra";}
@@ -52,16 +59,29 @@ public class GestorController {
 
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede (){return "Gestor/G-ListaUsuarioSede";}
-    @GetMapping("gestorListaComunidad")
-    public String listaComunidad (){return "Gestor/G-ListaComunidad";}
+
+    @GetMapping("comunidades")
+    public String listaComunidad (Model model){
+        model.addAttribute("listaComunidades", comunidadRepository.findAll());
+        return "Gestor/G-ListaComunidad";
+    }
+    @GetMapping("registrarComunidad")
+    public String registroComunidad (){
+        return "Gestor/G-RegistroComunidad";
+    }
+    @GetMapping("añadirComunidad")
+    public String añadirComunidad(Comunidad c){
+        comunidadRepository.save(c);
+        return "Gestor/G-ListaComunidad";
+    }
+
     @GetMapping("gestorListaArtesano")
     public String listaArtesano (){return "Gestor/G-ListaArtesano";}
     @GetMapping("gestorListaCategoria")
     public String listaCategoria (){return "Gestor/G-ListaCategoria";}
     @GetMapping("gestorRegistroArtesano")
     public String registroArtesano (){return "Gestor/G-RegistroArtesano";}
-    @GetMapping("gestorRegistroComunidad")
-    public String registroComunidad (){return "Gestor/G-RegistroComunidad";}
+
     @GetMapping("gestorDetallesProdcutoCompra")
     public String detallesProdcutoCompra (){return "Gestor/G-DetallesProdcutoCompra";}
     @GetMapping("gestorDetallesProdcutoConsignacion")
