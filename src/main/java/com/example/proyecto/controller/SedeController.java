@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/sede")
@@ -42,12 +43,11 @@ public class SedeController {
     public String editar(){
         return "UsuarioSede/NuevoProducto";
     }
+
     @GetMapping("borrarProducto")
     public String borrarProducto(Model model,
                                  @RequestParam("id") int idinventario,
                                  RedirectAttributes atrr){
-
-
         return "UsuarioSede/Principal";
     }
 }
