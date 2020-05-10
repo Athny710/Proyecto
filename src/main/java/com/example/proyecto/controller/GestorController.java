@@ -123,7 +123,7 @@ public class GestorController {
               comunidadRepository.deleteById(idcomunidad);
             attr.addFlashAttribute("msg","Comunidad borrado exitosamente");
         }
-        return "Gestor/G-EditComunidad";
+        return "redirect:/gestor/gestorListaComunidad";
     }
 
 
