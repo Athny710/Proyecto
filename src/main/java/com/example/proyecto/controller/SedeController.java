@@ -52,12 +52,11 @@ public class SedeController {
     public String editar(){
         return "UsuarioSede/NuevoProducto";
     }
+
     @GetMapping("borrarProducto")
     public String borrarProducto(Model model,
                                  @RequestParam("id") int idinventario,
                                  RedirectAttributes atrr){
-
-
         return "UsuarioSede/Principal";
     }
 }

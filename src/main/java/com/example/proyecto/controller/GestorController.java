@@ -20,8 +20,8 @@ public class GestorController {
     public String RegistroCompra(){return "Gestor/G-RegCompra";}
     @GetMapping("gestorEditProdCompra")
     public String EditProdCompra(){return "Gestor/G-EditProdCompra";}
-    @GetMapping("gestorEditComunidad")
-    public String EditComunidad(){return "Gestor/G-EditComunidad";}
+   // @GetMapping("gestorEditComunidad")
+   // public String EditComunidad(){return "Gestor/G-EditComunidad";}
     @GetMapping("gestorEditArtesano")
     public String EditArtesano(){return "Gestor/G-EditArtesano";}
     @GetMapping("gestorRegistroUsuarioSede")
@@ -60,21 +60,6 @@ public class GestorController {
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede (){return "Gestor/G-ListaUsuarioSede";}
 
-    @GetMapping("comunidades")
-    public String listaComunidad (Model model){
-        model.addAttribute("listaComunidades", comunidadRepository.findAll());
-        return "Gestor/G-ListaComunidad";
-    }
-    @GetMapping("registrarComunidad")
-    public String registroComunidad (){
-        return "Gestor/G-RegistroComunidad";
-    }
-    @GetMapping("añadirComunidad")
-    public String añadirComunidad(Comunidad c){
-        comunidadRepository.save(c);
-        return "Gestor/G-ListaComunidad";
-    }
-
     @GetMapping("gestorListaArtesano")
     public String listaArtesano (){return "Gestor/G-ListaArtesano";}
     @GetMapping("gestorListaCategoria")
@@ -86,5 +71,19 @@ public class GestorController {
     public String detallesProdcutoCompra (){return "Gestor/G-DetallesProdcutoCompra";}
     @GetMapping("gestorDetallesProdcutoConsignacion")
     public String DetallesProdcutoConsignacion (){return "Gestor/G-DetallesProdcutoConsignacion";}
+
+
+    @GetMapping("gestorListaComunidad")
+    public String listaComunidad (){return "Gestor/G-ListaComunidad";}
+    @GetMapping("gestorRegistroComunidad")
+    public String registroComunidad (){return "Gestor/G-RegistroComunidad";}
+    @GetMapping("gestorGuardarComunidad")
+    public String guardarComunidad(){return "Gestor/G-EditComunidad";}
+    @GetMapping("gestorEditComunidad")
+    public String EditComunidad(){return "Gestor/G-EditComunidad";}
+    @GetMapping("gestorBorarComunidad")
+    public String borrarComunidad(){return "Gestor/G-EditComunidad";}
+
+
 
 }
