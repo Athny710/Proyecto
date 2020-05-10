@@ -1,13 +1,34 @@
 package com.example.proyecto.controller;
 
 
+import com.example.proyecto.entity.Comunidad;
+import com.example.proyecto.repository.ArtesanoRepository;
+import com.example.proyecto.repository.CategoriaRepository;
+import com.example.proyecto.repository.ComunidadRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/gestor")
 public class GestorController {
+
+    @Autowired
+    ComunidadRepository comunidadRepository;
+    @Autowired
+    CategoriaRepository categoriaRepository;
+    @Autowired
+    ArtesanoRepository artesanoRepository;
+
+
+
 
     @GetMapping("gestorRegCompra")
     public String RegistroCompra(){return "Gestor/G-RegCompra";}
@@ -72,12 +93,27 @@ public class GestorController {
     public String listaComunidad (){return "Gestor/G-ListaComunidad";}
     @GetMapping("gestorRegistroComunidad")
     public String registroComunidad (){return "Gestor/G-RegistroComunidad";}
-    @GetMapping("gestorGuardarComunidad")
+    @PostMapping("gestorGuardarComunidad")
     public String guardarComunidad(){return "Gestor/G-EditComunidad";}
+
+
     @GetMapping("gestorEditComunidad")
-    public String EditComunidad(){return "Gestor/G-EditComunidad";}
+    public String EditComunidad(){
+        return "Gestor/G-EditComunidad";}
+
     @GetMapping("gestorBorarComunidad")
-    public String borrarComunidad(){return "Gestor/G-EditComunidad";}
+    public String borrarComunidad(Model model,
+                                  @RequestParam("idcomunidad") int idcomunidad,
+                                  RedirectAttributes attr){
+
+        Optional<Comunidad> optComunidad = comunidadRepository.findById(idcomunidad);
+
+        if (optComunidad.isPresent(idcomunidad)) {
+              comunidadRepository.deleteById();
+            attr.addFlashAttribute("msg","Comunidad borrado exitosamente");
+        }
+
+        return "Gestor/G-EditComunidad";}
 
 
 
