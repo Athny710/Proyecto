@@ -99,7 +99,7 @@ public class GestorController {
     @PostMapping("gestorGuardarComunidad")
     public String guardarComunidad(Comunidad c){
         comunidadRepository.save(c);
-        return "Gestor/G-ListaComunidad";
+        return "redirect:/gestor/gestorListaComunidad";
     }
 
     @GetMapping("gestorEditComunidad")
