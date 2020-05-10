@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -74,11 +75,19 @@ public class GestorController {
 
 
     @GetMapping("gestorListaComunidad")
-    public String listaComunidad (){return "Gestor/G-ListaComunidad";}
+    public String listaComunidad (Model model){
+        model.addAttribute("listaComunidades", comunidadRepository.findAll());
+        return "Gestor/G-ListaComunidad";
+    }
     @GetMapping("gestorRegistroComunidad")
-    public String registroComunidad (){return "Gestor/G-RegistroComunidad";}
-    @GetMapping("gestorGuardarComunidad")
-    public String guardarComunidad(){return "Gestor/G-EditComunidad";}
+    public String registroComunidad (){
+        return "Gestor/G-RegistroComunidad";
+    }
+    @PostMapping("gestorGuardarComunidad")
+    public String guardarComunidad(Comunidad c){
+        comunidadRepository.save(c);
+        return "Gestor/G-ListaComunidad";
+    }
     @GetMapping("gestorEditComunidad")
     public String EditComunidad(){return "Gestor/G-EditComunidad";}
     @GetMapping("gestorBorarComunidad")
