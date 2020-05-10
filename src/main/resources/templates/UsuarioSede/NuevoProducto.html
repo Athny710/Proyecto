@@ -144,9 +144,8 @@
                                             <div class="col-lg-6">
                                                 <label for="comunidad">Comunidad:</label>
                                             </div>
-                                            <select class="form-control form-control-user2" id="comunidad">
-                                                <option>dasdds</option>
-                                                <option>dasdds</option>
+                                            <select class="form-control" style="border-radius: 20px" id="comunidad">
+                                                <option th:each="x:${listaComunidad}" th:value="${x.idComunidad}" th:text="${x.nombre}"></option>
                                             </select>
                                         </div>
                                         <div class="form-group d-flex centrado">

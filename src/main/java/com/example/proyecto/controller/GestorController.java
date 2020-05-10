@@ -1,6 +1,5 @@
 package com.example.proyecto.controller;
 
-
 import com.example.proyecto.entity.Comunidad;
 import com.example.proyecto.repository.ArtesanoRepository;
 import com.example.proyecto.repository.CategoriaRepository;
@@ -26,7 +25,6 @@ public class GestorController {
     CategoriaRepository categoriaRepository;
     @Autowired
     ArtesanoRepository artesanoRepository;
-
 
     @GetMapping("gestorRegCompra")
     public String RegistroCompra(){return "Gestor/G-RegCompra";}
@@ -71,16 +69,14 @@ public class GestorController {
 
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede (){return "Gestor/G-ListaUsuarioSede";}
-    // @GetMapping("gestorListaComunidad")
-   //  public String listaComunidad (){return "Gestor/G-ListaComunidad";}
+
     @GetMapping("gestorListaArtesano")
     public String listaArtesano (){return "Gestor/G-ListaArtesano";}
     @GetMapping("gestorListaCategoria")
     public String listaCategoria (){return "Gestor/G-ListaCategoria";}
     @GetMapping("gestorRegistroArtesano")
     public String registroArtesano (){return "Gestor/G-RegistroArtesano";}
-   // @GetMapping("gestorRegistroComunidad")
-   // public String registroComunidad (){return "Gestor/G-RegistroComunidad";}
+
     @GetMapping("gestorDetallesProdcutoCompra")
     public String detallesProdcutoCompra (){return "Gestor/G-DetallesProdcutoCompra";}
     @GetMapping("gestorDetallesProdcutoConsignacion")
@@ -88,12 +84,19 @@ public class GestorController {
 
 
     @GetMapping("gestorListaComunidad")
-    public String listaComunidad (){return "Gestor/G-ListaComunidad";}
+    public String listaComunidad (Model model){
+        model.addAttribute("listaComunidades", comunidadRepository.findAll());
+        return "Gestor/G-ListaComunidad";
+    }
     @GetMapping("gestorRegistroComunidad")
-    public String registroComunidad (){return "Gestor/G-RegistroComunidad";}
+    public String registroComunidad (){
+        return "Gestor/G-RegistroComunidad";
+    }
     @PostMapping("gestorGuardarComunidad")
-    public String guardarComunidad(){return "Gestor/G-EditComunidad";}
-
+    public String guardarComunidad(Comunidad c){
+        comunidadRepository.save(c);
+        return "redirect:/gestor/gestorListaComunidad";
+    }
 
     @GetMapping("gestorEditComunidad")
     public String EditComunidad(Model model,
@@ -102,7 +105,7 @@ public class GestorController {
         if (optComunidad.isPresent()) {
             Comunidad comunidad = optComunidad.get();
             model.addAttribute("comunidad", comunidad);
-           // model.addAttribute("listaComunidad", comunidadRepository.findAll());
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
             return "Gestor/G-EditComunidad";
         } else {
             return "redirect:/gestor/gestorListaComunidad";

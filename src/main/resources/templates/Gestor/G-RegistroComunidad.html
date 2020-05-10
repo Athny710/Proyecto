@@ -46,14 +46,14 @@
                     </div>
                     <div class="card-body">
 
-                        <form>
+                        <form method="post" th:action="@{/gestor/gestorGuardarComunidad}">
                             <div class="form-group col-md-6">
                                 <label for="nombre">Nombre</label>
-                                <input type="nombre" class="form-control" id="nombre" >
+                                <input name="nombre" type="text" class="form-control" id="nombre" >
                             </div>
-                       <div class="form-group col-md-6">
+                            <div class="form-group col-md-6">
                                 <label for="codigo">Código</label>
-                                <input type="codigo" class="form-control" id="codigo" >
+                                <input name="codigo" type="text" class="form-control" id="codigo" >
                             </div>
 
                             <div class="form-row col-md-2">
@@ -61,7 +61,7 @@
                                     <a th:href="@{/gestor/gestorListaComunidad}" class="btn btn-danger">Cancelar</a>
                                 </div>
                                 <div class="form-group col-md-2"  >
-                                    <a th:href="@{/gestor/gestorListaComunidad}" class="btn btn-primary">Guardar</a>
+                                    <button type="submit" class="btn btn-primary">Registrar</button>
                                 </div>
                             </div>
 

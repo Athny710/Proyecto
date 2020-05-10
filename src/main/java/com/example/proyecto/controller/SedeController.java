@@ -1,8 +1,8 @@
 package com.example.proyecto.controller;
 
 import com.example.proyecto.entity.Inventario;
+import com.example.proyecto.repository.ComunidadRepository;
 import com.example.proyecto.repository.InventarioRepository;
-import org.apache.catalina.LifecycleState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,12 +20,20 @@ public class SedeController {
 
     @Autowired
     InventarioRepository inventarioRepository;
+    @Autowired
+    ComunidadRepository comunidadRepository;
 
     @GetMapping("detalleProducto")
-    public String detalleProducto(){
-        return "UsuarioSede/DetallesProducto";
+    public String detalleProducto(@RequestParam("id") int id, Model model){
+        Optional<Inventario> opt = inventarioRepository.findById(id);
+        if(opt.isPresent()){
+            Inventario inv =opt.get();
+            model.addAttribute("inventario", inv);
+            return "UsuarioSede/DetallesProducto";
+        }else{
+            return "UsuarioSede/Principal";
+        }
     }
-
 
     @GetMapping("principal")
     public String principal(Model model){
@@ -34,7 +42,8 @@ public class SedeController {
         return "UsuarioSede/Principal";
     }
     @GetMapping("nuevoProducto")
-    public String nuevoProducto(){
+    public String nuevoProducto(Model model){
+        model.addAttribute("listaComunidad", comunidadRepository.findAll());
         return "UsuarioSede/NuevoProducto";
     }
 
