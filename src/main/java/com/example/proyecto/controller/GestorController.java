@@ -28,8 +28,6 @@ public class GestorController {
     ArtesanoRepository artesanoRepository;
 
 
-
-
     @GetMapping("gestorRegCompra")
     public String RegistroCompra(){return "Gestor/G-RegCompra";}
     @GetMapping("gestorEditProdCompra")
@@ -98,23 +96,32 @@ public class GestorController {
 
 
     @GetMapping("gestorEditComunidad")
-    public String EditComunidad(){
-        return "Gestor/G-EditComunidad";}
+    public String EditComunidad(Model model,
+                                @RequestParam("idcomunidad") int idcomunidad){
+        Optional<Comunidad> optComunidad = comunidadRepository.findById(idcomunidad);
+        if (optComunidad.isPresent()) {
+            Comunidad comunidad = optComunidad.get();
+            model.addAttribute("comunidad", comunidad);
+           // model.addAttribute("listaComunidad", comunidadRepository.findAll());
+            return "Gestor/G-EditComunidad";
+        } else {
+            return "redirect:/gestor/gestorListaComunidad";
+         }
+    }
+
+
 
     @GetMapping("gestorBorarComunidad")
     public String borrarComunidad(Model model,
                                   @RequestParam("idcomunidad") int idcomunidad,
                                   RedirectAttributes attr){
-
         Optional<Comunidad> optComunidad = comunidadRepository.findById(idcomunidad);
-
-        if (optComunidad.isPresent(idcomunidad)) {
-              comunidadRepository.deleteById();
+        if (optComunidad.isPresent()) {
+              comunidadRepository.deleteById(idcomunidad);
             attr.addFlashAttribute("msg","Comunidad borrado exitosamente");
         }
-
-        return "Gestor/G-EditComunidad";}
-
+        return "Gestor/G-EditComunidad";
+    }
 
 
 }
