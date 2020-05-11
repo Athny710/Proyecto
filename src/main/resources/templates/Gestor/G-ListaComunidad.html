@@ -73,18 +73,16 @@
                                     </thead>
                                     <tbody>
 
-                                        <tr th:each="x : ${listaComunidades}" align="center">
-                                            <td th:text="${x.nombre}"></td>
-                                            <td th:text="${x.codigo}"></td>
+                                        <tr th:each="comunidad : ${listaComunidad}" align="center">
+                                            <td th:text="${comunidad.nombre}"></td>
+                                            <td th:text="${comunidad.codigo}"></td>
                                             <td align="center">
-                                                <a th:href="@{'/gestor/gestorEditComunidad'+'?id='+${x.idComunidad}}">
-                                                    <i class="far fa-edit text-orangeM" style="margin-right: 5px"></i>
+                                                <a th:href="@{'/gestor/gestorEditComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}">
+                                                    <i class="far fa-edit text-orangeM" ></i>
                                                 </a>
-                                                <a th:href="@{'/gestor/gestorBorarComunidad'+'?id='+${x.idComunidad}}">
-                                                    <i class="far fa-trash-alt text-redM" style="margin-left: 5px"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                                <a th:href="@{'/gestor/gestorBorarComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}">
+                                                    <i class="far fa-trash-alt text-redM" ></i>
+
                                     </tbody>
                                 </table>
                             </div>
