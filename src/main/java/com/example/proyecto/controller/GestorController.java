@@ -10,11 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-<<<<<<< HEAD
-=======
-import javax.swing.text.html.Option;
->>>>>>> 61d7116698be4fcf386317b655fbb795030dbde4
 import java.util.List;
 import java.util.Optional;
 
@@ -82,7 +77,6 @@ public class GestorController {
     @GetMapping("gestorDetallesProdcutoConsignacion")
     public String DetallesProdcutoConsignacion (){return "Gestor/G-DetallesProdcutoConsignacion";}
 
-<<<<<<< HEAD
 /*
 =======
 
@@ -160,13 +154,9 @@ public class GestorController {
 
 
     @GetMapping("gestorEditComunidad")
-<<<<<<< HEAD
     public String EditComunidad(@ModelAttribute("comunidad") Comunidad comunidad, Model model,
                                 @RequestParam("idcomunidad") int idcomunidad){
-=======
-    public String EditComunidad(Model model,
-                                @RequestParam("id") int idcomunidad){
->>>>>>> 61d7116698be4fcf386317b655fbb795030dbde4
+
         Optional<Comunidad> optComunidad = comunidadRepository.findById(idcomunidad);
         if (optComunidad.isPresent()) {
           //  Comunidad comunidad = optComunidad.get();
