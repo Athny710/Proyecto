@@ -45,11 +45,12 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-gray-900">Lista de categorías</h6>
-                        <form class="-angle-double-right d-none d-sm-inline-block form-inline mr-auto ml-md-20 my-2 my-md-30 mw-100 navbar-search">
+                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                        <form class="-angle-double-right d-none d-sm-inline-block form-inline mr-auto ml-md-20 my-2 my-md-30 mw-100 navbar-search" method="post" th:action="@{/gestor/gestorBuscarCategoria}">
                             <div class="input-group">
-                                <input type="text" class="form-control bg-light border-10 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                <input name="searchField" type="text" class="form-control bg-light border-10 small bg-white" placeholder="Search for..." aria-label="Ingrese nombre o código de categoria" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
-                                    <button class="btn btn-log text-gray-900" type="button">
+                                    <button class="btn btn-log text-gray-900" type="submit" >
                                         <i class="fas fa-search fa-sm text-gray-100"></i>
                                     </button>
                                 </div>
@@ -71,54 +72,29 @@
                             <br>
 -->
                             <div class="col-sm-12 col-md-6">
-                                  <a class="btn btn-warning mt-4 mb-4" th:href="@{/gestor/gestorRegCategoria}">Añadir categoría</a>
+                                  <a class="btn btn-warning mt-4 mb-4" th:href="@{/gestor/gestorRegistrarCategoria}">Añadir categoría</a>
                             </div>
-
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>Nombre</th>
                                     <th>Código</th>
                                     <th>Editar/Borrar</th>
                                 </tr>
                                 </thead>
-                                <!--       <tfoot>
-                                      <tr>
-                                          <th>Nombre del Producto</th>
-                                          <th>Color</th>
-                                          <th>Tamaño</th>
-                                          <th>Comunidad</th>
-                                          <th>Foto</th>
-                                      </tr>
-                                     </tfoot>   -->
                                       <tbody>
-                                      <tr>
-                                          <td>Home</td>
-                                          <td>H</td>
-                                          <td><a  th:href="@{/gestor/gestorEditCategoria}" class="btn btn-success btn-circle">
+                                      <tr th:each="categoria , info : ${listaCategoria}">
+                                          <td th:text="${info.index + 1}">Home</td>
+                                          <td th:text="${categoria.nombre}">H</td>
+                                          <td th:text="${categoria.codigo}">H</td>
+                                          <td ><a  th:href="@{'/gestor/gestorEditCategoria' + '?id=' + ${categoria.idCategoria}}" class="btn btn-success btn-circle">
                                               <i class="fas fa-check"></i>
-                                          </a><a href="#" class="btn btn-danger btn-circle">
+                                          </a><a th:href="@{'/gestor/gestorEliminarCategoria' + '?id=' + ${categoria.idCategoria}}" class="btn btn-danger btn-circle">
                                               <i class="fas fa-trash"></i>
                                           </a></td>
                                       </tr>
-                                      <tr>
-                                          <td>Usable</td>
-                                          <td>U</td>
-                                          <td><a  th:href="@{/gestor/gestorEditCategoria}" class="btn btn-success btn-circle">
-                                              <i class="fas fa-check"></i>
-                                          </a><a href="#" class="btn btn-danger btn-circle">
-                                              <i class="fas fa-trash"></i>
-                                          </a></td>
-                                      </tr>
-                                      <tr>
-                                          <td>Custom</td>
-                                          <td>C</td>
-                                          <td><a  th:href="@{/gestor/gestorEditCategoria}" class="btn btn-success btn-circle">
-                                              <i class="fas fa-check"></i>
-                                          </a><a href="#" class="btn btn-danger btn-circle">
-                                              <i class="fas fa-trash"></i>
-                                          </a></td>
-                                      </tr>
+
 
                                       </tbody>
                                   </table>
