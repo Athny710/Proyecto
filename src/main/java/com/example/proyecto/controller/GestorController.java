@@ -102,7 +102,7 @@ public class GestorController {
 
     @GetMapping("gestorEditComunidad")
     public String EditComunidad(Model model,
-                                @RequestParam("idcomunidad") int idcomunidad){
+                                @RequestParam("id") int idcomunidad){
         Optional<Comunidad> optComunidad = comunidadRepository.findById(idcomunidad);
         if (optComunidad.isPresent()) {
             Comunidad comunidad = optComunidad.get();
@@ -118,7 +118,7 @@ public class GestorController {
 
     @GetMapping("gestorBorarComunidad")
     public String borrarComunidad(Model model,
-                                  @RequestParam("idcomunidad") int idcomunidad,
+                                  @RequestParam("id") int idcomunidad,
                                   RedirectAttributes attr){
         Optional<Comunidad> optComunidad = comunidadRepository.findById(idcomunidad);
         if (optComunidad.isPresent()) {
