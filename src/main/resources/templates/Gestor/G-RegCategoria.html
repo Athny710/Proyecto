@@ -44,12 +44,19 @@
                     <div class="card-header py-3">
                         <h4 class="m-0 font-weight-bold text-gray-900">Registro de Categoría</h4>
                     </div>
+                    <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
                     <div class="card-body">
 
-                        <form>
+                        <form method="post" th:action="@{/gestor/gestorGuardarCategoria}" >
+
                             <div class="form-group col-md-6">
-                                <label for="categoria">Nombre de Categoría</label>
-                                <input type="categoria" class="form-control" id="categoria" >
+                                <label for="nombre">Nombre de Categoría</label>
+                                <input name="nombre" type="text" class="form-control" id="nombre" >
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="codigo">Código de Categoría</label>
+                                <input name="codigo" type="text" class="form-control" id="codigo" >
                             </div>
 
 
@@ -58,7 +65,7 @@
                                     <a th:href="@{/gestor/gestorListaCategoria}" class="btn btn-danger">Cancelar</a>
                                 </div>
                                 <div class="form-group col-md-2"  >
-                                    <a th:href="@{/gestor/gestorListaCategoria}"class="btn btn-primary">Guardar</a>
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
                             </div>
 

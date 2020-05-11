@@ -72,6 +72,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+<<<<<<< HEAD
                                         <tr th:each="comunidad : ${listaComunidad}" align="center">
                                             <td th:text="${comunidad.nombre}"></td>
                                             <td th:text="${comunidad.codigo}"></td>
@@ -81,6 +82,20 @@
                                                 </a>
                                                 <a th:href="@{'/gestor/gestorBorarComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}">
                                                     <i class="far fa-trash-alt text-redM" ></i>
+=======
+
+                                    @{'/employee/edit' + '?id=' + ${employee.id}}
+
+                                        <tr th:each="x : ${listaComunidades}" align="center">
+                                            <td th:text="${x.nombre}"></td>
+                                            <td th:text="${x.codigo}"></td>
+                                            <td align="center">
+                                                <a th:href="@{'/gestor/gestorEditComunidad'+'?id='+${x.idComunidad}}">
+                                                    <i class="far fa-edit text-orangeM" style="margin-right: 5px"></i>
+                                                </a>
+                                                <a th:href="@{'/gestor/gestorBorarComunidad'+'?id='+${x.idComunidad}}">
+                                                    <i class="far fa-trash-alt text-redM" style="margin-left: 5px"></i>
+>>>>>>> 61d7116698be4fcf386317b655fbb795030dbde4
                                                 </a>
                                             </td>
                                         </tr>

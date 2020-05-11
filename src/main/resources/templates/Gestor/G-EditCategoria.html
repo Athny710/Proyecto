@@ -44,21 +44,28 @@
                     <div class="card-header py-3">
                         <h4 class="m-0 font-weight-bold text-gray-900">Editar de Categoría</h4>
                     </div>
+
                     <div class="card-body">
 
-                        <form>
+                        <form method="post" th:action="@{/gestor/gestorGuardarCategoria}">
+                            <input th:value="${categoria.idCategoria}" name="idCategoria" type="hidden" />
                             <div class="form-group col-md-6">
-                                <label for="categoria">Nombre de Categoría</label>
-                                <input type="categoria" class="form-control" id="categoria" value="Categoria 1" >
+                                <label for="nombre">Nombre de Categoría</label>
+                                <input  name="nombre" th:value="${categoria.nombre}" type="text" class="form-control" id="nombre" value="Categoria 1" >
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="codigo">Código de Categoría</label>
+                                <input name="codigo" th:value="${categoria.codigo}" type="text" class="form-control" id="codigo" value="Categoria 1" >
                             </div>
 
 
                             <div class="form-row col-md-2">
                                 <div class="form-group col-md-8">
-                                    <a href="#" class="btn btn-danger" th:href="@{/gestor/gestorListaComunidad}">Cancelar</a>
+                                    <a class="btn btn-danger" th:href="@{/gestor/gestorListaComunidad}">Cancelar</a>
                                 </div>
                                 <div class="form-group col-md-2"  >
-                                    <a href="#" class="btn btn-primary" th:href="@{/gestor/gestorListaComunidad}">Guardar</a>
+                                    <button type="submit" class="btn btn-primary" >Guardar</button>
                                 </div>
                             </div>
 

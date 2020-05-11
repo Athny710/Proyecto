@@ -1,5 +1,6 @@
 package com.example.proyecto.controller;
 
+import com.example.proyecto.entity.Categoria;
 import com.example.proyecto.entity.Comunidad;
 import com.example.proyecto.repository.ArtesanoRepository;
 import com.example.proyecto.repository.CategoriaRepository;
@@ -10,6 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+<<<<<<< HEAD
+=======
+import javax.swing.text.html.Option;
+>>>>>>> 61d7116698be4fcf386317b655fbb795030dbde4
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +29,7 @@ public class GestorController {
     @Autowired
     ArtesanoRepository artesanoRepository;
 
+
     @GetMapping("gestorRegCompra")
     public String RegistroCompra(){return "Gestor/G-RegCompra";}
     @GetMapping("gestorEditProdCompra")
@@ -34,10 +40,7 @@ public class GestorController {
     public String EditArtesano(){return "Gestor/G-EditArtesano";}
     @GetMapping("gestorRegistroUsuarioSede")
     public String registroUsuarioSede(){return "Gestor/G-RegistroUsuarioSede";}
-    @GetMapping("gestorRegCategoria")
-    public String RegistroCategoria(){return "Gestor/G-RegCategoria";}
-    @GetMapping("gestorEditCategoria")
-    public String EditCategoria(){return "Gestor/G-EditCategoria";}
+
     @GetMapping("gestorGestionVentas")
     public String registroVentas(){return "Gestor/G-GestiónVentas";}
 
@@ -70,8 +73,7 @@ public class GestorController {
 
     @GetMapping("gestorListaArtesano")
     public String listaArtesano (){return "Gestor/G-ListaArtesano";}
-    @GetMapping("gestorListaCategoria")
-    public String listaCategoria (){return "Gestor/G-ListaCategoria";}
+
     @GetMapping("gestorRegistroArtesano")
     public String registroArtesano (){return "Gestor/G-RegistroArtesano";}
 
@@ -80,7 +82,13 @@ public class GestorController {
     @GetMapping("gestorDetallesProdcutoConsignacion")
     public String DetallesProdcutoConsignacion (){return "Gestor/G-DetallesProdcutoConsignacion";}
 
+<<<<<<< HEAD
 /*
+=======
+
+
+    // ------------------ INICIO CRUD COMUNIDAD ------------------------
+>>>>>>> 61d7116698be4fcf386317b655fbb795030dbde4
     @GetMapping("gestorListaComunidad")
     public String listaComunidad (Model model){
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
@@ -152,8 +160,13 @@ public class GestorController {
 
 
     @GetMapping("gestorEditComunidad")
+<<<<<<< HEAD
     public String EditComunidad(@ModelAttribute("comunidad") Comunidad comunidad, Model model,
                                 @RequestParam("idcomunidad") int idcomunidad){
+=======
+    public String EditComunidad(Model model,
+                                @RequestParam("id") int idcomunidad){
+>>>>>>> 61d7116698be4fcf386317b655fbb795030dbde4
         Optional<Comunidad> optComunidad = comunidadRepository.findById(idcomunidad);
         if (optComunidad.isPresent()) {
           //  Comunidad comunidad = optComunidad.get();
@@ -169,7 +182,7 @@ public class GestorController {
 
     @GetMapping("gestorBorarComunidad")
     public String borrarComunidad(Model model,
-                                  @RequestParam("idcomunidad") int idcomunidad,
+                                  @RequestParam("id") int idcomunidad,
                                   RedirectAttributes attr){
         Optional<Comunidad> optComunidad = comunidadRepository.findById(idcomunidad);
         if (optComunidad.isPresent()) {
@@ -179,6 +192,87 @@ public class GestorController {
         return "redirect:/gestor/gestorListaComunidad";
     }
 
+// ----------------------- FIN CRUD COMUNIDAD ---------------------------------
+
+
+
+
+// ----------------------- INICIO CRUD CATEGORIA ---------------------------------
+
+    @GetMapping("gestorListaCategoria")
+    public String listaCategoria (Model model){
+        model.addAttribute("listaCategoria", categoriaRepository.findAll());
+
+
+        return "Gestor/G-ListaCategoria";}
+
+    @PostMapping("gestorBuscarCategoria")
+    public String buscaCategoria (@RequestParam("searchField") String valor ,Model model){
+
+        List<Categoria> listaCategoria = categoriaRepository.buscarCategoria(valor,valor);
+        model.addAttribute("listaCategoria",listaCategoria);
+
+        return "Gestor/G-ListaCategoria";}
+
+
+    @GetMapping("gestorRegistrarCategoria")
+    public String RegistroCategoria(Categoria categoria, Model model){
+
+        return "Gestor/G-RegCategoria";
+    }
+
+
+    @PostMapping("gestorGuardarCategoria")
+    public String GuardaCategoria(Model model, Categoria categoria, RedirectAttributes attr){
+        List<Categoria> listaCategoria = categoriaRepository.buscarCategoria(categoria.getNombre(),categoria.getCodigo());
+
+        if((categoria.getIdCategoria() == 0) && (listaCategoria.size() == 0)){
+            categoriaRepository.save(categoria);
+            attr.addFlashAttribute("msg","Categoria registrada correctamente");
+            return "redirect:/gestor/gestorListaCategoria";
+        } else if (categoria.getIdCategoria()!=0) {
+            attr.addFlashAttribute("msg","Categoría actualizada correctamente");
+            categoriaRepository.save(categoria);
+            return "redirect:/gestor/gestorListaCategoria";
+        } else {
+            model.addAttribute(categoria);
+            attr.addFlashAttribute("msgError","Los datos ingresados ya existen, por favor modificarlo");
+            return "redirect:/gestor/gestorRegistrarCategoria";
+        }
+
+
+    }
+
+    @GetMapping("gestorEditCategoria")
+    public String EditCategoria(Model model, @RequestParam("id") int id){
+
+        Optional<Categoria> optCategoria = categoriaRepository.findById(id);
+
+        if (optCategoria.isPresent()) {
+            Categoria categoria = optCategoria.get();
+            model.addAttribute("categoria", categoria);
+            return "Gestor/G-EditCategoria";
+        } else {
+            return "redirect:/gestor/gestorListaCategoria";
+        }
+
+    }
+
+
+
+    @GetMapping("gestorEliminarCategoria")
+    public String EliminarCategoria(@RequestParam("id") int id, RedirectAttributes attr) {
+
+        Optional<Categoria> optCategoria= categoriaRepository.findById(id);
+        if(optCategoria.isPresent()){
+            categoriaRepository.deleteById(id);
+            attr.addFlashAttribute("msg","Categoría Eliminada");
+        }
+        return "redirect:/gestor/gestorListaCategoria";
+    }
+
+
+// ----------------------- FIN CRUD CATEGORIA ---------------------------------
 
 
     @PostMapping("/gestorBuscarComunidad")
