@@ -7,12 +7,10 @@ import com.example.proyecto.repository.ComunidadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -82,7 +80,7 @@ public class GestorController {
     @GetMapping("gestorDetallesProdcutoConsignacion")
     public String DetallesProdcutoConsignacion (){return "Gestor/G-DetallesProdcutoConsignacion";}
 
-
+/*
     @GetMapping("gestorListaComunidad")
     public String listaComunidad (Model model){
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
@@ -97,21 +95,76 @@ public class GestorController {
         comunidadRepository.save(c);
         return "redirect:/gestor/gestorListaComunidad";
     }
+*/
+
+
+    @GetMapping("gestorListaComunidad")
+    public String listaComunidad (Model model){
+        model.addAttribute("listaComunidad", comunidadRepository.findAll());
+        return "Gestor/G-ListaComunidad";
+    }
+
+
+    @GetMapping("gestorRegistroComunidad")
+    public String registroComunidad (@ModelAttribute("comunidad") Comunidad comunidad){
+      //  model.addAttribute("listaComunidades", comunidadRepository.findAll());
+        return "Gestor/G-RegistroComunidad";
+    }
+
+
+    @PostMapping("gestorGuardarComunidad")
+    public String guardarComunidad(@ModelAttribute("comunidad") Comunidad comunidad,
+                                   Model model,
+                                   RedirectAttributes attr) {
+        List<Comunidad> listaComunidad = comunidadRepository.buscarPorNombre(comunidad.getNombre(),comunidad.getCodigo());
+
+
+        if((comunidad.getIdComunidad()==0) && (listaComunidad.size() == 0)){
+            comunidadRepository.save(comunidad);
+            attr.addFlashAttribute("msg", "Comunidad creada exitosamente");
+            return "redirect:/gestor/gestorListaComunidad";
+        } else if (comunidad.getIdComunidad()!=0){
+            comunidadRepository.save(comunidad);
+            attr.addFlashAttribute("msg", "Comunidad actualizada exitosamente");
+            return "redirect:/gestor/gestorListaComunidad";
+        } else {
+            model.addAttribute("errorComunidad","Los datos ingresados ya existen");
+            return "Gestor/G-RegistroComunidad";
+        }
+    }
+
+        /*
+        if (comunidad.getNombre().equals("")) {
+            model.addAttribute("errorComunidad", "El nombre no puede ser vacío");
+            return "Gestor/G-RegistroComunidad";
+        } else {
+            if (comunidad.getIdComunidad() == 0) {
+                attr.addFlashAttribute("msg", "Comunidad creada exitosamente");
+                comunidadRepository.save(comunidad);
+            } else {
+                attr.addFlashAttribute("msg", "Comunidad actualizada exitosamente");
+            }
+            comunidadRepository.save(comunidad);
+            return "redirect:/gestor/gestorListaComunidad";
+        }   */
+
+
+
 
     @GetMapping("gestorEditComunidad")
-    public String EditComunidad(Model model,
+    public String EditComunidad(@ModelAttribute("comunidad") Comunidad comunidad, Model model,
                                 @RequestParam("idcomunidad") int idcomunidad){
         Optional<Comunidad> optComunidad = comunidadRepository.findById(idcomunidad);
         if (optComunidad.isPresent()) {
-            Comunidad comunidad = optComunidad.get();
+          //  Comunidad comunidad = optComunidad.get();
+            comunidad = optComunidad.get();
             model.addAttribute("comunidad", comunidad);
-            model.addAttribute("listaComunidades", comunidadRepository.findAll());
-            return "Gestor/G-EditComunidad";
+         //   model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            return "Gestor/G-RegistroComunidad";
         } else {
             return "redirect:/gestor/gestorListaComunidad";
          }
     }
-
 
 
     @GetMapping("gestorBorarComunidad")
@@ -124,6 +177,17 @@ public class GestorController {
             attr.addFlashAttribute("msg","Comunidad borrado exitosamente");
         }
         return "redirect:/gestor/gestorListaComunidad";
+    }
+
+
+
+    @PostMapping("/gestorBuscarComunidad")
+    public String buscarComunidad(@RequestParam("searchField") String searchField,
+                                      Model model) {
+
+        List<Comunidad> listaComunidad = comunidadRepository.buscarPorNombre(searchField, searchField);
+        model.addAttribute("listaComunidad", listaComunidad );
+        return "Gestor/G-ListaComunidad";
     }
 
 

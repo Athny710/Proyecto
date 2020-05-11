@@ -42,18 +42,21 @@
 
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h4 class="m-0 font-weight-bold text-gray-900">Registro de nueva comunidad</h4>
+                      <!--  <h4 class="m-0 font-weight-bold text-gray-900" >Registro de nueva comunidad</h4>   -->
+   <h4 class="m-0 font-weight-bold text-gray-900" th:text="${comunidad.nombre==null?'Registro de nueva comunidad':'Editar comunidad'}">Registro de nueva comunidad </h4>
                     </div>
+                    <div th:if="${errorComunidad != null}" th:text="${errorComunidad}" class="alert alert-danger" role="alert"></div>
                     <div class="card-body">
 
-                        <form method="post" th:action="@{/gestor/gestorGuardarComunidad}">
+                        <form method="post" th:action="@{/gestor/gestorGuardarComunidad}" th:object="${comunidad}">
+                            <input th:field="${comunidad.idComunidad}" type="hidden"/>
                             <div class="form-group col-md-6">
                                 <label for="nombre">Nombre</label>
-                                <input name="nombre" type="text" class="form-control" id="nombre" >
+                                <input th:field="${comunidad.nombre}"  type="text" class="form-control"  >
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="codigo">Código</label>
-                                <input name="codigo" type="text" class="form-control" id="codigo" >
+                                <input th:field="${comunidad.codigo}"  type="text" class="form-control"  >
                             </div>
 
                             <div class="form-row col-md-2">
@@ -61,7 +64,7 @@
                                     <a th:href="@{/gestor/gestorListaComunidad}" class="btn btn-danger">Cancelar</a>
                                 </div>
                                 <div class="form-group col-md-2"  >
-                                    <button type="submit" class="btn btn-primary">Registrar</button>
+                                    <button type="submit" class="btn btn-primary" th:text="${comunidad.nombre==null?'Registrar':'Actualizar'}">Registrar</button>
                                 </div>
                             </div>
 
