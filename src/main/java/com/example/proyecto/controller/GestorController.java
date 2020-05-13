@@ -1,20 +1,23 @@
 package com.example.proyecto.controller;
 
+import com.example.proyecto.entity.Artesano;
 import com.example.proyecto.entity.Categoria;
 import com.example.proyecto.entity.Comunidad;
+import com.example.proyecto.repository.AdquisicionRepository;
 import com.example.proyecto.repository.ArtesanoRepository;
 import com.example.proyecto.repository.CategoriaRepository;
 import com.example.proyecto.repository.ComunidadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.swing.text.html.Option;
+import javax.validation.Valid;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +31,8 @@ public class GestorController {
     CategoriaRepository categoriaRepository;
     @Autowired
     ArtesanoRepository artesanoRepository;
+    @Autowired
+    AdquisicionRepository adquisicionRepository;
 
 
     @GetMapping("gestorRegCompra")
@@ -36,8 +41,6 @@ public class GestorController {
     public String EditProdCompra(){return "Gestor/G-EditProdCompra";}
    // @GetMapping("gestorEditComunidad")
    // public String EditComunidad(){return "Gestor/G-EditComunidad";}
-    @GetMapping("gestorEditArtesano")
-    public String EditArtesano(){return "Gestor/G-EditArtesano";}
     @GetMapping("gestorRegistroUsuarioSede")
     public String registroUsuarioSede(){return "Gestor/G-RegistroUsuarioSede";}
 
@@ -71,20 +74,22 @@ public class GestorController {
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede (){return "Gestor/G-ListaUsuarioSede";}
 
-    @GetMapping("gestorListaArtesano")
-    public String listaArtesano (){return "Gestor/G-ListaArtesano";}
 
-    @GetMapping("gestorRegistroArtesano")
-    public String registroArtesano (){return "Gestor/G-RegistroArtesano";}
 
     @GetMapping("gestorDetallesProdcutoCompra")
     public String detallesProdcutoCompra (){return "Gestor/G-DetallesProdcutoCompra";}
     @GetMapping("gestorDetallesProdcutoConsignacion")
     public String DetallesProdcutoConsignacion (){return "Gestor/G-DetallesProdcutoConsignacion";}
 
+/*
+=======
+
+
+
 
 
     // ------------------ INICIO CRUD COMUNIDAD ------------------------
+>>>>>>> 61d7116698be4fcf386317b655fbb795030dbde4
     @GetMapping("gestorListaComunidad")
     public String listaComunidad (Model model){
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
@@ -99,21 +104,85 @@ public class GestorController {
         comunidadRepository.save(c);
         return "redirect:/gestor/gestorListaComunidad";
     }
+*/
+
+
+    @GetMapping("gestorListaComunidad")
+    public String listaComunidad (Model model){
+        model.addAttribute("listaComunidad", comunidadRepository.findAll());
+        return "Gestor/G-ListaComunidad";
+    }
+
+
+    @GetMapping("gestorRegistroComunidad")
+    public String registroComunidad (@ModelAttribute("comunidad") Comunidad comunidad){
+      //  model.addAttribute("listaComunidades", comunidadRepository.findAll());
+        return "Gestor/G-RegistroComunidad";
+    }
+
+
+    @PostMapping("gestorGuardarComunidad")
+    public String guardarComunidad(@ModelAttribute("comunidad") Comunidad comunidad,
+                                   Model model,
+                                   RedirectAttributes attr) {
+        List<Comunidad> listaComunidad = comunidadRepository.buscarPorNombre(comunidad.getNombre(),comunidad.getCodigo());
+
+
+        if((comunidad.getIdComunidad()==0) && (listaComunidad.size() == 0)){
+            comunidadRepository.save(comunidad);
+            attr.addFlashAttribute("msg", "Comunidad creada exitosamente");
+            return "redirect:/gestor/gestorListaComunidad";
+        } else if (comunidad.getIdComunidad()!=0){
+            comunidadRepository.save(comunidad);
+            attr.addFlashAttribute("msg", "Comunidad actualizada exitosamente");
+            return "redirect:/gestor/gestorListaComunidad";
+        } else {
+            model.addAttribute("errorComunidad","Los datos ingresados ya existen");
+            return "Gestor/G-RegistroComunidad";
+        }
+    }
+
+        /*
+        if (comunidad.getNombre().equals("")) {
+            model.addAttribute("errorComunidad", "El nombre no puede ser vacío");
+            return "Gestor/G-RegistroComunidad";
+        } else {
+            if (comunidad.getIdComunidad() == 0) {
+                attr.addFlashAttribute("msg", "Comunidad creada exitosamente");
+                comunidadRepository.save(comunidad);
+            } else {
+                attr.addFlashAttribute("msg", "Comunidad actualizada exitosamente");
+            }
+            comunidadRepository.save(comunidad);
+            return "redirect:/gestor/gestorListaComunidad";
+        }   */
+
+
+    @PostMapping("/gestorBuscarComunidad")
+    public String buscarComunidad(@RequestParam("searchField") String searchField,
+                                  Model model) {
+
+        List<Comunidad> listaComunidad = comunidadRepository.buscarPorNombre(searchField, searchField);
+        model.addAttribute("listaComunidad", listaComunidad );
+        return "Gestor/G-ListaComunidad";
+    }
+
 
     @GetMapping("gestorEditComunidad")
-    public String EditComunidad(Model model,
-                                @RequestParam("id") int idcomunidad){
+    public String EditComunidad(@ModelAttribute("comunidad") Comunidad comunidad, Model model,
+                                @RequestParam("idcomunidad") int idcomunidad){
+
         Optional<Comunidad> optComunidad = comunidadRepository.findById(idcomunidad);
         if (optComunidad.isPresent()) {
-            Comunidad comunidad = optComunidad.get();
+          //  Comunidad comunidad = optComunidad.get();
+            comunidad = optComunidad.get();
             model.addAttribute("comunidad", comunidad);
-            model.addAttribute("listaComunidades", comunidadRepository.findAll());
-            return "Gestor/G-EditComunidad";
+         //   model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            return "Gestor/G-RegistroComunidad";
         } else {
             return "redirect:/gestor/gestorListaComunidad";
          }
     }
-
 
 
     @GetMapping("gestorBorarComunidad")
@@ -209,5 +278,85 @@ public class GestorController {
 
 
 // ----------------------- FIN CRUD CATEGORIA ---------------------------------
+
+
+
+    // ----------------------- INICIO CRUD ARTESANOS ---------------------------------
+
+    @GetMapping("gestorEditArtesano")
+    public String EditArtesano(@RequestParam("idartesano") int idartesano, @ModelAttribute("artesano") Artesano artesano, Model model,RedirectAttributes attr){
+
+        Optional<Artesano> artesanoPorID = artesanoRepository.findById(idartesano);
+        if (artesanoPorID.isPresent()) {
+            model.addAttribute("artesano",artesanoPorID.get());
+            model.addAttribute("listaComunidad", comunidadRepository.findAll());
+                return "gestor/G-EditArtesano";
+        } else {
+            return "redirect:/gestor/gestorListaArtesano";
+        }
+    }
+
+    @GetMapping("gestorListaArtesano")
+    public String listaArtesano (Model model){
+        model.addAttribute("listaComunidad",comunidadRepository.findAll());
+        model.addAttribute("listaAdquisicion",adquisicionRepository.findAll());
+        model.addAttribute("listaArtesanos",artesanoRepository.findAll());
+
+        return "Gestor/G-ListaArtesano";}
+
+
+    @GetMapping("gestorRegistroArtesano")
+    public String registroArtesano (){
+
+        return "Gestor/G-EditArtesano";}
+
+    @GetMapping("gestorBuscarArtesano")
+    public String buscarArtesano (@RequestParam("busqueda") String busqueda, Model model){
+        model.addAttribute("listaArtesanos",artesanoRepository.obtenerArtesanoBusqueda(busqueda));
+        return "Gestor/G-ListaArtesano"; }
+
+    @GetMapping("gestorBorrarArtesano")
+    public String borrarArtesano(Model model, @RequestParam("idartesano") int idartesano, RedirectAttributes attr){
+        Optional<Artesano> obtenerArtesano = artesanoRepository.findById(idartesano);
+        if (obtenerArtesano.isPresent()) {
+            artesanoRepository.deleteById(idartesano);
+            attr.addFlashAttribute("msg","Empleado borrado exitosamente");
+        }
+        return "redirect:/gestor/gestorListaArtesano";
+    }
+
+    @PostMapping("gestorGuardarArtesano")
+    public String guardarArtesano(@ModelAttribute("artesano") @Valid Artesano artesano, BindingResult bindingResult,
+                                  RedirectAttributes attr,
+                                  Model model){
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("listaComunidad", comunidadRepository.findAll());
+            return "Gestor/G-EditArtesano";
+        }else {
+
+            if (artesano.getIdArtesano() == 0) {
+                attr.addFlashAttribute("msg", "Artesano no existe");
+                return "redirect:/gestor/gestorListaArtesano";
+            } else {
+                artesanoRepository.save(artesano);
+                attr.addFlashAttribute("msg", "Artesano actualizado correctamente");
+                return "redirect:/gestor/gestorListaArtesano";
+            }
+        }
+
+    }
+
+    // ----------------------- FIN CRUD ARTESANOS ---------------------------------
+
+
+
+
+
+
+
+
+
+
 
 }

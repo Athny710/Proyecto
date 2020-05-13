@@ -33,11 +33,11 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-gray-900">Lista De Comunidades</h6>
-                            <form class="-angle-double-right d-none d-sm-inline-block form-inline mr-auto ml-md-20 my-2 my-md-30 mw-100 navbar-search">
+                            <form method="post" th:action="@{/gestor/gestorBuscarComunidad}" class="-angle-double-right d-none d-sm-inline-block form-inline mr-auto ml-md-20 my-2 my-md-30 mw-100 navbar-search">
                                 <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-10 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                    <input name="searchField" type="text" class="form-control bg-light border-10 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                                     <div class="input-group-append">
-                                        <button class="btn btn-log text-gray-900" type="button">
+                                        <button class="btn btn-log text-gray-900" type="submit">
                                             <i class="fas fa-search fa-sm text-gray-100"></i>
                                         </button>
                                     </div>
@@ -60,6 +60,8 @@
                                 <div class="col-sm-12 col-md-6">
                                     <a class="btn btn-warning mt-4 mb-4" th:href="@{/gestor/gestorRegistroComunidad}">Añadir comunidad</a>
                                 </div>
+                                <!-- se agrego lo de abajo 11 del 05-->
+                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
 
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
@@ -70,16 +72,15 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-
-                                        <tr th:each="x : ${listaComunidades}" align="center">
-                                            <td th:text="${x.nombre}"></td>
-                                            <td th:text="${x.codigo}"></td>
+                                        <tr th:each="comunidad : ${listaComunidad}" align="center">
+                                            <td th:text="${comunidad.nombre}"></td>
+                                            <td th:text="${comunidad.codigo}"></td>
                                             <td align="center">
-                                                <a th:href="@{'/gestor/gestorEditComunidad'+'?id='+${x.idComunidad}}">
-                                                    <i class="far fa-edit text-orangeM" style="margin-right: 5px"></i>
+                                                <a th:href="@{'/gestor/gestorEditComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}">
+                                                    <i class="far fa-edit text-orangeM" ></i>
                                                 </a>
-                                                <a th:href="@{'/gestor/gestorBorarComunidad'+'?id='+${x.idComunidad}}">
-                                                    <i class="far fa-trash-alt text-redM" style="margin-left: 5px"></i>
+                                                <a th:href="@{'/gestor/gestorBorarComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}">
+                                                    <i class="far fa-trash-alt text-redM" ></i>
                                                 </a>
                                             </td>
                                         </tr>

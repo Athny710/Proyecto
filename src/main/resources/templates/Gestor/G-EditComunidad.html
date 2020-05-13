@@ -46,15 +46,16 @@
                     </div>
                     <div class="card-body">
 
-                        <form>
+                        <form method="post" th:action="@{'/gestor/gestorGuardarComunidad'} ">
+                               <input th:value="${comunidad.idcomunidad}" name="shipperId" type="hidden" />
                             <div class="form-group col-md-6">
-                                <label for="categoria">Nombre de Comunidad</label>
-                                <input type="categoria" class="form-control" id="categoria" value="abc" >
+                                <label for="nombre">Nombre de Comunidad</label>
+                                <input th:value="${comunidad.nombre}" type="nombre" class="form-control" id="nombre" >
                             </div>
 
                             <div class="form-group col-md-6">
                                 <label for="codigo">Código</label>
-                                <input type="codigo" class="form-control" id="codigo" value="def" >
+                                <input th:value="${comunidad.codigo}" type="codigo" class="form-control" id="codigo" >
                             </div>
 
 

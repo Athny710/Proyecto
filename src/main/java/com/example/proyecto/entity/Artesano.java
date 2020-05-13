@@ -1,19 +1,25 @@
 package com.example.proyecto.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "artesano")
 public class Artesano {
     @Id
+    @NotBlank
     private int idartesano;
     @Column(nullable = false)
+    @NotBlank
     private String nombre;
     @Column(nullable = false)
+    @NotBlank
     private String apellidopaterno;
+    @NotBlank
     private String apellidomaterno;
     @ManyToOne
     @JoinColumn(name = "idcomunidad")
+    @NotBlank
     private Comunidad comunidad;
 
 

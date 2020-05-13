@@ -1,168 +1,85 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
-
-    <!-- Custom fonts for this template-->
-    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link th:href="@{/css/sb-admin-2.css}" rel="stylesheet">
+<head th:replace="FragmentosGestor/Fragmentos.html::cabecera(titulo='Lista Artesanos')">
 </head>
+
 <body id="page-top">
+
 <div id="wrapper">
-
-    <!-- Sidebar -->
-    <div th:replace="FragmentosGestor/Fragmentos.html :: NadvarGestor1">
-
-    </div>
-    <!-- End of Sidebar -->
-
+    <div th:insert="FragmentosGestor/Fragmentos.html::SideBarGestor"></div>
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column bg-white">
-
         <!-- Main Content -->
         <div id="content">
-
-            <!-- Topbar -->
-            <div th:replace="FragmentosGestor/Fragmentos.html :: TopbarGestor">
-
-            </div>
-            <!-- End of Topbar -->
-
-            <!-- Begin Page Content -->
-
-            <!-- /.container-fluid -->
+            <div th:insert="FragmentosGestor/Fragmentos.html::TopBar"></div>
+            <!-- Page Heading -->
             <div class="container-fluid">
-
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-gray-900">Lista De Artesanos</h6>
-                        <form class="-angle-double-right d-none d-sm-inline-block form-inline mr-auto ml-md-20 my-2 my-md-30 mw-100 navbar-search">
-                            <div class="input-group">
-                                <input type="text" class="form-control bg-light border-10 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                <div class="input-group-append">
-                                    <button class="btn btn-log text-gray-900" type="button">
-                                        <i class="fas fa-search fa-sm text-gray-100"></i>
-                                    </button>
+                <div class="col-lg-2">
+                    <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistroArtesano}">Ingresar Artesano</a>
+                </div>
+                <br>
+                <div class="card shadowA mb-4">
+                    <div class="card-header2 py-3">
+                        <div class="d-flex justify-content-between centrado">
+                            <h5 class="m-0 font-weight-bold text-redM">Lista de Artesanos</h5>
+                            <form >
+                                <div class="input-group">
+                                    <input type="text" class="form-control bg-light border-0 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-searchTop text-gray-900" type="button">
+                                            <i class="fas fa-search fa-sm text-gray-100"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-
+                            </form>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-
-   <!--
-                            <div class="row">
-                                <div class="col-sm-12 col-md-6">
-                                    <a href="#" class="btn btn-warning btn-icon-split">
-                                        <span href="@{/Gestor/G-RegistroArtesano}" class="text">Añadir artesano</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <br>
-    -->
-                            <div class="col-sm-12 col-md-6">
-                                <a class="btn btn-warning mt-4 mb-4" th:href="@{/gestor/gestorRegistroArtesano}">Añadir artesano</a>
-                            </div>
+                    <div class="card-body bg-gray-100">
+                        <div class="table-responsive bg-white">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
-                                <tr>
-                                    <th>Nombres</th>
+                                <tr class="bg-gray-900 text-white" align="center">
+                                    <th>Nombre</th>
                                     <th>Apellido Paterno</th>
                                     <th>Apellido Materno</th>
                                     <th>Comunidad</th>
-                                    <th>Sede</th>
-                                    <th>Código</th>
                                     <th>Editar/Borrar</th>
                                 </tr>
                                 </thead>
-                                <!--   <tfoot>
-                                   <tr>
-                                       <th>Sergio andres</th>
-                                       <th>Muro calvo</th>
-                                       <th>58678994</th>
-                                       <th>sergio.muroc@pucp.pe</th>
-                                       <th>937568931</th>
-                                       <th>Lima</th>
-                                   </tr>
-                                   </tfoot>    -->
+                                <tfoot>
+                                <tr align="center">
+                                    <th>Nombre</th>
+                                    <th>Apellido Paterno</th>
+                                    <th>Apellido Materno</th>
+                                    <th>Comunidad</th>
+                                    <th>Editar/Borrar</th>
+                                </tr>
+                                </tfoot>
                                 <tbody>
-                                <tr>
-                                    <td>Angela</td>
-                                    <td>Ccana</td>
-                                    <td>Zamata</td>
-                                    <td>Amaru</td>
-                                    <td>Lima</td>
-                                    <td>ACZ</td>
-                                    <td><a th:href="@{/gestor/gestorEditArtesano}" class="btn btn-success btn-circle">
-                                        <i class="fas fa-check"></i>
-                                    </a>  <!-- <a href="#" class="btn btn-danger btn-circle">
-                                        <i class="fas fa-trash"></i>  -->
-                                    </a></td>
+                                <tr align="center" th:each="artesano, info: ${listaArtesanos}">
+                                    <td th:text="${artesano.nombre}"></td>
+                                    <td th:text="${artesano.apellidoPaterno}"></td>
+                                    <td th:text="${artesano.apellidoMaterno}"></td>
+                                    <td th:text="${artesano.comunidad.nombre}"></td>
+                                    <td align="center">
+                                        <a style="margin-left: 10px" href="*" >
+                                            <i th:href="@{'/gestor/gestorEditArtesano' + '?id=' + ${artesano.idArtesano}}" class="far fa-list-alt text-orangeM"></i>
+                                            <i th:href="@{'/gestor/gestorBorrarArtesano' + '?id=' + ${artesano.idArtesano}}"class="far fa-trash-alt text-redM"></i>
+                                        </a>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td>Paulina</td>
-                                    <td>CCana</td>
-                                    <td>CCana</td>
-                                    <td>Amaru</td>
-                                    <td>Lima</td>
-                                    <td>PCC</td>
-                                    <td><a th:href="@{/gestor/gestorEditArtesano}" class="btn btn-success btn-circle">
-                                        <i class="fas fa-check"></i>
-                                    </a><a href="#" class="btn btn-danger btn-circle">
-                                        <i class="fas fa-trash"></i>
-                                    </a></td>
-                                </tr>
-                                <tr>
-                                    <td>Celsetina</td>
-                                    <td>Soncco</td>
-                                    <td>Mamani</td>
-                                    <td>Parobamba</td>
-                                    <td>Ica</td>
-                                    <td>CSM</td>
-                                    <td><a th:href="@{/gestor/gestorEditArtesano}" class="btn btn-success btn-circle">
-                                        <i class="fas fa-check"></i>
-                                    </a><a href="#" class="btn btn-danger btn-circle">
-                                        <i class="fas fa-trash"></i>
-                                    </a></td>
-                                </tr>
-
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
-        <!-- End of Main Content -->
     </div>
-    <!-- End of Content Wrapper -->
 </div>
-
-<div th:replace="FragmentosGestor/Fragmentos.html :: ModalCerrarSesion">
-
-</div>
-<!-- Bootstrap core JavaScript-->
-<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
-<!-- Core plugin JavaScript-->
-<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
-
-<!-- Custom scripts for all pages-->
-<script th:src="@{/js/sb-admin-2.min.js}"></script>
-
+<div th:replace="FragmentosAdmin/Fragmentos.html::script"></div>
 
 </body>
+
 </html>
