@@ -1,7 +1,9 @@
 package com.example.proyecto.controller;
 
+import com.example.proyecto.entity.Artesano;
 import com.example.proyecto.entity.Categoria;
 import com.example.proyecto.entity.Comunidad;
+import com.example.proyecto.repository.AdquisicionRepository;
 import com.example.proyecto.repository.ArtesanoRepository;
 import com.example.proyecto.repository.CategoriaRepository;
 import com.example.proyecto.repository.ComunidadRepository;
@@ -23,6 +25,8 @@ public class GestorController {
     CategoriaRepository categoriaRepository;
     @Autowired
     ArtesanoRepository artesanoRepository;
+    @Autowired
+    AdquisicionRepository adquisicionRepository;
 
 
     @GetMapping("gestorRegCompra")
@@ -31,8 +35,6 @@ public class GestorController {
     public String EditProdCompra(){return "Gestor/G-EditProdCompra";}
    // @GetMapping("gestorEditComunidad")
    // public String EditComunidad(){return "Gestor/G-EditComunidad";}
-    @GetMapping("gestorEditArtesano")
-    public String EditArtesano(){return "Gestor/G-EditArtesano";}
     @GetMapping("gestorRegistroUsuarioSede")
     public String registroUsuarioSede(){return "Gestor/G-RegistroUsuarioSede";}
 
@@ -66,11 +68,7 @@ public class GestorController {
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede (){return "Gestor/G-ListaUsuarioSede";}
 
-    @GetMapping("gestorListaArtesano")
-    public String listaArtesano (){return "Gestor/G-ListaArtesano";}
 
-    @GetMapping("gestorRegistroArtesano")
-    public String registroArtesano (){return "Gestor/G-RegistroArtesano";}
 
     @GetMapping("gestorDetallesProdcutoCompra")
     public String detallesProdcutoCompra (){return "Gestor/G-DetallesProdcutoCompra";}
@@ -79,6 +77,9 @@ public class GestorController {
 
 /*
 =======
+
+
+
 
 
     // ------------------ INICIO CRUD COMUNIDAD ------------------------
@@ -151,6 +152,14 @@ public class GestorController {
         }   */
 
 
+    @PostMapping("/gestorBuscarComunidad")
+    public String buscarComunidad(@RequestParam("searchField") String searchField,
+                                  Model model) {
+
+        List<Comunidad> listaComunidad = comunidadRepository.buscarPorNombre(searchField, searchField);
+        model.addAttribute("listaComunidad", listaComunidad );
+        return "Gestor/G-ListaComunidad";
+    }
 
 
     @GetMapping("gestorEditComunidad")
@@ -265,14 +274,53 @@ public class GestorController {
 // ----------------------- FIN CRUD CATEGORIA ---------------------------------
 
 
-    @PostMapping("/gestorBuscarComunidad")
-    public String buscarComunidad(@RequestParam("searchField") String searchField,
-                                      Model model) {
 
-        List<Comunidad> listaComunidad = comunidadRepository.buscarPorNombre(searchField, searchField);
-        model.addAttribute("listaComunidad", listaComunidad );
-        return "Gestor/G-ListaComunidad";
+    // ----------------------- INICIO CRUD ARTESANOS ---------------------------------
+
+    @GetMapping("gestorEditArtesano")
+    public String EditArtesano(){
+
+        return "Gestor/G-EditArtesano";}
+
+    @GetMapping("gestorListaArtesano")
+    public String listaArtesano (Model model){
+        model.addAttribute("listaComunidad",comunidadRepository.findAll());
+        model.addAttribute("listaAdquisicion",adquisicionRepository.findAll());
+        model.addAttribute("listaArtesanos",artesanoRepository.findAll());
+
+        return "Gestor/G-ListaArtesano";}
+
+
+    @GetMapping("gestorRegistroArtesano")
+    public String registroArtesano (){
+
+        return "Gestor/G-RegistroArtesano";}
+
+    @GetMapping("gestorBuscarArtesano")
+    public String buscarArtesano (@RequestParam("busqueda") String busqueda, Model model){
+        model.addAttribute("listaArtesanos",artesanoRepository.obtenerArtesanoBusqueda(busqueda));
+        return "Gestor/G-ListaArtesano"; }
+
+    @GetMapping("gestorBorrarArtesano")
+    public String borrarArtesano(Model model, @RequestParam("idartesano") int idartesano, RedirectAttributes attr){
+        Optional<Artesano> obtenerArtesano = artesanoRepository.findById(idartesano);
+        if (obtenerArtesano.isPresent()) {
+            artesanoRepository.deleteById(idartesano);
+            attr.addFlashAttribute("msg","Empleado borrado exitosamente");
+        }
+        return "redirect:/gestor/gestorListaArtesano";
     }
+
+    // ----------------------- FIN CRUD ARTESANOS ---------------------------------
+
+
+
+
+
+
+
+
+
 
 
 }
