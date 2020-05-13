@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/system")
 public class SystemController {
 
-    @GetMapping("principal")
-    public String listar(){
-        return "base/basePag";
+    @GetMapping(value = {"","iniciosesion"})
+    public String inicioSesion(){
+        return "index";
     }
 
     @GetMapping("usede")
@@ -44,10 +44,6 @@ public class SystemController {
     @GetMapping("proconf")
     public String gaaaa(){
         return "UsuarioSede/ProductoEspera";
-    }
-    @GetMapping(value = {"","iniciosesion"})
-    public String inicioSesion(){
-        return "index";
     }
 
 

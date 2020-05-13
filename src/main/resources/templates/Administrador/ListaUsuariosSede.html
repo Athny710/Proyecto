@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="FragmentosAdmin/Fragmentos.html::cabecera(titulo='Lista Usuarios Sede')">
+<head th:replace="Fragmentos/FragmentosAdmin.html::cabecera(titulo='Lista Usuarios Sede')">
 </head>
 
 <body id="page-top">
 
     <div id="wrapper">
-        <div th:insert="FragmentosAdmin/Fragmentos.html::SideBarAdmin"></div>
+        <div th:insert="Fragmentos/FragmentosAdmin.html::SideBarAdmin"></div>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column bg-white">
             <!-- Main Content -->
             <div id="content">
-                <div th:insert="FragmentosAdmin/Fragmentos.html::TopBar"></div>
+                <div th:insert="Fragmentos/FragmentosAdmin.html::TopBar"></div>
+                <div th:insert="Fragmentos/FragmentosAdmin.html::LogOut"></div>
                 <!-- Page Heading -->
                 <div class="container-fluid">
                     <div class="card shadowA mb-4">
@@ -90,7 +91,7 @@
             </div>
         </div>
     </div>
-    <div th:replace="FragmentosAdmin/Fragmentos.html::script"></div>
+    <div th:replace="Fragmentos/FragmentosAdmin.html::script"></div>
 
 </body>
 
