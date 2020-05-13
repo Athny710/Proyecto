@@ -10,8 +10,14 @@ import com.example.proyecto.repository.ComunidadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -320,7 +326,24 @@ public class GestorController {
     }
 
     @PostMapping("gestorGuardarArtesano")
-    public String guardarArtesano(){
+    public String guardarArtesano(@ModelAttribute("artesano") @Valid Artesano artesano, BindingResult bindingResult,
+                                  RedirectAttributes attr,
+                                  Model model){
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("listaComunidad", comunidadRepository.findAll());
+            return "Gestor/G-EditArtesano";
+        }else {
+
+            if (artesano.getIdArtesano() == 0) {
+                attr.addFlashAttribute("msg", "Artesano no existe");
+                return "redirect:/gestor/gestorListaArtesano";
+            } else {
+                artesanoRepository.save(artesano);
+                attr.addFlashAttribute("msg", "Artesano actualizado correctamente");
+                return "redirect:/gestor/gestorListaArtesano";
+            }
+        }
 
     }
 
