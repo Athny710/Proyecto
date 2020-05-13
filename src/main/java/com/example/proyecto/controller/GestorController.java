@@ -117,7 +117,7 @@ public class GestorController {
     @GetMapping("gestorRegistroComunidad")
     public String registroComunidad (@ModelAttribute("comunidad") Comunidad comunidad){
       //  model.addAttribute("listaComunidades", comunidadRepository.findAll());
-        return "Gestor/G-RegistroComunidad";
+        return "Gestor/G-EditComunidad";
     }
 
 
@@ -178,7 +178,7 @@ public class GestorController {
             comunidad = optComunidad.get();
             model.addAttribute("comunidad", comunidad);
          //   model.addAttribute("listaComunidades", comunidadRepository.findAll());
-            return "Gestor/G-RegistroComunidad";
+            return "Gestor/G-EditComunidad";
         } else {
             return "redirect:/gestor/gestorListaComunidad";
          }
@@ -284,7 +284,7 @@ public class GestorController {
     // ----------------------- INICIO CRUD ARTESANOS ---------------------------------
 
     @GetMapping("gestorEditArtesano")
-    public String EditArtesano(@RequestParam("idartesano") int idartesano, @ModelAttribute("artesano") Artesano artesano, Model model,RedirectAttributes attr){
+    public String EditArtesano(@RequestParam("idartesano") int idartesano, @ModelAttribute("artesano") Artesano artesano, Model model){
 
         Optional<Artesano> artesanoPorID = artesanoRepository.findById(idartesano);
         if (artesanoPorID.isPresent()) {

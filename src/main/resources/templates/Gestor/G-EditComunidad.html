@@ -1,100 +1,73 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
-
-    <!-- Custom fonts for this template-->
-    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link th:href="@{/css/sb-admin-2.css}" rel="stylesheet">
+<head th:replace="FragmentosGestor/Fragmentos.html::cabecera(titulo='Comunidad')">
 </head>
+
 <body id="page-top">
+
 <div id="wrapper">
-
-    <!-- Sidebar -->
-    <div th:replace="FragmentosGestor/Fragmentos.html :: NadvarGestor1">
-
-    </div>
-    <!-- End of Sidebar -->
-
+    <div th:insert="FragmentosGestor/Fragmentos.html::SideBarGestor"></div>
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column bg-white">
-
         <!-- Main Content -->
         <div id="content">
-
-            <!-- Topbar -->
-            <div th:replace="FragmentosGestor/Fragmentos.html :: TopbarGestor">
-
-            </div>
-            <!-- End of Topbar -->
-
-            <!-- Begin Page Content -->
+            <div th:insert="FragmentosGestor/Fragmentos.html::TopBar"></div>
+            <!-- Page Heading -->
             <div class="container-fluid">
-
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h4 class="m-0 font-weight-bold text-gray-900">Editar Comunidad</h4>
+                <div class="card shadowA mb-4">
+                    <div class="card-header2 py-3">
+                        <div class="d-flex justify-content-between centrado">
+                            <h5 class="m-0 font-weight-bold text-redM" th:text="${comunidad.nombre==null?'Registro de nueva comunidad':'Editar comunidad'}"></h5>
+                        </div>
                     </div>
-                    <div class="card-body">
-
-                        <form method="post" th:action="@{'/gestor/gestorGuardarComunidad'} ">
-                               <input th:value="${comunidad.idcomunidad}" name="shipperId" type="hidden" />
-                            <div class="form-group col-md-6">
-                                <label for="nombre">Nombre de Comunidad</label>
-                                <input th:value="${comunidad.nombre}" type="nombre" class="form-control" id="nombre" >
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="codigo">Código</label>
-                                <input th:value="${comunidad.codigo}" type="codigo" class="form-control" id="codigo" >
-                            </div>
-
-
-                            <div class="form-row col-md-2">
-                                <div class="form-group col-md-8">
-                                    <a href="#" class="btn btn-danger" th:href="@{/gestor/gestorListaComunidad}">Cancelar</a>
+                    <div>ANTHONY, LO SIGUIENTE LO PUSO IVAN PERO NO SÉ DONDE VA O SI ES NECESARIO:'v</div>
+                    <div th:if="${errorComunidad != null}" th:text="${errorComunidad}" class="alert alert-danger" role="alert"></div>
+                    <div class="card-body bg-gray-100">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <form method="post" class="user" th:href="@{/gestor/gestorGuardarComunidad}" th:object="${comunidad}">
+                                        <input th:value="*{idComunidad}" name="shipperId" type="hidden" />
+                                        <div class="form-group">
+                                            <input th:field="*{nombre}" type="text" class="form-control form-control-user" id="nombre" placeholder="Nombre">
+                                        </div>
+                                        <div class="form-group">
+                                            <input th:field="*{codigo}" type="text" class="form-control form-control-user" id="apellidoPaterno" placeholder="Apellido Paterno">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary" th:text="$*{nombre==null?'Registrar':'Actualizar'}"></button>
+                                        <a th:href="@{/gestor/gestorListaComunidad}" class="btn btn-searchTop btn-user btn-block">
+                                            Cancelar
+                                        </a>
+                                    </form>
+                                    <hr>
                                 </div>
-                                <div class="form-group col-md-2"  >
-                                    <a href="#" class="btn btn-primary" th:href="@{/gestor/gestorListaComunidad}">Actualizar</a>
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-4">
+                                <br>
+                                <br>
+                                <div class="card shadowA mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        El Gestor tiene el control total sobre todo el inventario. Así mismo, puede crear, editar y mantener sedes.
+                                    </div>
                                 </div>
                             </div>
-
-                        </form>
-
+                        </div>
                     </div>
                 </div>
-
-
             </div>
-            <!-- /.container-fluid -->
         </div>
-        <!-- End of Main Content -->
     </div>
-    <!-- End of Content Wrapper -->
 </div>
-
-<div th:replace="FragmentosGestor/Fragmentos.html :: ModalCerrarSesion">
-
-</div>
-<!-- Bootstrap core JavaScript-->
-<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
-<!-- Core plugin JavaScript-->
-<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
-
-<!-- Custom scripts for all pages-->
-<script th:src="@{/js/sb-admin-2.min.js}"></script>
-
+<div th:replace="FragmentosAdmin/Fragmentos.html::script"></div>
 
 </body>
+
+
+
+
 </html>
