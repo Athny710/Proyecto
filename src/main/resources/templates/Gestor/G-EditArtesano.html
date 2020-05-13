@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <titlet th:text="${artesano.idArtesano==null?'Nuevo Artesano':'Editar Artesano'}"></titlet>
+<head th:replace="FragmentosAdmin/Fragmentos.html::cabecera(titulo='Artesano')">
 </head>
 
 
@@ -21,7 +20,7 @@
                 <div class="card shadowA mb-4">
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
-                            <h5 class="m-0 font-weight-bold text-redM">Editar Artesano</h5>
+                            <h5 class="m-0 font-weight-bold text-redM" th:text="${artesano.idArtesano==null?'Registro de nuevo artesano':'Editar Artesano'}">Editar Artesano</h5>
                         </div>
                     </div>
                     <div class="card-body bg-gray-100">
