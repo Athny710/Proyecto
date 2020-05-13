@@ -223,12 +223,12 @@ public class GestorController {
     @GetMapping("gestorRegistrarCategoria")
     public String RegistroCategoria(Categoria categoria, Model model){
 
-        return "Gestor/G-RegCategoria";
+        return "Gestor/G-EditCategoria";
     }
 
 
     @PostMapping("gestorGuardarCategoria")
-    public String GuardaCategoria(Model model, Categoria categoria, RedirectAttributes attr){
+    public String GuardaCategoria(@ModelAttribute("categoria") Categoria categoria, Model model, RedirectAttributes attr){
         List<Categoria> listaCategoria = categoriaRepository.buscarCategoria(categoria.getNombre(),categoria.getCodigo());
 
         if((categoria.getIdCategoria() == 0) && (listaCategoria.size() == 0)){
