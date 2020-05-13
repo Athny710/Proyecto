@@ -71,8 +71,6 @@
                                     </thead>
                                     <tbody>
 
-                                    @{'/employee/edit' + '?id=' + ${employee.id}}
-
                                         <tr th:each="x : ${listaComunidades}" align="center">
                                             <td th:text="${x.nombre}"></td>
                                             <td th:text="${x.codigo}"></td>
