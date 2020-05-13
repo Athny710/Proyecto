@@ -308,7 +308,7 @@ public class GestorController {
     @GetMapping("gestorRegistroArtesano")
     public String registroArtesano (){
 
-        return "Gestor/G-RegistroArtesano";}
+        return "Gestor/G-EditArtesano";}
 
     @GetMapping("gestorBuscarArtesano")
     public String buscarArtesano (@RequestParam("busqueda") String busqueda, Model model){
