@@ -278,9 +278,17 @@ public class GestorController {
     // ----------------------- INICIO CRUD ARTESANOS ---------------------------------
 
     @GetMapping("gestorEditArtesano")
-    public String EditArtesano(){
+    public String EditArtesano(@RequestParam("idartesano") int idartesano, @ModelAttribute("artesano") Artesano artesano, Model model,RedirectAttributes attr){
 
-        return "Gestor/G-EditArtesano";}
+        Optional<Artesano> artesanoPorID = artesanoRepository.findById(idartesano);
+        if (artesanoPorID.isPresent()) {
+            model.addAttribute("artesano",artesanoPorID.get());
+            model.addAttribute("listaComunidad", comunidadRepository.findAll());
+                return "gestor/G-EditArtesano";
+        } else {
+            return "redirect:/gestor/gestorListaArtesano";
+        }
+    }
 
     @GetMapping("gestorListaArtesano")
     public String listaArtesano (Model model){
@@ -309,6 +317,11 @@ public class GestorController {
             attr.addFlashAttribute("msg","Empleado borrado exitosamente");
         }
         return "redirect:/gestor/gestorListaArtesano";
+    }
+
+    @PostMapping("gestorGuardarArtesano")
+    public String guardarArtesano(){
+
     }
 
     // ----------------------- FIN CRUD ARTESANOS ---------------------------------
