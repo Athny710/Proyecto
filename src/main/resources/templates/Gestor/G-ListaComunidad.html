@@ -1,115 +1,80 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="FragmentosAdmin/Fragmentos.html::cabecera(titulo='Página Principal')">
+<head th:replace="FragmentosAdmin/Fragmentos.html::cabecera(titulo='Lista Comunidad')">
 </head>
 
 <body id="page-top">
-    <div id="wrapper">
 
-        <!-- Sidebar -->
-        <div th:replace="FragmentosGestor/Fragmentos.html :: NadvarGestor1">
-
-        </div>
-        <!-- End of Sidebar -->
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column bg-white">
-
-            <!-- Main Content -->
-            <div id="content">
-
-                <!-- Topbar -->
-                <div th:replace="FragmentosGestor/Fragmentos.html :: TopbarGestor">
-
+<div id="wrapper">
+    <div th:insert="FragmentosGestor/Fragmentos.html::SideBarGestor"></div>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column bg-white">
+        <!-- Main Content -->
+        <div id="content">
+            <div th:insert="FragmentosGestor/Fragmentos.html::TopBar"></div>
+            <!-- Page Heading -->
+            <div class="container-fluid">
+                <div class="col-lg-2">
+                    <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistroArtesano}">Ingresar Artesano</a>
                 </div>
-                <!-- End of Topbar -->
-
-                <!-- Begin Page Content -->
-
-                <!-- /.container-fluid -->
-                <div class="container-fluid">
-
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-gray-900">Lista De Comunidades</h6>
-                            <form method="post" th:action="@{/gestor/gestorBuscarComunidad}" class="-angle-double-right d-none d-sm-inline-block form-inline mr-auto ml-md-20 my-2 my-md-30 mw-100 navbar-search">
+                <br>
+                <div class="card shadowA mb-4">
+                    <div class="card-header2 py-3">
+                        <div class="d-flex justify-content-between centrado">
+                            <h5 class="m-0 font-weight-bold text-redM">Lista de Artesanos</h5>
+                            <form >
                                 <div class="input-group">
-                                    <input name="searchField" type="text" class="form-control bg-light border-10 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                    <input type="text" class="form-control bg-light border-0 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                                     <div class="input-group-append">
-                                        <button class="btn btn-log text-gray-900" type="submit">
+                                        <button class="btn btn-searchTop text-gray-900" type="button">
                                             <i class="fas fa-search fa-sm text-gray-100"></i>
                                         </button>
                                     </div>
                                 </div>
                             </form>
-
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <!--
-
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-6">
-                                        <a th:href="@{/system/gestorRegistroComunidad}"  class="btn btn-warning btn-icon-split">
-                                            <span class="text">Añadir comunidad</span>
-                                        </a>
-                                    </div>
-                                </div>   -->
-
-                                <div class="col-sm-12 col-md-6">
-                                    <a class="btn btn-warning mt-4 mb-4" th:href="@{/gestor/gestorRegistroComunidad}">Añadir comunidad</a>
-                                </div>
-                                <!-- se agrego lo de abajo 11 del 05-->
-                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Código</th>
-                                        <th>Editar/Borrar</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        <tr th:each="comunidad : ${listaComunidad}" align="center">
-                                            <td th:text="${comunidad.nombre}"></td>
-                                            <td th:text="${comunidad.codigo}"></td>
-                                            <td align="center">
-                                                <a th:href="@{'/gestor/gestorEditComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}">
-                                                    <i class="far fa-edit text-orangeM" ></i>
-                                                </a>
-                                                <a th:href="@{'/gestor/gestorBorarComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}">
-                                                    <i class="far fa-trash-alt text-redM" ></i>
-
-                                    </tbody>
-                                </table>
-                            </div>
                         </div>
                     </div>
-
-
+                    <div class="card-body bg-gray-100">
+                        <div class="table-responsive bg-white">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr class="bg-gray-900 text-white" align="center">
+                                    <th>Nombre</th>
+                                    <th>Codigo</th>
+                                    <th>Editar/Borrar</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr align="center">
+                                    <th>Nombre</th>
+                                    <th>Codigo</th>
+                                    <th>Editar/Borrar</th>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                <tr align="center" th:each="comunidad, info: ${listaComunidad}">
+                                    <td th:text="${comunidad.nombre}"></td>
+                                    <td th:text="${comunidad.codigo}"></td>
+                                    <td align="center">
+                                        <a style="margin-left: 10px" href="*" >
+                                            <i th:href="@{'/gestor/gestorEditComunidad' + '?id=' + ${comunidad.idComunidad}}" class="far fa-list-alt text-orangeM"></i>
+                                            <i th:href="@{'/gestor/gestorBorarComunidad' + '?id=' + ${comunidad.idComunidad}}"class="far fa-trash-alt text-redM"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- End of Main Content -->
         </div>
-        <!-- End of Content Wrapper -->
     </div>
-
-<div th:replace="FragmentosGestor/Fragmentos.html :: ModalCerrarSesion">
-
 </div>
-<!-- Bootstrap core JavaScript-->
-<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
-<!-- Core plugin JavaScript-->
-<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
-
-<!-- Custom scripts for all pages-->
-<script th:src="@{/js/sb-admin-2.min.js}"></script>
-
+<div th:replace="FragmentosAdmin/Fragmentos.html::script"></div>
 
 </body>
+
+
 </html>
