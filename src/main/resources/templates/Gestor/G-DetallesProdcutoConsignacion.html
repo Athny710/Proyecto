@@ -1,154 +1,109 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
-
-    <!-- Custom fonts for this template-->
-    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link th:href="@{/css/sb-admin-2.css}" rel="stylesheet">
+<head th:replace="Fragmentos/FragmentosGestor.html::cabecera(titulo='Detalles Consignacion')">
 </head>
+
 <body id="page-top">
-<div id="wrapper">
 
-    <!-- Sidebar -->
-    <div th:replace="FragmentosGestor/Fragmentos.html :: NadvarGestor1">
-
-    </div>
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column bg-white">
-
-        <!-- Main Content -->
-        <div id="content">
-
-            <!-- Topbar -->
-            <div th:replace="FragmentosGestor/Fragmentos.html :: TopbarGestor">
-
-            </div>
-            <!-- End of Topbar -->
-
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h4 class="m-0 font-weight-bold text-gray-900">Detalles del producto: Lama</h4>
-                        <h4 class="m-0 font-weight-bold text-gray-900">Modalidad: Consignación </h4>
-                    </div>
-                    <div class="card-body">
-
-                        <form>
-                            <div class="form-group col-md-6">
-                                <label for="inputEmail4">Número de pedido</label>
-                                <input value="16" type="email" class="form-control" id="inputEmail4" >
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="wer">Línea</label>
-                                <input value="Mosqoy" type="text" class="form-control" id="wer" >
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="wer">Categoría</label>
-                                <input value="Custom" type="text" class="form-control" id="wer" >
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="wer">Nombre de producto</label>
-                                <input value="Lama" type="text" class="form-control" id="wer" >
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="wer">Descripción</label>
-                                <input value="Scarf" type="text" class="form-control" id="wer" >
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="wer">Tamaño</label>
-                                <input value="Medium" type="text" class="form-control" id="wer" >
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="wer">Comunidad</label>
-                                <input value="Parombamba" type="text" class="form-control" id="wer" >
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="wer">Artesano</label>
-                                <input value="Angela ccana zamata" type="text" class="form-control" id="wer" >
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="wer">Cantidad</label>
-                                <input value="11" type="text" class="form-control" id="wer" >
-                            </div>
-                 <!--           <div class="form-group col-md-6">
-                                <label for="wer">Tipo</label>
-                                <input value="Compra" type="text" class="form-control" id="wer" >
-                            </div>  -->
-                            <div class="form-group col-md-6">
-                                <label for="wer">Fecha</label>
-                                <input value="19-may-20" type="text" class="form-control" id="wer" >
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="wer">Color</label>
-                                <input value="Azul" type="text" class="form-control" id="wer" >
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="uio">Foto</label>
-                                <p><input type="file" accept="image/*" id="uio"></p>
-                            </div>
-
-
-                            <div class="form-group col-md-6">
-                                <label for="wer">Costo tejedor(S/)</label>
-                                <input value="20" type="text" class="form-control" id="wer" >
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="wer">Costo Mosqoy(S/)</label>
-                                <input value="50" type="text" class="form-control" id="wer" >
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="wer">Facilitador</label>
-                                <input value="Carlos alaniz" type="text" class="form-control" id="wer" >
-                            </div>
-
-                            <div class="form-row col-md-2">
-                                <div class="form-group col-md-8">
-                                    <a th:href="@{/gestor/gestorPrincipal}" class="btn btn-primary">Regresar</a>
+    <div id="wrapper">
+        <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
+        <div id="content-wrapper" class="d-flex flex-column bg-white">
+            <div id="content">
+                <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
+                <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h4 class="m-0 font-weight-bold text-gray-900">Detalles del producto: Lama</h4>
+                            <h4 class="m-0 font-weight-bold text-gray-900">Modalidad: Consignación </h4>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Número de pedido</label>
+                                    <input value="16" type="email" class="form-control" id="inputEmail4" >
                                 </div>
-                            </div>
-
-                        </form>
-
+                                <div class="form-group col-md-6">
+                                    <label for="wer">Línea</label>
+                                    <input value="Mosqoy" type="text" class="form-control" id="wer" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="wer">Categoría</label>
+                                    <input value="Custom" type="text" class="form-control" id="wer" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="wer">Nombre de producto</label>
+                                    <input value="Lama" type="text" class="form-control" id="wer" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="wer">Descripción</label>
+                                    <input value="Scarf" type="text" class="form-control" id="wer" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="wer">Tamaño</label>
+                                    <input value="Medium" type="text" class="form-control" id="wer" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="wer">Comunidad</label>
+                                    <input value="Parombamba" type="text" class="form-control" id="wer" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="wer">Artesano</label>
+                                    <input value="Angela ccana zamata" type="text" class="form-control" id="wer" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="wer">Cantidad</label>
+                                    <input value="11" type="text" class="form-control" id="wer" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="wer">Tipo</label>
+                                    <input value="Compra" type="text" class="form-control" id="wer" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="wer">Fecha</label>
+                                    <input value="19-may-20" type="text" class="form-control" id="wer" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="wer">Color</label>
+                                    <input value="Azul" type="text" class="form-control" id="wer" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="uio">Foto</label>
+                                    <p><input type="file" accept="image/*" id="uio"></p>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="wer">Costo tejedor(S/)</label>
+                                    <input value="20" type="text" class="form-control" id="wer" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="wer">Costo Mosqoy(S/)</label>
+                                    <input value="50" type="text" class="form-control" id="wer" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="wer">Facilitador</label>
+                                    <input value="Carlos alaniz" type="text" class="form-control" id="wer" >
+                                </div>
+                                <div class="form-row col-md-2">
+                                    <div class="form-group col-md-8">
+                                        <a th:href="@{/gestor/gestorPrincipal}" class="btn btn-primary">Regresar</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-
-
             </div>
-            <!-- /.container-fluid -->
         </div>
-        <!-- End of Main Content -->
     </div>
-    <!-- End of Content Wrapper -->
-</div>
 
-<div th:replace="FragmentosGestor/Fragmentos.html :: ModalCerrarSesion">
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
-</div>
-<!-- Bootstrap core JavaScript-->
-<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
-<!-- Core plugin JavaScript-->
-<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
-
-<!-- Custom scripts for all pages-->
-<script th:src="@{/js/sb-admin-2.min.js}"></script>
-
+    <div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
 
 </body>
 </html>

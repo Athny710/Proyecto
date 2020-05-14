@@ -11,35 +11,35 @@ public class AdminController {
     //--------------------------Inventario
     @GetMapping("principal")
     public String principalAdmin(){
-        return "Administrador/PagPrincipal";
+        return "Administrador/A-PagPrincipal";
     }
     @GetMapping("detalles")
     public String detalleInventario(){
-        return "Administrador/DetallesInventario";
+        return "Administrador/A-DetallesInventario";
     }
 
     //--------------------------Gestores
     @GetMapping("listaGestores")
     public String listaGestores(){
-        return "Administrador/ListaGestores";
+        return "Administrador/A-ListaGestores";
     }
     @GetMapping("nuevoGestor")
     public String nuevoGestor(){
-        return "Administrador/NuevoGestor";
+        return "Administrador/A-NuevoGestor";
     }
 
     //--------------------------Usuarios Sede
     @GetMapping("listaUsuarios")
     public String listaUsuarios(){
-        return "Administrador/ListaUsuariosSede";
+        return "Administrador/A-ListaUsuariosSede";
     }
 
     //--------------------------Sistema
     @GetMapping("perfil")
-    public String perfil(){ return "Administrador/perfil"; }
+    public String perfil(){ return "Administrador/A-Perfil"; }
     @GetMapping("generarCuenta")
     public String generarCuenta(){
-        return "Administrador/GenerarCuenta";
+        return "Administrador/A-GenerarCuenta";
     }
 
 }

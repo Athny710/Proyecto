@@ -1,81 +1,46 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
-
-    <!-- Custom fonts for this template-->
-    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link rel="stylesheet" href="style.css" />
-    <script src="moment-2.10.3.js"></script>
-    <script src="bootstrap-datetimepicker.js"></script>
-
-    <!-- Custom styles for this template-->
-    <link th:href="@{/css/sb-admin-2.css}" rel="stylesheet">
+<head th:replace="Fragmentos/FragmentosGestor.html::cabecera(titulo='Reporte')">
 </head>
+
 <body id="page-top">
-<div id="wrapper">
 
-    <!-- Sidebar -->
-    <div th:replace="FragmentosGestor/Fragmentos.html :: NadvarGestor1">
-
-    </div>
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column bg-white">
-
-        <!-- Main Content -->
-        <div id="content">
-
-            <!-- Topbar -->
-            <div th:replace="FragmentosGestor/Fragmentos.html :: TopbarGestor">
-
-            </div>
-            <!-- End of Topbar -->
-
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h4 class="m-0 font-weight-bold text-gray-900">Reporte de Ventas</h4>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="m-0 font-weight-bold text-gray-900">Tabla de reporte</h5>
-
+    <div id="wrapper">
+        <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
+        <div id="content-wrapper" class="d-flex flex-column bg-white">
+            <div id="content">
+                <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
+                <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h4 class="m-0 font-weight-bold text-gray-900">Reporte de Ventas</h4>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="m-0 font-weight-bold text-gray-900">Tabla de reporte</h5>
                             <form>
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <label for="item">ITEM</label>
-                                        <select class="form-control" type="item" id="item">
-                                            <option value="">Ninguno</option>
+                                        <select class="form-control" type="item" id="item"><option value="">Ninguno</option>
                                             <option value="">Nombre de Producto</option>
                                             <option value="">Código</option>
                                         </select>
                                     </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="filtro2">Ingresar el campo de búsqueda de acuerdo al ITEM elegido</label>
-                                            <input type="filtro2" class="form-control" id="filtro2" value="" >
-                                        </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="filtro2">Ingresar el campo de búsqueda de acuerdo al ITEM elegido</label>
+                                        <input type="filtro2" class="form-control" id="filtro2" value="" >
+                                    </div>
                                 </div>
-
                                 <hr style="width: 75%; height: 10px">
-
                                 <div class="row">
-
                                     <div class="form-group col-md-12">
                                         <div class="row">
                                             <label class="col-md-2">PRECIO</label>
                                             <input type="filtro3" class="form-control col-md-2" id="filtro3" value="Precio Mínimo" >
                                             <input type="filtro4" class="form-control col-md-2" id="filtro4" value="Precio Máximo" >
-
                                             <div class="form-row col-md-3">
                                                 <div class="form-group col-md-8">
                                                     <a href="#" class="btn btn-light">Limpiar Filtro</a>
@@ -85,95 +50,77 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                </div>
-
-
-
+                                    </div>
                                 </div>
                             </form>
-
                             <div class="row">
                                 <div class="col-md-12">
                                     <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <th scope="col"># Registro</th>
-                                            <th scope="col">CODIGO</th>
-                                            <th scope="col">NOMBRE ITEM</th>
-                                            <th scope="col">CANTIDAD</th>
-                                            <th scope="col">FECHA DE VENTA</th>
-                                            <th scope="col">TOTAL VENDIDO</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>AAAAAAA</td>
-                                            <td>CHALINA VERDE DELUX</td>
-                                            <td>30</td>
-                                            <td>12/05/2019</td>
-                                            <td>45000</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>BBBBBBBBB</td>
-                                            <td>CHALINA AMARILLA DELUX</td>
-                                            <td>30</td>
-                                            <td>12/05/2019</td>
-                                            <td>4500</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3/th>
-                                            <td>CCCCCCCCCCCC</td>
-                                            <td>CHALINA ROJA DELUX</td>
-                                            <td>40</td>
-                                            <td>12/05/2019</td>
-                                            <td>8000</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-
+                                            <thead>
+                                            <tr>
+                                                <th scope="col"># Registro</th>
+                                                <th scope="col">CODIGO</th>
+                                                <th scope="col">NOMBRE ITEM</th>
+                                                <th scope="col">CANTIDAD</th>
+                                                <th scope="col">FECHA DE VENTA</th>
+                                                <th scope="col">TOTAL VENDIDO</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>AAAAAAA</td>
+                                                <td>CHALINA VERDE DELUX</td>
+                                                <td>30</td>
+                                                <td>12/05/2019</td>
+                                                <td>45000</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>BBBBBBBBB</td>
+                                                <td>CHALINA AMARILLA DELUX</td>
+                                                <td>30</td>
+                                                <td>12/05/2019</td>
+                                                <td>4500</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">3/th>
+                                                <td>CCCCCCCCCCCC</td>
+                                                <td>CHALINA ROJA DELUX</td>
+                                                <td>40</td>
+                                                <td>12/05/2019</td>
+                                                <td>8000</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                 </div>
-
                             </div>
-
+                        </div>
                     </div>
                 </div>
-
-
             </div>
-            <!-- /.container-fluid -->
         </div>
-        <!-- End of Main Content -->
     </div>
-    <!-- End of Content Wrapper -->
-</div>
 
-<div th:replace="FragmentosGestor/Fragmentos.html :: ModalCerrarSesion">
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
-</div>
-<!-- Bootstrap core JavaScript-->
-<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
 
-<!-- Core plugin JavaScript-->
-<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
-
-<!-- Custom scripts for all pages-->
-<script th:src="@{/js/sb-admin-2.min.js}"></script>
-<---Calendar  DataTimePicker -->
-<script type="text/javascript">
-    $(function () {
-        $('#datetimepicker6').datetimepicker();
-        $('#datetimepicker7').datetimepicker();
-        $("#datetimepicker6").on("dp.change", function (e) {
-            $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+    <---Calendar  DataTimePicker -->
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker6').datetimepicker();
+            $('#datetimepicker7').datetimepicker();
+            $("#datetimepicker6").on("dp.change", function (e) {
+                $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+            });
+            $("#datetimepicker7").on("dp.change", function (e) {
+                $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+            });
         });
-        $("#datetimepicker7").on("dp.change", function (e) {
-            $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-        });
-    });
-</script>
+    </script>
 </body>
 </html>

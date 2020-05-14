@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="Fragmentos/FragmentosSede.html::cabecera(titulo='Productos en Espera')">
+</head>
+
+<body id="page-top">
+
+    <div id="wrapper">
+        <div th:replace="Fragmentos/FragmentosSede.html::SideBarSede"></div>
+        <div id="content-wrapper" class="d-flex flex-column bg-white">
+            <div id="content">
+                <div th:insert="Fragmentos/FragmentosSede.html::TopBar"></div>
+                <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-gray-900">Lista De Productos</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre del Producto</th>
+                                            <th>Color</th>
+                                            <th>Tamaño</th>
+                                            <th>Comunidad</th>
+                                            <th>Foto</th>
+                                            <th>Aceptar</th>
+                                            <th>Comentarios</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Nombre del Producto</th>
+                                            <th>Color</th>
+                                            <th>Tamaño</th>
+                                            <th>Comunidad</th>
+                                            <th>Foto</th>
+                                            <th>Aceptar</th>
+                                            <th>Comentarios</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <tr>
+                                            <td>Chalina</td>
+                                            <td>Azul</td>
+                                            <td>Large</td>
+                                            <td>Amaru</td>
+                                            <td>URL</td>
+                                            <td><a class="btn btn-primary btn-circle " th:href="@{/system/proconf}">
+                                                <i class="fas fa-check"></i>
+                                            </a></td>
+                                            <td>Este producto está bien</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Chalina</td>
+                                            <td>Azul</td>
+                                            <td>Large</td>
+                                            <td>Amaru</td>
+                                            <td>URL</td>
+                                            <td><a class="btn btn-primary btn-circle" th:href="@{/system/proconf}">
+                                                <i class="fas fa-check"></i>
+                                            </a></td>
+                                            <td>Este producto está bien</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <div th:replace="Fragmentos/FragmentosSede.html::script"></div>
+
+</body>
+</html>

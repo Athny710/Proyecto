@@ -16,7 +16,7 @@
 </head>
 
 <!-- Sidebar -->
-<ul th:fragment="SideBarGestor" class="navbar-nav bg-redM sidebar sidebar-dark accordion shadow" id="accordionSidebar">
+<ul th:fragment="SideBarSede" class="navbar-nav bg-redM sidebar sidebar-dark accordion shadow" id="accordionSidebar">
     <!-- Sidebar - Logo -->
     <a class="sidebar-brand align-items-center justify-content-center" th:href="@{/system}">
         <img th:src="@{/img/logoRed.png}" width="150px" height="90px" />
@@ -28,7 +28,7 @@
     <hr>
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link text-gray-100" th:href="@{/gestor/gestorPrincipal}">
+        <a class="nav-link text-gray-100" th:href="@{/sede/principal}">
             <i class="fas fa-fw fa-bars text-gray-100"></i>
             <span>Inventario</span>
         </a>
@@ -36,61 +36,29 @@
     <hr class="sidebar-divider my-0 bg-gray-100">
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link text-gray-100" th:href="@{/gestor/gestorListaUsuarioSede}">
-            <i class="fas fa-fw fa-plus-square text-gray-100"></i>
-            <span>Usuario Sede</span>
+        <a class="nav-link text-gray-100" th:href="@{/admin/generarCuenta}">
+            <i class="fas fa-fw fa-dolly-flatbed text-gray-100"></i>
+            <span>Productos sin confirmar</span>
+        </a>
+    </li>
+    <hr class="sidebar-divider my-0 bg-gray-100">
+    <!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link text-gray-100" th:href="@{/admin/generarCuenta}">
+            <i class="far fa-fw fa-folder-open text-gray-100"></i>
+            <span>Registro de ventas</span>
+        </a>
+    </li>
+    <hr class="sidebar-divider my-0 bg-gray-100">
+    <!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link text-gray-100" th:href="@{/admin/generarCuenta}">
+            <i class="far fa-fw fa-folder-open text-gray-100"></i>
+            <span>Registro de tiendas</span>
         </a>
     </li>
     <!-- Divider -->
     <hr class="sidebar-divider my-0 bg-gray-100">
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapseAtributos" aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder-open text-gray-100"></i>
-            <span>Gestionar Atributos</span>
-        </a>
-        <div id="collapseAtributos" class="collapse  bg-gray-100" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-gray-100 py-2 collapse-inner rounded">
-                <h6 class="collapse-header text-gray-900   ">Listas:</h6>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorListaComunidad}">-Comunidades</a>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorListaArtesano}">-Artesanos</a>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorListaCategoria}">-Categorías</a>
-            </div>
-        </div>
-    </li>
-    <hr class="sidebar-divider my-0 bg-gray-100">
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapseVentas" aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder-open text-gray-100"></i>
-            <span>Gestionar Ventas</span>
-        </a>
-        <div id="collapseVentas" class="collapse  bg-gray-100" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-gray-100 py-2 collapse-inner rounded">
-                <h6 class="collapse-header text-gray-900   ">Acción:</h6>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorGestionVentas}">-Nueva Venta</a>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorReporteVentas}">-Reporte Ventas</a>
-            </div>
-        </div>
-    </li>
-    <hr class="sidebar-divider my-0 bg-gray-100">
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapseProductos" aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder-open text-gray-100"></i>
-            <span>Gestionar Productos</span>
-        </a>
-        <div id="collapseProductos" class="collapse  bg-gray-100" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-gray-100 py-2 collapse-inner rounded">
-                <h6 class="collapse-header text-gray-900   ">Acción:</h6>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosEnviados}">-Enviados</a>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosAceptados}">-Aceptados</a>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosRechazados}">-Rechazados</a>
-            </div>
-        </div>
-    </li>
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block bg-gray-100">
 </ul>
 <!-- End of Sidebar -->
 
@@ -101,7 +69,7 @@
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i class="fa fa-bars"></i>
     </button>
-    <h4 class="text-gray-900"><b>Gestor</b></h4>
+    <h4 class="text-gray-900"><b>Usuario Sede</b></h4>
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
@@ -170,11 +138,8 @@
 <div th:fragment="script">
     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
     <!-- Core plugin JavaScript-->
     <script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
-
     <!-- Custom scripts for all pages-->
     <script th:src="@{/js/sb-admin-2.min.js}"></script>
 </div>
-</html>
