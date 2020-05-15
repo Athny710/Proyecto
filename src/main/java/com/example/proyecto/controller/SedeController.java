@@ -17,6 +17,9 @@ public class SedeController {
     @Autowired
     InventarioRepository inventarioRepository;
 
+    @GetMapping("perfil")
+    public String perfil(){ return "UsuarioSede/U-Perfil"; }
+
     //--------------------------Inventario
     @GetMapping("principal")
     public String principal(Model model){

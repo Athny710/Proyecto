@@ -33,7 +33,8 @@ public class GestorController {
 
 
     // ----------------------- ENLACES ---------------------------------
-
+    @GetMapping("perfil")
+    public String perfil(){ return "Gestor/G-Perfil"; }
     @GetMapping("gestorRegCompra")
     public String RegistroCompra(){return "Gestor/G-RegCompra";}
     @GetMapping("gestorEditProdCompra")

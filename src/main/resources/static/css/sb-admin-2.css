@@ -376,7 +376,7 @@ template {
   display: none !important;
 }
 
-h1, h2, h3, h4, h5, h6,
+h1, h2, h3, h4, h5, h6
 .h1, .h2, .h3, .h4, .h5, .h6 {
   margin-bottom: 0.5rem;
   font-weight: 400;
@@ -405,6 +405,10 @@ h5, .h5 {
 
 h6, .h6 {
   font-size: 1rem;
+}
+
+.peque{
+  font-size: 0.7rem;
 }
 
 .lead {
@@ -1889,6 +1893,9 @@ textarea.form-control {
 
 .form-group {
   margin-bottom: 1rem;
+}
+.form-group2 {
+  margin-bottom: 0.5rem;
 }
 
 .form-text {

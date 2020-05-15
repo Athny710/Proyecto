@@ -8,4 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/system")
 public class SystemController {
 
+    @GetMapping("")
+    public String cambiarContraseña(){
+        return "Sistema/S-NuevContra2";
+    }
 }
