@@ -3,10 +3,7 @@ package com.example.proyecto.controller;
 import com.example.proyecto.entity.Artesano;
 import com.example.proyecto.entity.Categoria;
 import com.example.proyecto.entity.Comunidad;
-import com.example.proyecto.repository.AdquisicionRepository;
-import com.example.proyecto.repository.ArtesanoRepository;
-import com.example.proyecto.repository.CategoriaRepository;
-import com.example.proyecto.repository.ComunidadRepository;
+import com.example.proyecto.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +27,8 @@ public class GestorController {
     ArtesanoRepository artesanoRepository;
     @Autowired
     AdquisicionRepository adquisicionRepository;
+    @Autowired
+    ProductoRepository productoRepository;
 
 
     // ----------------------- ENLACES ---------------------------------
@@ -51,14 +50,8 @@ public class GestorController {
     public String reporteVentas2(){return "Gestor/G-GenReporte2";}
     @GetMapping("gestorListarSinStock")
     public String listaSinStock (){return "Gestor/G-ListaSinStock";}
-    @GetMapping("gestorProductosAceptados")
-    public String productosAceptados (){return "Gestor/G-ProdAcep";}
     @GetMapping("gestorPrincipal")
     public String inventarioGestor (){return "Gestor/G-Inventario";}
-    @GetMapping("gestorProductosRechazados")
-    public String productosRechazados (){return "Gestor/G-ProdRecha";}
-    @GetMapping("gestorProductosEnviados")
-    public String productosEnviados (){return "Gestor/G-ProdEnv";}
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede (){return "Gestor/G-ListaUsuarioSede";}
     @GetMapping("gestorDetallesProdcutoCompra")
@@ -279,9 +272,29 @@ public class GestorController {
 
     // ----------------------- FIN CRUD ARTESANOS ---------------------------------
 
+    // ----------------------- INICIO CRUD PRODUCTO ---------------------------------
+    @GetMapping("gestorProductosEnviados")
+    public String productosEnviados(Model model){
+        model.addAttribute("listaProdEnv",productoRepository.listaProductosEnviados());
+        return "Gestor/G-ProdEnv";
+    }
+
+    @GetMapping("gestorProductosAceptados")
+    public String productosAceptados(Model model){
+        model.addAttribute("listaProdReci",productoRepository.listaProductosRecibidos());
+        return "Gestor/G-ProdAcep";
+    }
+
+    @GetMapping("gestorProductosRechazados")
+    public String productosRechazados(Model model){
+        model.addAttribute("listaProdRecha",productoRepository.listaProductosRechazados());
+        return "Gestor/G-ProdRecha";
+    }
 
 
 
+
+    // -------------------------- FIN CRUD PRODUCTO ---------------------------------
 
 
 
