@@ -13,10 +13,6 @@ public class Inventario {
     private String foto;
     private String color;
     private String preciomosqoy;
-    private String costotejedor;
-    private String numeropedido;
-    private String facilitador;
-    private String fecha;
     @ManyToOne
     @JoinColumn(name = "idproducto")
     private Producto producto;
@@ -68,38 +64,6 @@ public class Inventario {
 
     public void setPrecioMosqoy(String precioMosqoy) {
         this.preciomosqoy = precioMosqoy;
-    }
-
-    public String getCostoTejedor() {
-        return costotejedor;
-    }
-
-    public void setCostoTejedor(String costoTejedor) {
-        this.costotejedor = costoTejedor;
-    }
-
-    public String getNumeroPedido() {
-        return numeropedido;
-    }
-
-    public void setNumeroPedido(String numeroPedido) {
-        this.numeropedido = numeroPedido;
-    }
-
-    public String getFacilitador() {
-        return facilitador;
-    }
-
-    public void setFacilitador(String facilitador) {
-        this.facilitador = facilitador;
-    }
-
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
     }
 
     public Producto getProducto() {

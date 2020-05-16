@@ -239,7 +239,6 @@ public class GestorController {
         model.addAttribute("listaArtesanos",artesanoRepository.obtenerArtesanoBusqueda(busqueda));
         return "Gestor/G-ListaArtesano";
     }
-
     @GetMapping("gestorBorrarArtesano")
     public String borrarArtesano(Model model, @RequestParam("idartesano") int idartesano, RedirectAttributes attr){
         Optional<Artesano> obtenerArtesano = artesanoRepository.findById(idartesano);
@@ -249,7 +248,6 @@ public class GestorController {
         }
         return "redirect:/gestor/gestorListaArtesano";
     }
-
     @PostMapping("gestorGuardarArtesano")
     public String guardarArtesano(@ModelAttribute("artesano") @Valid Artesano artesano, BindingResult bindingResult,
                                   RedirectAttributes attr,
@@ -258,7 +256,6 @@ public class GestorController {
             model.addAttribute("listaComunidad", comunidadRepository.findAll());
             return "Gestor/G-EditArtesano";
         }else {
-
             if (artesano.getIdArtesano() == 0) {
                 attr.addFlashAttribute("msg", "Artesano no existe");
                 return "redirect:/gestor/gestorListaArtesano";
