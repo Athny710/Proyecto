@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.jws.WebParam;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +50,7 @@ public class SedeController {
 
     //----------------INICIO CRUD TIENDAS-------------------
 
+
     @GetMapping("registroTiendas")
     public String registroDeTiendas(@ModelAttribute("tienda") Tienda tienda,Model model){
         model.addAttribute("listaTiendas",tiendaRepository.findAll());
@@ -56,22 +58,22 @@ public class SedeController {
     }
 
     @PostMapping("guardarTienda")
-    public String guardarTienda(@ModelAttribute("tienda") @Valid Tienda tienda, BindingResult bindingResult,
+    public String guardarTienda(@ModelAttribute("tienda") Tienda tienda,
                                   RedirectAttributes attr,
                                   Model model){
 
             if (tienda.getIdtienda() == 0) {
                 tiendaRepository.save(tienda);
                 attr.addFlashAttribute("msg", "Se registró la tienda exitosamente");
-                return "redirect:/sede/principal";
+                return "redirect:/sede/registroTiendas";
             } else {
                 tiendaRepository.save(tienda);
                 attr.addFlashAttribute("msg", "Tienda actualizada correctamente");
-                return "redirect:/sede/principal";
+                return "redirect:/sede/registroTiendas";
             }
     }
 
-    @PostMapping("borrarTienda")
+    @GetMapping("borrarTienda")
     public String borrarTiendas(Model model, @RequestParam("id") int idtienda, RedirectAttributes attr){
         Optional<Tienda> obtenerTienda = tiendaRepository.findById(idtienda);
         if (obtenerTienda.isPresent()) {

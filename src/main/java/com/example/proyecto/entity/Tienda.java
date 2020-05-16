@@ -9,10 +9,8 @@ import javax.validation.constraints.NotBlank;
 public class Tienda {
 
     @Id
-    @NotBlank
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idtienda;
-
     @ManyToOne
     @JoinColumn(name = "idsede")
     private Sede sede;

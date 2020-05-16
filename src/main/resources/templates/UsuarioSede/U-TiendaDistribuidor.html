@@ -15,10 +15,15 @@
                 <div class="container-fluid">
                     <div>
                         <div class="form-group col-md-4" >
-                            <form method="post" class="user" th:href="@{/sede/guardarTienda}" th:object="${tienda}">
+                            <form method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}">
                                 <div class="form-group">
+                                    <input th:value="${tienda.idtienda}" name="idtienda" type="hidden" />
                                     <label>Nombre de Tienda</label>
                                     <input th:field="*{nombre}" type="text" class="form-control form-control-user">
+
+                                    <label>ID Sede</label>
+                                    <input th:field="*{sede.idsede}" type="text" class="form-control form-control-user">
+
                      <!--               <label for="inputAddress2">Código del Producto</label>
                                     <input type="text" class="form-control" id="inputAddress2" >
 
@@ -31,7 +36,7 @@
                                     ${tienda.idtienda==null?'Registrar':'Actualizar'
                      -->
                                 </div>
-                                <button type="submit" class="btn btn-user btn-primary btn-block" th:text="${'Registrar'}"></button>
+                                <button type="submit" class="btn btn-user btn-primary btn-block" th:text="${tienda.idtienda==null?'Registrar':'Actualizar'}"></button>
                                 <a th:href="@{/sede/principal}" class="btn btn-searchTop btn-user btn-block">Cancelar</a>
                             </form>
                         </div>
