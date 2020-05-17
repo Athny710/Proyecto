@@ -13,13 +13,14 @@
                 <div th:insert="Fragmentos/FragmentosSede.html::TopBar"></div>
                 <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
                 <div class="container-fluid">
-                    <div>
-                        <div class="form-group col-md-4" >
+                    <div class="row">
+                        <div class="form-group col-md-3 card shadow mb-4 ml-5" >
                             <form method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}">
                                 <div class="form-group">
+                                    <br>
                                     <input th:value="${tienda.idtienda}" name="idtienda" type="hidden" />
                                     <label>Nombre de Tienda</label>
-                                    <input th:field="*{nombre}" type="text" class="form-control form-control-user">
+                                    <input th:field="*{nombre}" type="text" class="form-control form-control-user"><br>
 
                                     <label>ID Sede</label>
                                     <input th:field="*{sede.idsede}" type="text" class="form-control form-control-user">
@@ -41,41 +42,45 @@
                             </form>
                         </div>
 
-                    </div>
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-gray-900">Registro de ventas</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>ID Tienda</th>
-                                        <th>Nombre de tienda</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>ID Tienda</th>
-                                        <th>Nombre de tienda</th>
-                                    </tr>
-                                    </tfoot>
-                                    <tbody>
-                                    <tr align="center" th:each="tienda, info: ${listaTiendas}">
-                                        <td th:text="${tienda.idtienda}"></td>
-                                        <td th:text="${tienda.nombre}"></td>
-                                        <td align="center">
-                                            <a style="margin-left: 10px" th:href="@{'/sede/editarTienda' + '?id=' + ${tienda.idtienda}}" class="far fa-list-alt text-orangeM" ></a>
-                                            <a style="margin-left: 10px" th:href="@{'/sede/borrarTienda' + '?id=' + ${tienda.idtienda}}"class="far fa-trash-alt text-redM"></a>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                        <div class="col-md-8 card shadow mb-4 ml-3">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-gray-900">Registro de ventas</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr>
+                                            <th>ID Tienda</th>
+                                            <th>Nombre de tienda</th>
+                                        </tr>
+                                        </thead>
+                                        <tfoot>
+                                        <tr>
+                                            <th>ID Tienda</th>
+                                            <th>Nombre de tienda</th>
+                                        </tr>
+                                        </tfoot>
+                                        <tbody>
+                                        <tr align="center" th:each="tienda, info: ${listaTiendas}">
+                                            <td th:text="${tienda.idtienda}"></td>
+                                            <td th:text="${tienda.nombre}"></td>
+                                            <td align="center">
+                                                <a style="margin-left: 10px" th:href="@{'/sede/editarTienda' + '?id=' + ${tienda.idtienda}}" class="far fa-list-alt text-orangeM" ></a>
+                                                <a style="margin-left: 10px" th:href="@{'/sede/borrarTienda' + '?id=' + ${tienda.idtienda}}"class="far fa-trash-alt text-redM"></a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
+
+
+
             </div>
         </div>
     </div>
