@@ -72,7 +72,7 @@ public class GestorController {
     @GetMapping("gestorRegistroComunidad")
     public String registroComunidad (@ModelAttribute("comunidad") Comunidad comunidad){
       //  model.addAttribute("listaComunidades", comunidadRepository.findAll());
-        return "Gestor/G-EditComunidad";
+        return "Gestor/G-RegistroComunidad";
     }
 
     @PostMapping("gestorGuardarComunidad")
@@ -117,7 +117,7 @@ public class GestorController {
             comunidad = optComunidad.get();
             model.addAttribute("comunidad", comunidad);
          //   model.addAttribute("listaComunidades", comunidadRepository.findAll());
-            return "Gestor/G-EditComunidad";
+            return "Gestor/G-RegistroComunidad";
         } else {
             return "redirect:/gestor/gestorListaComunidad";
          }
