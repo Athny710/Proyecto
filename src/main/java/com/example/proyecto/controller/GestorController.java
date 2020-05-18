@@ -76,26 +76,28 @@ public class GestorController {
     }
 
     @PostMapping("gestorGuardarComunidad")
-    public String guardarComunidad(@ModelAttribute("comunidad") Comunidad comunidad,
+    public String guardarComunidad(@ModelAttribute("comunidad") @Valid Comunidad comunidad, BindingResult bindingResult,
                                    Model model,
                                    RedirectAttributes attr) {
-        List<Comunidad> listaComunidad = comunidadRepository.buscarPorNombre(comunidad.getNombre(),comunidad.getCodigo());
-
-
-        if((comunidad.getIdComunidad()==0) && (listaComunidad.size() == 0)){
-            comunidadRepository.save(comunidad);
-            attr.addFlashAttribute("msg", "Comunidad creada exitosamente");
-            return "redirect:/gestor/gestorListaComunidad";
-        } else if (comunidad.getIdComunidad()!=0){
-            comunidadRepository.save(comunidad);
-            attr.addFlashAttribute("msg", "Comunidad actualizada exitosamente");
-            return "redirect:/gestor/gestorListaComunidad";
-        } else {
-            model.addAttribute("errorComunidad","Los datos ingresados ya existen");
+        List<Comunidad> listaComunidad = comunidadRepository.buscarPorNombre(comunidad.getNombre(), comunidad.getCodigo());
+        if (bindingResult.hasErrors()) {
             return "Gestor/G-RegistroComunidad";
+        } else {
+
+            if ((comunidad.getIdComunidad() == 0) && (listaComunidad.size() == 0)) {
+                comunidadRepository.save(comunidad);
+                attr.addFlashAttribute("msg", "Comunidad creada exitosamente");
+                return "redirect:/gestor/gestorListaComunidad";
+            } else if (comunidad.getIdComunidad() != 0) {
+                comunidadRepository.save(comunidad);
+                attr.addFlashAttribute("msg", "Comunidad actualizada exitosamente");
+                return "redirect:/gestor/gestorListaComunidad";
+            } else {
+                model.addAttribute("errorComunidad", "Los datos ingresados ya existen");
+                return "Gestor/G-RegistroComunidad";
+            }
         }
     }
-
     @PostMapping("/gestorBuscarComunidad")
     public String buscarComunidad(@RequestParam("searchField") String searchField,
                                   Model model) {
