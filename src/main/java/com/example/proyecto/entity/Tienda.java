@@ -2,6 +2,7 @@ package com.example.proyecto.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 
 @Entity
@@ -14,6 +15,8 @@ public class Tienda {
     @ManyToOne
     @JoinColumn(name = "idsede")
     private Sede sede;
+    @NotBlank
+    @Size(max=45,message = "* El nombre de la Tienda no debe exceder los 45 caracteres")
     private String nombre;
 
 

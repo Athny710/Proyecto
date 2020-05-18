@@ -15,18 +15,18 @@
                 <!-- Page Heading -->
                 <div class="container-fluid">
                     <div class="col-lg-2">
-                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistroArtesano}">Nueva Comunidad</a>
+                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistroComunidad}">Nueva Comunidad</a>
                     </div>
                     <br>
                     <div class="card shadowA mb-4">
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Comunidades</h5>
-                                <form >
-                                    <div class="input-group" th:action="@{/gestor/gestorBuscarComunidad}">
-                                        <input type="text" class="form-control bg-light border-0 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                <form method="post" th:action="@{/gestor/gestorBuscarComunidad}">
+                                    <div class="input-group" >
+                                        <input name="searchField" type="text" class="form-control bg-light border-0 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
-                                            <button class="btn btn-searchTop text-gray-900" type="button">
+                                            <button class="btn btn-searchTop text-gray-900" type="submit">
                                                 <i class="fas fa-search fa-sm text-gray-100"></i>
                                             </button>
                                         </div>
@@ -56,9 +56,11 @@
                                         <td th:text="${comunidad.nombre}"></td>
                                         <td th:text="${comunidad.codigo}"></td>
                                         <td align="center">
-                                            <a style="margin-left: 10px" href="*" >
-                                                <i th:href="@{'/gestor/gestorEditComunidad' + '?id=' + ${comunidad.idComunidad}}" class="far fa-list-alt text-orangeM"></i>
-                                                <i th:href="@{'/gestor/gestorBorarComunidad' + '?id=' + ${comunidad.idComunidad}}"class="far fa-trash-alt text-redM"></i>
+                                            <a style="margin-left: 10px" th:href="@{'/gestor/gestorEditComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}" >
+                                                <i  class="far fa-list-alt text-orangeM"></i>
+                                            </a>
+                                            <a style="margin-left: 10px" th:href="@{'/gestor/gestorBorarComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}" >
+                                                <i class="far fa-trash-alt text-redM"></i>
                                             </a>
                                         </td>
                                     </tr>

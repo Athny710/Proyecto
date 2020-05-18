@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="Fragmentos/FragmentosGestor.html::cabecera(titulo='Crear Envio')">
+</head>
+
+<body id="page-top">
+
+<div id="wrapper">
+    <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
+    <div id="content-wrapper" class="d-flex flex-column bg-white">
+        <div id="content">
+            <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
+            <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
+            <!-- Page Heading -->
+            <div class="container-fluid">
+                <div class="card shadowA mb-4">
+                    <div class="card-header2 py-3">
+                        <div class="d-flex justify-content-between centrado">
+                            <h5 class="m-0 font-weight-bold text-redM">Registro de nuevo envio</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="p-5">
+                                            <form method="post"  th:action="@{/gestor/gestorGuardarEnvio}" th:object="${estadoenviosede}">
+                                                <div class="form-group">
+                                                    <input th:field="*{estado}" type="text" class="form-control form-control-user"  placeholder="estado">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input th:field="*{cantidad}" type="text" class="form-control form-control-user" placeholder="cantidad">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input th:field="*{fecha}" type="date" class="form-control form-control-user"  placeholder="fecha">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input th:field="*{comentario}" type="text" class="form-control form-control-user"  placeholder="comentario">
+                                                </div>
+
+
+
+                                                <div class="form-group">
+                                                    <select th:field="*{inventariosede}" class="form-control form-control-user" id="inventariosede" placeholder="producto">
+                                                        <option th:each="inventario : ${listaInventario}" th:value="${inventario.idInventario}" th:text="${
+                                                        inventario.producto.getCodigoGenerado()  + ' ' +
+                                                        inventario.color
+                                                        + ' quedan: ' + inventario.stock }"></option>
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Registrar</button>
+                                                <a th:href="@{/gestor/gestorProductosEnviados}" class="btn btn-searchTop btn-user btn-block">
+                                                    Cancelar
+                                                </a>
+                                            </form>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1"></div>
+                                    <div class="col-lg-4">
+                                        <br>
+                                        <br>
+                                        <div class="card shadowA mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                El Gestor tiene el control total sobre todo el inventario. Así mismo, puede crear, editar y mantener sedes.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
+
+</body>
+</html>
