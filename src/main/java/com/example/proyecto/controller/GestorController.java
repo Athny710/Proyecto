@@ -50,7 +50,7 @@ public class GestorController {
     public String reporteVentas2(){return "Gestor/G-GenReporte2";}
     @GetMapping("gestorListarSinStock")
     public String listaSinStock (){return "Gestor/G-ListaSinStock";}
-    @GetMapping("gestorPrincipal")
+    @GetMapping(value = {"","gestorPrincipal"})
     public String inventarioGestor (){return "Gestor/G-Inventario";}
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede (){return "Gestor/G-ListaUsuarioSede";}
@@ -76,7 +76,7 @@ public class GestorController {
     }
 
     @PostMapping("gestorGuardarComunidad")
-    public String guardarComunidad(@ModelAttribute("comunidad") Comunidad comunidad,
+    public String guardarComunidad(@ModelAttribute("comunidad") Comunidad comunidad ,
                                    Model model,
                                    RedirectAttributes attr) {
         List<Comunidad> listaComunidad = comunidadRepository.buscarPorNombre(comunidad.getNombre(),comunidad.getCodigo());

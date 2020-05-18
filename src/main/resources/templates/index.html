@@ -10,6 +10,7 @@
         <!-- Outer Row -->
         <div class="row justify-content-center">
             <div class="col-xl-8 col-lg-12 col-md-9">
+                <br>
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
@@ -23,16 +24,15 @@
                                         <img th:src="@{/img/logofinal.jpg}" height="120px" width="240px">
                                     </div>
                                     <br><br><br>
-                                    <form class="user">
+                                    <form class="user" th:action="@{/processLogin}" method="post">
                                         <div class="form-group">
-                                            <input type="email" class="form-control-log form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                                            <input type="email" name="correo" class="form-control-log form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control-log form-control-user" id="exampleInputPassword" placeholder="Password">
+                                            <input type="password" name="password" class="form-control-log form-control-user" id="exampleInputPassword" placeholder="Password">
                                         </div>
-                                        <a class=" " th:href="@{/sede/principal}">Ingresar Sede</a>
-                                        <a class="btn btn-log btn-user btn-block" th:href="@{/admin/principal}">Ingresar Admin</a>
-                                        <a class="btn btn-log btn-user btn-block" th:href="@{/gestor/gestorPrincipal}">Ingresar Gestor</a>
+                                        <h5 th:if="${param.error}" class="text-danger">Acceso Denegado </h5>
+                                        <button  type="submit" class="btn btn-log btn-user btn-block" >Ingresar</button>
                                     </form>
                                     <hr>
                                     <div class="text-center">

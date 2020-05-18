@@ -30,7 +30,7 @@ public class SedeController {
     public String perfil(){ return "UsuarioSede/U-Perfil"; }
 
     //--------------------------Inventario
-    @GetMapping("principal")
+    @GetMapping(value = {"","principal"})
     public String principal(Model model){
         List<Inventario> lista = inventarioRepository.findAll();
         model.addAttribute("listaProductos", lista);
