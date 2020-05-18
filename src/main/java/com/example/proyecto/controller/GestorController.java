@@ -1,8 +1,6 @@
 package com.example.proyecto.controller;
 
-import com.example.proyecto.entity.Artesano;
-import com.example.proyecto.entity.Categoria;
-import com.example.proyecto.entity.Comunidad;
+import com.example.proyecto.entity.*;
 import com.example.proyecto.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +29,10 @@ public class GestorController {
     ProductoRepository productoRepository;
     @Autowired
     SedeRepository sedeRepository;
+    @Autowired
+    InventariosedeRepository inventariosedeRepository;
+    @Autowired
+    EstadoenviosedeRepository estadoenviosedeRepository;
 
     // ----------------------- ENLACES ---------------------------------
     @GetMapping("perfil")
@@ -332,25 +334,31 @@ public class GestorController {
     // -------------------------- TODO INICIO CRUD ENVIOS ------------------------------
     @GetMapping("gestorNuevoEnvio")
     public String NuevoEnvio(Model model) {
-        model.addAttribute("listaSedes", sedeRepository.findAll());
+        int idSede = 1; // TODO ESTO SE DEBE OBTENER EN SESION
+        List<Inventariosede> listaInventarioSede =  inventariosedeRepository.obtenerInventarioSede(idSede);
+        model.addAttribute("listaInventarioSede", listaInventarioSede);
+        model.addAttribute("idSede", idSede);
         return "Gestor/G-GestionEnvios";
     }
 
     @PostMapping("gestorGuardarEnvio")
-    public String guardarArtesano(@ModelAttribute("envio") @Valid Envio envio, BindingResult bindingResult,
-                                  RedirectAttributes attr,
-                                  Model model) {
+    public String guardarEnvio(@ModelAttribute("estadoenviosede") @Valid Estadoenviosede estadoenviosede, BindingResult bindingResult,
+                               RedirectAttributes attr,
+                               Model model) {
+        int idSede = 1; // TODO ESTO SE DEBE OBTENER EN SESION
         if (bindingResult.hasErrors()) {
-            model.addAttribute("listaComunidad", sedeRepository.findAll());
-            return "Gestor/G-EditArtesano";
+            List<Inventariosede> listaInventarioSede =  inventariosedeRepository.obtenerInventarioSede(idSede);
+            model.addAttribute("listaInventarioSede", listaInventarioSede);
+            model.addAttribute("idSede", idSede);
+            return "Gestor/G-GestionEnvios";
+
+
         } else {
-            if (artesano.getIdArtesano() == 0) {
-                attr.addFlashAttribute("msg", "Artesano no existe");
-                return "redirect:/gestor/gestorListaArtesano";
-            } else {
-                artesanoRepository.save(artesano);
-                attr.addFlashAttribute("msg", "Artesano actualizado correctamente");
-                return "redirect:/gestor/gestorListaArtesano";
+            if (estadoenviosede.getIdEnvioSede() != 0) {
+
+                estadoenviosedeRepository.save(estadoenviosede);
+                attr.addFlashAttribute("msg", "Envio guardado correctamente");
+                return "redirect:/gestor/gestorListaEnvio";
             }
         }
     }

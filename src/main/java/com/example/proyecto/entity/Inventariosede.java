@@ -18,6 +18,8 @@ public class Inventariosede {
     @JoinColumn(name = "idInventario")
     private Inventario inventario;
 
+
+
     public int getIdInventarioSede() {
         return idInventarioSede;
     }
