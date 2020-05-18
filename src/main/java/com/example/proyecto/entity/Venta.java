@@ -1,6 +1,9 @@
 package com.example.proyecto.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -8,16 +11,24 @@ import java.util.Date;
 public class Venta {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idventa;
+    @Column(nullable = false)
     private String nombrecliente;
     private String tipodocumentoidentidad;
     private String numerodocumentoidentidad;
+    @Column(nullable = false)
     private String tipodocumentoventa;
+    @Column(nullable = false)
     private int numerodocumentoventa;
     private String lugardeventa;
+    @Column(nullable = false)
     private float preciounitarioventa;
+    @Column(nullable = false)
     private int cantidad;
-    private Date fecha;
+    @Column(nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fecha;
 
     @ManyToOne
     @JoinColumn(name = "idtienda")
@@ -28,9 +39,8 @@ public class Venta {
     private Inventario inventario;
 
     @ManyToOne
-    @JoinColumn(name = "idusuario")
+    @JoinColumn(name = "idusuarios")
     private Usuarios usuarios;
-
 
     public int getIdventa() {
         return idventa;
@@ -104,11 +114,11 @@ public class Venta {
         this.cantidad = cantidad;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
@@ -126,5 +136,13 @@ public class Venta {
 
     public void setInventario(Inventario inventario) {
         this.inventario = inventario;
+    }
+
+    public Usuarios getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(Usuarios usuarios) {
+        this.usuarios = usuarios;
     }
 }
