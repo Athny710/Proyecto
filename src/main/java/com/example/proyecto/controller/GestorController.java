@@ -31,6 +31,8 @@ public class GestorController {
     EstadoenviosedeRepository estadoenviosedeRepository;
     @Autowired
     InventariosedeRepository inventariosedeRepository;
+    @Autowired
+    InventarioRepository inventarioRepository;
 
 
 
@@ -301,11 +303,9 @@ public class GestorController {
 
     // -------------------------- TODO INICIO CRUD ENVIOS ------------------------------
     @GetMapping("gestorNuevoEnvio")
-    public String NuevoEnvio(Model model) {
-        int idSede = 1; // TODO ESTO SE DEBE OBTENER EN SESION
-        List<Inventariosede> listaInventarioSede = inventariosedeRepository.obtenerInventarioSede(idSede);
-        model.addAttribute("listaInventarioSede", listaInventarioSede);
-        model.addAttribute("idSede", idSede);
+    public String NuevoEnvio(@ModelAttribute("estadoenviosede")  Estadoenviosede estadoenviosede, Model model ) {
+        List<Inventario> listaInventario = inventarioRepository.findAll();
+        model.addAttribute("listaInventario", listaInventario);
         return "Gestor/G-GestionEnvios";
     }
 
@@ -313,11 +313,9 @@ public class GestorController {
     public String guardarEnvio(@ModelAttribute("estadoenviosede") @Valid Estadoenviosede estadoenviosede, BindingResult bindingResult,
                                RedirectAttributes attr,
                                Model model) {
-        int idSede = 1; // TODO ESTO SE DEBE OBTENER EN SESION
         if (bindingResult.hasErrors()) {
-            List<Inventariosede> listaInventarioSede = inventariosedeRepository.obtenerInventarioSede(idSede);
-            model.addAttribute("listaInventarioSede", listaInventarioSede);
-            model.addAttribute("idSede", idSede);
+            List<Inventario> listaInventario = inventarioRepository.findAll();
+            model.addAttribute("listaInventario", listaInventario);
             return "Gestor/G-GestionEnvios";
 
 
@@ -328,9 +326,9 @@ public class GestorController {
                 attr.addFlashAttribute("msg", "Envio guardado correctamente");
                 return "redirect:/gestor/gestorListaEnvio";
             }
-            List<Inventariosede> listaInventarioSede = inventariosedeRepository.obtenerInventarioSede(idSede);
-            model.addAttribute("listaInventarioSede", listaInventarioSede);
-            model.addAttribute("idSede", idSede);
+
+            List<Inventario> listaInventario = inventarioRepository.findAll();
+            model.addAttribute("listaInventario", listaInventario);
             return "Gestor/G-GestionEnvios";
         }
 

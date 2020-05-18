@@ -26,23 +26,32 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="p-5">
-                                            <form method="post" class="user" th:href="@{/gestor/gestorGuardarEnvio}" th:object="${envio}">
+                                            <form method="post"  th:action="@{/gestor/gestorGuardarEnvio}" th:object="${estadoenviosede}">
                                                 <div class="form-group">
-                                                    <input th:field="*{nombre}" type="text" class="form-control form-control-user" id="nombre" placeholder="Nombre">
+                                                    <input th:field="*{estado}" type="text" class="form-control form-control-user"  placeholder="estado">
                                                 </div>
                                                 <div class="form-group">
-                                                    <input th:field="*{apellidoPaterno}" type="text" class="form-control form-control-user" id="apellidoPaterno" placeholder="Apellido Paterno">
+                                                    <input th:field="*{cantidad}" type="text" class="form-control form-control-user" placeholder="cantidad">
                                                 </div>
                                                 <div class="form-group">
-                                                    <input th:field="*{apellidoMaterno}" type="text" class="form-control form-control-user" id="apellidoMaterno" placeholder="Apellido Materno">
+                                                    <input th:field="*{fecha}" type="date" class="form-control form-control-user"  placeholder="fecha">
                                                 </div>
                                                 <div class="form-group">
-                                                    <select th:field="*{comunidad}" class="form-control form-control-user" id="comunidad" placeholder="Comunidad">
-                                                        <option th:each="comunidad : ${listaComunidad}" th:value="${comunidad.idcomunidad}" th:text="${comunidad.nombre}"></option>
+                                                    <input th:field="*{comentario}" type="text" class="form-control form-control-user"  placeholder="comentario">
+                                                </div>
+
+
+
+                                                <div class="form-group">
+                                                    <select th:field="*{inventariosede}" class="form-control form-control-user" id="inventariosede" placeholder="producto">
+                                                        <option th:each="inventario : ${listaInventario}" th:value="${inventario.idInventario}" th:text="${
+                                                        inventario.producto.getCodigoGenerado()  + ' ' +
+                                                        inventario.color
+                                                        + ' quedan: ' + inventario.stock }"></option>
                                                     </select>
                                                 </div>
-                                                <button type="submit" class="btn btn-primary" th:text="${artesano.idArtesano==null?'Registrar':'Actualizar'}"></button>
-                                                <a th:href="@{/gestor/gestorListaArtesano}" class="btn btn-searchTop btn-user btn-block">
+                                                <button type="submit" class="btn btn-primary">Registrar</button>
+                                                <a th:href="@{/gestor/gestorProductosEnviados}" class="btn btn-searchTop btn-user btn-block">
                                                     Cancelar
                                                 </a>
                                             </form>
