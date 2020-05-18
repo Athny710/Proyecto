@@ -1,8 +1,6 @@
 package com.example.proyecto.controller;
 
-import com.example.proyecto.entity.Artesano;
-import com.example.proyecto.entity.Categoria;
-import com.example.proyecto.entity.Comunidad;
+import com.example.proyecto.entity.*;
 import com.example.proyecto.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +27,11 @@ public class GestorController {
     AdquisicionRepository adquisicionRepository;
     @Autowired
     ProductoRepository productoRepository;
+    @Autowired
+    EstadoenviosedeRepository estadoenviosedeRepository;
+    @Autowired
+    InventariosedeRepository inventariosedeRepository;
+
 
 
     // ----------------------- ENLACES ---------------------------------
@@ -72,27 +75,30 @@ public class GestorController {
     @GetMapping("gestorRegistroComunidad")
     public String registroComunidad (@ModelAttribute("comunidad") Comunidad comunidad){
       //  model.addAttribute("listaComunidades", comunidadRepository.findAll());
-        return "Gestor/G-EditComunidad";
+        return "Gestor/G-RegistroComunidad";
     }
 
     @PostMapping("gestorGuardarComunidad")
-    public String guardarComunidad(@ModelAttribute("comunidad") Comunidad comunidad,
+    public String guardarComunidad(@ModelAttribute("comunidad") @Valid Comunidad comunidad, BindingResult bindingResult,
                                    Model model,
                                    RedirectAttributes attr) {
-        List<Comunidad> listaComunidad = comunidadRepository.buscarPorNombre(comunidad.getNombre(),comunidad.getCodigo());
-
-
-        if((comunidad.getIdComunidad()==0) && (listaComunidad.size() == 0)){
-            comunidadRepository.save(comunidad);
-            attr.addFlashAttribute("msg", "Comunidad creada exitosamente");
-            return "redirect:/gestor/gestorListaComunidad";
-        } else if (comunidad.getIdComunidad()!=0){
-            comunidadRepository.save(comunidad);
-            attr.addFlashAttribute("msg", "Comunidad actualizada exitosamente");
-            return "redirect:/gestor/gestorListaComunidad";
-        } else {
-            model.addAttribute("errorComunidad","Los datos ingresados ya existen");
+        List<Comunidad> listaComunidad = comunidadRepository.buscarPorNombre(comunidad.getNombre(), comunidad.getCodigo());
+        if (bindingResult.hasErrors()) {
             return "Gestor/G-RegistroComunidad";
+        } else {
+
+            if ((comunidad.getIdComunidad() == 0) && (listaComunidad.size() == 0)) {
+                comunidadRepository.save(comunidad);
+                attr.addFlashAttribute("msg", "Comunidad creada exitosamente");
+                return "redirect:/gestor/gestorListaComunidad";
+            } else if (comunidad.getIdComunidad() != 0) {
+                comunidadRepository.save(comunidad);
+                attr.addFlashAttribute("msg", "Comunidad actualizada exitosamente");
+                return "redirect:/gestor/gestorListaComunidad";
+            } else {
+                model.addAttribute("errorComunidad", "Los datos ingresados ya existen");
+                return "Gestor/G-RegistroComunidad";
+            }
         }
     }
 
@@ -115,7 +121,7 @@ public class GestorController {
             comunidad = optComunidad.get();
             model.addAttribute("comunidad", comunidad);
          //   model.addAttribute("listaComunidades", comunidadRepository.findAll());
-            return "Gestor/G-EditComunidad";
+            return "Gestor/G-RegistroComunidad";
         } else {
             return "redirect:/gestor/gestorListaComunidad";
          }
@@ -293,10 +299,44 @@ public class GestorController {
 
     // -------------------------- FIN CRUD PRODUCTO ---------------------------------
 
+    // -------------------------- TODO INICIO CRUD ENVIOS ------------------------------
+    @GetMapping("gestorNuevoEnvio")
+    public String NuevoEnvio(Model model) {
+        int idSede = 1; // TODO ESTO SE DEBE OBTENER EN SESION
+        List<Inventariosede> listaInventarioSede = inventariosedeRepository.obtenerInventarioSede(idSede);
+        model.addAttribute("listaInventarioSede", listaInventarioSede);
+        model.addAttribute("idSede", idSede);
+        return "Gestor/G-GestionEnvios";
+    }
+
+    @PostMapping("gestorGuardarEnvio")
+    public String guardarEnvio(@ModelAttribute("estadoenviosede") @Valid Estadoenviosede estadoenviosede, BindingResult bindingResult,
+                               RedirectAttributes attr,
+                               Model model) {
+        int idSede = 1; // TODO ESTO SE DEBE OBTENER EN SESION
+        if (bindingResult.hasErrors()) {
+            List<Inventariosede> listaInventarioSede = inventariosedeRepository.obtenerInventarioSede(idSede);
+            model.addAttribute("listaInventarioSede", listaInventarioSede);
+            model.addAttribute("idSede", idSede);
+            return "Gestor/G-GestionEnvios";
 
 
+        } else {
+            if (estadoenviosede.getIdEnvioSede() != 0) {
+
+                estadoenviosedeRepository.save(estadoenviosede);
+                attr.addFlashAttribute("msg", "Envio guardado correctamente");
+                return "redirect:/gestor/gestorListaEnvio";
+            }
+            List<Inventariosede> listaInventarioSede = inventariosedeRepository.obtenerInventarioSede(idSede);
+            model.addAttribute("listaInventarioSede", listaInventarioSede);
+            model.addAttribute("idSede", idSede);
+            return "Gestor/G-GestionEnvios";
+        }
+
+    }
 
 
-
+    // -------------------------- FIN CRUD ENVIOS ------------------------------
 
 }
