@@ -1,6 +1,12 @@
 package com.example.proyecto.controller;
 
+
 import com.example.proyecto.entity.*;
+
+import com.example.proyecto.entity.Artesano;
+import com.example.proyecto.entity.Comunidad;
+import com.example.proyecto.entity.Inventario;
+import com.example.proyecto.entity.Tienda;
 import com.example.proyecto.repository.InventarioRepository;
 import com.example.proyecto.repository.TiendaRepository;
 import com.example.proyecto.repository.VentaRepository;
@@ -76,7 +82,6 @@ public class SedeController {
 
     //----------------INICIO CRUD TIENDAS-------------------
 
-
     @GetMapping("registroTiendas")
     public String registroDeTiendas(@ModelAttribute("tienda") Tienda tienda,Model model){
         model.addAttribute("listaTiendas",tiendaRepository.findAll());
@@ -84,19 +89,32 @@ public class SedeController {
     }
 
     @PostMapping("guardarTienda")
-    public String guardarTienda(@ModelAttribute("tienda") Tienda tienda,
+    public String guardarTienda(@ModelAttribute("tienda") @Valid Tienda tienda,BindingResult bindingResult,
                                   RedirectAttributes attr,
                                   Model model){
+        if(bindingResult.hasErrors()){
+            model.addAttribute("listaTiendas", tiendaRepository.findAll());
+            return "UsuarioSede/U-TiendaDistribuidor";
+        }else {
 
             if (tienda.getIdtienda() == 0) {
                 tiendaRepository.save(tienda);
-                attr.addFlashAttribute("msg", "Se registró la tienda exitosamente");
+                attr.addFlashAttribute("msg", "Tienda agregada a la lista");
                 return "redirect:/sede/registroTiendas";
             } else {
                 tiendaRepository.save(tienda);
                 attr.addFlashAttribute("msg", "Tienda actualizada correctamente");
                 return "redirect:/sede/registroTiendas";
             }
+        }
+    }
+    @PostMapping("/buscarTienda")
+    public String buscarComunidad(@RequestParam("searchField") String searchField,
+                                  Model model) {
+
+        List<Tienda> listaT = tiendaRepository.buscarPorNombreDeTienda(searchField);
+        model.addAttribute("listaTiendas", listaT );
+        return "UsuarioSede/U-TiendaDistribuidor";
     }
 
     @GetMapping("borrarTienda")
