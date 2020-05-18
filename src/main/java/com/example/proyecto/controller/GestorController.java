@@ -335,7 +335,7 @@ public class GestorController {
     @GetMapping("gestorNuevoEnvio")
     public String NuevoEnvio(Model model) {
         int idSede = 1; // TODO ESTO SE DEBE OBTENER EN SESION
-        List<Inventariosede> listaInventarioSede =  inventariosedeRepository.obtenerInventarioSede(idSede);
+        List<Inventariosede> listaInventarioSede = inventariosedeRepository.obtenerInventarioSede(idSede);
         model.addAttribute("listaInventarioSede", listaInventarioSede);
         model.addAttribute("idSede", idSede);
         return "Gestor/G-GestionEnvios";
@@ -347,7 +347,7 @@ public class GestorController {
                                Model model) {
         int idSede = 1; // TODO ESTO SE DEBE OBTENER EN SESION
         if (bindingResult.hasErrors()) {
-            List<Inventariosede> listaInventarioSede =  inventariosedeRepository.obtenerInventarioSede(idSede);
+            List<Inventariosede> listaInventarioSede = inventariosedeRepository.obtenerInventarioSede(idSede);
             model.addAttribute("listaInventarioSede", listaInventarioSede);
             model.addAttribute("idSede", idSede);
             return "Gestor/G-GestionEnvios";
@@ -365,4 +365,5 @@ public class GestorController {
 
 
     // -------------------------- FIN CRUD ENVIOS ------------------------------
+
 }
