@@ -14,11 +14,11 @@ public class Comunidad {
     @Id
     private int idcomunidad;
     @Column(nullable = false)
-    @NotBlank
+    @NotBlank(message = "Este campo no puede estar vacio")
     @Size(max = 30)
     private String nombre;
     @Column(nullable = false)
-    @NotBlank
+    @NotBlank(message = "Este campo no puede estar vacio")
     @Size(max = 2)
     private String codigo;
 

@@ -1,33 +1,29 @@
 package com.example.proyecto.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "estadoenviosede")
 public class Estadoenviosede {
 
     @Id
-    private int idEnvioSede;
-    @Column
+    @Column(name="idEnvioSede")
+    private int idenviosede;
     private String estado;
-    @Column
     private int cantidad;
-    @Column
     private Date fecha;
-    @Column
     private String comentario;
     @ManyToOne
-    @JoinColumn(name = "idInventariosede")
-    private Inventariosede inventarioSede;
+    @JoinColumn(name = "idInventarioSede")
+    private Inventariosede inventariosede;
 
-    public int getIdEnvioSede() {
-        return idEnvioSede;
+    public int getIdenviosede() {
+        return idenviosede;
     }
 
-    public void setIdEnvioSede(int idEnvioSede) {
-        this.idEnvioSede = idEnvioSede;
+    public void setIdenviosede(int idEnvioSede) {
+        this.idenviosede = idEnvioSede;
     }
 
     public String getEstado() {
@@ -62,11 +58,11 @@ public class Estadoenviosede {
         this.comentario = comentario;
     }
 
-    public Inventariosede getInventarioSede() {
-        return inventarioSede;
+    public Inventariosede getInventariosede() {
+        return inventariosede;
     }
 
-    public void setInventarioSede(Inventariosede inventarioSede) {
-        this.inventarioSede = inventarioSede;
+    public void setInventariosede(Inventariosede inventarioSede) {
+        this.inventariosede = inventarioSede;
     }
 }

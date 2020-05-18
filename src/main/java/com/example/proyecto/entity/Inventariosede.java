@@ -1,14 +1,14 @@
 package com.example.proyecto.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "inventariosede")
 public class Inventariosede {
 
     @Id
-    private int idInventarioSede;
+    @Column(name = "idInventarioSede")
+    private int idinventariosede;
     @Column
     private int stock;
     @ManyToOne
@@ -20,12 +20,12 @@ public class Inventariosede {
 
 
 
-    public int getIdInventarioSede() {
-        return idInventarioSede;
+    public int getIdinventariosede() {
+        return idinventariosede;
     }
 
-    public void setIdInventarioSede(int idInventarioSede) {
-        this.idInventarioSede = idInventarioSede;
+    public void setIdinventariosede(int idInventarioSede) {
+        this.idinventariosede = idInventarioSede;
     }
 
     public int getStock() {

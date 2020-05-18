@@ -322,7 +322,7 @@ public class GestorController {
 
 
         } else {
-            if (estadoenviosede.getIdEnvioSede() != 0) {
+            if (estadoenviosede.getIdenviosede() != 0) {
 
                 estadoenviosedeRepository.save(estadoenviosede);
                 attr.addFlashAttribute("msg", "Envio guardado correctamente");

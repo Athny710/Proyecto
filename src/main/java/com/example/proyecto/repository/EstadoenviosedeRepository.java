@@ -10,6 +10,4 @@ import java.util.List;
 
 @Repository
 public interface EstadoenviosedeRepository extends JpaRepository<Estadoenviosede, Integer> {
-
-
 }
