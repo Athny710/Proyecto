@@ -1,8 +1,6 @@
 package com.example.proyecto.controller;
 
-import com.example.proyecto.entity.Artesano;
-import com.example.proyecto.entity.Categoria;
-import com.example.proyecto.entity.Comunidad;
+import com.example.proyecto.entity.*;
 import com.example.proyecto.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +27,11 @@ public class GestorController {
     AdquisicionRepository adquisicionRepository;
     @Autowired
     ProductoRepository productoRepository;
+    @Autowired
+    EstadoenviosedeRepository estadoenviosedeRepository;
+    @Autowired
+    InventariosedeRepository inventariosedeRepository;
+
 
 
     // ----------------------- ENLACES ---------------------------------
@@ -242,7 +245,6 @@ public class GestorController {
         model.addAttribute("listaArtesanos",artesanoRepository.obtenerArtesanoBusqueda(busqueda));
         return "Gestor/G-ListaArtesano";
     }
-
     @GetMapping("gestorBorrarArtesano")
     public String borrarArtesano(Model model, @RequestParam("idartesano") int idartesano, RedirectAttributes attr){
         Optional<Artesano> obtenerArtesano = artesanoRepository.findById(idartesano);
@@ -252,7 +254,6 @@ public class GestorController {
         }
         return "redirect:/gestor/gestorListaArtesano";
     }
-
     @PostMapping("gestorGuardarArtesano")
     public String guardarArtesano(@ModelAttribute("artesano") @Valid Artesano artesano, BindingResult bindingResult,
                                   RedirectAttributes attr,
@@ -327,7 +328,12 @@ public class GestorController {
                 attr.addFlashAttribute("msg", "Envio guardado correctamente");
                 return "redirect:/gestor/gestorListaEnvio";
             }
+            List<Inventariosede> listaInventarioSede = inventariosedeRepository.obtenerInventarioSede(idSede);
+            model.addAttribute("listaInventarioSede", listaInventarioSede);
+            model.addAttribute("idSede", idSede);
+            return "Gestor/G-GestionEnvios";
         }
+
     }
 
 
