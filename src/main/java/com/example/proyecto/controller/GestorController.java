@@ -39,10 +39,8 @@ public class GestorController {
     // ----------------------- ENLACES ---------------------------------
     @GetMapping("perfil")
     public String perfil(){ return "Gestor/G-Perfil"; }
-    @GetMapping("gestorRegCompra")
-    public String RegistroCompra(){return "Gestor/G-RegCompra";}
-    @GetMapping("gestorEditProdCompra")
-    public String EditProdCompra(){return "Gestor/G-EditProdCompra";}
+
+
     @GetMapping("gestorRegistroUsuarioSede")
     public String registroUsuarioSede(){return "Gestor/G-RegistroUsuarioSede";}
     @GetMapping("gestorGestionVentas")
@@ -53,20 +51,59 @@ public class GestorController {
     public String reporteVentas1(){return "Gestor/G-GenReporte";}
     @GetMapping("gestorReporteVentas2")
     public String reporteVentas2(){return "Gestor/G-GenReporte2";}
-    @GetMapping("gestorListarSinStock")
-    public String listaSinStock (){return "Gestor/G-ListaSinStock";}
-    @GetMapping(value = {"","gestorPrincipal"})
-    public String inventarioGestor (){return "Gestor/G-Inventario";}
+
+
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede (){return "Gestor/G-ListaUsuarioSede";}
-    @GetMapping("gestorDetallesProdcutoCompra")
-    public String detallesProdcutoCompra (){return "Gestor/G-DetallesProdcutoCompra";}
-    @GetMapping("gestorDetallesProdcutoConsignacion")
-    public String DetallesProdcutoConsignacion (){return "Gestor/G-DetallesProdcutoConsignacion";}
 
 
+// ----------------------- CRUD INVENTARIO ---------------------------------
 
-// ----------------------- CRUD COMUNIDAD ---------------------------------
+    @GetMapping(value = {"","gestorPrincipal"})
+    public String inventarioGestor (Model model){
+        List<Inventario> inventario = inventarioRepository.findAll();
+        model.addAttribute("inventario", inventario);
+        return "Gestor/G-Inventario";
+    }
+
+    @GetMapping("gestorListarSinStock")
+    public String listaSinStock (Model model){
+        List<Inventario> listaSinStock = inventarioRepository.findByStock(0);
+        model.addAttribute("listaSinStock",listaSinStock);
+        return "Gestor/G-ListaSinStock";
+    }
+
+    @GetMapping("gestorDetallesProdcuto")
+    public String detallesProdcutoCompra (Model model, @RequestParam("id") int id ){
+        Optional<Inventario> producto = inventarioRepository.findById(id);
+        if(producto.isPresent()){
+            Inventario producto2 = producto.get();
+
+            model.addAttribute("producto", producto2);
+            return "Gestor/G-DetallesProdcuto";
+        }else {
+            return "redirect:/gestorPrincipal";
+        }
+    }
+
+    @GetMapping("gestorEditProdCompra")
+    public String EditProdCompra(){
+        return "Gestor/G-EditProdCompra";
+    }
+
+    @GetMapping("gestorRegProducto")
+    public String RegistroCompra(){
+        return "Gestor/G-RegCompra";
+    }
+
+    @GetMapping("borrarProducto")
+    public String borrarProducto(){
+        return "redirect:/gestorPrincipal";
+    }
+
+    // ----------------------- CRUD INVENTARIO ---------------------------------
+
+// ----------------------- FIN CRUD COMUNIDAD ---------------------------------
 
     @GetMapping("gestorListaComunidad")
     public String listaComunidad (Model model){
