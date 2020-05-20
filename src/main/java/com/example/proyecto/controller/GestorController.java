@@ -16,7 +16,8 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/gestor")
 public class GestorController {
-
+    @Autowired
+    HistorialRepository historialRepository;
     @Autowired
     ComunidadRepository comunidadRepository;
     @Autowired
@@ -73,13 +74,21 @@ public class GestorController {
         return "Gestor/G-ListaSinStock";
     }
 
-    @GetMapping("gestorDetallesProdcuto")
+    @GetMapping("gestorDetallesProducto")
     public String detallesProdcutoCompra (Model model, @RequestParam("id") int id ){
-        Optional<Inventario> producto = inventarioRepository.findById(id);
-        if(producto.isPresent()){
-            Inventario producto2 = producto.get();
-
-            model.addAttribute("producto", producto2);
+        Optional<Inventario> inventario = inventarioRepository.findById(id);
+        List<Historial> listaHistorial = historialRepository.findAll();
+        Historial historial = null;
+        if(inventario.isPresent()){
+            Inventario inventario2 = inventario.get();
+            for (Historial hi: listaHistorial){
+                if(hi.getInventario().getIdInventario() == inventario2.getIdInventario()){
+                    historial = hi;
+                    break;
+                }
+            }
+            model.addAttribute("historial",historial);
+            model.addAttribute("producto", inventario2);
             return "Gestor/G-DetallesProdcuto";
         }else {
             return "redirect:/gestorPrincipal";
@@ -231,6 +240,7 @@ public class GestorController {
 
         if (optCategoria.isPresent()) {
             Categoria categoria = optCategoria.get();
+
             model.addAttribute("categoria", categoria);
             return "Gestor/G-EditCategoria";
         } else {

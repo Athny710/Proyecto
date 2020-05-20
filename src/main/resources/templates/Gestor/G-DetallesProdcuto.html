@@ -43,63 +43,63 @@
                                         <div class="col-lg-5 centrado">
                                             <p>Número de Pedido:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${producto.}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${historial.numeropedido}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Línea:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="Tradicional"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.producto.denominacion.linea.nombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Categoría:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="Home"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.producto.categoria.nombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Comunidad:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="Amaru"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.producto.comunidad.nombre}"></p></div>
                                     </div>
                                     <hr>
-                                    <div class="d-flex">
+                                    <div class="d-flex" th:if="${producto.producto.adquisicion.modalidad.equalsIgnoreCase('consignado')}">
                                         <div class="col-lg-5 centrado">
                                             <p>Artesano:</p>
                                         </div>
-                                        <div class="col-lg-6"><p>Anthony Rojas Lopez</p></div>
+                                        <div  class="col-lg-6" ><p th:text="${producto.producto.adquisicion.artesano.nombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Cantidad:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="5"></p></div>
+                                        <div class="col-lg-6"><p th:text="${historial.cantidad}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Tamaño:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="Small"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.producto.tamanho.nombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Color:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="Negro"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.color}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Fecha:</p>
                                         </div>
-                                        <div class="col-lg-6"><p>09/04/19</p></div>
+                                        <div class="col-lg-6"><p th:text="${historial.fecha}">09/04/19</p></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 ">
@@ -108,28 +108,28 @@
                                         <div class="col-lg-5 centrado">
                                             <p>Tipo de Adquisicion:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="Compra"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.producto.adquisicion.modalidad}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Costo Tejedor(S/.):</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="200"></p></div>
+                                        <div class="col-lg-6"><p th:text="${historial.costotejedor}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Costo Mosqoy(S/.):</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="300"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.preciomosqoy}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Descripción:</p>
                                         </div>
-                                        <div class="col-lg-6"><p>Chalina de 50cm de largo</p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.comentario.equalsIgnoreCase('')} ? 'No tiene Descripción' : producto.comentario"></p></div>
                                     </div>
                                     <hr>
                                     <br>
@@ -159,6 +159,6 @@
     </a>
 
     <div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
-
+    </div>
 </body>
 </html>
