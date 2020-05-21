@@ -2,16 +2,16 @@ package com.example.proyecto.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "inventario")
 public class Inventario {
 
     @Id
-    @JoinColumn(name = "idInventario")
+    @JoinColumn(name = "idinventario")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idinventario;
-    @NotBlank(message = "Este campo no puede ser vacío")
     private Integer stock;
     private String comentario;
     private String foto;
