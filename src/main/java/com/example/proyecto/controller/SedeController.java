@@ -37,65 +37,79 @@ public class SedeController {
     VentaRepository ventaRepository;
 
     @GetMapping("perfil")
-    public String perfil(){ return "UsuarioSede/U-Perfil"; }
+    public String perfil() {
+        return "UsuarioSede/U-Perfil";
+    }
 
     //--------------------------Inventario
-    @GetMapping(value = {"","principal"})
-    public String principal(Model model){
+    @GetMapping(value = {"", "principal"})
+    public String principal(Model model) {
         List<Inventario> lista = inventarioRepository.findAll();
         model.addAttribute("listaProductos", lista);
         return "UsuarioSede/U-Principal";
     }
 
     @GetMapping("productosEnEspera")
-    public String productosEnEspera(){
+    public String productosEnEspera() {
         return "UsuarioSede/U-ProductoEspera";
     }
 
 
     //--------------------CRUD VENTAS---------------
+    @GetMapping("/nuevaVenta")
+    public String nuevaVenta(@ModelAttribute("venta") Venta venta, Model model) {
+        return "UsuarioSede/U-NuevaVenta";
+    }
+
+
     @GetMapping("gestionVentas")
-    public String gestionDeVentas(@ModelAttribute("venta") Venta venta, Model model){
-        model.addAttribute("listaVentas",ventaRepository.findAll());
+    public String gestionDeVentas(@ModelAttribute("venta") Venta venta, Model model) {
+        model.addAttribute("listaVentas", ventaRepository.findAll());
         return "UsuarioSede/U-GestionVentas";
     }
+
     @PostMapping("/guardarVenta")
-    public String guardarVenta(@ModelAttribute("venta") Venta venta, RedirectAttributes attr) {
+    public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult bindingResult, RedirectAttributes att) {
 
-        Inventario inventario = new Inventario();
-        Usuarios usuarios = new Usuarios();
-        Tienda tienda = new Tienda();
+        if (bindingResult.hasErrors()) {
+            return "sede/U-NuevaVenta";
+        } else {
+            Inventario inventario = new Inventario();
+            Usuarios usuarios = new Usuarios();
+            Tienda tienda = new Tienda();
 
-        inventario.setIdInventario(1);
-        usuarios.setIdusuarios(1);
-        tienda.setIdtienda(1);
+            inventario.setIdInventario(1);
+            usuarios.setIdusuarios(1);
+            tienda.setIdtienda(1);
 
-        if (venta.getIdventa()== 0) {
-            attr.addFlashAttribute("msg", "Venta añadida exitosamente");
+            if (venta.getIdventa() == 0) {
+                venta.setInventario(inventario);
+                venta.setUsuarios(usuarios);
+                venta.setTienda(tienda);
+                ventaRepository.save(venta);
+                att.addFlashAttribute("msg", "Venta añadida exitosamente");
+            }
+            return "redirect:/gestionVentas";
+
         }
-        venta.setInventario(inventario);
-        venta.setUsuarios(usuarios);
-        venta.setTienda(tienda);
-        ventaRepository.save(venta);
-        return "redirect:/sede";
     }
 
     //----------------INICIO CRUD TIENDAS-------------------
 
     @GetMapping("registroTiendas")
-    public String registroDeTiendas(@ModelAttribute("tienda") Tienda tienda,Model model){
-        model.addAttribute("listaTiendas",tiendaRepository.findAll());
+    public String registroDeTiendas(@ModelAttribute("tienda") Tienda tienda, Model model) {
+        model.addAttribute("listaTiendas", tiendaRepository.findAll());
         return "UsuarioSede/U-TiendaDistribuidor";
     }
 
     @PostMapping("guardarTienda")
-    public String guardarTienda(@ModelAttribute("tienda") @Valid Tienda tienda,BindingResult bindingResult,
-                                  RedirectAttributes attr,
-                                  Model model){
-        if(bindingResult.hasErrors()){
+    public String guardarTienda(@ModelAttribute("tienda") @Valid Tienda tienda, BindingResult bindingResult,
+                                RedirectAttributes attr,
+                                Model model) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("listaTiendas", tiendaRepository.findAll());
             return "UsuarioSede/U-TiendaDistribuidor";
-        }else {
+        } else {
 
             if (tienda.getIdtienda() == 0) {
                 tiendaRepository.save(tienda);
@@ -108,30 +122,31 @@ public class SedeController {
             }
         }
     }
+
     @PostMapping("/buscarTienda")
     public String buscarComunidad(@RequestParam("searchField") String searchField,
                                   Model model) {
 
         List<Tienda> listaT = tiendaRepository.buscarPorNombreDeTienda(searchField);
-        model.addAttribute("listaTiendas", listaT );
+        model.addAttribute("listaTiendas", listaT);
         return "UsuarioSede/U-TiendaDistribuidor";
     }
 
     @GetMapping("borrarTienda")
-    public String borrarTiendas(Model model, @RequestParam("id") int idtienda, RedirectAttributes attr){
+    public String borrarTiendas(Model model, @RequestParam("id") int idtienda, RedirectAttributes attr) {
         Optional<Tienda> obtenerTienda = tiendaRepository.findById(idtienda);
         if (obtenerTienda.isPresent()) {
             tiendaRepository.deleteById(idtienda);
-            attr.addFlashAttribute("msg","Tienda borrada exitosamente");
+            attr.addFlashAttribute("msg", "Tienda borrada exitosamente");
         }
         return "redirect:/sede/registroTiendas";
     }
 
     @GetMapping("editarTienda")
-    public String editarTienda(@RequestParam("id") int idtienda, @ModelAttribute("tienda") Tienda tienda, Model model){
+    public String editarTienda(@RequestParam("id") int idtienda, @ModelAttribute("tienda") Tienda tienda, Model model) {
         Optional<Tienda> tiendaPorID = tiendaRepository.findById(idtienda);
         if (tiendaPorID.isPresent()) {
-            model.addAttribute("tienda",tiendaPorID.get());
+            model.addAttribute("tienda", tiendaPorID.get());
 
             return "UsuarioSede/U-TiendaDistribuidor";
         } else {
