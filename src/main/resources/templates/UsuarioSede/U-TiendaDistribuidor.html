@@ -15,7 +15,7 @@
                 <div class="container-fluid">
                     <div>
                         <div class="form-group col-md-4" >
-                            <form method="post" class="user" th:href="@{/sede/guardarTienda}" th:object="${tienda}">
+                            <form method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}">
                                 <div class="form-group">
                                     <label>Nombre de Tienda</label>
                                     <input th:field="*{nombre}" type="text" class="form-control form-control-user">
