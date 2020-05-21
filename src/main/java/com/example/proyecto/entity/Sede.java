@@ -3,10 +3,11 @@ package com.example.proyecto.entity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "sede")
-public class Sede {
+public class Sede implements Serializable    {
     @Id
     private int idsede;
     private String nombre;

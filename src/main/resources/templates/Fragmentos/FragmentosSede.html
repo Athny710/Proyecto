@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:fragment="cabecera(titulo)">
     <meta charset="utf-8">
@@ -46,7 +47,7 @@
     <li class="nav-item">
         <a class="nav-link text-gray-100" th:href="@{/sede/gestionVentas}">
             <i class="far fa-fw fa-folder-open text-gray-100"></i>
-            <span>Registro de ventas</span>
+            <span>Lista de Ventas</span>
         </a>
     </li>
     <hr class="sidebar-divider my-0 bg-gray-100">
@@ -95,7 +96,7 @@
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Telito Teleco</span>
+                <span sec:authorize="isAuthenticated()" th:text="|${session.user.nombre} ${session.user.apellido}|" class="mr-2 d-none d-lg-inline text-gray-600 small">Telito Teleco</span>
                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
             </a>
             <!-- Dropdown - User Information -->
@@ -126,10 +127,10 @@
                 </button>
             </div>
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
+            <form class="modal-footer" th:action="@{/cerrar}" method="post" >
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" th:href="@{/system}">Logout</a>
-            </div>
+                <button class="btn btn-primary" type="submit">Logout</button>
+            </form>
         </div>
     </div>
 </div>

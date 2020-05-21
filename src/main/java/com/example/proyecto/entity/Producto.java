@@ -1,6 +1,7 @@
 package com.example.proyecto.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "producto")

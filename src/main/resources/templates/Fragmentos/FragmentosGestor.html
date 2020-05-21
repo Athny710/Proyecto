@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:fragment="cabecera(titulo)">
     <meta charset="utf-8">
@@ -10,16 +11,18 @@
     <title th:text="${titulo}"></title>
     <!-- Custom fonts for this template-->
     <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
     <!-- Custom styles for this template-->
     <link th:href="@{/css/sb-admin-2.css}" rel="stylesheet">
 </head>
+
 
 <!-- Sidebar -->
 <ul th:fragment="SideBarGestor" class="navbar-nav bg-redM sidebar sidebar-dark accordion shadow" id="accordionSidebar">
     <!-- Sidebar - Logo -->
     <a class="sidebar-brand align-items-center justify-content-center" th:href="@{/system}">
-        <img th:src="@{/img/logoRed.png}" width="150px" height="90px" />
+        <img th:src="@{/img/logoRed.png}" width="150px" height="90px"/>
     </a>
     <!-- Divider
     <hr class="sidebar-divider2">-->
@@ -45,11 +48,13 @@
     <hr class="sidebar-divider my-0 bg-gray-100">
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapseAtributos" aria-expanded="true" aria-controls="collapsePages">
+        <a class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapseAtributos"
+           aria-expanded="true" aria-controls="collapsePages">
             <i class="fab fa-fw fa-buffer text-gray-100"></i>
             <span>Gestionar Atributos</span>
         </a>
-        <div id="collapseAtributos" class="collapse  bg-gray-100" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapseAtributos" class="collapse  bg-gray-100" aria-labelledby="headingPages"
+             data-parent="#accordionSidebar">
             <div class="bg-gray-100 py-2 collapse-inner rounded">
                 <h6 class="collapse-header text-gray-900   ">Listas:</h6>
                 <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorListaComunidad}">-Comunidades</a>
@@ -61,14 +66,16 @@
     <hr class="sidebar-divider my-0 bg-gray-100">
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapseVentas" aria-expanded="true" aria-controls="collapsePages">
+        <a class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapseVentas"
+           aria-expanded="true" aria-controls="collapsePages">
             <i class="fab fa-fw fa-buffer text-gray-100"></i>
             <span>Gestionar Ventas</span>
         </a>
-        <div id="collapseVentas" class="collapse  bg-gray-100" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapseVentas" class="collapse  bg-gray-100" aria-labelledby="headingPages"
+             data-parent="#accordionSidebar">
             <div class="bg-gray-100 py-2 collapse-inner rounded">
                 <h6 class="collapse-header text-gray-900   ">Acción:</h6>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorGestionVentas}">-Nueva Venta</a>
+                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorGestionVentas}">-Lista Ventas</a>
                 <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorReporteVentas}">-Reporte Ventas</a>
             </div>
         </div>
@@ -76,16 +83,19 @@
     <hr class="sidebar-divider my-0 bg-gray-100">
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapseProductos" aria-expanded="true" aria-controls="collapsePages">
+        <a class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapseProductos"
+           aria-expanded="true" aria-controls="collapsePages">
             <i class="fab fa-fw fa-buffer text-gray-100"></i>
             <span>Gestionar Productos</span>
         </a>
-        <div id="collapseProductos" class="collapse  bg-gray-100" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapseProductos" class="collapse  bg-gray-100" aria-labelledby="headingPages"
+             data-parent="#accordionSidebar">
             <div class="bg-gray-100 py-2 collapse-inner rounded">
                 <h6 class="collapse-header text-gray-900   ">Acción:</h6>
                 <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosEnviados}">-Enviados</a>
                 <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosAceptados}">-Aceptados</a>
                 <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosRechazados}">-Rechazados</a>
+                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorNuevoEnvio}">-Nuevo Envio</a>
             </div>
         </div>
     </li>
@@ -106,14 +116,17 @@
     <ul class="navbar-nav ml-auto">
         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
         <li class="nav-item dropdown no-arrow d-sm-none">
-            <a class="nav-link dropdown-toggle text-gray-900" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle text-gray-900" href="#" id="searchDropdown" role="button"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-search fa-fw "></i>
             </a>
             <!-- Dropdown - Messages -->
-            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                 aria-labelledby="searchDropdown">
                 <form class="form-inline mr-auto w-100 navbar-search">
                     <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                               aria-label="Search" aria-describedby="basic-addon2">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="button">
                                 <i class="fas fa-search fa-sm"></i>
@@ -126,12 +139,14 @@
         <div class="topbar-divider d-none d-sm-block"></div>
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Telito Teleco</span>
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                <span sec:authorize="isAuthenticated()" th:text="|${session.user.nombre} ${session.user.apellido}|" class="mr-2 d-none d-lg-inline text-gray-600 small">Telito Teleco</span>
                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
             </a>
             <!-- Dropdown - User Information -->
-            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in bg-orangeM" aria-labelledby="userDropdown">
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in bg-orangeM"
+                 aria-labelledby="userDropdown">
                 <a class="dropdown-item text-white" th:href="@{/gestor/perfil}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-100"></i>
                     Perfil
@@ -148,7 +163,8 @@
 <!-- End of Topbar -->
 
 <!-- Logout Modal-->
-<div th:fragment="LogOut" class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div th:fragment="LogOut" class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -158,10 +174,10 @@
                 </button>
             </div>
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
+            <form class="modal-footer" th:action="@{/cerrar}" method="post" >
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" th:href="@{/system}">Logout</a>
-            </div>
+                <button class="btn btn-primary" type="submit">Logout</button>
+            </form>
         </div>
     </div>
 </div>

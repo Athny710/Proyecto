@@ -16,9 +16,6 @@
                 <div th:insert="Fragmentos/FragmentosSede.html::TopBar"></div>
                 <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
                 <div class="container-fluid">
-                    <div class="col-lg-2">
-                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/sede/nuevoProducto}">Añadir Producto</a>
-                    </div>
                     <br>
                     <div class="card shadowA mb-4">
                         <div class="card-header2 py-3">
@@ -47,37 +44,23 @@
                                             <th>Tipo de Adquisicion</th>
                                             <th>Fecha de adquisicion</th>
                                             <th>Detalles</th>
-                                            <th>Editar/Borrar</th>
+                                            <th>Devolver</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr align="center">
-                                            <th>Nombre del Producto</th>
-                                            <th>Codigo</th>
-                                            <th>Stock(unidades)</th>
-                                            <th>Tipo de Adquisicion</th>
-                                            <th>Fecha de adquisicion</th>
-                                            <th>Detalles</th>
-                                            <th>Editar/Borrar</th>
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
                                         <tr th:each="x : ${listaProductos}" align="center">
-                                            <td th:text="${x.producto.denominacion.nombre}"></td>
-                                            <td th:text="${x.producto.denominacion.codigoNombre}"></td>
+                                            <td th:text="${x.inventario.producto.denominacion.nombre}"></td>
+                                            <td th:text="${x.inventario.producto.denominacion.codigoNombre}"></td>
                                             <td th:text="${x.stock}"></td>
-                                            <td th:text="${x.producto.adquisicion.modalidad}"></td>
-                                            <td th:text="${x.producto.adquisicion.fecha}"></td>
+                                            <td th:text="${x.inventario.producto.adquisicion.modalidad}"></td>
+                                            <td th:text="${x.inventario.producto.adquisicion.fecha}"></td>
                                             <td align="center">
-                                                <a th:href="@{'/sede/detalleProducto?id='+${x.idInventario}}">
+                                                <a th:href="@{'/sede/DetallesProducto?id='+${x.idinventariosede}}">
                                                     <i class="far fa-list-alt text-greenM"></i>
                                                 </a>
                                             </td>
                                             <td align="center">
-                                                <a th:href="@{'/sede/editarProducto?id='+${x.idInventario}}">
-                                                    <i class="far fa-edit text-orangeM" style="margin-right: 5px"></i>
-                                                </a>
-                                                <a th:href="@{'/sede/borrarProducto?id='+${x.idInventario}}">
+                                                <a th:href="@{'/sede/DevolverProducto?id='+${x.idinventariosede}}">
                                                     <i class="far fa-trash-alt text-redM" style="margin-left: 5px"></i>
                                                 </a>
                                             </td>

@@ -17,7 +17,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                           <!--  <h4 class="m-0 font-weight-bold text-gray-900" >Registro de nueva comunidad</h4>   -->
-                        <h4 class="m-0 font-weight-bold text-gray-900" th:text="${comunidad.nombre==null?'Registro de nueva comunidad':'Editar comunidad'}">Registro de nueva comunidad </h4>
+                        <h4 class="m-0 font-weight-bold text-gray-900" th:text="${comunidad.idComunidad==0?'Registro de nueva comunidad':'Editar comunidad'}">Registro de nueva comunidad </h4>
                         </div>
                         <div th:if="${errorComunidad != null}" th:text="${errorComunidad}" class="alert alert-danger" role="alert"></div>
                         <div class="card-body">
@@ -26,18 +26,20 @@
                                 <input th:field="${comunidad.idComunidad}" type="hidden"/>
                                 <div class="form-group col-md-6">
                                     <label for="nombre">Nombre</label>
-                                    <input th:field="${comunidad.nombre}"  type="text" class="form-control"  >
+                                    <input th:field="*{nombre}"  type="text" class="form-control"  >
+                                    <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div th:if="${comunidad.idComunidad  == 0}" class="form-group col-md-6">
                                     <label for="codigo">Código</label>
-                                    <input th:field="${comunidad.codigo}"  type="text" class="form-control"  >
+                                    <input th:field="*{codigo}"  type="text" class="form-control"  >
+                                    <div class="text-danger" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></div>
                                 </div>
                                 <div class="form-row col-md-2">
                                     <div class="form-group col-md-8">
                                         <a th:href="@{/gestor/gestorListaComunidad}" class="btn btn-danger">Cancelar</a>
                                     </div>
                                     <div class="form-group col-md-2"  >
-                                        <button type="submit" class="btn btn-primary" th:text="${comunidad.nombre==null?'Registrar':'Actualizar'}">Registrar</button>
+                                        <button type="submit" class="btn btn-primary" th:text="${comunidad.idComunidad==0?'Registrar':'Actualizar'}">Registrar</button>
                                     </div>
                                 </div>
                             </form>

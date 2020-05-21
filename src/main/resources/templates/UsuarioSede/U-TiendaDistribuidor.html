@@ -13,12 +13,19 @@
                 <div th:insert="Fragmentos/FragmentosSede.html::TopBar"></div>
                 <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
                 <div class="container-fluid">
-                    <div>
-                        <div class="form-group col-md-4" >
+                    <div class="row">
+                        <div class="form-group col-md-3 card shadow mb-4 ml-5" >
                             <form method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}">
                                 <div class="form-group">
+                                    <br>
+                                    <input th:value="${tienda.idtienda}" name="idtienda" type="hidden" />
                                     <label>Nombre de Tienda</label>
                                     <input th:field="*{nombre}" type="text" class="form-control form-control-user">
+                                    <div class="text-danger text-center" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</div><br>
+
+                                    <label>ID Sede</label>
+                                    <input th:field="*{sede.idsede}" type="text" class="form-control form-control-user">
+
                      <!--               <label for="inputAddress2">Código del Producto</label>
                                     <input type="text" class="form-control" id="inputAddress2" >
 
@@ -31,46 +38,60 @@
                                     ${tienda.idtienda==null?'Registrar':'Actualizar'
                      -->
                                 </div>
-                                <button type="submit" class="btn btn-user btn-primary btn-block" th:text="${'Registrar'}"></button>
+                                <br>
+                                <button type="submit" class="btn btn-user btn-primary btn-block" th:text="Aceptar"></button>
                                 <a th:href="@{/sede/principal}" class="btn btn-searchTop btn-user btn-block">Cancelar</a>
                             </form>
                         </div>
 
-                    </div>
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-gray-900">Registro de ventas</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>ID Tienda</th>
-                                        <th>Nombre de tienda</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>ID Tienda</th>
-                                        <th>Nombre de tienda</th>
-                                    </tr>
-                                    </tfoot>
-                                    <tbody>
-                                    <tr align="center" th:each="tienda, info: ${listaTiendas}">
-                                        <td th:text="${tienda.idtienda}"></td>
-                                        <td th:text="${tienda.nombre}"></td>
-                                        <td align="center">
-                                            <a style="margin-left: 10px" th:href="@{'/sede/editarTienda' + '?id=' + ${tienda.idtienda}}" class="far fa-list-alt text-orangeM" ></a>
-                                            <a style="margin-left: 10px" th:href="@{'/sede/borrarTienda' + '?id=' + ${tienda.idtienda}}"class="far fa-trash-alt text-redM"></a>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                        <div class="col-md-8 card shadow mb-4 ml-3">
+                            <div class="card-header2 py-3 d-flex justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-gray-900 ">Lista de Tiendas</h6>
+                                <form method="post" th:action="@{/sede/buscarTienda}">
+
+                                        <input name="searchField" type="text" class="form-control bg-light border-0 small bg-white" placeholder="Filtrar por nombre" aria-label="Search" aria-describedby="basic-addon2">
+
+                                </form>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                    <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr class = "bg-gray-900 text-white">
+                                            <th>ID Tienda</th>
+                                            <th>Nombre de tienda</th>
+                                            <th>Editar/Eliminar</th>
+                                        </tr>
+                                        </thead>
+                                        <tfoot>
+                                        <tr class = "bg-gray-900 text-white">
+                                            <th>ID Tienda</th>
+                                            <th>Nombre de tienda</th>
+                                            <th>Editar/Eliminar</th>
+                                        </tr>
+                                        </tfoot>
+                                        <tbody>
+                                        <tr align="center" th:each="tienda, info: ${listaTiendas}">
+                                            <td th:text="${tienda.idtienda}"></td>
+                                            <td th:text="${tienda.nombre}"></td>
+                                            <td align="center">
+                                                <a style="margin-left: 10px" th:href="@{'/sede/editarTienda' + '?id=' + ${tienda.idtienda}}" class="far fa-edit text-orangeM" ></a>
+                                                <a style="margin-left: 10px" th:href="@{'/sede/borrarTienda' + '?id=' + ${tienda.idtienda}}"class="far fa-trash-alt text-redM"></a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
+
+
+
             </div>
         </div>
     </div>

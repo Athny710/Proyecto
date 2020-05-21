@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminController {
 
     //--------------------------Inventario
-    @GetMapping("principal")
+    @GetMapping(value = {"","principal"})
     public String principalAdmin(){
         return "Administrador/A-PagPrincipal";
     }

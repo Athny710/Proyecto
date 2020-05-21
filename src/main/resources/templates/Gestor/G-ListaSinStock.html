@@ -16,17 +16,19 @@
                 <div class="container-fluid">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 text-gray-900 font-weight-bold text-primary">Productos sin stock</h6>
-                            <form class="-angle-double-right d-none d-sm-inline-block form-inline mr-auto ml-md-20 my-2 my-md-30 mw-100 navbar-search">
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-10 small bg-white" placeholder="Filtrar for..." aria-label="Search" aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-log text-gray-900" type="button">
-                                            <i class="fas fa-search fa-sm text-gray-100"></i>
-                                        </button>
+                            <div class="d-flex justify-content-between centrado">
+                                <h5 class="m-0 font-weight-bold text-redM">Productos sin Stock</h5>
+                                <form method="post" th:action="@{/gestor/gestorBuscarInventarioSinStock}">
+                                    <div class="input-group" >
+                                        <input name="searchField" type="text" class="form-control bg-light border-0 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-searchTop text-gray-900" type="submit">
+                                                <i class="fas fa-search fa-sm text-gray-100"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -39,32 +41,14 @@
                                         <th>Línea</th>
                                         <th>Categoría</th>
                                         <th>Nombre</th>
-                                        <th>Sede</th>
                                     </tr>
                                     </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Código</th>
-                                        <th>Línea</th>
-                                        <th>Categoría</th>
-                                        <th>Nombre</th>
-                                        <th>Sede</th>
-                                    </tr>
-                                    </tfoot>
                                     <tbody>
-                                    <tr>
-                                        <td>MHQONRUGSHUASH19MAY</td>
-                                        <td>tradicional</td>
-                                        <td>home</td>
-                                        <td>likilla</td>
-                                        <td>Lima</td>
-                                    </tr>
-                                    <tr>
-                                        <td>REHJTSERTUYEBHY18MAY</td>
-                                        <td>moskoy</td>
-                                        <td>usable</td>
-                                        <td>awana</td>
-                                        <td>Ica</td>
+                                    <tr align="center" th:each="productos, info: ${listaSinStock}">
+                                        <td th:text="${productos.producto.codigoGenerado}"></td>
+                                        <td th:text="${productos.producto.denominacion.linea.nombre}"></td>
+                                        <td th:text="${productos.producto.categoria.nombre}"></td>
+                                        <td th:text="${productos.producto.denominacion.nombre}"></td>
                                     </tr>
                                     </tbody>
                                 </table>

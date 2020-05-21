@@ -10,16 +10,15 @@ public class Artesano {
     @NotBlank
     private int idartesano;
     @Column(nullable = false)
-    @NotBlank
+    @NotBlank(message = "Este Campo no puede ser vacío")
     private String nombre;
     @Column(nullable = false)
-    @NotBlank
+    @NotBlank(message = "Este Campo no puede ser vacío")
     private String apellidopaterno;
-    @NotBlank
+    @NotBlank(message = "Este Campo no puede ser vacío")
     private String apellidomaterno;
     @ManyToOne
     @JoinColumn(name = "idcomunidad")
-    @NotBlank
     private Comunidad comunidad;
 
 

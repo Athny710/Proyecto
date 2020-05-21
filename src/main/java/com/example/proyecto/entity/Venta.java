@@ -1,6 +1,10 @@
 package com.example.proyecto.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -8,16 +12,48 @@ import java.util.Date;
 public class Venta {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idventa;
+
+    @NotBlank(message = "No puede ser vacío")
+    @Size(max = 45, message = "No puede tener mas de 45 caracteres")
+    @Column(nullable = false)
     private String nombrecliente;
+
     private String tipodocumentoidentidad;
+
+    @Positive(message="No puede ser negativo")
+    @Digits(integer = 8, fraction = 0, message="No puede ser decimal y debe tener 8 digitos")
     private String numerodocumentoidentidad;
+
+    @Column(nullable = false)
+    @NotBlank(message = "No puede ser vacío")
     private String tipodocumentoventa;
+
+    @Positive(message="No puede ser negativo")
+    @Digits(integer = 8, fraction = 0, message="No puede ser decimal y debe tener 8 digitos")
+    @Column(nullable = false)
+    @NotBlank(message = "No puede ser vacío")
     private int numerodocumentoventa;
+
     private String lugardeventa;
+
+    @Column(nullable = false)
+    @Positive(message="No puede ser negativo")
+    @Digits(integer = 8, fraction = 0, message="No puede ser decimal y debe tener 8 digitos")
+    @NotBlank(message = "No puede ser vacío")
     private float preciounitarioventa;
+
+    @Column(nullable = false)
+    @Positive(message="No puede ser negativo")
+    @Digits(integer = 8, fraction = 0, message="No puede ser decimal y debe tener 8 digitos")
+    @NotBlank(message = "No puede ser vacío")
     private int cantidad;
-    private Date fecha;
+
+    @Column(nullable = false)
+    @NotBlank(message = "No puede ser vacío")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fecha;
 
     @ManyToOne
     @JoinColumn(name = "idtienda")
@@ -28,9 +64,8 @@ public class Venta {
     private Inventario inventario;
 
     @ManyToOne
-    @JoinColumn(name = "idusuario")
+    @JoinColumn(name = "idusuarios")
     private Usuarios usuarios;
-
 
     public int getIdventa() {
         return idventa;
@@ -104,11 +139,11 @@ public class Venta {
         this.cantidad = cantidad;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
@@ -126,5 +161,13 @@ public class Venta {
 
     public void setInventario(Inventario inventario) {
         this.inventario = inventario;
+    }
+
+    public Usuarios getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(Usuarios usuarios) {
+        this.usuarios = usuarios;
     }
 }
