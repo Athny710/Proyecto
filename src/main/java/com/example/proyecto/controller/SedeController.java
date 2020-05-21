@@ -7,9 +7,7 @@ import com.example.proyecto.entity.Artesano;
 import com.example.proyecto.entity.Comunidad;
 import com.example.proyecto.entity.Inventario;
 import com.example.proyecto.entity.Tienda;
-import com.example.proyecto.repository.InventarioRepository;
-import com.example.proyecto.repository.TiendaRepository;
-import com.example.proyecto.repository.VentaRepository;
+import com.example.proyecto.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,30 +26,81 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/sede")
 public class SedeController {
-
+    @Autowired
+    HistorialRepository historialRepository;
     @Autowired
     InventarioRepository inventarioRepository;
     @Autowired
     TiendaRepository tiendaRepository;
     @Autowired
     VentaRepository ventaRepository;
+    @Autowired
+    InventariosedeRepository inventariosedeRepository;
 
     @GetMapping("perfil")
     public String perfil(){ return "UsuarioSede/U-Perfil"; }
 
-    //--------------------------Inventario
-    @GetMapping(value = {"","principal"})
-    public String principal(Model model){
-        List<Inventario> lista = inventarioRepository.findAll();
-        model.addAttribute("listaProductos", lista);
-        return "UsuarioSede/U-Principal";
-    }
 
     @GetMapping("productosEnEspera")
     public String productosEnEspera(){
         return "UsuarioSede/U-ProductoEspera";
     }
 
+
+    //--------------------------Inventario---------------------------------------------
+    @GetMapping(value = {"","principal"})
+    public String principal(Model model){
+        List<Inventariosede> lista = inventariosedeRepository.findAll();
+        model.addAttribute("listaProductos", lista);
+        return "UsuarioSede/U-Principal";
+    }
+
+    @GetMapping("DetallesProducto")
+    public String detallesProdcutoCompra (Model model, @RequestParam("id") int id ){
+        Optional<Inventariosede> inventario = inventariosedeRepository.findById(id);
+        List<Historial> listaHistorial = historialRepository.findAll();
+        Historial historial = null;
+        if(inventario.isPresent()){
+            Inventariosede inventario2 = inventario.get();
+            for (Historial hi: listaHistorial){
+                if(hi.getInventario().getIdInventario() == inventario2.getInventario().getIdInventario()){
+                    historial = hi;
+                    break;
+                }
+            }
+            model.addAttribute("historial",historial);
+            model.addAttribute("producto", inventario2);
+            return "UsuarioSede/U-DetallesProducto";
+        }else {
+            return "redirect:/principal";
+        }
+    }
+
+    @GetMapping("DevolverProducto")
+    public String devolverProducto(@RequestParam("id") int id,RedirectAttributes attr){
+        Optional<Inventariosede> inventariosede = inventariosedeRepository.findById(id);
+        if (inventariosede.isPresent()){
+            Inventariosede inventariosede2 = inventariosede.get();
+            Inventario inventario = inventariosede2.getInventario();
+            Integer nuevoStock = inventario.getStock() + inventariosede2.getStock();
+            System.out.println("Nuevo Stock  " + nuevoStock);
+
+            inventario.setStock(nuevoStock);
+
+            inventarioRepository.save(inventario);
+            inventariosedeRepository.deleteById(id);
+            return "redirect:/principal";
+        }else{
+            return "redirect:/principal";
+        }
+
+    }
+
+
+
+
+
+//------------------------- FIN CRUD INVENTARIO -----------------------------------------------
 
     //--------------------CRUD VENTAS---------------
     @GetMapping("gestionVentas")

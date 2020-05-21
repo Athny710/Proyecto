@@ -96,17 +96,23 @@ public class GestorController {
     }
 
     @GetMapping("gestorEditProdCompra")
-    public String EditProdCompra(){
+    public String EditProdCompra(@ModelAttribute("inventario") Inventario inventario,Model model, @RequestParam("id") int id){
+
+
         return "Gestor/G-EditProdCompra";
     }
 
     @GetMapping("gestorRegProducto")
-    public String RegistroCompra(){
+    public String RegistroCompra(@ModelAttribute("inventario") @Valid Inventario inventario,BindingResult bindingResult,RedirectAttributes attr , Model model){
+        model.addAttribute("listaComunidades",comunidadRepository.findAll());
+
         return "Gestor/G-RegCompra";
     }
 
     @GetMapping("borrarProducto")
-    public String borrarProducto(){
+    public String borrarProducto(@ModelAttribute("inventario") Inventario inventario, Model model){
+
+
         return "redirect:/gestorPrincipal";
     }
 

@@ -27,7 +27,7 @@ public class Historial {
     @Positive(message = "No puede ser negativo")
     private Integer cantidad;
     @ManyToOne
-    @JoinColumn(name = "idInventario")
+    @JoinColumn(name = "idinventario")
     private Inventario inventario;
 
     public int getIdhistorial() {

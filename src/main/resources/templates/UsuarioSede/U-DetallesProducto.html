@@ -16,6 +16,7 @@
                 <div th:insert="Fragmentos/FragmentosSede.html::TopBar"></div>
                 <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
                 <div class="container-fluid">
+
                     <!-- Page Heading -->
                     <div class="card shadowA mb-4">
                         <div class="card-header2 py-3">
@@ -31,78 +32,72 @@
                                         <div class="col-lg-5 centrado">
                                             <p>Nombre del Producto:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${inventario.producto.denominacion.nombre}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.inventario.producto.denominacion.nombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Código del Producto:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${inventario.producto.denominacion.codigoNombre}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.inventario.producto.codigoGenerado}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Número de Pedido:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${inventario.numeroPedido}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${historial.numeropedido}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Línea:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${inventario.producto.denominacion.linea.nombre}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.inventario.producto.denominacion.linea.nombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Categoría:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${inventario.producto.categoria.nombre}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.inventario.producto.categoria.nombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Comunidad:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${inventario.producto.comunidad.nombre}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.inventario.producto.comunidad.nombre}"></p></div>
                                     </div>
                                     <hr>
-                                    <div class="d-flex">
+                                    <div class="d-flex" th:if="${producto.inventario.producto.adquisicion.modalidad.equalsIgnoreCase('consignado')}">
                                         <div class="col-lg-5 centrado">
                                             <p>Artesano:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${inventario.producto.adquisicion.artesano.nombre+' '+inventario.producto.adquisicion.artesano.apellidoPaterno}"></p></div>
+                                        <div  class="col-lg-6" ><p th:text="${producto.inventario.producto.adquisicion.artesano.nombre}"></p></div>
                                     </div>
-                                    <hr>
+                                    <hr th:if="${producto.inventario.producto.adquisicion.modalidad.equalsIgnoreCase('consignado')}">
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Cantidad:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${inventario.stock}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.stock}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Tamaño:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${inventario.producto.tamanho.nombre}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.inventario.producto.tamanho.nombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Color:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${inventario.color}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.inventario.color}"></p></div>
                                     </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Fecha:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${inventario.producto.adquisicion.fecha}"></p></div>
-                                    </div>
+
                                 </div>
                                 <div class="col-lg-6 ">
                                     <br>
@@ -110,28 +105,28 @@
                                         <div class="col-lg-5 centrado">
                                             <p>Tipo de Adquisicion:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${inventario.producto.adquisicion.modalidad}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.inventario.producto.adquisicion.modalidad}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Costo Tejedor(S/.):</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${inventario.costoTejedor}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${historial.costotejedor}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Costo Mosqoy(S/.):</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${inventario.precioMosqoy}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.inventario.preciomosqoy}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Descripción:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${inventario.producto.denominacion.descripcion}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.inventario.comentario.equalsIgnoreCase('') ? 'No tiene Descripción' : producto.inventario.comentario }"></p></div>
                                     </div>
                                     <hr>
                                     <br>
@@ -154,7 +149,7 @@
                 </div>
             </div>
         </div>
-    </div>
+
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -162,6 +157,6 @@
     </a>
 
     <div th:replace="Fragmentos/FragmentosSede.html::script"></div>
-
+    </div>
 </body>
 </html>

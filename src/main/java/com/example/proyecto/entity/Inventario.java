@@ -11,7 +11,6 @@ public class Inventario {
     @JoinColumn(name = "idInventario")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idinventario;
-    @NotBlank(message = "Este campo no puede ser vacío")
     private Integer stock;
     private String comentario;
     private String foto;

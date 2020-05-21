@@ -73,7 +73,7 @@
                                         </div>
                                         <div  class="col-lg-6" ><p th:text="${producto.producto.adquisicion.artesano.nombre}"></p></div>
                                     </div>
-                                    <hr>
+                                    <hr th:if="${producto.producto.adquisicion.modalidad.equalsIgnoreCase('consignado')}">
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Cantidad:</p>
@@ -129,7 +129,7 @@
                                         <div class="col-lg-5 centrado">
                                             <p>Descripción:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${producto.comentario.equalsIgnoreCase('')} ? 'No tiene Descripción' : producto.comentario"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.comentario.equalsIgnoreCase('') ? 'No tiene Descripción' : producto.comentario }"></p></div>
                                     </div>
                                     <hr>
                                     <br>

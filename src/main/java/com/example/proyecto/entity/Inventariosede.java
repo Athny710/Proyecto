@@ -7,15 +7,15 @@ import javax.persistence.*;
 public class Inventariosede {
 
     @Id
-    @Column(name = "idInventarioSede")
+    @Column(name = "idinventariosede")
     private int idinventariosede;
     @Column
     private int stock;
     @ManyToOne
-    @JoinColumn(name = "idSede")
+    @JoinColumn(name = "idsede")
     private Sede sede;
     @ManyToOne
-    @JoinColumn(name = "idInventario")
+    @JoinColumn(name = "idinventario")
     private Inventario inventario;
 
 
