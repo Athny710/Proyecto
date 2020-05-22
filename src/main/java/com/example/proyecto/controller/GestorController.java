@@ -56,7 +56,6 @@ public class GestorController {
     @GetMapping("gestorGestionVentas")
     public String registroVentas(){return "G-GestionVentas";}
 
-
     @GetMapping("gestorResgistroSede")
     public String registroSede() {
         return "Gestor/G-RegistroSede";
@@ -333,7 +332,8 @@ public class GestorController {
     }
 
     @GetMapping("gestorRegistroArtesano")
-    public String registroArtesano(@ModelAttribute("artesano") Artesano artesano) {
+    public String registroArtesano(@ModelAttribute("artesano") Artesano artesano, Model model) {
+        model.addAttribute("listaComunidad",comunidadRepository.findAll());
         return "Gestor/G-RegistroArtesano";
     }
 
@@ -358,11 +358,11 @@ public class GestorController {
     public String guardarArtesano(@ModelAttribute("artesano") @Valid Artesano artesano, BindingResult bindingResult,
                                   RedirectAttributes attr,
                                   Model model) {
-        List<Artesano> listaArtesanos = artesanoRepository.obtenerIdArtesano(artesano.getIdArtesano());
+        //List <Artesano> listaArtesanos = artesanoRepository.obtenerIdArtesano(artesano.getIdArtesano(),artesano.getNombre());
         if (bindingResult.hasErrors()) {
             return "Gestor/G-RegistroArtesano";
         } else {
-            if (artesano.getIdArtesano() == 0 && listaArtesanos.size()==0) {
+            if (artesano.getIdArtesano() == 0) {
                 artesanoRepository.save(artesano);
                 attr.addFlashAttribute("msg", "Artesano creado exitosamente");
                 return "redirect:/gestor/gestorListaArtesano";
@@ -371,7 +371,8 @@ public class GestorController {
                 attr.addFlashAttribute("msg", "Artesano actualizado correctamente");
                 return "redirect:/gestor/gestorListaArtesano";
             }else {
-                attr.addFlashAttribute("msg","Los datos ya existen");
+                model.addAttribute(artesano);
+                attr.addFlashAttribute("msgError", "Los datos ingresados ya existen, por favor modificarlo");
                 return "Gestor/G-RegistroArtesano";
             }
         }
