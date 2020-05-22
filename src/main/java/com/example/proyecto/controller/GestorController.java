@@ -35,7 +35,11 @@ public class GestorController {
     @Autowired
     InventarioRepository inventarioRepository;
     @Autowired
+<<<<<<< HEAD
+    VentaRepository ventaRepository;
+=======
     SedeRepository sedeRepository;
+>>>>>>> 980768593e760c8a94c82ea5aa5772a9dc778445
 
 
     // ----------------------- ENLACES ---------------------------------
@@ -51,10 +55,14 @@ public class GestorController {
     }
 
     @GetMapping("gestorGestionVentas")
+<<<<<<< HEAD
+    public String registroVentas(){return "G-GestionVentas";}
+=======
     public String registroVentas() {
         return "Gestor/G-GestiónVentas";
     }
 
+>>>>>>> 980768593e760c8a94c82ea5aa5772a9dc778445
     @GetMapping("gestorResgistroSede")
     public String registroSede() {
         return "Gestor/G-RegistroSede";
@@ -476,5 +484,54 @@ public class GestorController {
 
 
     // -------------------------- FIN CRUD ENVIOS ------------------------------
+
+
+    //--------------------CRUD VENTAS---------------
+    @GetMapping("/nuevaVenta")
+    public String nuevaVenta(@ModelAttribute("venta") Venta venta, Model model) {
+        return "Gestor/G-NuevaVenta";
+    }
+
+
+    @GetMapping("gestionVentas")
+    public String gestionDeVentas(@ModelAttribute("venta") Venta venta, Model model) {
+        model.addAttribute("listaVentas", ventaRepository.findAll());
+        return "Gestor/G-GestionVentas";
+    }
+
+    @PostMapping("/guardarVenta")
+    public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult bindingResult, RedirectAttributes att) {
+
+        if (bindingResult.hasErrors()) {
+            return "Gestor/G-NuevaVenta";
+        } else {
+            Inventario inventario = new Inventario();
+            Usuarios usuarios = new Usuarios();
+            Tienda tienda = new Tienda();
+
+            inventario.setIdInventario(1);
+            usuarios.setIdusuarios(1);
+            tienda.setIdtienda(1);
+
+            if (venta.getIdventa() == 0) {
+                venta.setInventario(inventario);
+                venta.setUsuarios(usuarios);
+                venta.setTienda(tienda);
+                ventaRepository.save(venta);
+                att.addFlashAttribute("msg", "Venta añadida exitosamente");
+            }
+            return "redirect:/gestor/gestionVentas";
+
+        }
+    }
+    @PostMapping("/buscarVenta")
+    public String buscarVenta(@RequestParam("searchField") String searchField,
+                              Model model) {
+
+        List<Venta> listaVenta = ventaRepository.buscarPorNombre(searchField);
+        model.addAttribute("listaVentas", listaVenta );
+        return "gestor/G-GestionVentas";
+    }
+
 
 }

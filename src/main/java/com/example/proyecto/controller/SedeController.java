@@ -101,13 +101,49 @@ public class SedeController {
         }
 
 
+<<<<<<< HEAD
+        if (bindingResult.hasErrors()) {
+            return "UsuarioSede/U-NuevaVenta";
+        } else {
+            Inventario inventario = new Inventario();
+            Usuarios usuarios = new Usuarios();
+            Tienda tienda = new Tienda();
+
+            inventario.setIdInventario(1);
+            usuarios.setIdusuarios(1);
+            tienda.setIdtienda(1);
+
+            if (venta.getIdventa() == 0) {
+                venta.setInventario(inventario);
+                venta.setUsuarios(usuarios);
+                venta.setTienda(tienda);
+                ventaRepository.save(venta);
+                att.addFlashAttribute("msg", "Venta añadida exitosamente");
+            }
+            return "redirect:/sede/gestionVentas";
+=======
 //------------------------- FIN CRUD INVENTARIO -----------------------------------------------
+>>>>>>> 980768593e760c8a94c82ea5aa5772a9dc778445
 
         //--------------------CRUD VENTAS---------------
         @GetMapping("/nuevaVenta")
         public String nuevaVenta (@ModelAttribute("venta") Venta venta, Model model){
             return "UsuarioSede/U-NuevaVenta";
         }
+<<<<<<< HEAD
+    }
+    @PostMapping("/buscarVenta")
+    public String buscarVenta(@RequestParam("searchField") String searchField,
+                                  Model model) {
+
+        List<Venta> listaVenta = ventaRepository.buscarPorNombre(searchField);
+        model.addAttribute("listaVentas", listaVenta );
+        return "usuarioSede/U-GestionVentas";
+    }
+
+
+=======
+>>>>>>> 980768593e760c8a94c82ea5aa5772a9dc778445
 
 
         @GetMapping("gestionVentas")

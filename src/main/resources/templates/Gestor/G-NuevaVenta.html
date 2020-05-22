@@ -1,20 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="Fragmentos/FragmentosSede.html::cabecera(titulo='Ventas')">
+<head th:replace="Fragmentos/FragmentosGestor.html::cabecera(titulo='Gestión Ventas Gestor')">
 </head>
 
 <body id="page-top">
-
-
-<!-- Page Wrapper -->
 <div id="wrapper">
-    <div th:replace="Fragmentos/FragmentosSede.html::SideBarSede"></div>
-    <!-- Content Wrapper -->
+    <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
     <div id="content-wrapper" class="d-flex flex-column bg-white">
         <div id="content">
-            <div th:insert="Fragmentos/FragmentosSede.html::TopBar"></div>
-            <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
+            <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
+            <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
             <div class="container-fluid">
                 <div class="card shadowA mb-4">
                     <div class="card-header2 py-3">
@@ -26,7 +22,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="p-5">
-                                    <form method="post" th:action="@{'/sede/guardarVenta'}" th:object="${venta}">
+                                    <form method="post" th:action="@{'/gestor/guardarVenta'}" th:object="${venta}">
                                         <input th:field="*{idventa}" type="hidden"/>
                                         <div class="form-group">
                                             <label for="nombrecliente">Nombre del Cliente</label>
@@ -66,7 +62,8 @@
                                             <label for="numerodocumentoventa">Número de documento de venta</label>
                                             <input type="text" class="form-control"
                                                    th:field="*{numerodocumentoventa}"/>
-                                            <div class="text-danger" th:if="${#fields.hasErrors('numerodocumentoventa')}"
+                                            <div class="text-danger"
+                                                 th:if="${#fields.hasErrors('numerodocumentoventa')}"
                                                  th:errors="*{numerodocumentoventa}">Error
                                             </div>
                                         </div>
@@ -126,13 +123,12 @@
         </div>
     </div>
 </div>
-
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
 
-<div th:replace="Fragmentos/FragmentosSede.html::script"></div>
+<div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
 
 </body>
 </html>
