@@ -130,7 +130,7 @@ public class SedeController {
         bindingResult, RedirectAttributes att){
 
             if (bindingResult.hasErrors()) {
-                return "sede/U-NuevaVenta";
+                return "UsuarioSede/U-NuevaVenta";
             } else {
                 Inventario inventario = new Inventario();
                 Usuarios usuarios = new Usuarios();
@@ -147,7 +147,7 @@ public class SedeController {
                     ventaRepository.save(venta);
                     att.addFlashAttribute("msg", "Venta añadida exitosamente");
                 }
-                return "redirect:/gestionVentas";
+                return "redirect:/sede/gestionVentas";
 
             }
         }
