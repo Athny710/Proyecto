@@ -92,7 +92,6 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0.5rem;
 }
 label{
-  padding-left: 0.75rem;
   padding-right: 0.75rem;
 }
 p {
@@ -2302,6 +2301,11 @@ fieldset:disabled a.btn {
     color: #fff;
     background-color: #3a3b45;
     border-color: #3a3b45;
+}
+.btn-orange{
+  color: #fff;
+  background-color: #d9a127;
+  border-color: #d9a127;
 }
 
  .btn-greenM{
@@ -10028,8 +10032,8 @@ a:focus {
 
 .sidebar .nav-item .nav-link .img-profile,
 .topbar .nav-item .nav-link .img-profile {
-  height: 2rem;
-  width: 2rem;
+  height: 2.5rem;
+  width: 2.3rem;
 }
 .centrado{
   display: flex;
