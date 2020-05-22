@@ -108,17 +108,15 @@ public class SedeController {
             return "UsuarioSede/U-NuevaVenta";
         }
 
-    @PostMapping("/buscarVenta")
-    public String buscarVenta(@RequestParam("searchField") String searchField,
-                                  Model model) {
 
-        List<Venta> listaVenta = ventaRepository.buscarPorNombre(searchField);
-        model.addAttribute("listaVentas", listaVenta );
-        return "usuarioSede/U-GestionVentas";
-    }
+        @PostMapping("/buscarVenta")
+        public String buscarVenta(@RequestParam("searchField") String searchField,
+                                      Model model) {
 
-
-
+            List<Venta> listaVenta = ventaRepository.buscarPorNombre(searchField);
+            model.addAttribute("listaVentas", listaVenta );
+            return "usuarioSede/U-GestionVentas";
+        }
 
 
         @GetMapping("gestionVentas")
