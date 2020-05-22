@@ -25,6 +25,7 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <form method="post" class="user" th:action="@{/gestor/gestorGuardarArtesano}" th:href="@{/gestor/gestorGuardarArtesano}" th:object="${artesano}">
+                                        <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
                                         <div class="form-group">
                                             <input th:field="*{nombre}" type="text" class="form-control" id="nombre" placeholder="Nombre">
                                         </div>
