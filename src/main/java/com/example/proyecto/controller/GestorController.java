@@ -40,7 +40,6 @@ public class GestorController {
     SedeRepository sedeRepository;
 
 
-
     // ----------------------- ENLACES ---------------------------------
     @GetMapping("perfil")
     public String perfil() {
@@ -54,9 +53,8 @@ public class GestorController {
     }
 
     @GetMapping("gestorGestionVentas")
-    public String registroVentas() {
-        return "Gestor/G-GestiónVentas";
-    }
+    public String registroVentas(){return "G-GestionVentas";}
+
 
     @GetMapping("gestorResgistroSede")
     public String registroSede() {

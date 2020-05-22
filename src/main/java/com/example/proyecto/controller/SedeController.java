@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.jws.WebParam;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.xml.bind.SchemaOutputResolver;
 import java.text.ParseException;
@@ -36,14 +37,13 @@ public class SedeController {
     VentaRepository ventaRepository;
     @Autowired
     InventariosedeRepository inventariosedeRepository;
+    @Autowired
+    ProductoRepository productoRepository;
 
     @GetMapping("perfil")
     public String perfil() {
         return "UsuarioSede/U-Perfil";
     }
-
-
-
 
 
     //--------------------------Inventario---------------------------------------------
@@ -95,10 +95,7 @@ public class SedeController {
     }
 
 
-        @GetMapping("productosEnEspera")
-        public String productosEnEspera () {
-            return "UsuarioSede/U-ProductoEspera";
-        }
+
 
 
 
@@ -111,6 +108,7 @@ public class SedeController {
             return "UsuarioSede/U-NuevaVenta";
         }
 
+
         @PostMapping("/buscarVenta")
         public String buscarVenta(@RequestParam("searchField") String searchField,
                                       Model model) {
@@ -119,7 +117,6 @@ public class SedeController {
             model.addAttribute("listaVentas", listaVenta );
             return "usuarioSede/U-GestionVentas";
         }
-
 
 
         @GetMapping("gestionVentas")
@@ -133,7 +130,7 @@ public class SedeController {
         bindingResult, RedirectAttributes att){
 
             if (bindingResult.hasErrors()) {
-                return "sede/U-NuevaVenta";
+                return "UsuarioSede/U-NuevaVenta";
             } else {
                 Inventario inventario = new Inventario();
                 Usuarios usuarios = new Usuarios();
@@ -150,7 +147,7 @@ public class SedeController {
                     ventaRepository.save(venta);
                     att.addFlashAttribute("msg", "Venta añadida exitosamente");
                 }
-                return "redirect:/gestionVentas";
+                return "redirect:/sede/gestionVentas";
 
             }
         }
@@ -217,6 +214,16 @@ public class SedeController {
         }
 
         //----------------FIN CRUD TIENDAS-------------------
+
+    // TODO VER ENVIOS A ACEPTAR
+    @GetMapping("/productosEnEspera")
+    public String productosEnEspera (Model model, HttpSession session){
+        Usuarios usuario = (Usuarios) session.getAttribute("user");
+        model.addAttribute("listaProductosEnviadosSede", productoRepository.listaProductosEnviadosSede(usuario.getSede().getIdsede()));
+
+        return "UsuarioSede/U-ProductoEspera";
+    }
+    //END ENVIOS A ACEPTAR
 
     }
 
