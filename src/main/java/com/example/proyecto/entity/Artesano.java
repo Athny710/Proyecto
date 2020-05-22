@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "artesano")
 public class Artesano {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="idartesano")
     private Integer idartesano;
     @Column(nullable = false)
     @NotBlank(message = "Este Campo no puede ser vacío")

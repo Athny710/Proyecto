@@ -364,7 +364,7 @@ public class GestorController {
         if (bindingResult.hasErrors()) {
             return "Gestor/G-RegistroArtesano";
         } else {
-            if (artesano.getIdArtesano() == 0) {
+            if (artesano.getIdArtesano() == null) {
                 artesanoRepository.save(artesano);
                 attr.addFlashAttribute("msg", "Artesano creado exitosamente");
                 return "redirect:/gestor/gestorListaArtesano";
