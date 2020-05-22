@@ -1,22 +1,34 @@
 package com.example.proyecto.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "usuarios")
 public class Usuarios  implements Serializable {
 
-    @Id
-    private int idusuarios;
-    private String tipo;
+    @Column(nullable = false)
+    @NotBlank
+    @Size(max=45, message = "Demasiados caracteres")
     private String nombre;
+    @NotBlank
+    @Size(max = 45, message = "Demsiados caracteres")
     private String apellido;
+    @NotBlank
+    @Size(max = 45, message = "Demasiados caracteres")
     private String correo;
     private String password;
+    @NotBlank(message = "Este campo no puede ser vacío")
+    @Size(max = 9, message = "Este campo no puede tener mas de 9 dígitos")
     private String telefono;
+    @Column(nullable = false)
     private int activo;
-
+    @Column(nullable = false)
+    private String tipo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idusuarios;
     @ManyToOne
     @JoinColumn(name = "idsede")
     private Sede sede;

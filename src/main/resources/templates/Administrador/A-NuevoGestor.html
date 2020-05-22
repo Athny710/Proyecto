@@ -26,29 +26,30 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="p-5">
-                                        <form class="user">
+                                        <form class="user" method="post" th:action="@{'/admin/guardarGestor'}"  th:object="${usu}">
                                             <div class="form-group row">
                                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name">
+                                                    <input type="text" class="form-control form-control-user" placeholder="Nombre" th:field="*{nombre}">
+                                                    <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</div>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control form-control-user" id="exampleLastName" placeholder="Last Name">
+                                                    <input type="text" class="form-control form-control-user" placeholder="Apellidos" th:field="*{apellido}">
+                                                    <div class="text-danger" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}">Error</div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address">
+                                                <input type="email" class="form-control form-control-user" placeholder="Correo" th:field="*{correo}">
+                                                <div class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}">Error</div>
                                             </div>
                                             <div class="form-group row">
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="DNI">
-                                                </div>
                                                 <div class="col-sm-6">
-                                                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Number Phone">
+                                                    <input type="tel" class="form-control form-control-user" placeholder="Teléfono" th:field="*{telefono}">
+                                                    <div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">Error</div>
                                                 </div>
                                             </div>
-                                            <a th:href="@{/admin/principal}" class="btn btn-searchTop btn-user btn-block">
+                                            <button type="submit" class="btn btn-searchTop btn-user btn-block">
                                                 Registrar
-                                            </a>
+                                            </button>
                                         </form>
                                         <hr>
                                     </div>

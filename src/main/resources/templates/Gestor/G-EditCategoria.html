@@ -19,29 +19,64 @@
                     <div class="card shadowA mb-4">
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
-                                <h5 class="m-0 font-weight-bold text-redM" th:text="${categoria.idCategoria==null?'Registro de nueva categoría':'Editar Categoría'}"></h5>
+                                <h5 class="m-0 font-weight-bold text-redM" th:text="${categoria.idCategoria==0?'Registro de nueva categoría':'Editar Categoría'}"></h5>
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-4">
+
                                     <div class="p-5">
-                                        <form method="post" class="user" th:href="@{/gestor/gestorGuardarCategoria}" th:object="${categoria}">
-                                            <div class="form-group">
-                                                <input th:field="*{nombre}" type="text" class="form-control form-control-user" id="nombre" placeholder="Nombre">
+
+                                        <form method="post" class="user" th:action="@{/gestor/gestorGuardarCategoria}" th:object="${categoria}">
+                                            <div class="row">
+                                                <input th:value="*{idCategoria}" type="hidden" />
                                             </div>
-                                            <div class="form-group">
-                                                <input th:field="*{codigo}" type="text" class="form-control form-control-user" id="apellidoPaterno" placeholder="Apellido Paterno">
+
+                                            <div class="row">
+                                                    <div class="col-lg-3">
+                                                       <label th:align="center">Nombre:</label>
+                                                    </div>
+
+                                                    <div class="col-lg-9">
+                                                        <div class="form-group">
+                                                            <input th:field="*{nombre}" type="text" class="form-control form-control-user" >
+                                                        </div>
+                                                    </div>
                                             </div>
-                                            <button type="submit" class="btn btn-primary" th:text="${categoria.idCategoria==null?'Registrar':'Actualizar'}"></button>
-                                            <a th:href="@{/gestor/gestorListaCategoria}" class="btn btn-searchTop btn-user btn-block">
-                                                Cancelar
-                                            </a>
+
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <label th:align="center">Código:</label>
+                                                </div>
+
+                                                <div class="col-lg-9">
+                                                    <div class="form-group">
+                                                        <input th:field="*{codigo}" type="text" class="form-control form-control-user" >
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <button type="submit" class="btn btn-searchTop btn-user btn-block" th:text="${*{idCategoria}==0?'Registrar':'Actualizar'}"></button>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <a th:href="@{/gestor/gestorListaCategoria}" class="btn btn-searchTop btn-user btn-block">Cancelar</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </form>
                                         <hr>
+
                                     </div>
+
                                 </div>
-                                <div class="col-lg-1"></div>
+                                <div class="col-lg-2"></div>
                                 <div class="col-lg-4">
                                     <br>
                                     <br>

@@ -15,16 +15,17 @@
                 <!-- Page Heading -->
                 <div class="container-fluid">
                     <div class="col-lg-2">
-                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistroCategoria}">Nueva Categoría</a>
+                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistrarCategoria}">Nueva Categoría</a>
                     </div>
                     <br>
                     <div class="card shadowA mb-4">
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Categorías</h5>
+                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                                 <form >
                                     <div class="input-group" th:action="@{/gestor/gestorBuscarCategoria}">
-                                        <input type="text" class="form-control bg-light border-0 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                        <input type="text" class="form-control bg-light border-0 small bg-white" placeholder="Nombre o Código" aria-label="Search" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
                                             <button class="btn btn-searchTop text-gray-900" type="button">
                                                 <i class="fas fa-search fa-sm text-gray-100"></i>
@@ -55,11 +56,9 @@
                                     <tr align="center" th:each="categoria, info: ${listaCategoria}">
                                         <td th:text="${categoria.nombre}"></td>
                                         <td th:text="${categoria.codigo}"></td>
-                                        <td align="center">
-                                            <a style="margin-left: 10px" href="*" >
-                                                <i th:href="@{'/gestor/gestorEditComunidad' + '?id=' + ${categoria.idCategoria}}" class="far fa-list-alt text-orangeM"></i>
-                                                <i th:href="@{'/gestor/gestorBorarComunidad' + '?id=' + ${categoria.idCategoria}}"class="far fa-trash-alt text-redM"></i>
-                                            </a>
+                                        <td align="center" style="margin-left: 10px" >
+                                                <a th:href="@{'/gestor/gestorEditCategoria' + '?id=' + ${categoria.idCategoria}}" class="far fa-edit text-orangeM"></a>
+                                                <a th:href="@{'/gestor/gestorEliminarCategoria' + '?id=' + ${categoria.idCategoria}}"class="far fa-trash-alt text-redM"></a>
                                         </td>
                                     </tr>
                                     </tbody>
