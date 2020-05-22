@@ -1,5 +1,7 @@
 package com.example.proyecto.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -8,14 +10,15 @@ import java.util.Date;
 public class Estadoenviosede {
 
     @Id
-    @Column(name="idEnvioSede")
+    @Column(name="idenviosede")
     private int idenviosede;
     private String estado;
     private int cantidad;
+    @DateTimeFormat(pattern = "YYYY-MM-dd")
     private Date fecha;
     private String comentario;
     @ManyToOne
-    @JoinColumn(name = "idInventarioSede")
+    @JoinColumn(name = "idinventariosede")
     private Inventariosede inventariosede;
 
     public int getIdenviosede() {

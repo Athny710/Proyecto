@@ -1,31 +1,31 @@
 package com.example.proyecto.entity;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 @Table(name = "inventariosede")
 public class Inventariosede {
 
     @Id
-    @Column(name = "idInventarioSede")
+    @Column(name = "idinventariosede")
     private int idinventariosede;
     @Column
     private int stock;
     @ManyToOne
-    @JoinColumn(name = "idSede")
+    @JoinColumn(name = "idsede")
     private Sede sede;
     @ManyToOne
-    @JoinColumn(name = "idInventario")
+    @JoinColumn(name = "idinventario")
     private Inventario inventario;
-
 
 
     public int getIdinventariosede() {
         return idinventariosede;
     }
 
-    public void setIdinventariosede(int idInventarioSede) {
-        this.idinventariosede = idInventarioSede;
+    public void setIdinventariosede(int idinventariosede) {
+        this.idinventariosede = idinventariosede;
     }
 
     public int getStock() {

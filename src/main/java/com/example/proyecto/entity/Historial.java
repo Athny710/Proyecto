@@ -11,6 +11,7 @@ import java.util.Date;
 public class Historial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "idHistorial")
     private
     int idhistorial;
     @Size(max = 45,message = "No puede sobrepasar los 45 caracteres")
@@ -26,7 +27,7 @@ public class Historial {
     @Positive(message = "No puede ser negativo")
     private Integer cantidad;
     @ManyToOne
-    @JoinColumn(name = "idInventario")
+    @JoinColumn(name = "idinventario")
     private Inventario inventario;
 
     public int getIdhistorial() {
