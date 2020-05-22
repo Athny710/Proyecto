@@ -72,7 +72,7 @@ public class SedeController {
     public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult bindingResult, RedirectAttributes att) {
 
         if (bindingResult.hasErrors()) {
-            return "sede/U-NuevaVenta";
+            return "UsuarioSede/U-NuevaVenta";
         } else {
             Inventario inventario = new Inventario();
             Usuarios usuarios = new Usuarios();
@@ -89,10 +89,20 @@ public class SedeController {
                 ventaRepository.save(venta);
                 att.addFlashAttribute("msg", "Venta añadida exitosamente");
             }
-            return "redirect:/gestionVentas";
+            return "redirect:/sede/gestionVentas";
 
         }
     }
+    @PostMapping("/buscarVenta")
+    public String buscarVenta(@RequestParam("searchField") String searchField,
+                                  Model model) {
+
+        List<Venta> listaVenta = ventaRepository.buscarPorNombre(searchField);
+        model.addAttribute("listaVentas", listaVenta );
+        return "usuarioSede/U-GestionVentas";
+    }
+
+
 
     //----------------INICIO CRUD TIENDAS-------------------
 
