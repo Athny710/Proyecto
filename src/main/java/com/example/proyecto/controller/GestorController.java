@@ -35,11 +35,10 @@ public class GestorController {
     @Autowired
     InventarioRepository inventarioRepository;
     @Autowired
-<<<<<<< HEAD
     VentaRepository ventaRepository;
-=======
+    @Autowired
     SedeRepository sedeRepository;
->>>>>>> 980768593e760c8a94c82ea5aa5772a9dc778445
+
 
 
     // ----------------------- ENLACES ---------------------------------
@@ -55,14 +54,9 @@ public class GestorController {
     }
 
     @GetMapping("gestorGestionVentas")
-<<<<<<< HEAD
     public String registroVentas(){return "G-GestionVentas";}
-=======
-    public String registroVentas() {
-        return "Gestor/G-GestiónVentas";
-    }
 
->>>>>>> 980768593e760c8a94c82ea5aa5772a9dc778445
+
     @GetMapping("gestorResgistroSede")
     public String registroSede() {
         return "Gestor/G-RegistroSede";
