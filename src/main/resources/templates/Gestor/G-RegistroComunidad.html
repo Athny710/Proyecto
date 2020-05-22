@@ -17,7 +17,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                           <!--  <h4 class="m-0 font-weight-bold text-gray-900" >Registro de nueva comunidad</h4>   -->
-                        <h4 class="m-0 font-weight-bold text-gray-900" th:text="${comunidad.idComunidad==0?'Registro de nueva comunidad':'Editar comunidad'}">Registro de nueva comunidad </h4>
+                        <h4 class="m-0 font-weight-bold text-redM" th:text="${comunidad.idComunidad==0?'Registro de nueva comunidad':'Editar comunidad'}">Registro de nueva comunidad </h4>
                         </div>
                         <div th:if="${errorComunidad != null}" th:text="${errorComunidad}" class="alert alert-danger" role="alert"></div>
                         <div class="card-body">
