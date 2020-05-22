@@ -35,11 +35,10 @@ public class GestorController {
     @Autowired
     InventarioRepository inventarioRepository;
     @Autowired
-<<<<<<< HEAD
     VentaRepository ventaRepository;
-=======
+    @Autowired
     SedeRepository sedeRepository;
->>>>>>> 980768593e760c8a94c82ea5aa5772a9dc778445
+
 
 
     // ----------------------- ENLACES ---------------------------------
@@ -55,14 +54,10 @@ public class GestorController {
     }
 
     @GetMapping("gestorGestionVentas")
-<<<<<<< HEAD
-    public String registroVentas(){return "G-GestionVentas";}
-=======
     public String registroVentas() {
         return "Gestor/G-GestiónVentas";
     }
 
->>>>>>> 980768593e760c8a94c82ea5aa5772a9dc778445
     @GetMapping("gestorResgistroSede")
     public String registroSede() {
         return "Gestor/G-RegistroSede";
@@ -349,11 +344,11 @@ public class GestorController {
     public String guardarArtesano(@ModelAttribute("artesano") @Valid Artesano artesano, BindingResult bindingResult,
                                   RedirectAttributes attr,
                                   Model model) {
-        List <Artesano> listaArtesanos = artesanoRepository.obtenerIdArtesano(artesano.getIdArtesano(),artesano.getNombre());
+        //List <Artesano> listaArtesanos = artesanoRepository.obtenerIdArtesano(artesano.getIdArtesano(),artesano.getNombre());
         if (bindingResult.hasErrors()) {
             return "Gestor/G-RegistroArtesano";
         } else {
-            if ((artesano.getIdArtesano() == 0) && (listaArtesanos.size()==0)) {
+            if (artesano.getIdArtesano() == 0) {
                 artesanoRepository.save(artesano);
                 attr.addFlashAttribute("msg", "Artesano creado exitosamente");
                 return "redirect:/gestor/gestorListaArtesano";
