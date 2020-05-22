@@ -139,9 +139,9 @@ public class GestorController {
         return "redirect:/gestorPrincipal";
     }
 
-    // ----------------------- CRUD INVENTARIO ---------------------------------
+    // ----------------------- FIN CRUD INVENTARIO ---------------------------------
 
-// ----------------------- FIN CRUD COMUNIDAD ---------------------------------
+// ----------------------- INICIO CRUD COMUNIDAD ---------------------------------
 
     @GetMapping("gestorListaComunidad")
     public String listaComunidad(Model model) {
@@ -292,16 +292,18 @@ public class GestorController {
     // ----------------------- INICIO CRUD ARTESANOS ---------------------------------
 
     @GetMapping("gestorEditArtesano")
-    public String EditArtesano(@RequestParam("id") int id, @ModelAttribute("artesano") Artesano artesano, Model model) {
-        Optional<Artesano> artesanoPorID = artesanoRepository.findById(id);
+    public String EditArtesano(@RequestParam("idartesano") int idartesano, @ModelAttribute("artesano") Artesano artesano, Model model) {
+        Optional<Artesano> artesanoPorID = artesanoRepository.findById(idartesano);
         if (artesanoPorID.isPresent()) {
-            model.addAttribute("artesano", artesanoPorID.get());
+            artesano = artesanoPorID.get();
+            model.addAttribute("artesano", artesano);
             model.addAttribute("listaComunidad", comunidadRepository.findAll());
-            return "gestor/G-EditArtesano";
+            return "Gestor/G-EditArtesano";
         } else {
             return "redirect:/gestor/gestorListaArtesano";
         }
     }
+
 
     @GetMapping("gestorListaArtesano")
     public String listaArtesano(Model model) {
