@@ -22,16 +22,16 @@
                         <div th:if="${errorComunidad != null}" th:text="${errorComunidad}" class="alert alert-danger" role="alert"></div>
                         <div class="card-body">
 
-                            <form method="post" th:action="@{/gestor/gestorGuardarComunidad}" th:object="${comunidad}">
+                            <form method="post" th:action="@{/gestor/gestorGuardarComunidad}" th:object="${comunidad}" class="user">
                                 <input th:field="${comunidad.idComunidad}" type="hidden"/>
                                 <div class="form-group col-md-6">
                                     <label for="nombre">Nombre</label>
-                                    <input th:field="*{nombre}"  type="text" class="form-control"  >
+                                    <input th:field="*{nombre}"  type="text" class="form-control form-control-user"  >
                                     <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
                                 </div>
                                 <div th:if="${comunidad.idComunidad  == 0}" class="form-group col-md-6">
                                     <label for="codigo">Código</label>
-                                    <input th:field="*{codigo}"  type="text" class="form-control"  >
+                                    <input th:field="*{codigo}"  type="text" class="form-control form-control-user"  >
                                     <div class="text-danger" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></div>
                                 </div>
                                 <div class="form-row col-md-2">
