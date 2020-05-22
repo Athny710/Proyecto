@@ -15,7 +15,7 @@
                 <!-- Page Heading -->
                 <div class="container-fluid">
                     <div class="col-lg-2">
-                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistroArtesano}">Ingresar Artesano</a>
+                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistroArtesano}">Nuevo Artesano</a>
                     </div>
                     <br>
                     <div class="card shadowA mb-4">
@@ -24,7 +24,7 @@
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Artesanos</h5>
                                 <form >
                                     <div class="input-group" th:action="@{/gestor/gestorBuscarArtesano}">
-                                        <input type="text" class="form-control bg-light border-0 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                        <input type="text" class="form-control bg-light border-0 small bg-white" placeholder="Maskhay awakamayuj..." aria-label="Search" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
                                             <button class="btn btn-searchTop text-gray-900" type="button">
                                                 <i class="fas fa-search fa-sm text-gray-100"></i>
@@ -63,10 +63,10 @@
                                         <td th:text="${artesano.comunidad.nombre}"></td>
                                         <td align="center">
 
-                                                <a th:href="@{'/gestor/gestorEditArtesano' + '?id=' + ${artesano.idArtesano}}" class="far fa-list-alt text-orangeM"></a>
+                                                <a th:href="@{'/gestor/gestorEditArtesano' + '?idartesano=' + ${artesano.idArtesano}}" class="far fa-list-alt text-orangeM"></a>
 
 
-                                                <a th:href="@{'/gestor/gestorBorrarArtesano' + '?id=' + ${artesano.idArtesano}}"class="far fa-trash-alt text-redM"></a>
+                                                <a th:href="@{'/gestor/gestorBorrarArtesano' + '?idartesano=' + ${artesano.idArtesano}}"class="far fa-trash-alt text-redM"></a>
 
                                         </td>
                                     </tr>

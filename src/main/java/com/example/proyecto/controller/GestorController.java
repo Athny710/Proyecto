@@ -35,7 +35,11 @@ public class GestorController {
     @Autowired
     InventarioRepository inventarioRepository;
     @Autowired
+<<<<<<< HEAD
+    VentaRepository ventaRepository;
+=======
     SedeRepository sedeRepository;
+>>>>>>> 980768593e760c8a94c82ea5aa5772a9dc778445
 
 
     // ----------------------- ENLACES ---------------------------------
@@ -51,10 +55,14 @@ public class GestorController {
     }
 
     @GetMapping("gestorGestionVentas")
+<<<<<<< HEAD
+    public String registroVentas(){return "G-GestionVentas";}
+=======
     public String registroVentas() {
         return "Gestor/G-GestiónVentas";
     }
 
+>>>>>>> 980768593e760c8a94c82ea5aa5772a9dc778445
     @GetMapping("gestorResgistroSede")
     public String registroSede() {
         return "Gestor/G-RegistroSede";
@@ -139,9 +147,9 @@ public class GestorController {
         return "redirect:/gestorPrincipal";
     }
 
-    // ----------------------- CRUD INVENTARIO ---------------------------------
+    // ----------------------- FIN CRUD INVENTARIO ---------------------------------
 
-// ----------------------- FIN CRUD COMUNIDAD ---------------------------------
+// ----------------------- INICIO CRUD COMUNIDAD ---------------------------------
 
     @GetMapping("gestorListaComunidad")
     public String listaComunidad(Model model) {
@@ -292,16 +300,18 @@ public class GestorController {
     // ----------------------- INICIO CRUD ARTESANOS ---------------------------------
 
     @GetMapping("gestorEditArtesano")
-    public String EditArtesano(@RequestParam("id") int id, @ModelAttribute("artesano") Artesano artesano, Model model) {
-        Optional<Artesano> artesanoPorID = artesanoRepository.findById(id);
+    public String EditArtesano(@RequestParam("idartesano") int idartesano, @ModelAttribute("artesano") Artesano artesano, Model model) {
+        Optional<Artesano> artesanoPorID = artesanoRepository.findById(idartesano);
         if (artesanoPorID.isPresent()) {
-            model.addAttribute("artesano", artesanoPorID.get());
+            artesano = artesanoPorID.get();
+            model.addAttribute("artesano", artesano);
             model.addAttribute("listaComunidad", comunidadRepository.findAll());
-            return "gestor/G-EditArtesano";
+            return "Gestor/G-EditArtesano";
         } else {
             return "redirect:/gestor/gestorListaArtesano";
         }
     }
+
 
     @GetMapping("gestorListaArtesano")
     public String listaArtesano(Model model) {
@@ -313,9 +323,10 @@ public class GestorController {
     }
 
     @GetMapping("gestorRegistroArtesano")
-    public String registroArtesano() {
-        return "Gestor/G-EditArtesano";
+    public String registroArtesano(@ModelAttribute("artesano") Artesano artesano) {
+        return "Gestor/G-RegistroArtesano";
     }
+
 
     @GetMapping("gestorBuscarArtesano")
     public String buscarArtesano(@RequestParam("busqueda") String busqueda, Model model) {
@@ -337,20 +348,25 @@ public class GestorController {
     public String guardarArtesano(@ModelAttribute("artesano") @Valid Artesano artesano, BindingResult bindingResult,
                                   RedirectAttributes attr,
                                   Model model) {
+        List<Artesano> listaArtesanos = artesanoRepository.obtenerIdArtesano(artesano.getIdArtesano());
         if (bindingResult.hasErrors()) {
-            model.addAttribute("listaComunidad", comunidadRepository.findAll());
-            return "Gestor/G-EditArtesano";
+            return "Gestor/G-RegistroArtesano";
         } else {
-            if (artesano.getIdArtesano() == 0) {
-                attr.addFlashAttribute("msg", "Artesano no existe");
+            if (artesano.getIdArtesano() == 0 && listaArtesanos.size()==0) {
+                artesanoRepository.save(artesano);
+                attr.addFlashAttribute("msg", "Artesano creado exitosamente");
                 return "redirect:/gestor/gestorListaArtesano";
-            } else {
+            } else if (artesano.getIdArtesano() != 0){
                 artesanoRepository.save(artesano);
                 attr.addFlashAttribute("msg", "Artesano actualizado correctamente");
                 return "redirect:/gestor/gestorListaArtesano";
+            }else {
+                attr.addFlashAttribute("msg","Los datos ya existen");
+                return "Gestor/G-RegistroArtesano";
             }
         }
     }
+
 
     // ----------------------- FIN CRUD ARTESANOS ---------------------------------
 
@@ -452,5 +468,54 @@ public class GestorController {
 
 
     // -------------------------- FIN CRUD ENVIOS ------------------------------
+
+
+    //--------------------CRUD VENTAS---------------
+    @GetMapping("/nuevaVenta")
+    public String nuevaVenta(@ModelAttribute("venta") Venta venta, Model model) {
+        return "Gestor/G-NuevaVenta";
+    }
+
+
+    @GetMapping("gestionVentas")
+    public String gestionDeVentas(@ModelAttribute("venta") Venta venta, Model model) {
+        model.addAttribute("listaVentas", ventaRepository.findAll());
+        return "Gestor/G-GestionVentas";
+    }
+
+    @PostMapping("/guardarVenta")
+    public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult bindingResult, RedirectAttributes att) {
+
+        if (bindingResult.hasErrors()) {
+            return "Gestor/G-NuevaVenta";
+        } else {
+            Inventario inventario = new Inventario();
+            Usuarios usuarios = new Usuarios();
+            Tienda tienda = new Tienda();
+
+            inventario.setIdInventario(1);
+            usuarios.setIdusuarios(1);
+            tienda.setIdtienda(1);
+
+            if (venta.getIdventa() == 0) {
+                venta.setInventario(inventario);
+                venta.setUsuarios(usuarios);
+                venta.setTienda(tienda);
+                ventaRepository.save(venta);
+                att.addFlashAttribute("msg", "Venta añadida exitosamente");
+            }
+            return "redirect:/gestor/gestionVentas";
+
+        }
+    }
+    @PostMapping("/buscarVenta")
+    public String buscarVenta(@RequestParam("searchField") String searchField,
+                              Model model) {
+
+        List<Venta> listaVenta = ventaRepository.buscarPorNombre(searchField);
+        model.addAttribute("listaVentas", listaVenta );
+        return "gestor/G-GestionVentas";
+    }
+
 
 }
