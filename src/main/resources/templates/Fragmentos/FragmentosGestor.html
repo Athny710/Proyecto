@@ -32,7 +32,7 @@
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link text-gray-100" th:href="@{/gestor/gestorPrincipal}">
-            <i class="fas fa-fw fa-bars text-gray-100"></i>
+            <i class="fas fa-fw fa-folder-open text-gray-100"></i>
             <span>Inventario</span>
         </a>
     </li>
@@ -142,7 +142,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
                 <span sec:authorize="isAuthenticated()" th:text="|${session.user.nombre} ${session.user.apellido}|" class="mr-2 d-none d-lg-inline text-gray-600 small">Telito Teleco</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                <img class="img-profile rounded-circle" th:src="@{/img/imgPerfil.png}" style="margin-left: 1rem">
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in bg-orangeM"

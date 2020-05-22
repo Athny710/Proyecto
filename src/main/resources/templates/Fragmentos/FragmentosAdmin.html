@@ -30,35 +30,26 @@
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link text-gray-100" th:href="@{/admin/principal}">
-            <i class="fas fa-fw fa-bars text-gray-100"></i>
+            <i class="fas fa-fw fa-folder-open text-gray-100"></i>
             <span>Inventario</span>
         </a>
     </li>
     <hr class="sidebar-divider my-0 bg-gray-100">
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link text-gray-100" th:href="@{/admin/generarCuenta}">
-            <i class="fas fa-fw fa-plus-square text-gray-100"></i>
-            <span>Generar Cuenta</span>
+        <a class="nav-link text-gray-100" th:href="@{/admin/listaGestores}">
+            <i class="fas fa-fw fa-user text-gray-100"></i>
+            <span>Lista Gestores</span>
         </a>
     </li>
-    <!-- Divider -->
     <hr class="sidebar-divider my-0 bg-gray-100">
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item active">
-        <a class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-            <i class="fab fa-fw fa-buffer text-gray-100"></i>
-            <span>Lista de Usuarios</span>
+    <li class="nav-item">
+        <a class="nav-link text-gray-100" th:href="@{/admin/listaUsuarios}">
+            <i class="fas fa-fw fa-user text-gray-100"></i>
+            <span>Lista Usuarios Sede</span>
         </a>
-        <div id="collapsePages" class="collapse  bg-gray-100" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-gray-100 py-2 collapse-inner rounded">
-                <h6 class="collapse-header text-gray-900   ">Listas:</h6>
-                <a class="collapse-item text-gray-900" th:href="@{/admin/listaGestores}">-Gestor</a>
-                <a class="collapse-item text-gray-900" th:href="@{/admin/listaUsuarios}">-Usuarios Sede</a>
-            </div>
-        </div>
     </li>
-    <!-- Divider -->
+
     <hr class="sidebar-divider d-none d-md-block bg-gray-100">
 </ul>
 <!-- End of Sidebar -->
@@ -98,11 +89,11 @@
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span sec:authorize="isAuthenticated()" th:text="|${session.user.nombre} ${session.user.apellido}|" class="mr-2 d-none d-lg-inline text-gray-600 small">Telito Teleco</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                <img class="img-profile rounded-circle" th:src="@{/img/imgPerfil.png}" style="margin-left: 1rem">
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in bg-orangeM" aria-labelledby="userDropdown">
-                <a class="dropdown-item text-white" th:href="@{/admin/perfil}">
+                <a class="dropdown-item text-white" th:href="@{/admin/editarInfo}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-100"></i>
                     Perfil
                 </a>
@@ -116,6 +107,76 @@
     </ul>
 </nav>
 <!-- End of Topbar -->
+
+<!--
+<div th:fragment="perfilModal" sec:authorize="isAuthenticated()" data-backdrop="static" class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-greenM" id="exampleModalLabel2">Información Personal</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <br>
+                <form class="user" th:action="${'/admin/guardarPerfil'}" method="post" th:object="${usuario}">
+                    <input th:value="${usuario.idusuarios}" name="id" type="hidden"/>
+                    <div class="d-flex">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-4 centrado">
+                            <p>Nombre:</p>
+                        </div>
+                        <div class="col-lg-6"><p th:text="${usuario.nombre}"></p></div>
+                    </div>
+                    <hr class="col-lg-8">
+                    <div class="d-flex">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-4 centrado">
+                            <p>Apellidos:</p>
+                        </div>
+                        <div class="col-lg-6"><p th:text="${usuario.apellido}"></p></div>
+                    </div>
+                    <hr class="col-lg-8">
+                    <div class="d-flex">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-4 centrado">
+                            <p>DNI:</p>
+                        </div>
+                        <div class="col-lg-6"><p>15475456</p></div>
+                    </div>
+                    <hr class="col-lg-8">
+                    <div class="form-group d-flex centrado">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-3">
+                            <label>Correo:</label>
+                        </div>
+                        <input type="email" class="form-control form-control-user2" id="correo" name="correo" th:placeholder="${usuario.correo}">
+                        <div class="col-lg-2"></div>
+                    </div>
+                    <div class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}">Error</div>
+                    <hr class="col-lg-8">
+                    <div class="form-group d-flex centrado">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-3">
+                            <label>Teléfono:</label>
+                        </div>
+                        <input type="tel" class="form-control form-control-user2" id="phone" name="phone" th:placeholder="${usuario.telefono}">
+                        <div class="col-lg-2"></div>
+                    </div>
+                    <div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">Error</div>
+                    <br>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-orange" style="border-radius: 10rem">Guardar Cambios</button>
+                        <button type="button" class="btn btn-gray-900" data-dismiss="modal" style="border-radius: 10rem">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+
 
 <!-- Logout Modal-->
 <div th:fragment="LogOut" class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
