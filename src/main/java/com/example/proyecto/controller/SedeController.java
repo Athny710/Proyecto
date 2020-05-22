@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.jws.WebParam;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.xml.bind.SchemaOutputResolver;
 import java.text.ParseException;
@@ -36,6 +37,8 @@ public class SedeController {
     VentaRepository ventaRepository;
     @Autowired
     InventariosedeRepository inventariosedeRepository;
+    @Autowired
+    ProductoRepository productoRepository;
 
     @GetMapping("perfil")
     public String perfil() {
@@ -92,10 +95,7 @@ public class SedeController {
     }
 
 
-        @GetMapping("productosEnEspera")
-        public String productosEnEspera () {
-            return "UsuarioSede/U-ProductoEspera";
-        }
+
 
 
 
@@ -214,6 +214,16 @@ public class SedeController {
         }
 
         //----------------FIN CRUD TIENDAS-------------------
+
+    // TODO VER ENVIOS A ACEPTAR
+    @GetMapping("/productosEnEspera")
+    public String productosEnEspera (Model model, HttpSession session){
+        Usuarios usuario = (Usuarios) session.getAttribute("user");
+        model.addAttribute("listaProductosEnviadosSede", productoRepository.listaProductosEnviadosSede(usuario.getSede().getIdsede()));
+
+        return "UsuarioSede/U-ProductoEspera";
+    }
+    //END ENVIOS A ACEPTAR
 
     }
 
