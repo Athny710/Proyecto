@@ -30,13 +30,13 @@
                                     <form method="post" th:action="@{/gestor/gestorGuardarComunidad}" th:object="${comunidad}" class="user">
                                 <input th:field="${comunidad.idComunidad}" type="hidden"/>
                                 <div class="form-group ">
-                                    <label for="nombre">Nombre</label>
-                                    <input th:field="*{nombre}"  type="text" class="form-control form-control-user"  >
+                                    <label for="nombre"></label>
+                                    <input th:field="*{nombre}"  type="text" class="form-control form-control-user" placeholder="Nombre"  >
                                     <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
                                 </div>
                                 <div th:if="${comunidad.idComunidad  == 0}" class="form-group ">
-                                    <label for="codigo">Código</label>
-                                    <input th:field="*{codigo}"  type="text" class="form-control form-control-user"  >
+                                    <label for="codigo"></label>
+                                    <input th:field="*{codigo}"  type="text" class="form-control form-control-user" placeholder="Código" >
                                     <div class="text-danger" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></div>
                                 </div>
                             <!--    <div class="form-row col-md-2"> -->
