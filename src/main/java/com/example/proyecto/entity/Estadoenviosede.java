@@ -3,6 +3,7 @@ package com.example.proyecto.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.Date;
@@ -17,8 +18,8 @@ public class Estadoenviosede {
     private String estado;
     @Positive
     private int cantidad;
-    @Column(nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull
     private LocalDate fecha;
     private String comentario;
     @ManyToOne
