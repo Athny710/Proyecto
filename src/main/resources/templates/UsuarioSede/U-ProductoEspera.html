@@ -19,7 +19,7 @@
                 <div class="card shadowA mb-4">
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
-                            <h5 class="m-0 font-weight-bold text-redM">Inventario</h5>
+                            <h5 class="m-0 font-weight-bold text-redM">Productos en espera</h5>
                             <form>
                                 <div class="input-group">
                                     <input type="text" class="form-control bg-light border-0 small bg-white"
@@ -40,32 +40,32 @@
                                 <thead>
                                 <tr class="bg-gray-900 text-white" align="center">
                                     <th>Código</th>
-                                    <th>Sede</th>
-                                    <th>Producto</th>
                                     <th>Cantidad</th>
-                                    <th>Precio de venta</th>
+                                    <th>Color</th>
+                                    <th>Precio referencial de venta</th>
                                     <th>Fecha de envío</th>
                                     <th>Estado</th>
-                                    <th>Editar?</th>
+                                    <th>Enviado por</th>
+                                    <th>Aceptar</th>
                                     <th>Devolver</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="p : ${listaProductosEnviadosSede}">
                                     <td th:text="${p.getCodigogenerado()}"></td>
-                                    <td th:text="${p.getNombre_sede()}"></td>
-                                    <td th:text="${p.getNombre()}"></td>
                                     <td th:text="${p.getCantidad()}"></td>
+                                    <td th:text="${p.getColor()}"></td>
                                     <td th:text="${p.getPreciomosqoy()}"></td>
                                     <td th:text="${p.getFecha()}"></td>
                                     <td th:text="${p.getEstado()}"></td>
+                                    <td th:text="${'p.getEstado()'}"></td>
                                     <td align="center">
-                                        <a th:href="@{'/sede/DetallesProducto?id='+${p.codigogenerado}}">
+                                        <a th:href="@{'/sede/AceptarProducto?id='+${p.getIdenviosede()}}">
                                             <i class="far fa-list-alt text-greenM"></i>
                                         </a>
                                     </td>
                                     <td align="center">
-                                        <a th:href="@{'/sede/DevolverProducto?id='+${p.getCodigogenerado()}}">
+                                        <a th:href="@{'/sede/DevolverProductoSinConfirmar?id='+${p.getIdenviosede()}}">
                                             <i class="far fa-trash-alt text-redM" style="margin-left: 5px"></i>
                                         </a>
                                     </td>

@@ -360,19 +360,58 @@ public class GestorController {
     public String guardarArtesano(@ModelAttribute("artesano") @Valid Artesano artesano, BindingResult bindingResult,
                                   RedirectAttributes attr,
                                   Model model) {
-        //List <Artesano> listaArtesanos = artesanoRepository.obtenerIdArtesano(artesano.getIdArtesano(),artesano.getNombre());
         if (bindingResult.hasErrors()) {
+            model.addAttribute("listaComunidad", comunidadRepository.findAll());
             return "Gestor/G-RegistroArtesano";
         } else {
-            if (artesano.getIdArtesano() == null) {
+
+            //validacion codigo de  artesano (INICIALES)
+            String aux1 = null;
+            String aux2 = null;
+            if(!artesano.getApellidoMaterno().isEmpty()) { // codigos con apellido materno
+                aux1 = artesano.getNombre().substring(0, 1) + artesano.getApellidoPaterno().substring(0, 1) + artesano.getApellidoMaterno().substring(0, 1);
+                aux2 = artesano.getNombre().substring(0, 2) + artesano.getApellidoPaterno().substring(0, 1) + artesano.getApellidoMaterno().substring(0, 1);
+            }else{// codigos sin apellido materno
+                aux1 = artesano.getNombre().substring(0, 1) + artesano.getApellidoPaterno().substring(0, 1);
+                aux2 = artesano.getNombre().substring(0, 2) + artesano.getApellidoPaterno().substring(0, 1);
+            }
+            //fin validacion codigo de artesano
+
+            if(artesanoRepository.findByCodigo(artesano.getCodigo()).size() >= 1 ||  // en caso el codigo se repita o no tenga un codigo esperado
+                    !(artesano.getCodigo().equalsIgnoreCase(aux1) || artesano.getCodigo().equalsIgnoreCase(aux2)) ){
+                model.addAttribute("listaComunidad", comunidadRepository.findAll());
+                attr.addFlashAttribute("msgError", "Recuerde que el codigo debe ser las iniciales del artesano");
+                return "Gestor/G-RegistroArtesano";
+            }
+
+
+            if (artesano.getIdArtesano() == null) { // nuevo artesano
+                System.out.println("ARTESANO NULL ----------- 1");
+                Optional<Comunidad> comunidad = comunidadRepository.findById(artesano.getComunidad().getIdComunidad());
+                System.out.println(comunidad.get().getIdComunidad() + "ID COMUNIDAD ---------");
+                artesano.setComunidad(comunidad.get());
+
+
+
+
                 artesanoRepository.save(artesano);
                 attr.addFlashAttribute("msg", "Artesano creado exitosamente");
                 return "redirect:/gestor/gestorListaArtesano";
-            } else if (artesano.getIdArtesano() != 0) {
-                artesanoRepository.save(artesano);
-                attr.addFlashAttribute("msg", "Artesano actualizado correctamente");
-                return "redirect:/gestor/gestorListaArtesano";
-            } else {
+            }
+            else if (artesano.getIdArtesano() != 0) { // Editar Artesano
+                Optional<Artesano> artesano2 = artesanoRepository.findById(artesano.getIdArtesano());
+                if(artesano2.isPresent()) { // El ID ESTA BIEN
+                    artesano.setComunidad(comunidadRepository.findById(artesano.getComunidad().getIdComunidad()).get());
+                    artesanoRepository.save(artesano);
+                    attr.addFlashAttribute("msg", "Artesano actualizado exitosamente");
+                    return "redirect:/gestor/gestorListaArtesano";
+                }else{ // EL ID NO ESTA BIEN
+                    attr.addFlashAttribute("msg", "error en el ID del artesano");
+                    return "redirect:/gestor/gestorListaArtesano";
+                }
+
+            } else { // EL IDARTESANO ES IGUAL A 0
+                System.out.println("ID ARTESANO ES 0 POR ALGUA RAZON");
                 model.addAttribute(artesano);
                 attr.addFlashAttribute("msgError", "Los datos ingresados ya existen, por favor modificarlo");
                 return "Gestor/G-RegistroArtesano";
