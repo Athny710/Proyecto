@@ -215,7 +215,7 @@ public class SedeController {
 
         //----------------FIN CRUD TIENDAS-------------------
 
-    // TODO VER ENVIOS A ACEPTAR
+    // TODO VER ENVIOS A ACEPTAR, TABLA NO COMPLETA!!!!
     @GetMapping("/productosEnEspera")
     public String productosEnEspera (Model model, HttpSession session){
         Usuarios usuario = (Usuarios) session.getAttribute("user");
@@ -223,6 +223,10 @@ public class SedeController {
 
         return "UsuarioSede/U-ProductoEspera";
     }
+    //TODO LOGICA GUARDAR PRODUCTOS
+    //TODO LOGICA BORRAR PRODUCTOS
+
+
     //END ENVIOS A ACEPTAR
 
     }

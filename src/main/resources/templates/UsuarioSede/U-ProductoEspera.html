@@ -6,83 +6,86 @@
 
 <body id="page-top">
 
-    <div id="wrapper">
-        <div th:replace="Fragmentos/FragmentosSede.html::SideBarSede"></div>
-        <div id="content-wrapper" class="d-flex flex-column bg-white">
-            <div id="content">
-                <div th:insert="Fragmentos/FragmentosSede.html::TopBar"></div>
-                <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
+<div id="wrapper">
+    <div th:replace="Fragmentos/FragmentosSede.html::SideBarSede"></div>
+    <div id="content-wrapper" class="d-flex flex-column bg-white">
+        <div id="content">
+            <div th:insert="Fragmentos/FragmentosSede.html::TopBar"></div>
+            <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-                    <!-- Page Heading -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 text-gray-900 font-weight-bold text-primary">Productos Enviados</h6>
-                            <form class="-angle-double-right d-none d-sm-inline-block form-inline mr-auto ml-md-20 my-2 my-md-30 mw-100 navbar-search">
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <br>
+                <div class="card shadowA mb-4">
+                    <div class="card-header2 py-3">
+                        <div class="d-flex justify-content-between centrado">
+                            <h5 class="m-0 font-weight-bold text-redM">Inventario</h5>
+                            <form>
                                 <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-10 small bg-white" placeholder="Filtrar por..." aria-label="Search" aria-describedby="basic-addon2">
+                                    <input type="text" class="form-control bg-light border-0 small bg-white"
+                                           placeholder="Search for..." aria-label="Search"
+                                           aria-describedby="basic-addon2">
                                     <div class="input-group-append">
-                                        <button class="btn btn-log text-gray-900" type="button">
+                                        <button class="btn btn-searchTop text-gray-900" type="button">
                                             <i class="fas fa-search fa-sm text-gray-100"></i>
                                         </button>
                                     </div>
                                 </div>
                             </form>
                         </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                        <tr>
-                                            <th>Código</th>
-                                            <th>Sede</th>
-                                            <th>Producto</th>
-                                            <th>Cantidad</th>
-                                            <th>Precio de venta</th>
-                                            <th>Fecha de envío</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                        </thead>
-                                        <tfoot>
-                                        <tr>
-                                            <th>Código</th>
-                                            <th>Sede</th>
-                                            <th>Producto</th>
-                                            <th>Cantidad</th>
-                                            <th>Precio de venta</th>
-                                            <th>Fecha de envío</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                        </tfoot>
-                                        <tbody>
-                                        <tr th:each="p : ${listaProductosEnviadosSede}">
-                                            <td th:text="${p.getCodigogenerado()}"></td>
-                                            <td th:text="${p.getNombre_sede()}"></td>
-                                            <td th:text="${p.getNombre()}"></td>
-                                            <td th:text="${p.getCantidad()}"></td>
-                                            <td th:text="${p.getPreciomosqoy()}"></td>
-                                            <td th:text="${p.getFecha()}"></td>
-                                            <td th:text="${p.getEstado()}"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="card-body bg-gray-100">
+                        <div class="table-responsive bg-white">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr class="bg-gray-900 text-white" align="center">
+                                    <th>Código</th>
+                                    <th>Sede</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio de venta</th>
+                                    <th>Fecha de envío</th>
+                                    <th>Estado</th>
+                                    <th>Editar?</th>
+                                    <th>Devolver</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="p : ${listaProductosEnviadosSede}">
+                                    <td th:text="${p.getCodigogenerado()}"></td>
+                                    <td th:text="${p.getNombre_sede()}"></td>
+                                    <td th:text="${p.getNombre()}"></td>
+                                    <td th:text="${p.getCantidad()}"></td>
+                                    <td th:text="${p.getPreciomosqoy()}"></td>
+                                    <td th:text="${p.getFecha()}"></td>
+                                    <td th:text="${p.getEstado()}"></td>
+                                    <td align="center">
+                                        <a th:href="@{'/sede/DetallesProducto?id='+${p.codigogenerado}}">
+                                            <i class="far fa-list-alt text-greenM"></i>
+                                        </a>
+                                    </td>
+                                    <td align="center">
+                                        <a th:href="@{'/sede/DevolverProducto?id='+${p.getCodigogenerado()}}">
+                                            <i class="far fa-trash-alt text-redM" style="margin-left: 5px"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
 
-    <div th:replace="Fragmentos/FragmentosSede.html::script"></div>
+<div th:replace="Fragmentos/FragmentosSede.html::script"></div>
 
 </body>
 </html>

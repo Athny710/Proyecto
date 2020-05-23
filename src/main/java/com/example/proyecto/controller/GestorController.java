@@ -424,7 +424,6 @@ public class GestorController {
             List<Sede> listaSede = sedeRepository.findAll();
             model.addAttribute("listaInventario", listaInventario);
             model.addAttribute("listaSede", listaSede);
-            System.out.println("la cagaste man");
             return "Gestor/G-GestionEnvios";
 
 
@@ -438,7 +437,7 @@ public class GestorController {
                 Optional<Sede> sede1 = sedeRepository.findById(sedkey);
                 Optional<Inventario> inventario1 = inventarioRepository.findById(invkey);
                 List<Inventariosede> inventariosede1 = inventariosedeRepository.findByInventarioAndSede(inventario1.get(), sede1.get());
-                if ((inventario1.get().getStock() - estadoenviosede.getCantidad()) >= 0) { // cantidad restada mayor igual a 0
+                if ((inventario1.get().getStock() - estadoenviosede.getCantidad()) >= 0) {
                     //conseguir inventariosede
                     if (!inventariosede1.isEmpty()) {
                         estadoenviosede.setInventariosede(inventariosede1.get(0));
@@ -452,7 +451,6 @@ public class GestorController {
                     }
                     //fin conseguir invetariosede
                     estadoenviosede.setEstado("En camino");
-                    System.out.println("AAAAAAAAAAAAAAAAAAAAAA" + estadoenviosede.getFecha());
                     estadoenviosedeRepository.save(estadoenviosede);
                     int cantidadrestada = estadoenviosede.getInventariosede().getInventario().getStock() - estadoenviosede.getCantidad();
                     estadoenviosede.getInventariosede().getInventario().setStock(cantidadrestada);
