@@ -41,6 +41,8 @@ public class SedeController {
     ProductoRepository productoRepository;
     @Autowired
     EstadoenviosedeRepository estadoenviosedeRepository;
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
     @GetMapping("perfil")
     public String perfil() {
@@ -155,6 +157,7 @@ public class SedeController {
     @GetMapping("registroTiendas")
     public String registroDeTiendas(@ModelAttribute("tienda") Tienda tienda, Model model) {
         model.addAttribute("listaTiendas", tiendaRepository.findAll());
+
         return "UsuarioSede/U-TiendaDistribuidor";
     }
 
@@ -180,7 +183,7 @@ public class SedeController {
     }
 
     @PostMapping("/buscarTienda")
-    public String buscarComunidad(@RequestParam("searchField") String searchField,
+    public String buscarComunidad(@ModelAttribute("tienda") Tienda tienda,@RequestParam("searchField") String searchField,
                                   Model model) {
 
         List<Tienda> listaT = tiendaRepository.buscarPorNombreDeTienda(searchField);
