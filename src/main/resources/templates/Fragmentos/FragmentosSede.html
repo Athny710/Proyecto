@@ -70,7 +70,7 @@
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i class="fa fa-bars"></i>
     </button>
-    <h4 class="text-gray-900"><b>Usuario Sede</b></h4>
+    <h4 class="text-gray-900 " th:text="'Sede: ' + ${session.user.sede.nombre}" ><b>Usuario Sede </b></h4>
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
