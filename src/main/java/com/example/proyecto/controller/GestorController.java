@@ -38,6 +38,8 @@ public class GestorController {
     VentaRepository ventaRepository;
     @Autowired
     SedeRepository sedeRepository;
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
 
     // ----------------------- ENLACES ---------------------------------
@@ -47,21 +49,11 @@ public class GestorController {
     }
 
 
-    @GetMapping("gestorRegistroUsuarioSede")
-    public String registroUsuarioSede() {
-        return "Gestor/G-RegistroUsuarioSede";
-    }
-
     @GetMapping("gestorGestionVentas")
     public String registroVentas() {
         return "G-GestionVentas";
     }
 
-
-    @GetMapping("gestorResgistroSede")
-    public String registroSede() {
-        return "Gestor/G-RegistroSede";
-    }
 
     @GetMapping("gestorReporteVentas")
     public String reporteVentas1() {
@@ -74,11 +66,56 @@ public class GestorController {
     }
 
 
+    // ----------------------- CRUD USUARIOS SEDE ---------------------------------
+
+    @GetMapping("gestorRegistroUsuarioSede")
+    public String registroUsuarioSede() {
+        return "Gestor/G-RegistroUsuarioSede";
+    }
+
+
+
     @GetMapping("gestorListaUsuarioSede")
-    public String listaUsuarioSede() {
+    public String listaUsuarioSede(Model model) {
+        List<Usuarios> listausuariosedes = usuarioRepository.findAll();
+        model.addAttribute("listausuariosedes",listausuariosedes);
         return "Gestor/G-ListaUsuarioSede";
     }
 
+    @GetMapping("gestorEditUsuarioSede")
+    public String editarUsuarioSede(){
+
+        return "Gestor/G-EditUsuarioSede";}
+
+
+    @GetMapping("guardarUsuarioSede")
+    public String guardarUsuarioSede(){
+
+        return "redirect:/gestorListaUsuarioSede";}
+
+
+    @GetMapping("borrarUsuarioSede")
+    public String borrarUsuarioSede(){
+
+        return "redirect:/gestorListaUsuarioSede";}
+
+
+
+    // ----------------------- FIN CRUD USUARIOS SEDE ---------------------------------
+
+
+    // ----------------------- CRUD SEDES ---------------------------------
+
+
+    @GetMapping("gestorResgistroSede")
+    public String registroSede() {
+        return "Gestor/G-RegistroSede";
+    }
+
+
+
+
+    // ----------------------- FIN CRUD SEDES ---------------------------------
 
 // ----------------------- CRUD INVENTARIO ---------------------------------
 
@@ -390,14 +427,12 @@ public class GestorController {
                 Optional<Comunidad> comunidad = comunidadRepository.findById(artesano.getComunidad().getIdComunidad());
                 System.out.println(comunidad.get().getIdComunidad() + "ID COMUNIDAD ---------");
                 artesano.setComunidad(comunidad.get());
-
-
-
-
                 artesanoRepository.save(artesano);
                 attr.addFlashAttribute("msg", "Artesano creado exitosamente");
                 return "redirect:/gestor/gestorListaArtesano";
             }
+
+
             else if (artesano.getIdArtesano() != 0) { // Editar Artesano
                 Optional<Artesano> artesano2 = artesanoRepository.findById(artesano.getIdArtesano());
                 if(artesano2.isPresent()) { // El ID ESTA BIEN
