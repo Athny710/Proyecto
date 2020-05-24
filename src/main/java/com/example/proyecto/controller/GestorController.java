@@ -84,9 +84,17 @@ public class GestorController {
     }
 
     @GetMapping("gestorEditUsuarioSede")
-    public String editarUsuarioSede(){
-
-        return "Gestor/G-EditUsuarioSede";}
+    public String editarUsuarioSede(@RequestParam("idusuarios") int idusuarios, @ModelAttribute("usuarios") Usuarios usuarios, Model model) {
+        Optional<Usuarios> usuariosID = usuarioRepository.findById(idusuarios);
+        if (usuariosID.isPresent()) {
+            usuarios = usuariosID.get();
+            model.addAttribute("usuarios", usuarios);
+            model.addAttribute("listasedes", sedeRepository.findAll());
+            return "Gestor/G-EditUsuarioSede";
+        } else {
+            return "redirect:/gestor/gestorListaUsuarioSede";
+        }
+    }
 
 
     @GetMapping("guardarUsuarioSede")
