@@ -54,7 +54,7 @@
     <hr class="sidebar-divider my-0 bg-gray-100">
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link text-gray-100" th:href="@{/sede/registroTiendas}">
+        <a class="nav-link text-gray-100" th:href="@{'/sede/registroTiendas?idSede=' + ${session.user.sede.getIdsede()}}">
             <i class="far fa-fw fa-folder-open text-gray-100"></i>
             <span>Registro de tiendas</span>
         </a>
