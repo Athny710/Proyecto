@@ -99,6 +99,8 @@ public class GestorController {
     @GetMapping("guardarUsuarioSede")
     public String guardarUsuarioSede(){
 
+        //Aca falta la logica de guardar y actualizar
+        //DEBO METER EL TEMA DE GUARDAR EL TIPO=SEDE Y LA CONTRASEÑA PREESTABLECIDA
         return "redirect:/gestorListaUsuarioSede";}
 
 
