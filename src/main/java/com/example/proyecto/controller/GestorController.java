@@ -75,7 +75,6 @@ public class GestorController {
     }
 
 
-
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede(Model model) {
         List<Usuarios> listausuariosedes = usuarioRepository.findAll();
@@ -104,10 +103,15 @@ public class GestorController {
 
 
     @GetMapping("borrarUsuarioSede")
-    public String borrarUsuarioSede(){
+    public String borrarUsuarioSede(@RequestParam("idusuarios") int idusuarios, RedirectAttributes attr) {
 
-        return "redirect:/gestorListaUsuarioSede";}
-
+        Optional<Usuarios> optionalUsuarios = usuarioRepository.findById(idusuarios);
+        if (optionalUsuarios.isPresent()) {
+            categoriaRepository.deleteById(idusuarios);
+            attr.addFlashAttribute("msg", "Usuario Sede Eliminado");
+        }
+        return "redirect:/gestor/gestorListaUsuarioSede";
+    }
 
 
     // ----------------------- FIN CRUD USUARIOS SEDE ---------------------------------
