@@ -35,18 +35,22 @@
                                                     <div class="col-lg-4">
                                                         <label>Correo:</label>
                                                     </div>
-                                                    <input type="email" class="form-control form-control-user2" th:field="*{correo}" th:placeholder="${perfil.correo}">
+                                                    <div>
+                                                        <input type="email" class="form-control form-control-user2" th:field="*{correo}" th:placeholder="${perfil.correo}">
+                                                        <div class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}" style="font-size: 0.7rem">Error</div>
+                                                    </div>
                                                     <div class="col-lg-2"></div>
                                                 </div>
-                                                <div class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}">Error</div>
                                                 <div class="form-group d-flex centrado">
                                                     <div class="col-lg-4">
                                                         <label>Teléfono:</label>
                                                     </div>
-                                                    <input type="text" class="form-control form-control-user2" th:field="*{telefono}" th:placeholder="${perfil.telefono}">
+                                                    <div>
+                                                        <input type="text" class="form-control form-control-user2" th:field="*{telefono}" th:placeholder="${perfil.telefono}">
+                                                        <div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" style="font-size: 0.7rem">Error</div>
+                                                    </div>
                                                     <div class="col-lg-2"></div>
                                                 </div>
-                                                <div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">Error</div>
                                             </div>
                                         </div>
                                         <div class="col-lg-9 d-flex">

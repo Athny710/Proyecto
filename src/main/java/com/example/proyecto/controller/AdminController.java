@@ -15,6 +15,7 @@ import sun.misc.Perf;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.net.UnknownServiceException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -101,7 +102,8 @@ public class AdminController {
 
     //--------------------------Usuarios Sede
     @GetMapping("listaUsuarios")
-    public String listaUsuarios(){
+    public String listaUsuarios(Model model){
+        model.addAttribute("listUsuariosSede", usuarioRepository.findByTipo("sede"));
         return "Administrador/A-ListaUsuariosSede";
     }
 

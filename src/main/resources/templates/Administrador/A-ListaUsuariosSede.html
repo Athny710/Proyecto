@@ -20,46 +20,25 @@
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Usuarios Sede</h5>
-                                <form >
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-searchTop text-gray-900" type="button">
-                                                <i class="fas fa-search fa-sm text-gray-100"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
-                            <div class="table-responsive bg-white">
+                            <div class="table-responsive bg-gray-100">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr class="bg-gray-900 text-white" align="center">
                                             <th>Nombre y Apellido</th>
-                                            <th>DNI</th>
                                             <th>Correo Electronico</th>
                                             <th>Telefono</th>
                                             <th>Sede</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr align="center">
-                                            <th>Nombre y Apellido</th>
-                                            <th>DNI</th>
-                                            <th>Correo Electronico</th>
-                                            <th>Telefono</th>
-                                            <th>Sede</th>
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
-                                        <tr align="center">
-                                            <td>Anthony Rojas Lopez</td>
-                                            <td>4654189</td>
-                                            <td>dsaskdna@dlask.com</td>
-                                            <td>49898984</td>
-                                            <td>Lima</td>
+                                        <tr class="bg-white" align="center" th:each="x:${listUsuariosSede}">
+                                            <td th:text="${x.nombre+' '+x.apellido}"></td>
+                                            <td th:text="${x.correo}"></td>
+                                            <td th:text="${x.telefono}"></td>
+                                            <td th:text="${x.sede.nombre}"></td>
                                         </tr>
                                     </tbody>
                                 </table>

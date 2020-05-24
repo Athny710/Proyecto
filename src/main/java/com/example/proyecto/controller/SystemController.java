@@ -20,5 +20,4 @@ public class SystemController {
         return "Sistema/S-NuevContra2";
     }
 
-
 }

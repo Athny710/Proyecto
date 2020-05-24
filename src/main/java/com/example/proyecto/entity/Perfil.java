@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.validation.constraints.*;
 
 public class Perfil {
-    @NotBlank(message = "Este campo no puedeo estar vacío")
+    @NotBlank(message = "  Este campo no puedeo estar vacío")
     @Size(max = 45, message = "Máximo 45 carateres")
     @Email
     private String correo;
