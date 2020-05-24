@@ -1,76 +1,87 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="Fragmentos/FragmentosGestor.html::cabecera(titulo='Registrar Usuario Sede')">
+<head th:replace="Fragmentos/FragmentosGestor.html::cabecera(titulo='Registro nuevo Usuario Sede')">
 </head>
 
 <body id="page-top">
 
-    <div id="wrapper">
-        <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
-        <div id="content-wrapper" class="d-flex flex-column bg-white">
-            <div id="content">
-                <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
-                <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h4 class="m-0 font-weight-bold text-gray-900">Registro de un nuevo usuario sede</h4>
+<div id="wrapper">
+    <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
+    <div id="content-wrapper" class="d-flex flex-column bg-white">
+        <div id="content">
+            <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
+            <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
+            <!-- Page Heading -->
+            <div class="container-fluid">
+                <div class="card shadowA mb-4">
+                    <div class="card-header2 py-3">
+                        <div class="d-flex justify-content-between centrado">
+                            <h5 class="m-0 font-weight-bold text-gray-900" type="text">Registro nuevo Usuario Sede</h5>
                         </div>
-                        <div class="card-body">
-                            <form>
-                                <div class="form-group col-md-6">
-                                    <label for="inputEmail4">DNI</label>
-                                    <input type="email" class="form-control" id="inputEmail4" >
+                    </div>
+                    <div class="card-body bg-gray-100">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <form method="post" class="user" th:action="@{/gestor/guardarUsuarioSede}" th:object="${usuarios}">
+                                        <input th:field="*{idusuarios}" name="idUsuarios" type="hidden" />
+                                        <div class="form-group">
+                                            <input th:field="*{nombre}" type="text" class="form-control form-control-user" id="nombre" placeholder="Nombre">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input th:field="*{apellido}" type="text" class="form-control form-control-user" id="apellido" placeholder="Apellidos">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input th:field="*{correo}" type="text" class="form-control form-control-user" id="correo" placeholder="Correo">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input th:field="*{telefono}" type="text" class="form-control form-control-user" id="telefono" placeholder="Telefono">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <select th:field="*{sede.idsede}" class="form-control" id="sede" style="border-radius:10rem">
+                                                <option th:each="comunidad : ${listasedes}" th:value="${sede.idsede}" th:text="${sede.nombre}"></option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-searchTop btn-user btn-block">
+                                            Guardar
+                                        </button>
+                                        <a class="btn btn-searchTop btn-danger btn-block" style="border-radius:10rem" th:href="@{'/gestor/gestorListaUsuarioSede'}"> Cancelar</a>
+                                    </form>
+                                    <hr>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="qwe">Nombres</label>
-                                    <input type="text" class="form-control" id="qwe" >
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="zxc">Apellidos</label>
-                                    <input type="text" class="form-control" id="zxc" >
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="ert">Correo Electrónico</label>
-                                    <input type="text" class="form-control" id="ert" >
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="wer">Teléfono</label>
-                                    <input type="text" class="form-control" id="wer" >
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="supplier">Sede</label>
-                                    <select class="form-control" name="supplier" id="supplier">
-                                        <option >Las Malvinas</option>
-                                        <option >Wilson</option>
-                                        <option >Abancay</option>
-                                        <option >Jirón de la Unión</option>
-                                    </select>
-                                </div>
-                                <div class="form-row col-md-2">
-                                    <div class="form-group col-md-8">
-                                        <a href="#" class="btn btn-danger">Cancelar</a>
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-4">
+                                <br>
+                                <br>
+                                <div class="card shadowA mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
                                     </div>
-                                    <div class="form-group col-md-2"  >
-                                        <a href="#" class="btn btn-primary">Guardar</a>
+                                    <div class="card-body">
+                                        Aquí solo se podrá agregar a nuevos usuarios sedes colaboradores en Mosqoy.
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
 
-    <div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
+<div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
 
 </body>
 </html>

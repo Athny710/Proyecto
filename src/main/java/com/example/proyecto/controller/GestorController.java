@@ -69,7 +69,8 @@ public class GestorController {
     // ----------------------- CRUD USUARIOS SEDE ---------------------------------
 
     @GetMapping("gestorRegistroUsuarioSede")
-    public String registroUsuarioSede() {
+    public String registroUsuarioSede(@ModelAttribute("usuarios") Usuarios usuarios, Model model) {
+        model.addAttribute("listasedes", sedeRepository.findAll());
         return "Gestor/G-RegistroUsuarioSede";
     }
 
