@@ -2,7 +2,7 @@
 $(document).ready(function() {
   $('#dataTable').DataTable({
     "language": {
-      "lengthMenu": "Mostrar _MENU_ regristros",
+      "lengthMenu": "Mostrar _MENU_ registros",
       "zeroRecords": "No se encontraron resultados",
       "info": "Mostrando página _PAGE_ de _PAGES_",
       "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
