@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="Fragmentos/FragmentosGestor.html::cabecera(titulo='Gestión Ventas Gestor')">
+</head>
+
+<body id="page-top">
+<div id="wrapper">
+    <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
+    <div id="content-wrapper" class="d-flex flex-column bg-white">
+        <div id="content">
+            <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
+            <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
+            <div class="container-fluid">
+                <div class="card shadowA mb-4">
+                    <div class="card-header2 py-3">
+                        <div class="d-flex justify-content-between centrado">
+                            <h5 class="m-0 font-weight-bold text-redM">Nueva Venta</h5>
+                        </div>
+                    </div>
+                    <div class="card-body bg-gray-100">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <form method="post" th:action="@{'/gestor/guardarVenta'}" th:object="${venta}">
+                                        <input th:field="*{idventa}" type="hidden"/>
+                                        <div class="form-group">
+                                            <label for="nombrecliente">Nombre del Cliente</label>
+                                            <input type="text" class="form-control" th:field="*{nombrecliente}"/>
+                                            <div class="text-danger" th:if="${#fields.hasErrors('nombrecliente')}"
+                                                 th:errors="*{nombrecliente}">Error
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tipodocumentoidentidad">Tipo de documento Identidad</label>
+                                            <input type="text" class="form-control"
+                                                   th:field="*{tipodocumentoidentidad}">
+                                            <div class="text-danger"
+                                                 th:if="${#fields.hasErrors('tipodocumentoidentidad')}"
+                                                 th:errors="*{tipodocumentoidentidad}">Error
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="numerodocumentoidentidad">Número de documento de
+                                                identidad</label>
+                                            <input type="text" class="form-control"
+                                                   th:field="*{numerodocumentoidentidad}"/>
+                                            <div class="text-danger"
+                                                 th:if="${#fields.hasErrors('numerodocumentoidentidad')}"
+                                                 th:errors="*{numerodocumentoidentidad}">Error
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tipodocumentoventa">Tipo de documento de venta</label>
+                                            <input type="text" class="form-control"
+                                                   th:field="*{tipodocumentoventa}"/>
+                                            <div class="text-danger" th:if="${#fields.hasErrors('tipodocumentoventa')}"
+                                                 th:errors="*{tipodocumentoventa}">Error
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="numerodocumentoventa">Número de documento de venta</label>
+                                            <input type="text" class="form-control"
+                                                   th:field="*{numerodocumentoventa}"/>
+                                            <div class="text-danger"
+                                                 th:if="${#fields.hasErrors('numerodocumentoventa')}"
+                                                 th:errors="*{numerodocumentoventa}">Error
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lugardeventa">Lugar de venta</label>
+                                            <input type="text" class="form-control" th:field="*{lugardeventa}"/>
+                                            <div class="text-danger" th:if="${#fields.hasErrors('lugardeventa')}"
+                                                 th:errors="*{lugardeventa}">Error
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="preciounitarioventa">Precio Unitario de Venta</label>
+                                            <input type="text" class="form-control"
+                                                   th:field="*{preciounitarioventa}"/>
+                                            <div class="text-danger" th:if="${#fields.hasErrors('preciounitarioventa')}"
+                                                 th:errors="*{preciounitarioventa}">Error
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cantidad">Cantidad vendida</label>
+                                            <input type="text" class="form-control" th:field="*{cantidad}"/>
+                                            <div class="text-danger" th:if="${#fields.hasErrors('cantidad')}"
+                                                 th:errors="*{cantidad}">Error
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="fecha">Fecha de venta</label>
+                                            <input type="date" class="form-control" th:field="*{fecha}"/>
+
+                                            <div class="text-danger" th:if="${#fields.hasErrors('fecha')}"
+                                                 th:errors="*{fecha}">Error
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-searchTop btn-user btn-block">
+                                            Registrar Venta
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-4">
+                                <br>
+                                <br>
+                                <div class="card shadowA mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        Por favor asegurarse de guardar los datos correctos, luego no se podrán editar.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
+
+</body>
+</html>

@@ -1,115 +1,54 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="Fragmentos/FragmentosGestor.html::cabecera(titulo='Lista Usuarios Sede')">
+<head th:replace="Fragmentos/FragmentosGestor.html::cabecera(titulo='Usuarios Sede')">
 </head>
 
 <body id="page-top">
+
 <div id="wrapper">
     <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
     <div id="content-wrapper" class="d-flex flex-column bg-white">
         <div id="content">
             <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
             <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
+            <!-- Page Heading -->
             <div class="container-fluid">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-gray-900">Lista De Usuarios Sede</h6>
-                        <form class="-angle-double-right d-none d-sm-inline-block form-inline mr-auto ml-md-20 my-2 my-md-30 mw-100 navbar-search">
-                            <div class="input-group">
-                                <input type="text" class="form-control bg-light border-10 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                <div class="input-group-append">
-                                    <button class="btn btn-log text-gray-900" type="button">
-                                        <i class="fas fa-search fa-sm text-gray-100"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                <div class="col-lg-2">
+                    <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistroUsuarioSede}">Nuevo Usuario Sede</a>
+                </div>
+                <br>
+                <div class="card shadowA mb-4">
+                    <div class="card-header2 py-3">
+                        <div class="d-flex justify-content-between centrado">
+                            <h5 class="m-0 font-weight-bold text-redM">Lista de Usuarios Sede</h5>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <div class="row">
-                                <div class="col-sm-12 col-md-6">
-                                    <a href="#" class="btn btn-warning btn-icon-split">
-                                        <span class="text">Añadir nueva sede</span>
-                                    </a>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <a href="#" class="btn btn-warning btn-icon-split">
-                                        <span class="text">Añadir nuevo usuario</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-3">
-                                    <a class="btn btn-warning mt-4 mb-4"  th:href="@{/gestor/gestorRegistroUsuarioSede}">Añadir nuevo usuario</a>
-                                </div>
-                                <div class="col-sm-12 col-md-3">
-                                    <a class="btn btn-warning mt-4 mb-4" th:href="@{/gestor/gestorResgistroSede}">Añadir nueva sede</a>
-                                </div>
-                            </div>
+                    <div class="card-body bg-gray-100">
+                        <div class="table-responsive bg-white">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
-                                <tr>
+                                <tr class="bg-gray-900 text-white" align="center">
                                     <th>Nombres</th>
                                     <th>Apellidos</th>
-                                    <th>DNI</th>
-                                    <th>E-mail</th>
+                                    <th>Email</th>
                                     <th>Teléfono</th>
                                     <th>Sede</th>
                                     <th>Editar/Borrar</th>
                                 </tr>
                                 </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Sergio andres</th>
-                                    <th>Muro calvo</th>
-                                    <th>58678994</th>
-                                    <th>sergio.muroc@pucp.pe</th>
-                                    <th>937568931</th>
-                                    <th>Lima</th>
-                                </tr>
-                                </tfoot>
+
                                 <tbody>
-                                <tr>
-                                    <td>Julio renato</td>
-                                    <td>Carrion pardo</td>
-                                    <td>59639024</td>
-                                    <td>a20161448@pucp.pe</td>
-                                    <td>945378628</td>
-                                    <td>Ica</td>
-                                    <td><a th:href="@{/gestor/gestorRegistroUsuarioSede}" class="btn btn-success btn-circle ">
-                                        <i class="fas fa-check"></i>
-                                    </a><a href="#" class="btn btn-danger btn-circle ">
-                                        <i class="fas fa-trash"></i>
-                                    </a></td>
-                                </tr>
-                                <tr>
-                                    <td>Sergio andres</td>
-                                    <td>Muro calvo</td>
-                                    <td>58678994</td>
-                                    <td>sergio.muroc@pucp.pe</td>
-                                    <td>937568931</td>
-                                    <td>Lima</td>
-                                    <td><a th:href="@{/gestor/gestorRegistroUsuarioSede}" class="btn btn-success btn-circle">
-                                        <i class="fas fa-check"></i>
-                                    </a><a href="#" class="btn btn-danger btn-circle">
-                                        <i class="fas fa-trash"></i>
-                                    </a></td>
-                                </tr>
-                                <tr>
-                                    <td>Jhon Branko</td>
-                                    <td>Zambrano Linares</td>
-                                    <td>44870124</td>
-                                    <td>jbzambrano@pucp.pe</td>
-                                    <td>923746291</td>
-                                    <td>Arequipa</td>
-                                    <td><a th:href="@{/gestor/gestorRegistroUsuarioSede}" class="btn btn-success btn-circle">
-                                        <i class="fas fa-check"></i>
-                                    </a><a href="#" class="btn btn-danger btn-circle">
-                                        <i class="fas fa-trash"></i>
-                                    </a></td>
+                                <tr align="center" th:each="usuariosedes, info: ${listausuariosedes}">
+                                    <td th:text="${usuariosedes.nombre}"></td>
+                                    <td th:text="${usuariosedes.apellido}"></td>
+                                    <td th:text="${usuariosedes.correo}"></td>
+                                    <td th:text="${usuariosedes.telefono}"></td>
+                                    <td th:text="${usuariosedes.sede.nombre}"></td>
+                                    <td align="center">
+                                        <a th:href="@{'/gestor/gestorEditUsuarioSede' + '?idusuarios=' + ${usuariosedes.idusuarios}}" class="far fa-list-alt text-orangeM"></a>
+                                        <a th:href="@{'/gestor/gestorEditUsuarioSede' + '?idusuarios=' + ${usuariosedes.idusuarios}}"class="far fa-trash-alt text-redM"></a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>

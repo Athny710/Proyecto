@@ -7,21 +7,24 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "artesano")
 public class Artesano {
     @Id
-    @NotBlank
-    private int idartesano;
+    @Column(name = "idartesano")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idartesano;
     @Column(nullable = false)
-    @NotBlank
+    @NotBlank(message = "Este Campo no puede ser vacío")
     private String nombre;
     @Column(nullable = false)
-    @NotBlank
+    @NotBlank(message = "Este Campo no puede ser vacío")
     private String apellidopaterno;
-    @NotBlank
+    @NotBlank(message = "Este Campo no puede ser vacío")
     private String apellidomaterno;
+    @Column(nullable = false, name = "codigo")
+    @NotBlank(message = "Este Campo no puede ser vacío")
+    private String codigo;
+
     @ManyToOne
     @JoinColumn(name = "idcomunidad")
-    @NotBlank
     private Comunidad comunidad;
-
 
 
     public Comunidad getComunidad() {
@@ -32,11 +35,11 @@ public class Artesano {
         this.comunidad = comunidad;
     }
 
-    public int getIdArtesano() {
+    public Integer getIdArtesano() {
         return idartesano;
     }
 
-    public void setIdArtesano(int idArtesano) {
+    public void setIdArtesano(Integer idArtesano) {
         this.idartesano = idArtesano;
     }
 
@@ -64,5 +67,7 @@ public class Artesano {
         this.apellidomaterno = apellidoMaterno;
     }
 
+    public String getCodigo() { return codigo; }
 
+    public void setCodigo(String codigo) { this.codigo = codigo; }
 }

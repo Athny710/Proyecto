@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="Fragmentos/FragmentosGestor.html::cabecera(titulo='Registrar COmunidad')">
+<head th:replace="Fragmentos/FragmentosGestor.html::cabecera(titulo='Registrar Comunidad')">
 </head>
 
 <body id="page-top">
@@ -17,31 +17,55 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                           <!--  <h4 class="m-0 font-weight-bold text-gray-900" >Registro de nueva comunidad</h4>   -->
-                        <h4 class="m-0 font-weight-bold text-gray-900" th:text="${comunidad.nombre==null?'Registro de nueva comunidad':'Editar comunidad'}">Registro de nueva comunidad </h4>
+                        <h4 class="m-0 font-weight-bold text-redM" th:text="${comunidad.idComunidad==0?'Registro de nueva comunidad':'Editar comunidad'}">Registro de nueva comunidad </h4>
                         </div>
                         <div th:if="${errorComunidad != null}" th:text="${errorComunidad}" class="alert alert-danger" role="alert"></div>
-                        <div class="card-body">
+                     <!--   <div class="card-body">  -->
+                        <div class="card-body bg-gray-100">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="p-5">
 
-                            <form method="post" th:action="@{/gestor/gestorGuardarComunidad}" th:object="${comunidad}">
+
+                                    <form method="post" th:action="@{/gestor/gestorGuardarComunidad}" th:object="${comunidad}" class="user">
                                 <input th:field="${comunidad.idComunidad}" type="hidden"/>
-                                <div class="form-group col-md-6">
-                                    <label for="nombre">Nombre</label>
-                                    <input th:field="${comunidad.nombre}"  type="text" class="form-control"  >
+                                <div class="form-group ">
+                                    <label for="nombre"></label>
+                                    <input th:field="*{nombre}"  type="text" class="form-control form-control-user" placeholder="Nombre"  >
+                                    <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="codigo">Código</label>
-                                    <input th:field="${comunidad.codigo}"  type="text" class="form-control"  >
+                                <div th:if="${comunidad.idComunidad  == 0}" class="form-group ">
+                                    <label for="codigo"></label>
+                                    <input th:field="*{codigo}"  type="text" class="form-control form-control-user" placeholder="Código" >
+                                    <div class="text-danger" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></div>
                                 </div>
-                                <div class="form-row col-md-2">
-                                    <div class="form-group col-md-8">
-                                        <a th:href="@{/gestor/gestorListaComunidad}" class="btn btn-danger">Cancelar</a>
+                            <!--    <div class="form-row col-md-2"> -->
+                                    <div class="form-group col-md-14">
+                                        <a th:href="@{/gestor/gestorListaComunidad}" class="btn btn-danger btn-user btn-block">Cancelar</a>
                                     </div>
-                                    <div class="form-group col-md-2"  >
-                                        <button type="submit" class="btn btn-primary" th:text="${comunidad.nombre==null?'Registrar':'Actualizar'}">Registrar</button>
+                                    <div class="form-group col-md-14"  >
+                                        <button type="submit" class="btn btn-searchTop btn-user btn-block" th:text="${comunidad.idComunidad==0?'Registrar':'Actualizar'}">Registrar</button>
                                     </div>
-                                </div>
+                            <!--    </div> -->
                             </form>
+                                    </div>
+                                </div>
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-4">
+                                    <br>
+                                    <br>
+                                    <div th:if="${comunidad.idComunidad  == 0}" class="card shadowA mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            Se recomienda registrar el código con letras mayúsculas.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                       <!-- </div> -->
                     </div>
                 </div>
             </div>

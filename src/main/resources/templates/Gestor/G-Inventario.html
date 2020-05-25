@@ -13,20 +13,17 @@
                 <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <div class="container-fluid">
-                    <!-- Page Heading -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 text-gray-900 font-weight-bold text-primary">Inventario</h6>
-                            <form class="-angle-double-right d-none d-sm-inline-block form-inline mr-auto ml-md-20 my-2 my-md-30 mw-100 navbar-search">
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-10 small bg-white" placeholder="Filtrar for..." aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="d-flex justify-content-between centrado">
+                            <h5 class="m-0 font-weight-bold text-redM">Inventario</h5>
+                            <form method="post" th:action="@{/gestor/gestorBuscarInventario}">
+                                <div class="input-group" >
                                     <div class="input-group-append">
-                                        <button class="btn btn-log text-gray-900" type="button">
-                                            <i class="fas fa-search fa-sm text-gray-100"></i>
-                                        </button>
                                     </div>
                                 </div>
                             </form>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -36,7 +33,7 @@
                                             <a class="btn btn-warning mt-4 mb-4" th:href="@{/gestor/gestorListarSinStock}">Lista de Productos sin Stock</a>
                                         </div>
                                         <div class="col-sm-12 col-md-6">
-                                            <a class="btn btn-warning mt-4 mb-4" th:href="@{/gestor/gestorRegCompra}">Agregar Nueva Compra</a>
+                                            <a class="btn btn-warning mt-4 mb-4" th:href="@{/gestor/gestorRegProducto}">Agregar Nuevo Producto</a>
                                         </div>
                                     </div>
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -49,65 +46,34 @@
                                             <th>Tamaño</th>
                                             <th>Comunidad</th>
                                             <th>Tipo</th>
-                                            <th>Estado en sede</th>
                                             <th>Stock total</th>
                                             <th>Ver detalles</th>
                                             <th>Editar/borrar</th>
                                         </tr>
                                         </thead>
-                                        <tfoot>
-                                        <tr>
-                                            <th>Linea</th>
-                                            <th>Categoría</th>
-                                            <th>Nombre</th>
-                                            <th>Descripción</th>
-                                            <th>Tamaño</th>
-                                            <th>Comunidad</th>
-                                            <th>Tipo</th>
-                                            <th>Estado en sede</th>
-                                            <th>Stock total</th>
-                                            <th>Ver detalles</th>
-                                            <th>Editar/borrar</th>
-                                        </tr>
-                                        </tfoot>
                                         <tbody>
-                                        <tr>
-                                            <td>Mosqoy</td>
-                                            <td>Custom</td>
-                                            <td>Lama</td>
-                                            <td>Scarf</td>
-                                            <td>Medium</td>
-                                            <td>Parombamba</td>
-                                            <td>Consignado</td>
-                                            <td>Recibido</td>
-                                            <td>4</td>
-                                            <td><a th:href="@{/gestor/gestorEditProdCompra}" class="btn btn-info btn-circle">
-                                                <i class="fas fa-info-circle"></i>
-                                            </a></td>
-                                            <td><a th:href="@{/gestor/gestorEditProdCompra}" class="btn btn-success btn-circle">
-                                                <i class="fas fa-check"></i>
-                                            </a><a href="#" class="btn btn-danger btn-circle">
-                                                <i class="fas fa-trash"></i>
-                                            </a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Tradicional</td>
-                                            <td>Yarn</td>
-                                            <td>Watana</td>
-                                            <td>Cinta para el cabello</td>
-                                            <td>One-size</td>
-                                            <td>Amaru</td>
-                                            <td>Comprado</td>
-                                            <td>Agotado</td>
-                                            <td>0</td>
-                                            <td><a th:href="@{/gestor/gestorEditProdCompra}" class="btn btn-info btn-circle">
-                                                <i class="fas fa-info-circle"></i>
-                                            </a></td>
-                                            <td><a th:href="@{/gestor/gestorEditProdCompra}" class="btn btn-success btn-circle">
-                                                <i class="fas fa-check"></i>
-                                            </a><a href="#" class="btn btn-danger btn-circle">
-                                                <i class="fas fa-trash"></i>
-                                            </a></td>
+                                        <tr align="center" th:each="productos, info: ${inventario}">
+                                            <td th:text="${productos.producto.denominacion.linea.nombre}"></td>
+                                            <td th:text="${productos.producto.categoria.nombre}"></td>
+                                            <td th:text="${productos.producto.denominacion.nombre}"></td>
+                                            <td th:text="${productos.comentario}"></td>
+                                            <td th:text="${productos.producto.tamanho.nombre}"></td>
+                                            <td th:text="${productos.producto.comunidad.nombre }"></td>
+                                            <td th:text="${productos.producto.adquisicion.modalidad}"></td>
+                                            <td th:text="${productos.stock}"></td>
+                                            <td align="center">
+                                                <a th:href="@{'/gestor/gestorDetallesProducto?id='+${productos.idInventario}}">
+                                                    <i class="far fa-list-alt text-greenM"></i>
+                                                </a>
+                                            </td>
+                                            <td align="center">
+                                                <a th:href="@{'/gestor/gestorEditProdCompra?id='+${productos.idInventario}}">
+                                                    <i class="far fa-edit text-orangeM" style="margin-right: 5px"></i>
+                                                </a>
+                                                <a th:href="@{'/sede/borrarProducto?id='+${productos.idInventario}}">
+                                                    <i class="far fa-trash-alt text-redM" style="margin-left: 5px"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>

@@ -1,6 +1,7 @@
 package com.example.proyecto.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "adquisicion")
@@ -11,6 +12,7 @@ public class Adquisicion {
     @Column(nullable = false)
     private String modalidad;
     @Column(nullable = false)
+    @NotBlank(message = "Este campo no puede ser vacío")
     private String fecha;
     private String fechafin;
     @ManyToOne

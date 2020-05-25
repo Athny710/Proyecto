@@ -1,18 +1,24 @@
 package com.example.proyecto.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 
 @Entity
 @Table(name = "inventario")
 public class Inventario {
 
     @Id
+    @JoinColumn(name = "idinventario")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idinventario;
-    private int stock;
+    private Integer stock;
     private String comentario;
     private String foto;
     private String color;
-    private String preciomosqoy;
+    @Positive
+    private Double preciomosqoy;
     @ManyToOne
     @JoinColumn(name = "idproducto")
     private Producto producto;
@@ -58,13 +64,7 @@ public class Inventario {
         this.color = color;
     }
 
-    public String getPrecioMosqoy() {
-        return preciomosqoy;
-    }
 
-    public void setPrecioMosqoy(String precioMosqoy) {
-        this.preciomosqoy = precioMosqoy;
-    }
 
     public Producto getProducto() {
         return producto;
@@ -72,5 +72,13 @@ public class Inventario {
 
     public void setProducto(Producto producto) {
         this.producto = producto;
+    }
+
+    public Double getPreciomosqoy() {
+        return preciomosqoy;
+    }
+
+    public void setPreciomosqoy(Double preciomosqoy) {
+        this.preciomosqoy = preciomosqoy;
     }
 }

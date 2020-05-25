@@ -15,10 +15,6 @@
                 <div th:insert="Fragmentos/FragmentosAdmin.html::TopBar"></div>
                 <div th:insert="Fragmentos/FragmentosAdmin.html::LogOut"></div>
                 <div class="container-fluid">
-                    <div class="col-lg-3">
-                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/system}">Cambiar Contraseña</a>
-                    </div>
-                    <br>
                     <!-- Page Heading -->
                     <div class="card shadowA mb-4">
                         <div class="card-header2 py-3">
@@ -28,62 +24,63 @@
                         </div>
                         <div class="card-body bg-gray-100">
                             <div class="table-responsive bg-white d-flex">
-                                <div class="col-lg-6 ">
+                                <form class="user" method="post" th:action="@{'/admin/guardarPerfil'}" th:object="${perfil}">
                                     <div class="d-flex">
-                                        <br>
-                                        <form class="user">
-                                            <br><br>
-                                            <div class="form-group d-flex centrado">
-                                                <div class="col-lg-6">
-                                                    <label>Correo:</label>
+                                        <div class="col-lg-10 d-flex">
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-11">
+                                                <br><br>
+                                                <input type="hidden" th:value="${session.user.idusuarios}">
+                                                <div class="form-group d-flex centrado">
+                                                    <div class="col-lg-4">
+                                                        <label>Correo:</label>
+                                                    </div>
+                                                    <div>
+                                                        <input type="email" class="form-control form-control-user2" th:field="*{correo}" th:placeholder="${perfil.correo}">
+                                                        <div class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}" style="font-size: 0.7rem">Error</div>
+                                                    </div>
+                                                    <div class="col-lg-2"></div>
                                                 </div>
-                                                <input type="email" class="form-control form-control-user2" id="exampleInputEmail" placeholder="a20145976@pucp.pe">
-                                            </div>
-                                            <div class="form-group d-flex centrado">
-                                                <div class="col-lg-6">
-                                                    <label>Teléfono:</label>
-                                                </div>
-                                                <input type="email" class="form-control form-control-user2" id="exampleInputEmail" placeholder="99844561">
-                                            </div>
-                                            <br>
-                                            <br>
-                                            <div class="d-flex">
-                                                <div class="col-lg-2"></div>
-                                                <div class="col-lg-10">
-                                                    <hr>
-                                                    <a th:href="@{/admin/principal}" class="btn btn-searchTop btn-user btn-block">
-                                                        Guardar Cambios
-                                                    </a>
+                                                <div class="form-group d-flex centrado">
+                                                    <div class="col-lg-4">
+                                                        <label>Teléfono:</label>
+                                                    </div>
+                                                    <div>
+                                                        <input type="text" class="form-control form-control-user2" th:field="*{telefono}" th:placeholder="${perfil.telefono}">
+                                                        <div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" style="font-size: 0.7rem">Error</div>
+                                                    </div>
+                                                    <div class="col-lg-2"></div>
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
-                                    <br>
-                                </div>
-                                <div class="col-lg-6 ">
-                                    <br><br>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Nombre:</p>
                                         </div>
-                                        <div class="col-lg-6"><p>Anthony</p></div>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Apellidos:</p>
+                                        <div class="col-lg-9 d-flex">
+                                            <div class="col-lg-12">
+                                                <br><br>
+                                                <div class="d-flex">
+                                                    <div class="col-lg-2"></div>
+                                                    <div class="col-lg-4 centrado">
+                                                        <p>Nombre:</p>
+                                                    </div>
+                                                    <div class="col-lg-6"><p th:text="${session.user.nombre}"></p></div>
+                                                </div>
+                                                <hr class="col-lg-8">
+                                                <div class="d-flex">
+                                                    <div class="col-lg-2"></div>
+                                                    <div class="col-lg-4 centrado">
+                                                        <p>Apellidos:</p>
+                                                    </div>
+                                                    <div class="col-lg-6"><p th:text="${session.user.apellido}"></p></div>
+                                                </div>
+                                                <hr class="col-lg-8">
+                                                <br>
+                                                <div class="d-flex">
+                                                    <div class="col-lg-6"></div>
+                                                    <button type="submit" class="btn btn-orange" style="border-radius: 10rem">Guardar Cambios</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-lg-6"><p>Rojas Lopez</p></div>
                                     </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>DNI:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="489765115"></p></div>
-                                    </div>
-                                    <hr>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>

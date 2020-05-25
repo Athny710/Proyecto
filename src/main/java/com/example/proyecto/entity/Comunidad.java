@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "comunidad")
@@ -12,8 +14,12 @@ public class Comunidad {
     @Id
     private int idcomunidad;
     @Column(nullable = false)
+    @NotBlank(message = "Este campo no puede estar vacio")
+    @Size(max = 30, message = "no puede tener mas de 30 caracteres")
     private String nombre;
     @Column(nullable = false)
+    @NotBlank(message = "Este campo no puede estar vacio")
+    @Size(max = 2, message = "no puede tener mas de 2 caracteres")
     private String codigo;
 
 
