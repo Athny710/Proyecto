@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.jws.WebParam;
+import javax.rmi.CORBA.Tie;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.xml.bind.SchemaOutputResolver;
@@ -165,21 +166,26 @@ public class SedeController {
     public String guardarTienda(@ModelAttribute("tienda") @Valid Tienda tienda, BindingResult bindingResult,
                                 RedirectAttributes attr,
                                 Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("listaTiendas", tiendaRepository.findAll());
-            return "UsuarioSede/U-TiendaDistribuidor";
-        } else {
 
-            if (tienda.getIdtienda() == 0) {
-                tiendaRepository.save(tienda);
-                attr.addFlashAttribute("msg", "Tienda agregada a la lista");
-                return "redirect:/sede/registroTiendas";
+        List<Tienda> listatiendas = tiendaRepository.buscarPorNombreDeTienda(tienda.getNombre());
+
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("listaTiendas", tiendaRepository.findAll());
+                return "UsuarioSede/U-TiendaDistribuidor";
             } else {
-                tiendaRepository.save(tienda);
-                attr.addFlashAttribute("msg", "Tienda actualizada correctamente");
-                return "redirect:/sede/registroTiendas";
+                if (tienda.getIdtienda() == 0) {
+                    tiendaRepository.save(tienda);
+                    attr.addFlashAttribute("msg", "Tienda agregada a la lista");
+                    return "redirect:/sede/registroTiendas";
+                } else {
+                    tiendaRepository.save(tienda);
+                    attr.addFlashAttribute("msg", "Tienda actualizada correctamente");
+                    return "redirect:/sede/registroTiendas";
+                }
             }
-        }
+
+
+
     }
 
     @PostMapping("/buscarTienda")

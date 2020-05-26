@@ -298,15 +298,14 @@ public class GestorController {
 
     @PostMapping("gestorGuardarCategoria")
     public String GuardaCategoria(@ModelAttribute("categoria") @Valid Categoria categoria, BindingResult bindingResult, Model model, RedirectAttributes attr) {
-        List<Categoria> listaCategoria = categoriaRepository.buscarCategoria(categoria.getNombre(), categoria.getCodigo());
 
+        List<Categoria> listaCategoria = categoriaRepository.buscarCategoria(categoria.getNombre(), categoria.getCodigo());
 
         if ((categoria.getIdCategoria() == 0)) {
             if (bindingResult.hasErrors()) {
                 model.addAttribute("categoria", categoria);
                 return "Gestor/G-EditCategoria";
             } else {
-
                 categoriaRepository.save(categoria);
                 attr.addFlashAttribute("msg", "Categoria registrada correctamente");
                 return "redirect:/gestor/gestorListaCategoria";
