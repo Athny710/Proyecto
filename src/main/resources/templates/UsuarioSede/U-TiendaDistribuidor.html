@@ -17,6 +17,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="form-group col-md-3 card shadow mb-4 ml-5" >
+                            <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-success" role="alert"></div>
                             <form method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}">
                                 <div class="form-group">
                                     <br>
@@ -44,7 +45,7 @@
                                     <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                         <tr class = "bg-gray-900 text-white">
-                                            <th>ID Tienda</th>
+
                                             <th>Nombre de tienda</th>
                                             <th>Editar/Eliminar</th>
                                         </tr>
@@ -52,7 +53,7 @@
 
                                         <tbody>
                                         <tr align="center" th:each="tienda, info: ${listaTiendas}">
-                                            <td th:text="${tienda.idtienda}"></td>
+
                                             <td th:text="${tienda.nombre}"></td>
                                             <td align="center">
                                                 <a style="margin-left: 10px" th:href="@{'/sede/editarTienda' + '?id=' + ${tienda.idtienda}}" class="far fa-edit text-orangeM"
