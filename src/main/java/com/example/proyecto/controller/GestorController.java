@@ -149,11 +149,34 @@ public class GestorController {
 
 
     @GetMapping("guardarSede")
-    public String guardarSede(){
-
-        //Aca falta la logica de guardar y actualizar
-        //DEBO METER EL TEMA DE GUARDAR EL TIPO=SEDE Y LA CONTRASEÑA PREESTABLECIDA
-        return "redirect:/gestorListaSedes";}
+    public String guardarSede(@ModelAttribute("sede") @Valid Sede sede, BindingResult bindingResult,
+                              Model model,
+                              RedirectAttributes attr) {
+        if (bindingResult.hasErrors()) {
+            return "Gestor/G-RegistroSede";
+        } else {
+            if (sede.getIdsede() == null ) {
+                sedeRepository.save(sede);
+                attr.addFlashAttribute("msg", "Sede creada exitosamente");
+                return "redirect:/gestor/gestorListaSedes";
+            } else if (sede.getIdsede() != 0) {
+                Optional<Sede> sede2 = sedeRepository.findById(sede.getIdsede());
+                if(sede2.isPresent()) { // El ID ESTA BIEN
+                    sedeRepository.save(sede);
+                    attr.addFlashAttribute("msg", "Sede actualizada exitosamente");
+                    return "redirect:/gestor/gestorListaSedes";
+                }else{ // EL ID NO ESTA BIEN
+                    attr.addFlashAttribute("msg", "Error en el ID de la sede");
+                    return "redirect:/gestor/gestorListaSedes";
+                }
+            } else { //EL IDSEDE ES IGUAL A 0
+                System.out.println("ID SEDE ES 0 POR ALGUA RAZON");
+                model.addAttribute(sede);
+                attr.addFlashAttribute("msgError", "Los datos ingresados ya existen, por favor modificarlo");
+                return "Gestor/G-RegistroSede";
+            }
+        }
+    }
 
 
     @GetMapping("borrarSede")
