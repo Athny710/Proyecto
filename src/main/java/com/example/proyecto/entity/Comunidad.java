@@ -14,12 +14,12 @@ public class Comunidad {
     @Id
     private int idcomunidad;
     @Column(nullable = false)
-    @NotBlank(message = "Este campo no puede estar vacio")
-    @Size(max = 30, message = "no puede tener mas de 30 caracteres")
+    @NotBlank(message = "Este campo no puede estar vacío")
+    @Size(max = 30, message = "No puede tener más de 30 caracteres")
     private String nombre;
     @Column(nullable = false)
-    @NotBlank(message = "Este campo no puede estar vacio")
-    @Size(max = 2, message = "no puede tener mas de 2 caracteres")
+    @NotBlank(message = "Este campo no puede estar vacío")
+    @Size(max = 2, message = "No puede tener más de 2 caracteres")
     private String codigo;
 
 
