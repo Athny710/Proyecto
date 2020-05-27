@@ -174,8 +174,8 @@ public class SedeController {
                 if (tienda.getIdtienda() == 0) {
                     if(tiendaRepository.findByNombre(tienda.getNombre()).size() >= 1){
                         model.addAttribute("listaTiendas", tiendaRepository.findAll());
-                        attr.addFlashAttribute("msgError", "Esta tienda ya fue registrada");
-                        return "UsuarioSede/U-TiendaDistribuidor";
+                        attr.addFlashAttribute("msgError", "Atención! Esta tienda ya ha sido registrada");
+                        return "redirect:/sede/registroTiendas";
                     }else {
                         tiendaRepository.save(tienda);
                         attr.addFlashAttribute("msg", "Tienda agregada a la lista");
