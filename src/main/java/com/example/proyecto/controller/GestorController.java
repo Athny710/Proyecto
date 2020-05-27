@@ -38,6 +38,8 @@ public class GestorController {
     VentaRepository ventaRepository;
     @Autowired
     SedeRepository sedeRepository;
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
 
     // ----------------------- ENLACES ---------------------------------
@@ -47,21 +49,11 @@ public class GestorController {
     }
 
 
-    @GetMapping("gestorRegistroUsuarioSede")
-    public String registroUsuarioSede() {
-        return "Gestor/G-RegistroUsuarioSede";
-    }
-
     @GetMapping("gestorGestionVentas")
     public String registroVentas() {
         return "G-GestionVentas";
     }
 
-
-    @GetMapping("gestorResgistroSede")
-    public String registroSede() {
-        return "Gestor/G-RegistroSede";
-    }
 
     @GetMapping("gestorReporteVentas")
     public String reporteVentas1() {
@@ -74,11 +66,71 @@ public class GestorController {
     }
 
 
+    // ----------------------- CRUD USUARIOS SEDE ---------------------------------
+
+    @GetMapping("gestorRegistroUsuarioSede")
+    public String registroUsuarioSede(@ModelAttribute("usuarios") Usuarios usuarios, Model model) {
+        model.addAttribute("listasedes", sedeRepository.findAll());
+        return "Gestor/G-RegistroUsuarioSede";
+    }
+
+
     @GetMapping("gestorListaUsuarioSede")
-    public String listaUsuarioSede() {
+    public String listaUsuarioSede(Model model) {
+        List<Usuarios> listausuariosedes = usuarioRepository.findAll();
+        model.addAttribute("listausuariosedes",listausuariosedes);
         return "Gestor/G-ListaUsuarioSede";
     }
 
+    @GetMapping("gestorEditUsuarioSede")
+    public String editarUsuarioSede(@RequestParam("idusuarios") int idusuarios, @ModelAttribute("usuarios") Usuarios usuarios, Model model) {
+        Optional<Usuarios> usuariosID = usuarioRepository.findById(idusuarios);
+        if (usuariosID.isPresent()) {
+            usuarios = usuariosID.get();
+            model.addAttribute("usuarios", usuarios);
+            model.addAttribute("listasedes", sedeRepository.findAll());
+            return "Gestor/G-EditUsuarioSede";
+        } else {
+            return "redirect:/gestor/gestorListaUsuarioSede";
+        }
+    }
+
+
+    @GetMapping("guardarUsuarioSede")
+    public String guardarUsuarioSede(){
+
+        //Aca falta la logica de guardar y actualizar
+        //DEBO METER EL TEMA DE GUARDAR EL TIPO=SEDE Y LA CONTRASEÑA PREESTABLECIDA
+        return "redirect:/gestorListaUsuarioSede";}
+
+
+    @GetMapping("borrarUsuarioSede")
+    public String borrarUsuarioSede(@RequestParam("idusuarios") int idusuarios, RedirectAttributes attr) {
+
+        Optional<Usuarios> optionalUsuarios = usuarioRepository.findById(idusuarios);
+        if (optionalUsuarios.isPresent()) {
+            categoriaRepository.deleteById(idusuarios);
+            attr.addFlashAttribute("msg", "Usuario Sede Eliminado");
+        }
+        return "redirect:/gestor/gestorListaUsuarioSede";
+    }
+
+
+    // ----------------------- FIN CRUD USUARIOS SEDE ---------------------------------
+
+
+    // ----------------------- CRUD SEDES ---------------------------------
+
+
+    @GetMapping("gestorResgistroSede")
+    public String registroSede() {
+        return "Gestor/G-RegistroSede";
+    }
+
+
+
+
+    // ----------------------- FIN CRUD SEDES ---------------------------------
 
 // ----------------------- CRUD INVENTARIO ---------------------------------
 
@@ -246,15 +298,14 @@ public class GestorController {
 
     @PostMapping("gestorGuardarCategoria")
     public String GuardaCategoria(@ModelAttribute("categoria") @Valid Categoria categoria, BindingResult bindingResult, Model model, RedirectAttributes attr) {
-        List<Categoria> listaCategoria = categoriaRepository.buscarCategoria(categoria.getNombre(), categoria.getCodigo());
 
+        List<Categoria> listaCategoria = categoriaRepository.buscarCategoria(categoria.getNombre(), categoria.getCodigo());
 
         if ((categoria.getIdCategoria() == 0)) {
             if (bindingResult.hasErrors()) {
                 model.addAttribute("categoria", categoria);
                 return "Gestor/G-EditCategoria";
             } else {
-
                 categoriaRepository.save(categoria);
                 attr.addFlashAttribute("msg", "Categoria registrada correctamente");
                 return "redirect:/gestor/gestorListaCategoria";
@@ -390,14 +441,12 @@ public class GestorController {
                 Optional<Comunidad> comunidad = comunidadRepository.findById(artesano.getComunidad().getIdComunidad());
                 System.out.println(comunidad.get().getIdComunidad() + "ID COMUNIDAD ---------");
                 artesano.setComunidad(comunidad.get());
-
-
-
-
                 artesanoRepository.save(artesano);
                 attr.addFlashAttribute("msg", "Artesano creado exitosamente");
                 return "redirect:/gestor/gestorListaArtesano";
             }
+
+
             else if (artesano.getIdArtesano() != 0) { // Editar Artesano
                 Optional<Artesano> artesano2 = artesanoRepository.findById(artesano.getIdArtesano());
                 if(artesano2.isPresent()) { // El ID ESTA BIEN

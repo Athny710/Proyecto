@@ -4,6 +4,8 @@
 <head th:replace="Fragmentos/FragmentosSede.html::cabecera(titulo='Distribuidor')">
 </head>
 
+
+
 <body id="page-top">
 
     <div id="wrapper">
@@ -13,43 +15,6 @@
                 <div th:insert="Fragmentos/FragmentosSede.html::TopBar"></div>
                 <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
                 <div class="container-fluid">
-
-
-                    <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                         aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header text-center">
-                                    <h4 class="modal-title w-100 font-weight-bold">Edición del nombre de la tienda</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}" role="form" >
-                                        <div class="form-group">
-                                            <br>
-                                            <input th:value="${tienda.idtienda}" name="idtienda" type="text" />
-                                            <label>Nombre de Tienda</label>
-                                            <input th:field="*{nombre}" type="text" class="form-control form-control-user">
-                                            <div class="text-danger text-center" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</div><br>
-
-                                            <input name="sede.idsede" th:value="${session.user.sede.getIdsede()}" type="hidden" class="form-control form-control-user">
-                                        </div>
-
-                                        <button type="submit" class="btn btn-user btn-primary btn-block" th:text="Actualizar"></button>
-                                        <a th:href="@{/sede/registroTiendas}" class="btn btn-searchTop btn-user btn-block">Cancelar</a>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-
-
                     <div class="row">
                         <div class="form-group col-md-3 card shadow mb-4 ml-5" >
                             <form method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}">
@@ -70,33 +35,11 @@
                         <div class="col-md-8 card shadow mb-4 ml-3">
                             <div class="card-header2 py-3 d-flex justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-gray-900 ">Lista de Tiendas</h6>
-                                <form method="post" th:action="@{/sede/buscarTienda}">
-                                    <div class="input-group" >
-                                        <input name="searchField" type="text" class="form-control bg-light border-0 small bg-white" placeholder="Filtrar ..." aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-searchTop text-gray-900" type="submit">
-                                                <i class="fas fa-search fa-sm text-gray-100"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
                             </div>
 
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-
-
-
-
-
-
-
-
-
-
-
-
 
                                     <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
@@ -112,12 +55,60 @@
                                             <td th:text="${tienda.idtienda}"></td>
                                             <td th:text="${tienda.nombre}"></td>
                                             <td align="center">
-                                                <a style="margin-left: 10px" th:href="@{'/sede/editarTienda' + '?id=' + ${tienda.idtienda}}" class="far fa-edit text-orangeM "  ></a>
+                                                <a style="margin-left: 10px" th:href="@{'/sede/editarTienda' + '?id=' + ${tienda.idtienda}}" class="far fa-edit text-orangeM"
+                                                   data-toggle="modal" data-target="#modalLoginForm" th:attrappend="data-target=${tienda.idtienda}"></a>
+
+
+                                                <div class="modal fade" id="modalLoginForm"  tabindex="-1" role="dialog" th:attrappend="id=${tienda.idtienda}" aria-labelledby="myModalLabel">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header text-center">
+                                                                <h4 class="modal-title w-100 font-weight-bold">Edición del nombre de la tienda</h4>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form id="myform" method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}" role="form" >
+                                                                    <div class="form-group">
+                                                                        <br>
+                                                                        <input th:value="${tienda.idtienda}" name="idtienda" type="hidden" />
+
+                                                                        <label>Nombre de Tienda</label>
+                                                                        <input id="nombre" name="nombre" th:value="${tienda.nombre}" type="text" class="form-control form-control-user">
+                                                                        <div class="text-danger text-center" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</div><br>
+
+
+                                                                        <input name="sede.idsede" th:value="${session.user.sede.getIdsede()}" type="hidden" class="form-control form-control-user">
+                                                                    </div>
+
+                                                                    <button type="submit" class="btn btn-user btn-primary btn-block" th:text="Actualizar"></button>
+                                                                    <a th:href="@{/sede/registroTiendas}" class="btn btn-searchTop btn-user btn-block">Cancelar</a>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
                                                 <a style="margin-left: 10px" th:href="@{'/sede/borrarTienda' + '?id=' + ${tienda.idtienda}}"class="far fa-trash-alt text-redM"></a>
+                                                <!-- \''+tienda.idtienda+'\',+\''+tienda.nombre+'\',\''+session+'           th:onclick="'selPersona(\'' + ${tienda.idtienda} + '\',\'' + ${tienda.nombre} + '\',\'' + ${session.user.sede.getIdsede()} + '\');'"-->
                                             </td>
                                         </tr>
                                         </tbody>
                                     </table>
+
+
+
+
+
+
+
+
+
+
+
+
                                 </div>
                             </div>
                         </div>

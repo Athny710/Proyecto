@@ -13,18 +13,13 @@
                 <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <div class="container-fluid">
-
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <div class="d-flex justify-content-between centrado">
                             <h5 class="m-0 font-weight-bold text-redM">Inventario</h5>
                             <form method="post" th:action="@{/gestor/gestorBuscarInventario}">
                                 <div class="input-group" >
-                                    <input name="searchField" type="text" class="form-control bg-light border-0 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                                     <div class="input-group-append">
-                                        <button class="btn btn-searchTop text-gray-900" type="submit">
-                                            <i class="fas fa-search fa-sm text-gray-100"></i>
-                                        </button>
                                     </div>
                                 </div>
                             </form>
