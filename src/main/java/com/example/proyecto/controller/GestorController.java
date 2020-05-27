@@ -129,11 +129,11 @@ public class GestorController {
         return "Gestor/G-RegistroSede";
     }
 
-    @GetMapping("gestorListaSede")
+    @GetMapping("gestorListaSedes")
     public String listaSede(Model model) {
         List<Sede> listasedes = sedeRepository.findAll();
         model.addAttribute("listasedes",listasedes);
-        return "Gestor/G-ListaSede";
+        return "Gestor/G-ListaSedes";
     }
 
     @GetMapping("gestorEditSede")
@@ -145,7 +145,7 @@ public class GestorController {
             model.addAttribute("listasedes", sedeRepository.findAll());
             return "Gestor/G-EditSede";
         } else {
-            return "redirect:/gestor/gestorListaSede";
+            return "redirect:/gestor/gestorListaSedes";
         }
     }
 
@@ -155,7 +155,7 @@ public class GestorController {
 
         //Aca falta la logica de guardar y actualizar
         //DEBO METER EL TEMA DE GUARDAR EL TIPO=SEDE Y LA CONTRASEÑA PREESTABLECIDA
-        return "redirect:/gestorListaSede";}
+        return "redirect:/gestorListaSedes";}
 
 
     @GetMapping("borrarSede")
@@ -166,7 +166,7 @@ public class GestorController {
             categoriaRepository.deleteById(idsede);
             attr.addFlashAttribute("msg", "Sede Eliminada");
         }
-        return "redirect:/gestor/gestorListaSede";
+        return "redirect:/gestor/gestorListaSedes";
     }
 
     // ----------------------- FIN CRUD SEDES ---------------------------------
