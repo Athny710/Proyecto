@@ -164,11 +164,10 @@ public class GestorController {
                 if(sede2.isPresent()) { // El ID ESTA BIEN
                     sedeRepository.save(sede);
                     attr.addFlashAttribute("msg", "Sede actualizada exitosamente");
-                    return "redirect:/gestor/gestorListaSedes";
                 }else{ // EL ID NO ESTA BIEN
                     attr.addFlashAttribute("msg", "Error en el ID de la sede");
-                    return "redirect:/gestor/gestorListaSedes";
                 }
+                return "redirect:/gestor/gestorListaSedes";
             } else { //EL IDSEDE ES IGUAL A 0
                 System.out.println("ID SEDE ES 0 POR ALGUA RAZON");
                 model.addAttribute(sede);
