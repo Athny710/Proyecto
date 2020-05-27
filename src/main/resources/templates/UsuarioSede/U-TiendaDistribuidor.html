@@ -70,7 +70,7 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form id="myform" method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}" role="form" >
+                                                                <form method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}" role="form" >
                                                                     <div class="form-group">
                                                                         <br>
                                                                         <input th:value="${tienda.idtienda}" name="idtienda" type="hidden" />
@@ -98,17 +98,6 @@
                                         </tr>
                                         </tbody>
                                     </table>
-
-
-
-
-
-
-
-
-
-
-
 
                                 </div>
                             </div>
