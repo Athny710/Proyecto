@@ -123,9 +123,7 @@ public class GestorController {
 
 
     @GetMapping("gestorResgistroSede")
-    public String registroSede(Model model) {
-        List<Sede> listasedes = sedeRepository.findAll();
-        model.addAttribute("listasedes",listasedes);
+    public String registroSede(@ModelAttribute("sede") Sede sede) {
         return "Gestor/G-RegistroSede";
     }
 
