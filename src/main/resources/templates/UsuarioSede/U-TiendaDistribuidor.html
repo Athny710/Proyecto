@@ -21,7 +21,7 @@
                             <form method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}">
                                 <div class="form-group">
                                     <br>
-                                    <input th:value="${tienda.idtienda}" name="idtienda" type="hidden" />
+                                    <input th:field="*{idtienda}" name="idtienda" type="hidden" />
                                     <label>Registrar nueva Tienda</label>
                                     <input th:field="*{nombre}" type="text" class="form-control form-control-user">
                                     <div class="text-danger text-center" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</div><br>
