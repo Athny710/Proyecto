@@ -96,7 +96,7 @@ public class GestorController {
     }
 
 
-    @GetMapping("guardarUsuarioSede")
+    @PostMapping("guardarUsuarioSede")
     public String guardarUsuarioSede(){
 
         //Aca falta la logica de guardar y actualizar
@@ -148,7 +148,7 @@ public class GestorController {
     }
 
 
-    @GetMapping("guardarSede")
+    @PostMapping("guardarSede")
     public String guardarSede(@ModelAttribute("sede") @Valid Sede sede, BindingResult bindingResult,
                               Model model,
                               RedirectAttributes attr) {
@@ -184,7 +184,7 @@ public class GestorController {
 
         Optional<Sede> optionalSede = sedeRepository.findById(idsede);
         if (optionalSede.isPresent()) {
-            categoriaRepository.deleteById(idsede);
+            sedeRepository.deleteById(idsede);
             attr.addFlashAttribute("msg", "Sede Eliminada");
         }
         return "redirect:/gestor/gestorListaSedes";
