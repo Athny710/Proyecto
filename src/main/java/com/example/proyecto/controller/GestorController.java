@@ -156,18 +156,13 @@ public class GestorController {
             return "Gestor/G-RegistroSede";
         } else {
             if (sede.getIdsede() == null ) {
-                sedeRepository.save(sede);
-                attr.addFlashAttribute("msg", "Sede creada exitosamente");
-                return "redirect:/gestor/gestorListaSedes";
+                    sedeRepository.save(sede);
+                    attr.addFlashAttribute("msg", "Sede creada exitosamente");
+                    return "redirect:/gestor/gestorListaSedes";
             } else if (sede.getIdsede() != 0) {
-                Optional<Sede> sede2 = sedeRepository.findById(sede.getIdsede());
-                if(sede2.isPresent()) { // El ID ESTA BIEN
                     sedeRepository.save(sede);
                     attr.addFlashAttribute("msg", "Sede actualizada exitosamente");
-                }else{ // EL ID NO ESTA BIEN
-                    attr.addFlashAttribute("msg", "Error en el ID de la sede");
-                }
-                return "redirect:/gestor/gestorListaSedes";
+                    return "redirect:/gestor/gestorListaSedes";
             } else { //EL IDSEDE ES IGUAL A 0
                 System.out.println("ID SEDE ES 0 POR ALGUA RAZON");
                 model.addAttribute(sede);
