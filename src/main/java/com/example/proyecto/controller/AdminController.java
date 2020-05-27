@@ -88,6 +88,7 @@ public class AdminController {
     public String guardarGestor(@ModelAttribute("usu") @Valid Usuarios usuario,
                                 BindingResult bindingResult,
                                 RedirectAttributes attr){
+
         if(bindingResult.hasErrors()){
             return "Administrador/A-NuevoGestor";
         }else{

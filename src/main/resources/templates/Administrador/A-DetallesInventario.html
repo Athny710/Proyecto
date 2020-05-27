@@ -51,13 +51,6 @@
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
-                                            <p>Número de Pedido:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="FALTA"></p></div>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
                                             <p>Línea:</p>
                                         </div>
                                         <div class="col-lg-6"><p th:text="${d.producto.denominacion.linea.nombre}"></p></div>
@@ -104,13 +97,7 @@
                                         </div>
                                         <div class="col-lg-6"><p th:text="${d.color}"></p></div>
                                     </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Fecha:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${d.producto.adquisicion.fecha}"></p></div>
-                                    </div>
+
                                 </div>
                                 <div class="col-lg-6 ">
                                     <br>
@@ -123,9 +110,9 @@
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
-                                            <p>Costo Tejedor(S/.):</p>
+                                            <p>Fecha:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="FALTA"></p></div>
+                                        <div class="col-lg-6"><p th:text="${d.producto.adquisicion.fecha}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
