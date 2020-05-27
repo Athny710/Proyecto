@@ -17,11 +17,15 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="form-group col-md-3 card shadow mb-4 ml-5" >
+
                             <form method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}">
                                 <div class="form-group">
                                     <br>
-                                    <input th:value="${tienda.idtienda}" name="idtienda" type="hidden" />
-                                    <label>Registrar nueva Tienda</label>
+
+                                    <input th:field="*{idtienda}" name="idtienda" type="hidden" />
+                                    <label>Registrar nueva Tienda</label><br>
+                                    <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
+                                    <br>
                                     <input th:field="*{nombre}" type="text" class="form-control form-control-user">
                                     <div class="text-danger text-center" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</div><br>
                                     <input name="sede.idsede" th:value="${session.user.sede.getIdsede()}" type="hidden" class="form-control form-control-user">
@@ -40,11 +44,10 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-
                                     <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                         <tr class = "bg-gray-900 text-white">
-                                            <th>ID Tienda</th>
+
                                             <th>Nombre de tienda</th>
                                             <th>Editar/Eliminar</th>
                                         </tr>
@@ -52,7 +55,7 @@
 
                                         <tbody>
                                         <tr align="center" th:each="tienda, info: ${listaTiendas}">
-                                            <td th:text="${tienda.idtienda}"></td>
+
                                             <td th:text="${tienda.nombre}"></td>
                                             <td align="center">
                                                 <a style="margin-left: 10px" th:href="@{'/sede/editarTienda' + '?id=' + ${tienda.idtienda}}" class="far fa-edit text-orangeM"
@@ -69,7 +72,7 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form id="myform" method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}" role="form" >
+                                                                <form method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}" role="form" >
                                                                     <div class="form-group">
                                                                         <br>
                                                                         <input th:value="${tienda.idtienda}" name="idtienda" type="hidden" />
@@ -97,17 +100,6 @@
                                         </tr>
                                         </tbody>
                                     </table>
-
-
-
-
-
-
-
-
-
-
-
 
                                 </div>
                             </div>

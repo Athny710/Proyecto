@@ -167,23 +167,26 @@ public class SedeController {
                                 RedirectAttributes attr,
                                 Model model) {
 
-        List<Tienda> listatiendas = tiendaRepository.buscarPorNombreDeTienda(tienda.getNombre());
-
             if (bindingResult.hasErrors()) {
                 model.addAttribute("listaTiendas", tiendaRepository.findAll());
                 return "UsuarioSede/U-TiendaDistribuidor";
-            } else {
+            }else{
                 if (tienda.getIdtienda() == 0) {
-                    tiendaRepository.save(tienda);
-                    attr.addFlashAttribute("msg", "Tienda agregada a la lista");
-                    return "redirect:/sede/registroTiendas";
+                    if(tiendaRepository.findByNombre(tienda.getNombre()).size() >= 1){
+                        model.addAttribute("listaTiendas", tiendaRepository.findAll());
+                        attr.addFlashAttribute("msgError", "Atención! Esta tienda ya ha sido registrada");
+                        return "redirect:/sede/registroTiendas";
+                    }else {
+                        tiendaRepository.save(tienda);
+                        attr.addFlashAttribute("msg", "Tienda agregada a la lista");
+                        return "redirect:/sede/registroTiendas";
+                    }
                 } else {
                     tiendaRepository.save(tienda);
                     attr.addFlashAttribute("msg", "Tienda actualizada correctamente");
                     return "redirect:/sede/registroTiendas";
                 }
             }
-
     }
 
     @PostMapping("/buscarTienda")

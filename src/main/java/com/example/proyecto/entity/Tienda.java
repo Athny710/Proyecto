@@ -15,7 +15,7 @@ public class Tienda {
     @ManyToOne
     @JoinColumn(name = "idsede")
     private Sede sede;
-    @NotBlank(message = "* Debe ingresar el nombre de la tienda")
+    @NotBlank(message = "* Debe ingresar el nombre de la tienda que desea registrar")
     @Size(max=45,message = "* El nombre de la tienda no debe exceder los 45 caracteres")
     private String nombre;
 
