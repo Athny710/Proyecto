@@ -16,7 +16,8 @@
                         <!-- Nested Row within Card Body -->
                         <div class="row h-25">
                             <div class="col-lg-6 d-none d-lg-block bg-login-image h-25">
-                                <img th:src="@{/img/imgse.png}" width="362px" height="522.2px">
+                                <img th:if="${param.error}" th:src="@{/img/imgse.png}" width="362px" height="565.4px">
+                                <img th:unless="${param.error}" th:src="@{/img/imgse.png}" width="362px" height="522.2px">
                             </div>
                             <div class="col-lg-6 bg-gray-100 h-25">
                                 <div class="p-5">
@@ -31,12 +32,12 @@
                                         <div class="form-group">
                                             <input type="password" name="password" class="form-control-log form-control-user" id="exampleInputPassword" placeholder="Password">
                                         </div>
-                                        <h5 th:if="${param.error}" class="text-danger">Acceso Denegado </h5>
+                                        <h6 th:if="${param.error}" class="text-danger" style="text-align: center; font-size: 0.8rem; padding-bottom: 1rem">Acceso Denegado </h6>
                                         <button  type="submit" class="btn btn-log btn-user btn-block" >Ingresar</button>
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="forgot-password.html" th:href="@{/system/RecuperarContraseña}">Recuperar Contraseña</a>
+                                        <a class="small" href="forgot-password.html" th:href="@{/system/RecuperarContraseña}" >Recuperar Contraseña</a>
                                     </div>
                                 </div>
                             </div>

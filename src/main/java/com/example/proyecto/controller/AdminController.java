@@ -1,7 +1,9 @@
 package com.example.proyecto.controller;
 
+import com.example.proyecto.entity.Inventario;
 import com.example.proyecto.entity.Perfil;
 import com.example.proyecto.entity.Usuarios;
+import com.example.proyecto.repository.InventarioRepository;
 import com.example.proyecto.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,15 +26,25 @@ public class AdminController {
 
     @Autowired
     UsuarioRepository usuarioRepository;
+    @Autowired
+    InventarioRepository inventarioRepository;
 
     //--------------------------Inventario
     @GetMapping(value = {"","principal"})
-    public String principalAdmin(){
+    public String principalAdmin(Model model){
+        model.addAttribute("inventario", inventarioRepository.findAll());
         return "Administrador/A-PagPrincipal";
     }
     @GetMapping("detalles")
-    public String detalleInventario(){
-        return "Administrador/A-DetallesInventario";
+    public String detalleInventario(@RequestParam("id") int id, Model model){
+        Optional<Inventario> opt = inventarioRepository.findById(id);
+        if (opt.isPresent()){
+            Inventario inventa = opt.get();
+            model.addAttribute("d", inventa);
+            return "Administrador/A-DetallesInventario";
+        }else {
+            return "redirect:/admin";
+        }
     }
     //--------------------------Perfil
     @GetMapping("editarInfo")
@@ -56,12 +68,10 @@ public class AdminController {
             usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
             usuarioRepository.save(usuarioLog);
             session.setAttribute("user", usuarioLog);
-            return "Administrador/A-PagPrincipal";
+            return "redirect:/admin";
         }
 
     }
-
-
 
 
     //--------------------------Gestores

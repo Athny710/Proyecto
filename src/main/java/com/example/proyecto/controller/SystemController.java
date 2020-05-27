@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @RequestMapping("/system")
 public class SystemController {
 
-    @GetMapping("")
+    @GetMapping("cambiarCon")
     public String cambiarContraseña(){
         return "Sistema/S-NuevContra2";
     }
