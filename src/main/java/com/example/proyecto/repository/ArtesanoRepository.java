@@ -1,6 +1,9 @@
 package com.example.proyecto.repository;
 
 import com.example.proyecto.entity.Artesano;
+import com.example.proyecto.entity.Inventario;
+import com.example.proyecto.entity.Inventariosede;
+import com.example.proyecto.entity.Sede;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -20,7 +23,7 @@ public interface ArtesanoRepository extends JpaRepository<Artesano, Integer> {
     @Query(value="SELECT * FROM artesano WHERE idartesano =?1 OR nombre=?2", nativeQuery = true)
     List<Artesano> obtenerIdArtesano(Integer idbuscado, String nombre);
 
-
+    List<Artesano> findByCodigo(String codigo);
 
 
 }

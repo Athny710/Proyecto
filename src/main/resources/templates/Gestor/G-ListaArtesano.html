@@ -22,16 +22,6 @@
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Artesanos</h5>
-                                <form >
-                                    <div class="input-group" th:action="@{/gestor/gestorBuscarArtesano}">
-                                        <input type="text" class="form-control bg-light border-0 small bg-white" placeholder="Maskhay awakamayuj..." aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-searchTop text-gray-900" type="button">
-                                                <i class="fas fa-search fa-sm text-gray-100"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
@@ -43,24 +33,18 @@
                                         <th>Apellido Paterno</th>
                                         <th>Apellido Materno</th>
                                         <th>Comunidad</th>
+                                        <th>Codigo</th>
                                         <th>Editar/Borrar</th>
                                     </tr>
                                     </thead>
-                                    <tfoot>
-                                    <tr align="center">
-                                        <th>Nombre</th>
-                                        <th>Apellido Paterno</th>
-                                        <th>Apellido Materno</th>
-                                        <th>Comunidad</th>
-                                        <th>Editar/Borrar</th>
-                                    </tr>
-                                    </tfoot>
+
                                     <tbody>
                                     <tr align="center" th:each="artesano, info: ${listaArtesanos}">
                                         <td th:text="${artesano.nombre}"></td>
                                         <td th:text="${artesano.apellidoPaterno}"></td>
                                         <td th:text="${artesano.apellidoMaterno}"></td>
                                         <td th:text="${artesano.comunidad.nombre}"></td>
+                                        <td th:text="${artesano.codigo}"></td>
                                         <td align="center">
 
                                                 <a th:href="@{'/gestor/gestorEditArtesano' + '?idartesano=' + ${artesano.idArtesano}}" class="far fa-list-alt text-orangeM"></a>

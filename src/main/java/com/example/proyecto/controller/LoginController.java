@@ -1,6 +1,7 @@
 package com.example.proyecto.controller;
 
 
+import com.example.proyecto.entity.Perfil;
 import com.example.proyecto.entity.Usuarios;
 import com.example.proyecto.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -23,7 +23,7 @@
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
-                            <div class="table-responsive bg-white d-flex">
+                            <div class="table-responsive bg-gray-100 d-flex">
                                 <form class="user" method="post" th:action="@{'/admin/guardarPerfil'}" th:object="${perfil}">
                                     <div class="d-flex">
                                         <div class="col-lg-10 d-flex">
@@ -35,18 +35,24 @@
                                                     <div class="col-lg-4">
                                                         <label>Correo:</label>
                                                     </div>
-                                                    <input type="email" class="form-control form-control-user2" th:field="*{correo}" th:placeholder="${perfil.correo}">
+                                                    <div>
+                                                        <input type="email" class="form-control form-control-user2" th:field="*{correo}" th:placeholder="${perfil.correo}">
+                                                        <div class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}" style="font-size: 0.7rem">Error</div>
+                                                    </div>
                                                     <div class="col-lg-2"></div>
                                                 </div>
-                                                <div class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}">Error</div>
                                                 <div class="form-group d-flex centrado">
                                                     <div class="col-lg-4">
                                                         <label>Teléfono:</label>
                                                     </div>
-                                                    <input type="text" class="form-control form-control-user2" th:field="*{telefono}" th:placeholder="${perfil.telefono}">
+                                                    <div>
+                                                        <input type="text" class="form-control form-control-user2" th:field="*{telefono}" th:placeholder="${perfil.telefono}">
+                                                        <div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" style="font-size: 0.7rem">Error</div>
+                                                    </div>
                                                     <div class="col-lg-2"></div>
                                                 </div>
-                                                <div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">Error</div>
+                                                <br>
+                                                <a class="btn btn-gray-900" th:href="@{/system/cambiarCont}" style="width: 180px; border-radius: 10rem">Cambiar Contraseña</a>
                                             </div>
                                         </div>
                                         <div class="col-lg-9 d-flex">
@@ -69,10 +75,7 @@
                                                 </div>
                                                 <hr class="col-lg-8">
                                                 <br>
-                                                <div class="d-flex">
-                                                    <div class="col-lg-6"></div>
                                                     <button type="submit" class="btn btn-orange" style="border-radius: 10rem">Guardar Cambios</button>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>

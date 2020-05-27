@@ -3,6 +3,9 @@ package com.example.proyecto.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -13,9 +16,11 @@ public class Estadoenviosede {
     @Column(name="idenviosede")
     private int idenviosede;
     private String estado;
+    @Positive
     private int cantidad;
-    @DateTimeFormat(pattern = "YYYY-MM-dd")
-    private Date fecha;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull
+    private LocalDate fecha;
     private String comentario;
     @ManyToOne
     @JoinColumn(name = "idinventariosede")
@@ -45,13 +50,7 @@ public class Estadoenviosede {
         this.cantidad = cantidad;
     }
 
-    public Date getFecha() {
-        return fecha;
-    }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
 
     public String getComentario() {
         return comentario;
@@ -67,5 +66,13 @@ public class Estadoenviosede {
 
     public void setInventariosede(Inventariosede inventarioSede) {
         this.inventariosede = inventarioSede;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
     }
 }

@@ -21,17 +21,21 @@
                                     <br><br><br>
                                     <h4 class="text-gray-900" style="text-align: center">Cambiar contraseña</h4>
                                     <br>
-                                    <form class="user">
+                                    <form th:action="@{'/system/guardarCont'}" method="post" class="user">
                                         <div class="form-group2">
                                             <label class="peque">Ingresar nueva contraseña</label>
-                                            <input type="password" class="form-control-log form-control-user2" id="exampleInputPassword1"placeholder="Password">
+                                            <input type="password" class="form-control-log form-control-user2" name="psw1" id="psw1">
                                         </div>
                                         <div class="form-group2">
                                             <label class="peque">Confirmar nueva contraseña</label>
-                                            <input type="password" class="form-control-log form-control-user2" id="exampleInputPassword2" placeholder="Password">
+                                            <input type="password" class="form-control-log form-control-user2" name="psw2" id="psw2" >
                                         </div>
+                                        <div class="text-danger" th:if="${msg!=null}" th:text="${msg}"></div>
                                         <hr>
-                                        <a class="btn btn-log btn-user btn-block" th:href="@{/system/usede}">Confirmar</a>
+                                        <div class="d-flex">
+                                            <div class="col-lg-2"></div>
+                                            <button type="submit" class="btn btn-gray-900" style="border-radius: 10rem; text-align: center">Confirmar</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>

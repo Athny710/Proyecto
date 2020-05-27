@@ -13,26 +13,18 @@
             <div id="content">
                 <div th:insert="Fragmentos/FragmentosAdmin.html::TopBar"></div>
                 <div th:insert="Fragmentos/FragmentosAdmin.html::LogOut"></div>
+                <div th:insert="Fragmentos/FragmentosAdmin.html::perfilModal(perfil=${perfil})"></div>
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <div class="card shadowA mb-4">
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Inventario</h5>
-                                <form >
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-searchTop text-gray-900" type="button">
-                                                <i class="fas fa-search fa-sm text-gray-100"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
-                            <div class="table-responsive bg-white">
+                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                            <div class="table-responsive bg-gray-100">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr class="bg-gray-900 text-white" align="center">
@@ -44,24 +36,14 @@
                                             <th>Detalles</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr align="center">
-                                            <th>Nombre del Producto</th>
-                                            <th>Codigo</th>
-                                            <th>Stock(unidades)</th>
-                                            <th>Tipo de Adquisicion</th>
-                                            <th>Fecha de adquisicion</th>
-                                            <th>Detalles</th>
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
-                                        <tr align="center">
-                                            <td>Chalina</td>
-                                            <td>DKLS45</td>
-                                            <td>100</td>
-                                            <td>Compra</td>
-                                            <td>10/04/2019</td>
-                                            <td align="center"><a th:href="@{/admin/detalles}" >
+                                        <tr th:each="i : ${inventario}" class="bg-white" align="center">
+                                            <td th:text="${i.producto.denominacion.nombre}">Chalina</td>
+                                            <td th:text="${i.producto.denominacion.codigoNombre}">DKLS45</td>
+                                            <td th:text="${i.stock}"></td>
+                                            <td th:text="${i.producto.adquisicion.modalidad}">Compra</td>
+                                            <td th:text="${i.producto.adquisicion.fecha}">10/04/2019</td>
+                                            <td align="center"><a th:href="@{'/admin/detalles?id='+ ${i.idInventario}}" >
                                                 <i class="far fa-list-alt text-orangeM"></i>
                                             </a></td>
                                         </tr>

@@ -36,7 +36,7 @@
                                             <input th:field="*{apellidoMaterno}" type="text" class="form-control form-control-user" id="apellidoMaterno" placeholder="Apellido Materno">
                                         </div>
                                         <div class="form-group">
-                                            <select th:field="*{comunidad}"  class="form-control form-control-user" id="comunidad">
+                                            <select th:field="*{comunidad}"  class="form-control" id="comunidad" style="border-radius:10rem">
                                                 <option th:each="comunidad : ${listaComunidad}" th:value="${comunidad.idComunidad}" th:text="${comunidad.nombre}"></option>
                                             </select>
                                         </div>
@@ -44,6 +44,7 @@
                                         <button type="submit" class="btn btn-searchTop btn-user btn-block" th:text="${artesano.idArtesano==null?'Registrar':'Actualizar'}">
                                            Actualizar
                                         </button>
+                                        <a class="btn btn-searchTop btn-danger btn-block" style="border-radius:10rem" th:href="@{'/gestor/gestorListaSede'}"> Cancelar</a>
                                     </form>
                                     <hr>
                                 </div>

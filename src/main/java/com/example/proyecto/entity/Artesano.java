@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "artesano")
 public class Artesano {
     @Id
+    @Column(name = "idartesano")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idartesano;
     @Column(nullable = false)
@@ -17,10 +18,13 @@ public class Artesano {
     private String apellidopaterno;
     @NotBlank(message = "Este Campo no puede ser vacío")
     private String apellidomaterno;
+    @Column(nullable = false, name = "codigo")
+    @NotBlank(message = "Este Campo no puede ser vacío")
+    private String codigo;
+
     @ManyToOne
     @JoinColumn(name = "idcomunidad")
     private Comunidad comunidad;
-
 
 
     public Comunidad getComunidad() {
@@ -63,5 +67,7 @@ public class Artesano {
         this.apellidomaterno = apellidoMaterno;
     }
 
+    public String getCodigo() { return codigo; }
 
+    public void setCodigo(String codigo) { this.codigo = codigo; }
 }

@@ -3,6 +3,7 @@ package com.example.proyecto.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 
 @Entity
 @Table(name = "inventario")
@@ -16,6 +17,7 @@ public class Inventario {
     private String comentario;
     private String foto;
     private String color;
+    @Positive
     private Double preciomosqoy;
     @ManyToOne
     @JoinColumn(name = "idproducto")
