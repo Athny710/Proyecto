@@ -1,8 +1,6 @@
 package com.example.proyecto.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
@@ -10,15 +8,17 @@ import java.io.Serializable;
 @Table(name = "sede")
 public class Sede implements Serializable    {
     @Id
-    private int idsede;
+    @Column(name = "idsede")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idsede;
     @NotBlank(message = "* Debe ingresar el nombre de la sede que desea registrar")
     private String nombre;
 
-    public int getIdsede() {
+    public Integer getIdsede() {
         return idsede;
     }
 
-    public void setIdsede(int idsede) {
+    public void setIdsede(Integer idsede) {
         this.idsede = idsede;
     }
 

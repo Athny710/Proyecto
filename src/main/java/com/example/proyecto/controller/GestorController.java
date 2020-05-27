@@ -96,7 +96,7 @@ public class GestorController {
     }
 
 
-    @GetMapping("guardarUsuarioSede")
+    @PostMapping("guardarUsuarioSede")
     public String guardarUsuarioSede(){
 
         //Aca falta la logica de guardar y actualizar
@@ -148,12 +148,29 @@ public class GestorController {
     }
 
 
-    @GetMapping("guardarSede")
-    public String guardarSede(){
-
-        //Aca falta la logica de guardar y actualizar
-        //DEBO METER EL TEMA DE GUARDAR EL TIPO=SEDE Y LA CONTRASEÑA PREESTABLECIDA
-        return "redirect:/gestorListaSedes";}
+    @PostMapping("guardarSede")
+    public String guardarSede(@ModelAttribute("sede") @Valid Sede sede, BindingResult bindingResult,
+                              Model model,
+                              RedirectAttributes attr) {
+        if (bindingResult.hasErrors()) {
+            return "Gestor/G-RegistroSede";
+        } else {
+            if (sede.getIdsede() == null ) {
+                    sedeRepository.save(sede);
+                    attr.addFlashAttribute("msg", "Sede creada exitosamente");
+                    return "redirect:/gestor/gestorListaSedes";
+            } else if (sede.getIdsede() != 0) {
+                    sedeRepository.save(sede);
+                    attr.addFlashAttribute("msg", "Sede actualizada exitosamente");
+                    return "redirect:/gestor/gestorListaSedes";
+            } else { //EL IDSEDE ES IGUAL A 0
+                System.out.println("ID SEDE ES 0 POR ALGUA RAZON");
+                model.addAttribute(sede);
+                attr.addFlashAttribute("msgError", "Los datos ingresados ya existen, por favor modificarlo");
+                return "Gestor/G-RegistroSede";
+            }
+        }
+    }
 
 
     @GetMapping("borrarSede")
@@ -161,7 +178,7 @@ public class GestorController {
 
         Optional<Sede> optionalSede = sedeRepository.findById(idsede);
         if (optionalSede.isPresent()) {
-            categoriaRepository.deleteById(idsede);
+            sedeRepository.deleteById(idsede);
             attr.addFlashAttribute("msg", "Sede Eliminada");
         }
         return "redirect:/gestor/gestorListaSedes";
@@ -299,7 +316,7 @@ public class GestorController {
 
     @GetMapping("gestorBorarComunidad")
     public String borrarComunidad(Model model,
-                                  @RequestParam("id") int idcomunidad,
+                                  @RequestParam("idcomunidad") int idcomunidad,
                                   RedirectAttributes attr) {
         Optional<Comunidad> optComunidad = comunidadRepository.findById(idcomunidad);
         if (optComunidad.isPresent()) {
