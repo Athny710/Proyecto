@@ -96,7 +96,7 @@ public class GestorController {
     }
 
 
-    @GetMapping("guardarUsuarioSede")
+    @PostMapping("guardarUsuarioSede")
     public String guardarUsuarioSede(){
 
         //Aca falta la logica de guardar y actualizar
@@ -123,12 +123,66 @@ public class GestorController {
 
 
     @GetMapping("gestorResgistroSede")
-    public String registroSede() {
+    public String registroSede(@ModelAttribute("sede") Sede sede) {
         return "Gestor/G-RegistroSede";
     }
 
+    @GetMapping("gestorListaSedes")
+    public String listaSede(Model model) {
+        List<Sede> listasedes = sedeRepository.findAll();
+        model.addAttribute("listasedes",listasedes);
+        return "Gestor/G-ListaSedes";
+    }
+
+    @GetMapping("gestorEditSede")
+    public String editarSede(@RequestParam("idsede") int idsede, @ModelAttribute("sede") Sede sede, Model model) {
+        Optional<Sede> sedeID = sedeRepository.findById(idsede);
+        if (sedeID.isPresent()) {
+            sede = sedeID.get();
+            model.addAttribute("sede", sede);
+            model.addAttribute("listasedes", sedeRepository.findAll());
+            return "Gestor/G-EditSede";
+        } else {
+            return "redirect:/gestor/gestorListaSedes";
+        }
+    }
 
 
+    @PostMapping("guardarSede")
+    public String guardarSede(@ModelAttribute("sede") @Valid Sede sede, BindingResult bindingResult,
+                              Model model,
+                              RedirectAttributes attr) {
+        if (bindingResult.hasErrors()) {
+            return "Gestor/G-RegistroSede";
+        } else {
+            if (sede.getIdsede() == null ) {
+                    sedeRepository.save(sede);
+                    attr.addFlashAttribute("msg", "Sede creada exitosamente");
+                    return "redirect:/gestor/gestorListaSedes";
+            } else if (sede.getIdsede() != 0) {
+                    sedeRepository.save(sede);
+                    attr.addFlashAttribute("msg", "Sede actualizada exitosamente");
+                    return "redirect:/gestor/gestorListaSedes";
+            } else { //EL IDSEDE ES IGUAL A 0
+                System.out.println("ID SEDE ES 0 POR ALGUA RAZON");
+                model.addAttribute(sede);
+                attr.addFlashAttribute("msgError", "Los datos ingresados ya existen, por favor modificarlo");
+                return "Gestor/G-RegistroSede";
+            }
+        }
+    }
+
+
+    @GetMapping("borrarSede")
+    public String borrarSede(@RequestParam("idsede") int idsede, RedirectAttributes attr) {
+
+        Optional<Sede> optionalSede = sedeRepository.findById(idsede);
+        if (optionalSede.isPresent()) {
+            sedeRepository.deleteById(idsede);
+            attr.addFlashAttribute("msg", "Sede Eliminada");
+        }
+        return "redirect:/gestor/gestorListaSedes";
+    }
 
     // ----------------------- FIN CRUD SEDES ---------------------------------
 
@@ -262,7 +316,7 @@ public class GestorController {
 
     @GetMapping("gestorBorarComunidad")
     public String borrarComunidad(Model model,
-                                  @RequestParam("id") int idcomunidad,
+                                  @RequestParam("idcomunidad") int idcomunidad,
                                   RedirectAttributes attr) {
         Optional<Comunidad> optComunidad = comunidadRepository.findById(idcomunidad);
         if (optComunidad.isPresent()) {

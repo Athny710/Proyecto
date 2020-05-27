@@ -6,6 +6,7 @@
 
 <body id="page-top">
 
+<<<<<<< HEAD
 <div id="wrapper">
     <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
     <div id="content-wrapper" class="d-flex flex-column bg-white">
@@ -36,6 +37,35 @@
                                     </div>
                                 </div>
                             </form>
+=======
+    <div id="wrapper">
+        <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
+        <div id="content-wrapper" class="d-flex flex-column bg-white">
+            <div id="content">
+                <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
+                <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
+                <!-- Page Heading -->
+                <div class="container-fluid">
+                    <div class="col-lg-2">
+                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistroComunidad}">Nueva Comunidad</a>
+                    </div>
+                    <br>
+                    <div class="card shadowA mb-4">
+                        <div class="card-header2 py-3">
+                            <div class="d-flex justify-content-between centrado">
+                                <h5 class="m-0 font-weight-bold text-redM">Lista de Comunidades</h5>
+                            <!--    <form method="post" th:action="@{/gestor/gestorBuscarComunidad}">
+                                    <div class="input-group" >
+                                        <input name="searchField" type="text" class="form-control bg-light border-0 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-searchTop text-gray-900" type="submit">
+                                                <i class="fas fa-search fa-sm text-gray-100"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>  -->
+                            </div>
+>>>>>>> d4daa74cd91bc7b9841e0c241a9dcb39b5af3db5
                         </div>
                     </div>
                     <div class="card-body bg-gray-100">

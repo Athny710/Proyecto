@@ -8,10 +8,10 @@ public class Perfil {
     @Size(max = 45, message = "Máximo 45 carateres")
     @Email
     private String correo;
-    @Digits(integer = 9, fraction = 0, message = "Máximo 9 carateres conchadetumadre")
+    @NotNull(message = "  Este campo no puedeo estar vacío")
+    @Digits(integer = 9, fraction = 0, message = "Máximo 9 carateres")
     @Positive(message = "Numero ingreso inválido")
-    @Max(value = 999999999)
-    @Min(value = 1000000)
+    @Min(value = 1000000, message = "número no válido")
     private Integer telefono;
 
     public String getCorreo() {

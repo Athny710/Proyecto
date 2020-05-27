@@ -32,78 +32,72 @@
                                         <div class="col-lg-5 centrado">
                                             <p>Nombre del Producto:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="Chalina"></p></div>
+                                        <div class="col-lg-6"><p th:text="${d.producto.denominacion.nombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Código del Producto:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="ASDDS45"></p></div>
+                                        <div class="col-lg-6"><p th:text="${d.producto.denominacion.codigoNombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
-                                            <p>Número de Pedido:</p>
+                                            <p>Código Generado:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="54658"></p></div>
+                                        <div class="col-lg-6"><p th:text="${d.producto.codigoGenerado}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Línea:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="Tradicional"></p></div>
+                                        <div class="col-lg-6"><p th:text="${d.producto.denominacion.linea.nombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Categoría:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="Home"></p></div>
+                                        <div class="col-lg-6"><p th:text="${d.producto.categoria.nombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Comunidad:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="Amaru"></p></div>
+                                        <div class="col-lg-6"><p th:text="${d.producto.comunidad.nombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Artesano:</p>
                                         </div>
-                                        <div class="col-lg-6"><p>Anthony Rojas Lopez</p></div>
+                                        <div class="col-lg-6"><p th:text="${d.producto.adquisicion.artesano.nombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Cantidad:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="5"></p></div>
+                                        <div class="col-lg-6"><p th:text="${d.stock}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Tamaño:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="Small"></p></div>
+                                        <div class="col-lg-6"><p th:text="${d.producto.tamanho.nombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Color:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="Negro"></p></div>
+                                        <div class="col-lg-6"><p th:text="${d.color}"></p></div>
                                     </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Fecha:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p>09/04/19</p></div>
-                                    </div>
+
                                 </div>
                                 <div class="col-lg-6 ">
                                     <br>
@@ -111,28 +105,28 @@
                                         <div class="col-lg-5 centrado">
                                             <p>Tipo de Adquisicion:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="Compra"></p></div>
+                                        <div class="col-lg-6"><p th:text="${d.producto.adquisicion.modalidad}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
-                                            <p>Costo Tejedor(S/.):</p>
+                                            <p>Fecha:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="200"></p></div>
+                                        <div class="col-lg-6"><p th:text="${d.producto.adquisicion.fecha}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Costo Mosqoy(S/.):</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="300"></p></div>
+                                        <div class="col-lg-6"><p th:text="${d.preciomosqoy}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Descripción:</p>
                                         </div>
-                                        <div class="col-lg-6"><p>Chalina de 50cm de largo</p></div>
+                                        <div class="col-lg-6"><p th:text="${d.producto.denominacion.descripcion}"></p></div>
                                     </div>
                                     <hr>
                                     <br>
