@@ -16,7 +16,7 @@ public class Estadoenviosede {
     @Column(name="idenviosede")
     private int idenviosede;
     private String estado;
-    @Positive
+    @Positive(message = "Debe ser mayor a 0")
     private int cantidad;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull
