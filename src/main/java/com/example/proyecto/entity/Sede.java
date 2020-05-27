@@ -3,6 +3,7 @@ package com.example.proyecto.entity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Entity
@@ -10,6 +11,7 @@ import java.io.Serializable;
 public class Sede implements Serializable    {
     @Id
     private int idsede;
+    @NotBlank(message = "* Debe ingresar el nombre de la sede que desea registrar")
     private String nombre;
 
     public int getIdsede() {

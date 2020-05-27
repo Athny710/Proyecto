@@ -123,12 +123,49 @@ public class GestorController {
 
 
     @GetMapping("gestorResgistroSede")
-    public String registroSede() {
+    public String registroSede(@ModelAttribute("sede") Sede sede) {
         return "Gestor/G-RegistroSede";
     }
 
+    @GetMapping("gestorListaSedes")
+    public String listaSede(Model model) {
+        List<Sede> listasedes = sedeRepository.findAll();
+        model.addAttribute("listasedes",listasedes);
+        return "Gestor/G-ListaSedes";
+    }
+
+    @GetMapping("gestorEditSede")
+    public String editarSede(@RequestParam("idsede") int idsede, @ModelAttribute("sede") Sede sede, Model model) {
+        Optional<Sede> sedeID = sedeRepository.findById(idsede);
+        if (sedeID.isPresent()) {
+            sede = sedeID.get();
+            model.addAttribute("sede", sede);
+            model.addAttribute("listasedes", sedeRepository.findAll());
+            return "Gestor/G-EditSede";
+        } else {
+            return "redirect:/gestor/gestorListaSedes";
+        }
+    }
 
 
+    @GetMapping("guardarSede")
+    public String guardarSede(){
+
+        //Aca falta la logica de guardar y actualizar
+        //DEBO METER EL TEMA DE GUARDAR EL TIPO=SEDE Y LA CONTRASEÑA PREESTABLECIDA
+        return "redirect:/gestorListaSedes";}
+
+
+    @GetMapping("borrarSede")
+    public String borrarSede(@RequestParam("idsede") int idsede, RedirectAttributes attr) {
+
+        Optional<Sede> optionalSede = sedeRepository.findById(idsede);
+        if (optionalSede.isPresent()) {
+            categoriaRepository.deleteById(idsede);
+            attr.addFlashAttribute("msg", "Sede Eliminada");
+        }
+        return "redirect:/gestor/gestorListaSedes";
+    }
 
     // ----------------------- FIN CRUD SEDES ---------------------------------
 
