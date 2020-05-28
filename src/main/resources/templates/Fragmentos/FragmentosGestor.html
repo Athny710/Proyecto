@@ -15,9 +15,31 @@
     <!-- Custom styles for this template-->
     <link th:href="@{/css/sb-admin-2.css}" rel="stylesheet">
     <link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <!-- Core plugin JavaScript-->
+    <script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+    <script th:src="@{/js/navbar-active.js}"></script>
+    <style media="screen">
+        .active{
+            background-color: #8d8f4c;
+        }
+        *{
+            padding: 0px;
+            margin: 0px;
+        }
+        nav{
+            display: inline-block;
+            background-color: #959595;
+        }
+        ul{
+            list-style: none;
+        }
+    </style>
 </head>
 
-
+<body >
 <!-- Sidebar -->
 <ul th:fragment="SideBarGestor" class="navbar-nav bg-redM sidebar sidebar-dark accordion shadow" id="accordionSidebar">
     <!-- Sidebar - Logo -->
@@ -31,7 +53,7 @@
     <hr>
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link text-gray-100" th:href="@{/gestor/gestorPrincipal}">
+        <a class="nav-link text-gray-100"  th:href="@{/gestor/gestorPrincipal}">
             <i class="fas fa-fw fa-folder-open text-gray-100"></i>
             <span>Inventario</span>
         </a>
@@ -39,7 +61,7 @@
     <hr class="sidebar-divider my-0 bg-gray-100">
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link text-gray-100" th:href="@{/gestor/gestorListaSedes}">
+        <a class="nav-link text-gray-100"  th:href="@{/gestor/gestorListaSedes}">
             <i class="fas fa-fw fa-table text-gray-100"></i>
             <span>Sedes</span>
         </a>
@@ -47,7 +69,7 @@
     <hr class="sidebar-divider my-0 bg-gray-100">
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link text-gray-100" th:href="@{/gestor/gestorListaUsuarioSede}">
+        <a class="nav-link text-gray-100"  th:href="@{/gestor/gestorListaUsuarioSede}">
             <i class="far fa-fw fa-address-card text-gray-100"></i>
             <span>Usuarios Sede</span>
         </a>
@@ -110,6 +132,12 @@
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block bg-gray-100">
 </ul>
+<script>
+    $(document).ready(function() {
+        $('li.active').removeClass('active');
+        $('a[href="' + location.pathname + '"]').closest('li').addClass('active');
+    });
+</script>
 <!-- End of Sidebar -->
 
 
@@ -208,4 +236,5 @@
     <!-- Page level custom scripts -->
     <script th:src="@{/js/demo/datatables-demo.js}"></script>
 </div>
+</body>
 </html>
