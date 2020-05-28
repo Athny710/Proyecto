@@ -53,7 +53,7 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <h6 th:text="'¿Está seguro que desea eliminar ' + ${tienda.nombre} + ' del registro?'"></h6>
-                                                                    <a th:href="@{'/sede/borrarTienda' + '?id=' + ${tienda.idtienda}}" class="btn btn-user btn-primary btn-block" th:text="Eliminar"></a>
+                                                                    <a th:href="@{'/sede/borrarTienda' + '?id=' + ${tienda.idtienda}}" class="btn btn-danger btn-primary btn-block" >Eliminar permanentemente</a>
                                                                     <a th:href="@{/sede/registroTiendas}" class="btn btn-searchTop btn-user btn-block">Cancelar</a>
                                                             </div>
                                                         </div>

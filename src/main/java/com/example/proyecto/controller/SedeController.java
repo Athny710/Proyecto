@@ -235,7 +235,7 @@ public class SedeController {
         Optional<Tienda> obtenerTienda = tiendaRepository.findById(idtienda);
         if (obtenerTienda.isPresent()) {
             tiendaRepository.deleteById(idtienda);
-            attr.addFlashAttribute("msg", "Tienda borrada exitosamente");
+            attr.addFlashAttribute("msg", "La tienda ha sido eliminada permanentemente");
         }
         return "redirect:/sede/registroTiendas";
     }
