@@ -173,12 +173,18 @@ public class SedeController {
     }
 
     //----------------INICIO CRUD TIENDAS-------------------
-
     @GetMapping("registroTiendas")
     public String registroDeTiendas(@ModelAttribute("tienda") Tienda tienda, Model model) {
         model.addAttribute("listaTiendas", tiendaRepository.findAll());
 
         return "UsuarioSede/U-TiendaDistribuidor";
+    }
+
+    @GetMapping("registroRealTienda")
+    public String registroRealDeTiendas(@ModelAttribute("tienda") Tienda tienda, Model model) {
+        model.addAttribute("listaTiendas", tiendaRepository.findAll());
+
+        return "UsuarioSede/U-NuevaTienda";
     }
 
     @PostMapping("guardarTienda")
@@ -188,22 +194,29 @@ public class SedeController {
 
             if (bindingResult.hasErrors()) {
                 model.addAttribute("listaTiendas", tiendaRepository.findAll());
-                return "UsuarioSede/U-TiendaDistribuidor";
+                return "UsuarioSede/U-NuevaTienda";
             }else{
                 if (tienda.getIdtienda() == 0) {
                     if(tiendaRepository.findByNombre(tienda.getNombre()).size() >= 1){
                         model.addAttribute("listaTiendas", tiendaRepository.findAll());
-                        attr.addFlashAttribute("msgError", "Atención! Esta tienda ya ha sido registrada");
-                        return "redirect:/sede/registroTiendas";
+                        attr.addFlashAttribute("msgError", "Atención! Esta tienda ya ha sido registrada anteriormente");
+                        return "redirect:/sede/registroRealTienda";
                     }else {
                         tiendaRepository.save(tienda);
-                        attr.addFlashAttribute("msg", "Tienda agregada a la lista");
+                        attr.addFlashAttribute("msg", "Tienda nueva agregada a la lista");
                         return "redirect:/sede/registroTiendas";
                     }
                 } else {
-                    tiendaRepository.save(tienda);
-                    attr.addFlashAttribute("msg", "Tienda actualizada correctamente");
-                    return "redirect:/sede/registroTiendas";
+                    if(tiendaRepository.findByNombre(tienda.getNombre()).size() >= 1){
+                        model.addAttribute("listaTiendas", tiendaRepository.findAll());
+                        attr.addFlashAttribute("msgError", "Atención! La tienda que intentó registrar ya se encontraba en la lista");
+                        return "redirect:/sede/registroTiendas";
+
+                    }else {
+                        tiendaRepository.save(tienda);
+                        attr.addFlashAttribute("msg", "Tienda actualizada correctamente");
+                        return "redirect:/sede/registroTiendas";
+                    }
                 }
             }
     }
@@ -233,8 +246,7 @@ public class SedeController {
         Optional<Tienda> tiendaPorID = tiendaRepository.findById(idtienda);
         if (tiendaPorID.isPresent()) {
             model.addAttribute("tienda", tiendaPorID.get());
-
-            return "UsuarioSede/U-TiendaDistribuidor";
+            return "UsuarioSede/U-NuevaTienda";
         } else {
             return "redirect:/sede/registroTiendas";
         }

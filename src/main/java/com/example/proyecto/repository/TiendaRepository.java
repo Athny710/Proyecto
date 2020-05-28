@@ -13,6 +13,6 @@ public interface TiendaRepository extends JpaRepository<Tienda,Integer> {
     @Query(value = "select * from tienda where nombre = ?1",
             nativeQuery = true)
     List<Tienda> buscarPorNombreDeTienda(String name);
-
     List<Tienda> findByNombre(String nombre);
+    List<Tienda> findByIdtienda(int idtienda);
 }
