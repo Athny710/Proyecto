@@ -42,7 +42,7 @@ public class GestorController {
     UsuarioRepository usuarioRepository;
 
 
-    // ----------------------- ENLACES ---------------------------------
+        // ----------------------- ENLACES ---------------------------------
     @GetMapping("perfil")
     public String perfil() {
         return "Gestor/G-Perfil";
