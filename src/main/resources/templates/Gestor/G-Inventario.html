@@ -13,6 +13,15 @@
                 <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorListarSinStock}">Lista de Productos sin Stock</a>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegProducto}">Agregar Nuevo Producto</a>
+                        </div>
+                    </div>
+                    <br>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <div class="d-flex justify-content-between centrado">
@@ -28,14 +37,7 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md-6">
-                                            <a class="btn btn-warning mt-4 mb-4" th:href="@{/gestor/gestorListarSinStock}">Lista de Productos sin Stock</a>
-                                        </div>
-                                        <div class="col-sm-12 col-md-6">
-                                            <a class="btn btn-warning mt-4 mb-4" th:href="@{/gestor/gestorRegProducto}">Agregar Nuevo Producto</a>
-                                        </div>
-                                    </div>
+
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                         <tr>

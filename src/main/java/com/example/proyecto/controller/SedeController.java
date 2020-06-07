@@ -44,6 +44,8 @@ public class SedeController {
     EstadoenviosedeRepository estadoenviosedeRepository;
     @Autowired
     UsuarioRepository usuarioRepository;
+    @Autowired
+    SedeRepository sedeRepository;
 
     @GetMapping("perfil")
     public String perfil() {
@@ -53,29 +55,46 @@ public class SedeController {
 
     //--------------------------Inventario---------------------------------------------
     @GetMapping(value = {"", "principal"})
-    public String principal(Model model) {
-        List<Inventariosede> lista = inventariosedeRepository.findAll();
+    public String principal(Model model, HttpSession session) {
+        Usuarios usuario = (Usuarios) session.getAttribute("user");
+        List<Inventariosede> lista = inventariosedeRepository.findBySede(usuario.getSede());
         model.addAttribute("listaProductos", lista);
         return "UsuarioSede/U-Principal";
     }
 
     @GetMapping("DetallesProducto")
-    public String detallesProdcutoCompra(Model model, @RequestParam("id") int id) {
-        Optional<Inventariosede> inventario = inventariosedeRepository.findById(id);
-        List<Historial> listaHistorial = historialRepository.findAll();
-        Historial historial = null;
-        if (inventario.isPresent()) {
-            Inventariosede inventario2 = inventario.get();
-            for (Historial hi : listaHistorial) {
-                if (hi.getInventario().getIdInventario() == inventario2.getInventario().getIdInventario()) {
-                    historial = hi;
-                    break;
-                }
+    public String detallesProdcutoCompra(Model model, @RequestParam("id") int id, HttpSession session, RedirectAttributes attr) {
+        Usuarios usuario = (Usuarios) session.getAttribute("user");
+        List<Inventariosede> lista = inventariosedeRepository.findBySede(usuario.getSede());
+        boolean presente = false;
+
+        for (Inventariosede inven : lista){
+            if (inven.getIdinventariosede() == id){
+                presente = true;
+                break;
             }
-            model.addAttribute("historial", historial);
-            model.addAttribute("producto", inventario2);
-            return "UsuarioSede/U-DetallesProducto";
+        }
+
+        if (presente == true) {
+            Optional<Inventariosede> inventario = inventariosedeRepository.findById(id);
+            List<Historial> listaHistorial = historialRepository.findAll();
+            Historial historial = null;
+            if (inventario.isPresent()) {
+                Inventariosede inventario2 = inventario.get();
+                for (Historial hi : listaHistorial) {
+                    if (hi.getInventario().getIdInventario() == inventario2.getInventario().getIdInventario()) {
+                        historial = hi;
+                        break;
+                    }
+                }
+                model.addAttribute("historial", historial);
+                model.addAttribute("producto", inventario2);
+                return "UsuarioSede/U-DetallesProducto";
+            } else {
+                return "redirect:/principal";
+            }
         } else {
+            attr.addFlashAttribute("msg", "Producto no encontrado");
             return "redirect:/principal";
         }
     }
@@ -154,12 +173,18 @@ public class SedeController {
     }
 
     //----------------INICIO CRUD TIENDAS-------------------
-
     @GetMapping("registroTiendas")
     public String registroDeTiendas(@ModelAttribute("tienda") Tienda tienda, Model model) {
         model.addAttribute("listaTiendas", tiendaRepository.findAll());
 
         return "UsuarioSede/U-TiendaDistribuidor";
+    }
+
+    @GetMapping("registroRealTienda")
+    public String registroRealDeTiendas(@ModelAttribute("tienda") Tienda tienda, Model model) {
+        model.addAttribute("listaTiendas", tiendaRepository.findAll());
+
+        return "UsuarioSede/U-NuevaTienda";
     }
 
     @PostMapping("guardarTienda")
@@ -169,22 +194,29 @@ public class SedeController {
 
             if (bindingResult.hasErrors()) {
                 model.addAttribute("listaTiendas", tiendaRepository.findAll());
-                return "UsuarioSede/U-TiendaDistribuidor";
+                return "UsuarioSede/U-NuevaTienda";
             }else{
                 if (tienda.getIdtienda() == 0) {
                     if(tiendaRepository.findByNombre(tienda.getNombre()).size() >= 1){
                         model.addAttribute("listaTiendas", tiendaRepository.findAll());
-                        attr.addFlashAttribute("msgError", "Atención! Esta tienda ya ha sido registrada");
-                        return "redirect:/sede/registroTiendas";
+                        attr.addFlashAttribute("msgError", "Atención! Esta tienda ya ha sido registrada anteriormente");
+                        return "redirect:/sede/registroRealTienda";
                     }else {
                         tiendaRepository.save(tienda);
-                        attr.addFlashAttribute("msg", "Tienda agregada a la lista");
+                        attr.addFlashAttribute("msg", "Tienda nueva agregada a la lista");
                         return "redirect:/sede/registroTiendas";
                     }
                 } else {
-                    tiendaRepository.save(tienda);
-                    attr.addFlashAttribute("msg", "Tienda actualizada correctamente");
-                    return "redirect:/sede/registroTiendas";
+                    if(tiendaRepository.findByNombre(tienda.getNombre()).size() >= 1){
+                        model.addAttribute("listaTiendas", tiendaRepository.findAll());
+                        attr.addFlashAttribute("msgError", "Atención! La tienda que intentó registrar ya se encontraba en la lista");
+                        return "redirect:/sede/registroTiendas";
+
+                    }else {
+                        tiendaRepository.save(tienda);
+                        attr.addFlashAttribute("msg", "Tienda actualizada correctamente");
+                        return "redirect:/sede/registroTiendas";
+                    }
                 }
             }
     }
@@ -203,7 +235,7 @@ public class SedeController {
         Optional<Tienda> obtenerTienda = tiendaRepository.findById(idtienda);
         if (obtenerTienda.isPresent()) {
             tiendaRepository.deleteById(idtienda);
-            attr.addFlashAttribute("msg", "Tienda borrada exitosamente");
+            attr.addFlashAttribute("msg", "La tienda ha sido eliminada permanentemente");
         }
         return "redirect:/sede/registroTiendas";
     }
@@ -214,8 +246,7 @@ public class SedeController {
         Optional<Tienda> tiendaPorID = tiendaRepository.findById(idtienda);
         if (tiendaPorID.isPresent()) {
             model.addAttribute("tienda", tiendaPorID.get());
-
-            return "UsuarioSede/U-TiendaDistribuidor";
+            return "UsuarioSede/U-NuevaTienda";
         } else {
             return "redirect:/sede/registroTiendas";
         }

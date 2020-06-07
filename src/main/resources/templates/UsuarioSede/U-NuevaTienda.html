@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="Fragmentos/FragmentosSede.html::cabecera(titulo='Distribuidor')">
+</head>
+
+<body id="page-top">
+
+<div id="wrapper">
+    <div th:replace="Fragmentos/FragmentosSede.html::SideBarSede"></div>
+    <div id="content-wrapper" class="d-flex flex-column bg-white">
+        <div id="content">
+            <div th:insert="Fragmentos/FragmentosSede.html::TopBar"></div>
+            <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
+            <div class="container-fluid">
+                <div class="card shadowA mb-4">
+                    <div class="card-header2 py-3">
+                        <div class="d-flex justify-content-between centrado">
+                            <h5 class="m-0 font-weight-bold text-redM" th:text="${tienda.idtienda == 0? 'Registrar nueva tienda' : 'Actualizar tienda'}">base</h5>
+                        </div>
+                    </div>
+                    <div class="card-body bg-gray-100">
+                        <div class="row centrado">
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <form method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}">
+                                        <div class="form-group">
+                                            <label>Nombre de la tienda :</label>
+                                            <input th:field="*{idtienda}" name="idtienda" type="hidden" />
+                                            <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
+                                            <br>
+                                            <input th:field="*{nombre}" type="text" class="form-control form-control-user">
+                                            <div class="text-danger text-center" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</div><br>
+                                            <input name="sede.idsede" th:value="${session.user.sede.getIdsede()}" type="hidden" class="form-control form-control-user">
+                                        </div>
+                                        <button type="submit" class="btn btn-user btn-searchTop btn-block" th:text="${tienda.idtienda == 0? 'Registrar' : 'Actualizar'}"></button>
+                                        <a th:href="@{/sede/registroTiendas}" class="btn btn-danger btn-user btn-block">Cancelar</a>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-4">
+                                <br>
+                                <br>
+                                <div class="card shadowA mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-greenM">was</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        "Profe y como sería sin matemáticas ? ... "  Royer Yangali
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<div th:replace="Fragmentos/FragmentosSede.html::Script"></div>
+
+</body>
+
+</html>

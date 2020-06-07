@@ -350,38 +350,39 @@ public class GestorController {
         return "Gestor/G-EditCategoria";
     }
 
+
     @PostMapping("gestorGuardarCategoria")
-    public String GuardaCategoria(@ModelAttribute("categoria") @Valid Categoria categoria, BindingResult bindingResult, Model model, RedirectAttributes attr) {
-
+    public String GuardaCategoria(@ModelAttribute("categoria") @Valid Categoria categoria,BindingResult bindingResult, Model model, RedirectAttributes attr) {
         List<Categoria> listaCategoria = categoriaRepository.buscarCategoria(categoria.getNombre(), categoria.getCodigo());
+        List<Categoria> listaCategoriaPorNombre = categoriaRepository.buscarCategoriaPorNombre(categoria.getNombre());
+        List<Categoria> listaCategoriaPorCodigo = categoriaRepository.buscarCategoriaPorNombre(categoria.getNombre());
 
-        if ((categoria.getIdCategoria() == 0)) {
-            if (bindingResult.hasErrors()) {
-                model.addAttribute("categoria", categoria);
-                return "Gestor/G-EditCategoria";
-            } else {
-                categoriaRepository.save(categoria);
-                attr.addFlashAttribute("msg", "Categoria registrada correctamente");
-                return "redirect:/gestor/gestorListaCategoria";
-            }
-        } else if (categoria.getIdCategoria() != 0) {
-            if (bindingResult.hasErrors()) {
-                model.addAttribute("categoria", categoria);
-                return "Gestor/G-EditCategoria";
-            } else {
-                attr.addFlashAttribute("msg", "Categoría actualizada correctamente");
-                categoriaRepository.save(categoria);
-                return "redirect:/gestor/gestorListaCategoria";
-            }
-        } else {
+
+        if (bindingResult.hasErrors()) {
             model.addAttribute(categoria);
-            model.addAttribute("categoria", categoria);
-            attr.addFlashAttribute("msgError", "Los datos ingresados ya existen, por favor modificarlo");
-            return "redirect:/gestor/gestorEditCategoria";
+            return "Gestor/G-EditCategoria";
+        } else {
+
+            if (categoria.getIdCategoria() == 0 && listaCategoria.size()==0) {
+                categoriaRepository.save(categoria);
+                attr.addFlashAttribute("msg", "Categoria creada exitosamente");
+                return "redirect:/gestor/gestorListaCategoria";
+            } else if (categoria.getIdCategoria() != 0 && listaCategoria.size()==1) {
+                categoriaRepository.save(categoria);
+                attr.addFlashAttribute("msg", "Categoria actualizada exitosamente");
+                return "redirect:/gestor/gestorListaCategoria";
+            } else {
+                model.addAttribute(categoria);
+                model.addAttribute("msgError", "Los datos ingresados ya existen, por favor modificarlo");
+                return "Gestor/G-EditCategoria";
+            }
+
         }
 
 
     }
+
+
 
     @GetMapping("gestorEditCategoria")
     public String EditCategoria(@RequestParam("id") int id, @ModelAttribute("categoria") Categoria categoria, Model model) {

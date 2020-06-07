@@ -19,4 +19,6 @@ public interface InventariosedeRepository extends JpaRepository<Inventariosede, 
 
     List<Inventariosede> findByInventarioAndSede(Inventario xd, Sede xd1);
 
+    List<Inventariosede> findBySede(Sede sede);
+
 }
