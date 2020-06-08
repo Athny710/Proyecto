@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -65,6 +66,47 @@ public class GestorController {
         return "Gestor/G-GenReporte2";
     }
 
+
+    //------------------------Perfil-------------------------------------------
+    @GetMapping("editarInfo")
+    public String editarInfo(@ModelAttribute("perfil") Perfil perfil, HttpSession session){
+        Usuarios u = (Usuarios) session.getAttribute("user");
+        perfil.setCorreo(u.getCorreo());
+        perfil.setTelefono(Integer.parseInt(u.getTelefono()));
+        return "Gestor/G-Perfil";
+    }
+    @PostMapping("guardarPerfil")
+    public String guardarInfo(@ModelAttribute("perfil") @Valid Perfil perfil,
+                              BindingResult bindingResult,
+                              RedirectAttributes attr, HttpSession session, Model model){
+
+        Usuarios usuarioLog=(Usuarios) session.getAttribute("user");
+
+        if(bindingResult.hasErrors()){
+            return "Gestor/G-Perfil";
+        }else{
+            if(perfil.getCorreo().equals(usuarioLog.getCorreo())){
+                attr.addFlashAttribute("msg", "Información personal editada con éxito");
+                usuarioLog.setCorreo(perfil.getCorreo());
+                usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
+                usuarioRepository.save(usuarioLog);
+                session.setAttribute("user", usuarioLog);
+                return "redirect:/gestor";
+            }else{
+                if(usuarioRepository.findByCorreo(usuarioLog.getCorreo())!=null){
+                    model.addAttribute("msg", "Este correo ya está registrado");
+                    return "Gestor/G-Perfil";
+                }else{
+                    attr.addFlashAttribute("msg", "Información personal editada con éxito");
+                    usuarioLog.setCorreo(perfil.getCorreo());
+                    usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
+                    usuarioRepository.save(usuarioLog);
+                    session.setAttribute("user", usuarioLog);
+                    return "redirect:/gestor";
+                }
+            }
+        }
+    }
 
     // ----------------------- CRUD USUARIOS SEDE ---------------------------------
 

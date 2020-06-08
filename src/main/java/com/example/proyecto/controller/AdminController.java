@@ -57,20 +57,34 @@ public class AdminController {
     @PostMapping("guardarPerfil")
     public String guardarInfo(@ModelAttribute("perfil") @Valid Perfil perfil,
                               BindingResult bindingResult,
-                              RedirectAttributes attr, HttpSession session){
+                              RedirectAttributes attr, HttpSession session, Model model){
+
+        Usuarios usuarioLog=(Usuarios) session.getAttribute("user");
 
         if(bindingResult.hasErrors()){
             return "Administrador/A-Perfil";
         }else{
-            attr.addFlashAttribute("msg", "Información personal editada con éxito");
-            Usuarios usuarioLog=(Usuarios) session.getAttribute("user");
-            usuarioLog.setCorreo(perfil.getCorreo());
-            usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
-            usuarioRepository.save(usuarioLog);
-            session.setAttribute("user", usuarioLog);
-            return "redirect:/admin";
+            if(perfil.getCorreo().equals(usuarioLog.getCorreo())){
+                attr.addFlashAttribute("msg", "Información personal editada con éxito");
+                usuarioLog.setCorreo(perfil.getCorreo());
+                usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
+                usuarioRepository.save(usuarioLog);
+                session.setAttribute("user", usuarioLog);
+                return "redirect:/admin";
+            }else{
+                if(usuarioRepository.findByCorreo(usuarioLog.getCorreo())!=null){
+                    model.addAttribute("msg", "Este correo ya está registrado");
+                    return "Administrador/A-Perfil";
+                }else{
+                    attr.addFlashAttribute("msg", "Información personal editada con éxito");
+                    usuarioLog.setCorreo(perfil.getCorreo());
+                    usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
+                    usuarioRepository.save(usuarioLog);
+                    session.setAttribute("user", usuarioLog);
+                    return "redirect:/admin";
+                }
+            }
         }
-
     }
 
 
