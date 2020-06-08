@@ -8,6 +8,7 @@ import com.example.proyecto.entity.Comunidad;
 import com.example.proyecto.entity.Inventario;
 import com.example.proyecto.entity.Tienda;
 import com.example.proyecto.repository.*;
+import com.example.proyecto.services.VentasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +18,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.jws.WebParam;
 import javax.rmi.CORBA.Tie;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.xml.bind.SchemaOutputResolver;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -46,6 +53,12 @@ public class SedeController {
     UsuarioRepository usuarioRepository;
     @Autowired
     SedeRepository sedeRepository;
+
+    @Autowired
+    VentasService ventasService;
+    @Autowired
+    ServletContext context;
+
 
     @GetMapping("perfil")
     public String perfil() {
@@ -141,9 +154,56 @@ public class SedeController {
 
     @GetMapping("gestionVentas")
     public String gestionDeVentas(@ModelAttribute("venta") Venta venta, Model model) {
-        model.addAttribute("listaVentas", ventaRepository.findAll());
+        model.addAttribute("listaVentas", ventasService.getVentas());
         return "UsuarioSede/U-GestionVentas";
     }
+
+    //PDF !!
+    @GetMapping("createpdf")
+    public void crearPDFdeLista(HttpServletRequest request, HttpServletResponse response) {
+        List<Venta> venta = ventasService.getVentas();
+        boolean isFlag = ventasService.createPDF(venta,context,request,response);
+        if(isFlag){
+            String fullPath = request.getServletContext().getRealPath("/resources/reports/" + "ventas" + ".pdf");
+            filedownload(fullPath,response,"ventas.pdf");
+        }
+    }
+
+    @GetMapping("createexcel")
+    public void crearExcel(HttpServletRequest request, HttpServletResponse response){
+        List<Venta> venta = ventasService.getVentas();
+        boolean isFlag = ventasService.createExcel(venta, context, request, response);
+        if (isFlag){
+            String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas" + ".xls");
+            filedownload(fullpath,response,"ventas.xls");
+        }
+    }
+
+    private void filedownload(String fullpath, HttpServletResponse response, String filename){
+        File file = new File(fullpath);
+        final int BUFFER_SIZE = 4096;
+        if(file.exists()){
+            try {
+                FileInputStream inputStream = new FileInputStream(file);
+                String mimeType = context.getMimeType(fullpath);
+                response.setContentType(mimeType);
+                response.setHeader("content-disposition","attachment; filename=" + filename);
+                OutputStream outputStream = response.getOutputStream();
+                byte[] buffer = new byte[BUFFER_SIZE];
+                int bytesRead = -1 ;
+                while((bytesRead = inputStream.read(buffer))!= -1){
+                    outputStream.write(buffer,0,bytesRead);
+                }
+                inputStream.close();
+                outputStream.close();
+                file.delete();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     @PostMapping("/guardarVenta")
     public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult
