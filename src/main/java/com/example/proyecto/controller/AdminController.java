@@ -84,6 +84,7 @@ public class AdminController {
     public String nuevoGestor(@ModelAttribute("usu") Usuarios usuario){
         return "Administrador/A-NuevoGestor";
     }
+
     @PostMapping("guardarGestor")
     public String guardarGestor(@ModelAttribute("usu") @Valid Usuarios usuario,
                                 BindingResult bindingResult,
