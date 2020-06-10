@@ -1,5 +1,6 @@
 package com.example.proyecto.repository;
 
+import com.example.proyecto.dto.ProductosEstadoRechazado;
 import com.example.proyecto.dto.ProductosEstados;
 import com.example.proyecto.dto.ProductosEstadosSede;
 import com.example.proyecto.entity.Producto;
@@ -28,13 +29,13 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
             "inner join sede s on invs.idSede = s.idSede and est.estado = 'recibido'",nativeQuery = true)
     List<ProductosEstados> listaProductosRecibidos();
 
-    @Query(value = "SELECT p.codigoGenerado as codigogenerado,s.nombre as nombre_sede,d.nombre,est.cantidad,i.precioMosqoy,est.fecha,est.estado FROM producto p \n" +
-            "inner join denominacion d on p.idDenominacion = d.idDenominacion\n" +
-            "inner join inventario i on p.idProducto = i.idProducto\n" +
-            "inner join inventariosede invs on i.idInventario = invs.idInventario\n" +
-            "inner join estadoenviosede est on invs.idInventarioSede = est.idInventarioSede\n" +
-            "inner join sede s on invs.idSede = s.idSede and est.estado = 'rechazado'",nativeQuery = true)
-    List<ProductosEstados> listaProductosRechazados();
+    @Query(value = "SELECT est.idEnvioSede as idestado, est.idInventarioSede as idinventariosede, p.codigoGenerado as codigogenerado,s.nombre as nombre_sede, d.nombre,est.cantidad,i.precioMosqoy,est.fecha,est.estado,est.comentario FROM sw2_proyecto.producto p \n" +
+            "inner join sw2_proyecto.denominacion d on p.idDenominacion = d.idDenominacion\n" +
+            "inner join sw2_proyecto.inventario i on p.idProducto = i.idProducto\n" +
+            "inner join sw2_proyecto.inventariosede invs on i.idInventario = invs.idInventario\n" +
+            "inner join sw2_proyecto.estadoenviosede est on invs.idInventarioSede = est.idInventarioSede\n" +
+            "inner join sw2_proyecto.sede s on invs.idSede = s.idSede and est.estado = 'rechazado'",nativeQuery = true)
+    List<ProductosEstadoRechazado> listaProductosRechazados();
 
     @Query(value = "SELECT p.codigoGenerado,est.cantidad,i.color,i.precioMosqoy,est.fecha,est.estado,est.idEnvioSede\n" +
             "             FROM producto p \n" +

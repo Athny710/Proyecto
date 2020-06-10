@@ -587,6 +587,22 @@ public class GestorController {
         return "Gestor/G-ProdRecha";
     }
 
+    @GetMapping("gestorEditarEnvio")
+    public String editarEnvio(@RequestParam("id") int id, @ModelAttribute("estadoenviosede") Estadoenviosede estadoenviosede, Model model){
+        Optional<Estadoenviosede> estadoPorID = estadoenviosedeRepository.findById(id);
+        if (estadoPorID.isPresent()) {
+            estadoenviosede = estadoPorID.get();
+            model.addAttribute("estadoenviosede", estadoenviosede);
+            List<Inventario> listaInventario = inventarioRepository.findAll();
+            List<Sede> listaSede = sedeRepository.findAll();
+            model.addAttribute("listaInventario", listaInventario);
+            model.addAttribute("listaSede", listaSede);
+            return "Gestor/G-GestionEnvios";
+        } else {
+            return "redirect:/gestor/gestorProductosRechazados";
+        }
+    }
+
 
     // -------------------------- FIN CRUD PRODUCTO ---------------------------------
 
@@ -599,6 +615,8 @@ public class GestorController {
         model.addAttribute("listaSede", listaSede);
         return "Gestor/G-GestionEnvios";
     }
+
+
 
     @PostMapping("gestorGuardarEnvio")
     public String guardarEnvio(@ModelAttribute("estadoenviosede") @Valid Estadoenviosede estadoenviosede, BindingResult bindingResult,
