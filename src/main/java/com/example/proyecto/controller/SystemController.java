@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.*;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/system")
@@ -23,8 +25,44 @@ public class SystemController {
 
     @GetMapping("cambiarCont")
     public String cambiarContraseña(){
-        return "Sistema/S-NuevContra2";
+        return "Sistema/S-CambiarContra";
     }
+
+    @GetMapping("recuperarCont")
+    public String recuperarCuenta(){
+        return "Sistema/S-RecupContra";
+    }
+
+    @PostMapping("enviarCorreoRecuperarCont")
+    public String enviarCorreoRecupCuenta(Model model, RedirectAttributes attr, HttpSession session,
+                                          @RequestParam("correo")String correo, HttpServletRequest request) throws MessagingException {
+
+        Usuarios usuarioBuscado = usuarioRepository.findByCorreo(correo);
+
+        if(usuarioBuscado!= null){
+
+            //Se obtiene el usuario, se le crea su hash con ID y luego se le setea
+            Optional<Usuarios> usuarioID = usuarioRepository.findById(usuarioBuscado.getIdusuarios());
+            usuarioRepository.crearHash(usuarioID);
+            String hasheado = usuarioRepository.seleccionarHash(usuarioID);
+            usuarioBuscado.setHasheado(hasheado);
+
+
+
+
+
+
+
+
+            attr.addFlashAttribute("msg", "Se ha enviado el correo exitosamente");
+        }else{
+            attr.addFlashAttribute("msg", "No se ha encontrado el correo ingresado");
+            return "redirect:/system/recuperarCont";
+        }
+
+        return "aun falta";
+    }
+
 
     @PostMapping("guardarCont")
     public String guardarCont(@RequestParam("psw1") String psw1,
