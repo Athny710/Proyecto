@@ -24,6 +24,9 @@
     <style media="screen">
         .active{
             background-color: #8d8f4c;
+            border-radius: 5rem;
+            margin-right: 0.5rem;
+            margin-left: 0.5rem;
         }
         *{
             padding: 0px;
@@ -48,12 +51,10 @@
     </a>
     <!-- Divider
     <hr class="sidebar-divider2">-->
-    <hr>
-    <hr>
-    <hr>
+    <div style="height: 100px"></div>
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link text-gray-100"  th:href="@{/gestor/gestorPrincipal}">
+        <a style="padding: 0.5rem" class="nav-link text-gray-100"  th:href="@{/gestor/gestorPrincipal}">
             <i class="fas fa-fw fa-folder-open text-gray-100"></i>
             <span>Inventario</span>
         </a>
@@ -61,7 +62,7 @@
     <hr class="sidebar-divider my-0 bg-gray-100">
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link text-gray-100"  th:href="@{/gestor/gestorListaSedes}">
+        <a style="padding: 0.5rem" class="nav-link text-gray-100"  th:href="@{/gestor/gestorListaSedes}">
             <i class="fas fa-fw fa-table text-gray-100"></i>
             <span>Sedes</span>
         </a>
@@ -69,16 +70,15 @@
     <hr class="sidebar-divider my-0 bg-gray-100">
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link text-gray-100"  th:href="@{/gestor/gestorListaUsuarioSede}">
+        <a style="padding: 0.5rem" class="nav-link text-gray-100"  th:href="@{/gestor/gestorListaUsuarioSede}">
             <i class="far fa-fw fa-address-card text-gray-100"></i>
             <span>Usuarios Sede</span>
         </a>
     </li>
-    <!-- Divider -->
     <hr class="sidebar-divider my-0 bg-gray-100">
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapseAtributos"
+    <div class="nav-item">
+        <a style="padding: 0.5rem" class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapseAtributos"
            aria-expanded="true" aria-controls="collapsePages">
             <i class="fab fa-fw fa-buffer text-gray-100"></i>
             <span>Gestionar Atributos</span>
@@ -87,16 +87,22 @@
              data-parent="#accordionSidebar">
             <div class="bg-gray-100 py-2 collapse-inner rounded">
                 <h6 class="collapse-header text-gray-900   ">Listas:</h6>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorListaComunidad}">-Comunidades</a>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorListaArtesano}">-Artesanos</a>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorListaCategoria}">-Categorías</a>
+                <li class="nav-item">
+                    <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorListaComunidad}">-Comunidades</a>
+                </li>
+                <li>
+                    <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorListaArtesano}">-Artesanos</a>
+                </li>
+                <li>
+                    <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorListaCategoria}">-Categorías</a>
+                </li>
             </div>
         </div>
-    </li>
+    </div>
     <hr class="sidebar-divider my-0 bg-gray-100">
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapseVentas"
+    <div class="nav-item">
+        <a style="padding: 0.5rem" class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapseVentas"
            aria-expanded="true" aria-controls="collapsePages">
             <i class="fab fa-fw fa-buffer text-gray-100"></i>
             <span>Gestionar Ventas</span>
@@ -105,15 +111,19 @@
              data-parent="#accordionSidebar">
             <div class="bg-gray-100 py-2 collapse-inner rounded">
                 <h6 class="collapse-header text-gray-900   ">Acción:</h6>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestionVentas}">-Lista Ventas</a>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorReporteVentas}">-Reporte Ventas</a>
+                <li>
+                    <a class="collapse-item text-gray-900" th:href="@{/gestor/gestionVentas}">-Lista Ventas</a>
+                </li>
+                <li>
+                    <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorReporteVentas}">-Reporte Ventas</a>
+                </li>
             </div>
         </div>
-    </li>
+    </div>
     <hr class="sidebar-divider my-0 bg-gray-100">
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapseProductos"
+    <div class="nav-item">
+        <a style="padding: 0.5rem" class="nav-link text-gray-100" href="#" data-toggle="collapse" data-target="#collapseProductos"
            aria-expanded="true" aria-controls="collapsePages">
             <i class="fab fa-fw fa-buffer text-gray-100"></i>
             <span>Gestionar Productos</span>
@@ -122,15 +132,16 @@
              data-parent="#accordionSidebar">
             <div class="bg-gray-100 py-2 collapse-inner rounded">
                 <h6 class="collapse-header text-gray-900   ">Acción:</h6>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosEnviados}">-Enviados</a>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosAceptados}">-Aceptados</a>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosRechazados}">-Rechazados</a>
-                <a class="collapse-item text-gray-900" th:href="@{/gestor/gestorNuevoEnvio}">-Nuevo Envio</a>
+                <li><a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosEnviados}">-Enviados</a></li>
+                <li><a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosAceptados}">-Aceptados</a></li>
+                <li><a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosRechazados}">-Rechazados</a></li>
+                <li><a class="collapse-item text-gray-900" th:href="@{/gestor/gestorNuevoEnvio}">-Nuevo Envio</a></li>
+
             </div>
         </div>
-    </li>
+    </div>
     <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block bg-gray-100">
+    <hr class="sidebar-divider my-0 bg-gray-100">
 </ul>
 <script>
     $(document).ready(function() {
@@ -174,7 +185,7 @@
         </li>
         <div class="topbar-divider d-none d-sm-block"></div>
         <!-- Nav Item - User Information -->
-        <li class="nav-item dropdown no-arrow">
+        <div class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
                 <span sec:authorize="isAuthenticated()" th:text="|${session.user.nombre} ${session.user.apellido}|" class="mr-2 d-none d-lg-inline text-gray-600 small">Telito Teleco</span>
@@ -183,7 +194,7 @@
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in bg-orangeM"
                  aria-labelledby="userDropdown">
-                <a class="dropdown-item text-white" th:href="@{/gestor/perfil}">
+                <a class="dropdown-item text-white" th:href="@{/gestor/editarInfo}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-100"></i>
                     Perfil
                 </a>
@@ -193,26 +204,25 @@
                     Cerrar Sesión
                 </a>
             </div>
-        </li>
+        </div>
     </ul>
 </nav>
 <!-- End of Topbar -->
 
 <!-- Logout Modal-->
-<div th:fragment="LogOut" class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div th:fragment="LogOut" class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <h5 class="modal-title" id="exampleModalLabel">¿Seguro que desea salir?</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-body">Click en "Aceptar" si está seguro de que quiere cerrar sesión.</div>
             <form class="modal-footer" th:action="@{/cerrar}" method="post" >
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <button class="btn btn-primary" type="submit">Logout</button>
+                <button class="btn btn-gray-900" type="button" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-orange" type="submit">Aceptar</button>
             </form>
         </div>
     </div>

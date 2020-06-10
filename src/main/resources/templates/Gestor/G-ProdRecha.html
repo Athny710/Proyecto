@@ -17,16 +17,6 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 text-gray-900 font-weight-bold text-primary">Productos rechazados</h6>
-                            <form class="-angle-double-right d-none d-sm-inline-block form-inline mr-auto ml-md-20 my-2 my-md-30 mw-100 navbar-search">
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-10 small bg-white" placeholder="Filtrar por..." aria-label="Search" aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-log text-gray-900" type="button">
-                                            <i class="fas fa-search fa-sm text-gray-100"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -45,34 +35,24 @@
                                             <th>Comentario</th>
                                         </tr>
                                         </thead>
-                                        <tfoot>
-                                        <tr>
-                                            <th>Código</th>
-                                            <th>Sede</th>
-                                            <th>Producto</th>
-                                            <th>Cantidad</th>
-                                            <th>Precio de venta</th>
-                                            <th>Fecha de envío</th>
-                                            <th>Estado</th>
-                                            <th>Editar Envío</th>
-                                            <th>Comentario</th>
-                                        </tr>
-                                        </tfoot>
+
                                         <tbody>
-                                        <tr>
-                                            <td>Mosqoy</td>
-                                            <td>SJL</td>
-                                            <td>Chipana</td>
-                                            <td>5</td>
-                                            <td>20</td>
-                                            <td>01/04/2020</td>
-                                            <td>Rechazado</td>
-                                            <td><a th:href="@{/gestor/gestorGestionVentas}" class="btn btn-success btn-circle">
-                                                <i class="fas fa-check"></i>
-                                            </a><a href="#" class="btn btn-danger btn-circle">
-                                                <i class="fas fa-trash"></i>
-                                            </a></td>
-                                            <td>Se ordenó que fueran de otra talla</td>
+                                        <tr th:each="p : ${listaProdRecha}">
+                                            <td th:text="${p.getCodigogenerado()}"></td>
+                                            <td th:text="${p.getNombre_sede()}"></td>
+                                            <td th:text="${p.getNombre()}"></td>
+                                            <td th:text="${p.getCantidad()}"></td>
+                                            <td th:text="${p.getPreciomosqoy()}"></td>
+                                            <td th:text="${p.getFecha()}"></td>
+                                            <td th:text="${p.getEstado()}"></td>
+                                            <td th:text="${p.getComentario()}"></td>
+                                            <td align="center">
+                                                <a style="margin-left: 10px" th:href="@{'/gestor/gestorEditarEnvio' + '?id=' + ${p.getIdestado()}}" class="far fa-edit text-orangeM"></a>
+                                                <a style="margin-left: 10px" class="far fa-trash-alt text-redM" th:href="@{'/sede/borrarTienda' + '?id=' + ${p.getIdestado()}}"></a>
+                                                <!-- data-toggle="modal" data-target="#modalborrar" th:attrappend="data-target=${tienda.idtienda}"-->
+                                            </td>
+
+
                                         </tr>
                                         </tbody>
                                     </table>

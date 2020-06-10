@@ -3,6 +3,8 @@ package com.example.proyecto.controller;
 
 import com.example.proyecto.entity.Usuarios;
 import com.example.proyecto.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,9 @@ import javax.validation.Valid;
 @RequestMapping("/system")
 public class SystemController {
 
+    @Autowired
+    UsuarioRepository usuarioRepository;
+
     @GetMapping("cambiarCont")
     public String cambiarContraseña(){
         return "Sistema/S-NuevContra2";
@@ -28,11 +33,20 @@ public class SystemController {
                               HttpSession session){
         if(!"".equals(psw1) && !"".equals(psw2)){
             if(psw1.equals(psw2)){
-                attr.addFlashAttribute("msg", "Contraseña actualizada.");
-                Usuarios usuarioLog=(Usuarios) session.getAttribute("user");
-                usuarioLog.setPassword(psw1);
-                session.setAttribute("user", usuarioLog);
-                return "redirect:/admin";
+                if(psw1.length()<8){
+                    attr.addFlashAttribute("msg", "Mínimo 8 caracteres");
+                    return "redirect:/system/cambiarCont";
+                }else if(psw1.length()>40){
+                    attr.addFlashAttribute("msg", "Demasiados caracteres");
+                    return "redirect:/system/cambiarCont";
+                }else {
+                    attr.addFlashAttribute("msg", "Contraseña actualizada.");
+                    Usuarios usuarioLog=(Usuarios) session.getAttribute("user");
+                    usuarioLog.setPassword(new BCryptPasswordEncoder().encode(psw1));
+                    session.setAttribute("user", usuarioLog);
+                    usuarioRepository.save(usuarioLog);
+                    return "redirect:/admin";
+                }
             }else{
                 attr.addFlashAttribute("msg", "Las contraseñas no coinciden");
                 return "redirect:/system/cambiarCont";
