@@ -13,6 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.mail.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,13 +31,11 @@ public class SystemController {
     }
 
     @GetMapping("recuperarCont")
-    public String recuperarCuenta(){
-        return "Sistema/S-RecupContra";
-    }
+    public String recuperarCuenta(){ return "Sistema/S-RecupContra"; }
 
     @PostMapping("enviarCorreoRecuperarCont")
     public String enviarCorreoRecupCuenta(Model model, RedirectAttributes attr, HttpSession session,
-                                          @RequestParam("correo")String correo, HttpServletRequest request) throws MessagingException {
+                                          @RequestParam("correo")String correo, HttpServletRequest request) throws MessagingException, UnknownHostException {
 
         Usuarios usuarioBuscado = usuarioRepository.findByCorreo(correo);
 
@@ -47,20 +47,22 @@ public class SystemController {
             String hasheado = usuarioRepository.seleccionarHash(usuarioID);
             usuarioBuscado.setHasheado(hasheado);
 
+            //Prepara para usar el método del email
+            String context = request.getContextPath();
+            int localPort= request.getLocalPort();
+            String ipAddr = InetAddress.getLocalHost().getHostAddress();
 
-
-
-
-
-
-
+            //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
+            Email email = new Email();
+            email.emailRecuperarCuenta(correo,hasheado,ipAddr,localPort,context);
             attr.addFlashAttribute("msg", "Se ha enviado el correo exitosamente");
+            return "redirect:/system/recuperarCont";
+
         }else{
             attr.addFlashAttribute("msg", "No se ha encontrado el correo ingresado");
             return "redirect:/system/recuperarCont";
         }
 
-        return "aun falta";
     }
 
 
