@@ -415,7 +415,7 @@ public class GestorController {
         Optional<Comunidad> optComunidad = comunidadRepository.findById(idcomunidad);
         if (optComunidad.isPresent()) {
             comunidadRepository.deleteById(idcomunidad);
-            attr.addFlashAttribute("msg", "Comunidad borrado exitosamente");
+            attr.addFlashAttribute("msg", "Comunidad borrada exitosamente");
         }
         return "redirect:/gestor/gestorListaComunidad";
     }
