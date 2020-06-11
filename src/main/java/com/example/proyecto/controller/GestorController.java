@@ -176,7 +176,6 @@ public class GestorController {
                 if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null){
                     model.addAttribute("msgError", "Ya hay un usuario con ese correo");
                 }
-
                 model.addAttribute("listasedes", sedeRepository.findAll());
                 model.addAttribute(usuarios);
 
