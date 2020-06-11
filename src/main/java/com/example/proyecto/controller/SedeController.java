@@ -208,7 +208,7 @@ public class SedeController {
             filedownload(fullPath,response,"ventas.pdf");
         }
     }
-
+    //EXCEL !!
     @GetMapping("createexcel")
     public void crearExcel(HttpServletRequest request, HttpServletResponse response){
         List<Venta> venta = ventasService.getVentas();
@@ -366,13 +366,13 @@ public class SedeController {
     //devolver prodctos de sede a inventario
     @GetMapping("DevolverProductoSinConfirmar")
     public String DevolverProductoSinConfirmar(@RequestParam("id") int id, RedirectAttributes attr) {
-        //DONE!! TODA LA LOGICA
         Optional<Estadoenviosede> estadoenviosede = estadoenviosedeRepository.findById(id);
         if (estadoenviosede.isPresent()) {
             Inventario inventario = estadoenviosede.get().getInventariosede().getInventario();
             inventario.setStock(inventario.getStock() + estadoenviosede.get().getCantidad());
             inventarioRepository.save(inventario);
-            estadoenviosedeRepository.deleteById(id);
+            estadoenviosede.get().setEstado("rechazado");
+            estadoenviosedeRepository.save(estadoenviosede.get());
             System.out.println("----------Bien borrado ---------------");
             return "redirect:/sede/productosEnEspera";
         } else {

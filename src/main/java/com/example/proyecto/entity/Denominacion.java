@@ -12,7 +12,6 @@ public class Denominacion {
     private String nombre;
     @Column(nullable = false)
     private String codigonombre;
-    @Column(nullable = false)
     private String descripcion;
     @Column(nullable = false)
     private String codigodescripcion;

@@ -17,6 +17,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 text-gray-900 font-weight-bold text-primary">Productos rechazados</h6>
+                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -48,7 +49,7 @@
                                             <td th:text="${p.getComentario()}"></td>
                                             <td align="center">
                                                 <a style="margin-left: 10px" th:href="@{'/gestor/gestorEditarEnvio' + '?id=' + ${p.getIdestado()}}" class="far fa-edit text-orangeM"></a>
-                                                <a style="margin-left: 10px" class="far fa-trash-alt text-redM" th:href="@{'/sede/borrarTienda' + '?id=' + ${p.getIdestado()}}"></a>
+                                                <a style="margin-left: 10px" class="far fa-trash-alt text-redM" th:href="@{'/gestor/borrarRechazoDeEnvio' + '?id=' + ${p.getIdestado()}}"></a>
                                                 <!-- data-toggle="modal" data-target="#modalborrar" th:attrappend="data-target=${tienda.idtienda}"-->
                                             </td>
 

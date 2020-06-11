@@ -44,6 +44,10 @@ public class GestorController {
     SedeRepository sedeRepository;
     @Autowired
     UsuarioRepository usuarioRepository;
+    @Autowired
+    DenominacionRepository denominacionRepository;
+    @Autowired
+    TamañoRepository tamañoRepository;
 
 
         // ----------------------- ENLACES ---------------------------------
@@ -122,7 +126,7 @@ public class GestorController {
 
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede(Model model) {
-        List<Usuarios> listausuariosedes = usuarioRepository.findAll();
+        List<Usuarios> listausuariosedes = usuarioRepository.findByTipo("sede");
         model.addAttribute("listausuariosedes",listausuariosedes);
         return "Gestor/G-ListaUsuarioSede";
     }
@@ -145,7 +149,7 @@ public class GestorController {
     public String guardarUsuarioSede(Model model, @ModelAttribute("usuario") @Valid Usuarios usuario, BindingResult bindingResult,
                                      RedirectAttributes attr, HttpServletRequest request) throws UnknownHostException {
 
-        //Aca falta la logica de guardar y actualizar
+        //Todo aca falta la parte de guardar y actualizar
         //DEBO METER EL TEMA DE GUARDAR EL TIPO=SEDE Y LA CONTRASEÑA PREESTABLECIDA
 
 
@@ -284,25 +288,37 @@ public class GestorController {
     }
 
     @GetMapping("gestorEditProdCompra")
-
-    public String EditProdCompra(@ModelAttribute("inventario") Inventario inventario, Model model, @RequestParam("id") int id) {
+    public String EditProdCompra(@ModelAttribute("inventario") Inventario inventario,@ModelAttribute("producto") Producto producto,
+                                 @ModelAttribute("historial")  Historial historial,
+                                 Model model, @RequestParam("id") int id) {
 
         return "Gestor/G-EditProdCompra";
     }
 
     @GetMapping("gestorRegProducto")
-
-    public String RegistroCompra(@ModelAttribute("inventario") @Valid Inventario inventario, BindingResult bindingResult, RedirectAttributes attr, Model model) {
+    public String RegistroCompra(@ModelAttribute("inventario")  Inventario inventario,@ModelAttribute("producto")  Producto producto,
+                                 @ModelAttribute("historial")  Historial historial,
+                                 Model model) {
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
-
+        model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
+        model.addAttribute("listaCategorias", categoriaRepository.findAll());
+        model.addAttribute("listaTama", tamañoRepository.findAll());
+        model.addAttribute("listaAdqui", adquisicionRepository.findAll());
         return "Gestor/G-RegCompra";
     }
 
+    @GetMapping("/guardarProducto")
+    public String guardarProducto(@ModelAttribute("inventario") @Valid Inventario inventario,@ModelAttribute("producto") @Valid Producto producto,
+                                  @ModelAttribute("historial") @Valid Historial historial, BindingResult bindingResult, RedirectAttributes attr) {
+
+
+
+
+        return "redirect:/gestorPrincipal";
+    }
+
     @GetMapping("borrarProducto")
-
     public String borrarProducto(@ModelAttribute("inventario") Inventario inventario, Model model) {
-
-
         return "redirect:/gestorPrincipal";
     }
 
@@ -603,6 +619,16 @@ public class GestorController {
         return "Gestor/G-ProdRecha";
     }
 
+    @GetMapping("borrarRechazoDeEnvio")
+    public String borrarProductosRechazados(@RequestParam("id") int idRechazado, RedirectAttributes attr) {
+        Optional<Estadoenviosede> obtenerEstado = estadoenviosedeRepository.findById(idRechazado);
+        if (obtenerEstado.isPresent()) {
+            estadoenviosedeRepository.deleteById(idRechazado);
+            attr.addFlashAttribute("msg", "El producto rechazado ha sido eliminado exitosamente");
+        }
+        return "redirect:/gestor/gestorProductosRechazados";
+    }
+
     @GetMapping("gestorEditarEnvio")
     public String editarEnvio(@RequestParam("id") int id, @ModelAttribute("estadoenviosede") Estadoenviosede estadoenviosede, Model model){
         Optional<Estadoenviosede> estadoPorID = estadoenviosedeRepository.findById(id);
@@ -647,7 +673,7 @@ public class GestorController {
 
 
         } else {
-            System.out.println("tal vez no la cagaste no binding errors");
+
 
 
             int invkey = estadoenviosede.getInventariosede().getInventario().getIdInventario();

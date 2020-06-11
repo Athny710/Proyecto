@@ -29,6 +29,8 @@ public class AdminController {
     @Autowired
     InventarioRepository inventarioRepository;
 
+
+
     //--------------------------Inventario
     @GetMapping(value = {"","principal"})
     public String principalAdmin(Model model){
