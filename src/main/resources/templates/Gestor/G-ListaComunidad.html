@@ -50,12 +50,14 @@
                                         <td th:text="${comunidad.codigo}"></td>
                                         <td align="center">
                                             <a style="margin-left: 10px"
-                                               th:href="@{'/gestor/gestorEditComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}">
-                                                <i class="far fa-list-alt text-orangeM"></i>
+                                               th:href="@{'/gestor/gestorEditComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}"
+                                               class="far fa-edit text-orangeM">
+                                               <!-- <i class="far fa-list-alt text-orangeM"></i> -->
                                             </a>
                                             <a style="margin-left: 10px"
-                                               th:href="@{'/gestor/gestorBorarComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}">
-                                                <i class="far fa-trash-alt text-redM"></i>
+                                               th:href="@{'/gestor/gestorBorarComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}"
+                                               class="far fa-trash-alt text-redM">
+                                               <!-- <i class="far fa-trash-alt text-redM"></i> -->
                                             </a>
                                         </td>
                                     </tr>
