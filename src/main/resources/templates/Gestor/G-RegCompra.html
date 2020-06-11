@@ -18,105 +18,118 @@
                             <h4 class="m-0 font-weight-bold text-gray-900">Registrando un Producto</h4>
                         </div>
                         <div class="card-body">
-                            <form>
+                            <form method="post" th:action="@{/gestor/guardarProducto}">
                                 <div class="form-group col-md-6">
-                                    <label for="rfc">Modalidad</label>
-                                    <select class="form-control" name="supplier" id="rfc">
-                                        <option >Compra</option>
-                                        <option >Consignación</option>
+                                    <label >Modalidad</label>
+                                    <select class="form-control" name="producto.adquisicion.modalidad" id="producto.adquisicion.modalidad">
+                                        <option th:value="compra">Compra</option>
+                                        <option th:value="consignación">Consignación</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="inputEmail4">Número de pedido</label>
-                                    <input type="email" class="form-control" id="inputEmail4" >
+                                    <label >Número de pedido</label>
+                                    <input type="email" class="form-control" id="historial.numeropedido"  name="historial.numeropedido"
+                                           th:value="${historial.numeropedido}">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="supplier">Línea</label>
-                                    <select class="form-control" name="supplier" id="supplier">
-                                        <option >uno</option>
-                                        <option >dos</option>
-                                        <option >tres</option>
-                                        <option >cuatro</option>
+                                    <label >Línea</label>
+                                    <select class="form-control" name="producto.denominacion.linea" id="producto.denominacion.linea">
+                                        <option th:each="deno : ${ listaDenominaciones}" th:value="${deno.linea.idLinea}"
+                                                th:text="${deno.linea.nombre}">uno</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="efe">Categoría</label>
-                                    <select class="form-control" name="efe" id="efe">
-                                        <option >uno</option>
-                                        <option >dos</option>
-                                        <option >tres</option>
-                                        <option >cuatro</option>
+                                    <label >Categoría</label>
+                                    <select class="form-control" name="producto.categoria.nombre" id="producto.categoria.nombre">
+                                        <option th:each="cat: ${listaCategorias}" th:value="${cat.idCategoria}"
+                                                th:text="${cat.nombre}">uno</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="adasas">Nombre del Producto</label>
-                                    <select class="form-control" name="supplier" id="adasas">
-                                        <option >uno</option>
-                                        <option >dos</option>
-                                        <option >tres</option>
-                                        <option >cuatro</option>
+                                    <label >Nombre del Producto</label>
+                                    <select class="form-control" name="producto.denominacion.nombre" id="producto.denominacion.nombre">
+                                        <option th:each="denominaciones : ${listaDenominaciones}" th:value="${denominaciones.idDenominacion}"
+                                                th:text="${denominaciones.nombre}">uno</option>
+                                    </select>
+                                </div>
+                                //PREGUNTAR
+                                <div class="form-group col-md-6">
+                                    <label >Descripción</label>
+                                    <input type="text" class="form-control" id="producto.denominacion.descripcion" name="producto.denominacion.descripcion"
+                                          >
+                                </div>
+                                //PREGUNTAR
+                                <div class="form-group col-md-6">
+                                    <label >Tamaño</label>
+                                    <select class="form-control" name="producto.tamanho.nombre}" id="producto.tamanho.nombre}">
+                                        <option th:each=" tama : ${listaTama}" th:value="${tama.idTamanho}"
+                                                th:text="${tama.nombre}" >uno</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="qwe">Descripción</label>
-                                    <input type="text" class="form-control" id="qwe" >
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="rew">Tamaño</label>
-                                    <select class="form-control" name="supplier" id="rew">
-                                        <option >uno</option>
-                                        <option >dos</option>
-                                        <option >tres</option>
-                                        <option >cuatro</option>
+                                    <label >Comunidad a la que pertenece</label>
+                                    <select class="form-control" name="producto.comunidad.nombre" id="producto.comunidad.nombre">
+                                        <option th:each="comu : ${listaComunidades}" th:value="${comu.idComunidad}"
+                                                th:text="${comu.nombre}" >uno</option>
                                     </select>
                                 </div>
+
+
+
+                                // PREGUNTAR
+                                <div th:if="${inventario != null}" class="form-group col-md-6" >
+                                    <label >Stock</label>
+                                    <input type="text" class="form-control" id="inventario.stock" name="inventario.stock"
+                                    th:value="${inventario.stock}">
+                                </div>
+                                <div th:if="${inventario == null}" class="form-group col-md-6" >
+                                    <label >Stock</label>
+                                    <input type="text" class="form-control" id="inventario.stock" name="inventario.stock">
+                                </div>
+
+
+                                <div id="consigna" class="form-group col-md-6">
+                                    <label >Tipo</label>
+                                    <input type="text" class="form-control" id="tipoooo" >
+                                </div>
+                                <div id="consigna1" class="form-group col-md-6">
+                                    <label >Fecha</label>
+                                    <input type="date" class="form-control" id="fecha" >
+                                </div>
+                                // PREGUNTAR
+
+
+
                                 <div class="form-group col-md-6">
-                                    <label for="dsa">Comunidad a la que pertenece</label>
-                                    <select class="form-control" name="supplier" id="dsa">
-                                        <option >uno</option>
-                                        <option >dos</option>
-                                        <option >tres</option>
-                                        <option >cuatro</option>
-                                    </select>
+                                    <label >Color</label>
+                                    <input type="text" class="form-control" id="inventario.color" name="inventario.color"
+                                           th:value="${inventario.color}">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="zxc">Cantidad</label>
-                                    <input type="text" class="form-control" id="zxc" >
+                                    <label >Foto</label>
+                                    <p><input type="file" accept="image/*" id="image" name="image" ></p>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="ert">Tipo</label>
-                                    <input type="text" class="form-control" id="ert" >
+                                    <label >Costo Tejedor (S/.)</label>
+                                    <input type="text" class="form-control" id="historial.costotejedor" name="historial.costotejedor"
+                                           th:value="${historial.costotejedor}">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="wer">Fecha</label>
-                                    <input type="date" class="form-control" id="wer" >
+                                    <label >Costo Mosqoy (S/.)</label>
+                                    <input type="text" class="form-control" id="inventario.preciomosqoy" name="inventario.preciomosqoy"
+                                           th:value="${inventario.preciomosqoy}">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="tyu">Color</label>
-                                    <input type="text" class="form-control" id="tyu" >
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="uio">Foto</label>
-                                    <p><input type="file" accept="image/*" id="uio"></p>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="ef">Costo Tejedor (S/.)</label>
-                                    <input type="text" class="form-control" id="ef" >
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="ghj">Costo Mosqoy (S/.)</label>
-                                    <input type="text" class="form-control" id="ghj" >
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="az">Facilitador</label>
-                                    <input type="text" class="form-control" id="az" >
+                                    <label >Facilitador</label>
+                                    <input type="text" class="form-control" id="historial.facilitador" name="historial.facilitador"
+                                           th:value="${historial.facilitador}">
                                 </div>
                                 <div class="form-row col-md-2">
                                 <div class="form-group col-md-8">
-                                    <a href="#" class="btn btn-danger">Cancelar</a>
+                                    <button type="submit" class="btn btn-danger">Cancelar</button>
                                 </div>
                                 <div class="form-group col-md-2"  >
-                                    <a href="#" class="btn btn-primary">Guardar</a>
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
                                 </div>
                             </form>
@@ -133,6 +146,20 @@
     </a>
 
     <div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
+
+<script>
+    var modalidad =  document.getElementById("producto.adquisicion.modalidad");
+    var text = modalidad.options[modalidad.selectedIndex].text;
+
+    if(text  == 'Compra'){
+        document.getElementById("consigna").style.display ="none";
+        document.getElementById("consigna1").style.display ="none";
+    }else {
+        document.getElementById("consigna").style.display ="block";
+        document.getElementById("consigna1").style.display ="block";
+    }
+
+</script>
 
 </body>
 </html>

@@ -41,6 +41,10 @@ public class GestorController {
     SedeRepository sedeRepository;
     @Autowired
     UsuarioRepository usuarioRepository;
+    @Autowired
+    DenominacionRepository denominacionRepository;
+    @Autowired
+    TamañoRepository tamañoRepository;
 
 
     // ----------------------- ENLACES ---------------------------------
@@ -268,25 +272,37 @@ public class GestorController {
     }
 
     @GetMapping("gestorEditProdCompra")
-
-    public String EditProdCompra(@ModelAttribute("inventario") Inventario inventario, Model model, @RequestParam("id") int id) {
+    public String EditProdCompra(@ModelAttribute("inventario") Inventario inventario,@ModelAttribute("producto") Producto producto,
+                                 @ModelAttribute("historial")  Historial historial,
+                                 Model model, @RequestParam("id") int id) {
 
         return "Gestor/G-EditProdCompra";
     }
 
     @GetMapping("gestorRegProducto")
-
-    public String RegistroCompra(@ModelAttribute("inventario") @Valid Inventario inventario, BindingResult bindingResult, RedirectAttributes attr, Model model) {
+    public String RegistroCompra(@ModelAttribute("inventario")  Inventario inventario,@ModelAttribute("producto")  Producto producto,
+                                 @ModelAttribute("historial")  Historial historial,
+                                 Model model) {
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
-
+        model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
+        model.addAttribute("listaCategorias", categoriaRepository.findAll());
+        model.addAttribute("listaTama", tamañoRepository.findAll());
+        model.addAttribute("listaAdqui", adquisicionRepository.findAll());
         return "Gestor/G-RegCompra";
     }
 
+    @GetMapping("/guardarProducto")
+    public String guardarProducto(@ModelAttribute("inventario") @Valid Inventario inventario,@ModelAttribute("producto") @Valid Producto producto,
+                                  @ModelAttribute("historial") @Valid Historial historial, BindingResult bindingResult, RedirectAttributes attr) {
+
+
+
+
+        return "redirect:/gestorPrincipal";
+    }
+
     @GetMapping("borrarProducto")
-
     public String borrarProducto(@ModelAttribute("inventario") Inventario inventario, Model model) {
-
-
         return "redirect:/gestorPrincipal";
     }
 
