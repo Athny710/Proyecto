@@ -9,8 +9,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Optional;
 
@@ -139,10 +142,23 @@ public class GestorController {
 
 
     @PostMapping("guardarUsuarioSede")
-    public String guardarUsuarioSede(){
+    public String guardarUsuarioSede(Model model, @ModelAttribute("usuario") @Valid Usuarios usuario, BindingResult bindingResult,
+                                     RedirectAttributes attr, HttpServletRequest request) throws UnknownHostException {
 
         //Aca falta la logica de guardar y actualizar
         //DEBO METER EL TEMA DE GUARDAR EL TIPO=SEDE Y LA CONTRASEÑA PREESTABLECIDA
+
+
+        /*Para la parte de contraseña
+        //Prepara para usar el método del email
+        String context = request.getContextPath();
+        int localPort= request.getLocalPort();
+        String ipAddr = InetAddress.getLocalHost().getHostAddress();
+
+        //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
+        Email email = new Email();
+        email.emailEnviarPrimeraContraseña(usuario.getCorreo(),usuario.getPassword());
+        */
         return "redirect:/gestorListaUsuarioSede";}
 
 

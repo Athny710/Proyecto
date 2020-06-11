@@ -59,8 +59,8 @@ public class Email {
 
 
     void emailEnviarPrimeraContraseña(String emailTo, String contraseña) throws MessagingException {
-        //Propiedades
 
+        //Propiedades
         Properties properties1 = new Properties();
         properties1.put("mail.smtp.auth","true");
         properties1.put("mail.smtp.starttls.enable","true");
@@ -92,11 +92,9 @@ public class Email {
                 "Recuerda que puedes cambiarla desde andentro de tu sesión:" + contraseña);
 
         //Enviar el correo electronico
-        //Transport transporte = mailSession.getTransport("smtp");
-        //transporte.connect(host, user, pass);
-        //transporte.sendMessage(msg, msg.getRecipients(Message.RecipientType.TO));
-        Transport.send(msg);
-
+        Transport transporte = mailSession.getTransport("smtp");
+        transporte.connect(host, user, pass);
+        transporte.sendMessage(msg, msg.getRecipients(Message.RecipientType.TO));
     }
 
 }
