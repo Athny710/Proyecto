@@ -134,6 +134,46 @@ public class SedeController {
 
 //------------------------- FIN CRUD INVENTARIO -----------------------------------------------
 
+//------------------------------PERFIL--------------------------------------------------------
+    @GetMapping("editarInfo")
+    public String editarInfo(@ModelAttribute("perfil") Perfil perfil, HttpSession session){
+        Usuarios u = (Usuarios) session.getAttribute("user");
+        perfil.setCorreo(u.getCorreo());
+        perfil.setTelefono(Integer.parseInt(u.getTelefono()));
+        return "UsuarioSede/U-Perfil";
+    }
+    @PostMapping("guardarPerfil")
+    public String guardarInfo(@ModelAttribute("perfil") @Valid Perfil perfil,
+                              BindingResult bindingResult,
+                              RedirectAttributes attr, HttpSession session, Model model){
+
+        Usuarios usuarioLog=(Usuarios) session.getAttribute("user");
+
+        if(bindingResult.hasErrors()){
+            return "UsuarioSede/U-Perfil";
+        }else{
+            if(perfil.getCorreo().equals(usuarioLog.getCorreo())){
+                attr.addFlashAttribute("msg", "Información personal editada con éxito");
+                usuarioLog.setCorreo(perfil.getCorreo());
+                usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
+                usuarioRepository.save(usuarioLog);
+                session.setAttribute("user", usuarioLog);
+                return "redirect:/sede";
+            }else{
+                if(usuarioRepository.findByCorreo(usuarioLog.getCorreo())!=null){
+                    model.addAttribute("msg", "Este correo ya está registrado");
+                    return "UsuarioSede/U-Perfil";
+                }else{
+                    attr.addFlashAttribute("msg", "Información personal editada con éxito");
+                    usuarioLog.setCorreo(perfil.getCorreo());
+                    usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
+                    usuarioRepository.save(usuarioLog);
+                    session.setAttribute("user", usuarioLog);
+                    return "redirect:/sede";
+                }
+            }
+        }
+    }
 
     //--------------------CRUD VENTAS---------------
     @GetMapping("/nuevaVenta")

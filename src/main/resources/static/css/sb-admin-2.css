@@ -4986,6 +4986,7 @@ a.badge-dark:focus, a.badge-dark.focus {
   color: #0f6848;
   background-color: #d2f4e8;
   border-color: #bff0de;
+  text-align: center;
 }
 
 .alert-success hr {
@@ -7514,7 +7515,7 @@ button.bg-dark:focus {
 
 .mt-0,
 .my-0 {
-  margin-top: 0 !important;
+  margin-top: 0.5rem !important;
 }
 
 .mr-0,
@@ -7524,7 +7525,7 @@ button.bg-dark:focus {
 
 .mb-0,
 .my-0 {
-  margin-bottom: 0 !important;
+  margin-bottom: 0.5rem !important;
 }
 
 .ml-0,
