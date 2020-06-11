@@ -172,6 +172,7 @@ public class GestorController {
                 usuarios.setTipo("sede");
                 usuarios.setActivo(usuarioRepository.findById(usuarios.getIdusuarios()).get().getActivo());
                 usuarios.setPassword(usuarioRepository.findById(usuarios.getIdusuarios()).get().getPassword());
+                usuarios.setCorreo(usuarioRepository.findById(usuarios.getIdusuarios()).get().getCorreo());
 
 
                 usuarioRepository.save(usuarios);
