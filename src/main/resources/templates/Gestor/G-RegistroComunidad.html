@@ -30,23 +30,26 @@
                                     <form method="post" th:action="@{/gestor/gestorGuardarComunidad}" th:object="${comunidad}" class="user">
                                 <input th:field="${comunidad.idComunidad}" type="hidden"/>
                                 <div class="form-group ">
-                                    <label for="nombre"></label>
-                                    <input th:field="*{nombre}"  type="text" class="form-control form-control-user" placeholder="Nombre"  >
+                                    <label for="nombre">Nombre:</label>
+                                    <input th:field="*{nombre}"  type="text" class="form-control form-control-user">
                                     <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
                                 </div>
                                 <div th:if="${comunidad.idComunidad  == 0}" class="form-group ">
-                                    <label for="codigo"></label>
-                                    <input th:field="*{codigo}"  type="text" class="form-control form-control-user" placeholder="Código" >
+                                    <label for="codigo">Código:</label>
+                                    <input th:field="*{codigo}"  type="text" class="form-control form-control-user">
                                     <div class="text-danger" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></div>
                                 </div>
                             <!--    <div class="form-row col-md-2"> -->
-                                    <div class="form-group col-md-14">
+                            <!--        <div class="form-group col-md-14">
                                         <a th:href="@{/gestor/gestorListaComunidad}" class="btn btn-danger btn-user btn-block">Cancelar</a>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group col-md-14"  >
                                         <button type="submit" class="btn btn-searchTop btn-user btn-block" th:text="${comunidad.idComunidad==0?'Registrar':'Actualizar'}">Registrar</button>
                                     </div>
-                            <!--    </div> -->
+                                    <div class="form-group col-md-14">
+                                        <a th:href="@{/gestor/gestorListaComunidad}" class="btn btn-danger btn-user btn-block">Cancelar</a>
+                                    </div>
+                                        <!--    </div> -->
                             </form>
                                     </div>
                                 </div>
@@ -59,7 +62,7 @@
                                             <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
                                         </div>
                                         <div class="card-body">
-                                            El código se registra con las 2 letras iniales del nombre. Recuerde registrar el código con letras mayúsculas!
+                                            El código se registra con dos letras. De preferencia, con letras mayúsculas.
                                         </div>
                                     </div>
                                 </div>
