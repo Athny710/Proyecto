@@ -145,9 +145,9 @@ public class GestorController {
     @PostMapping("guardarUsuarioSede")
     public String guardarUsuarioSede(){
 
-        //Aca falta la logica de guardar y actualizar
+        // TODO Aca falta la logica de guardar y actualizar
         //DEBO METER EL TEMA DE GUARDAR EL TIPO=SEDE Y LA CONTRASEÑA PREESTABLECIDA
-        return "redirect:/gestorListaUsuarioSede";}
+        return "redirect:gestorListaUsuarioSede";}
 
 
     @GetMapping("borrarUsuarioSede")
@@ -647,7 +647,7 @@ public class GestorController {
 
 
         } else {
-            System.out.println("tal vez no la cagaste no binding errors");
+
 
 
             int invkey = estadoenviosede.getInventariosede().getInventario().getIdInventario();
