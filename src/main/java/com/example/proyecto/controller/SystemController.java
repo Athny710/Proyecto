@@ -37,7 +37,7 @@ public class SystemController {
     public String nuevaContraseña(){ return "Sistema/S-NuevContra"; }
 
     @PostMapping("enviarCorreoRecuperarCont")
-    public String enviarCorreoRecupCuenta(Model model, RedirectAttributes attr, HttpSession session,
+    public String enviarCorreoRecupCuenta(RedirectAttributes attr, HttpSession session,
                                           @RequestParam("correo")String correo, HttpServletRequest request) throws MessagingException, UnknownHostException {
 
         Usuarios usuarioBuscado = usuarioRepository.findByCorreo(correo);
@@ -45,8 +45,9 @@ public class SystemController {
         if(usuarioBuscado!= null){
 
             //Se obtiene el usuario, se le crea su hash con ID y luego se le setea
-            Optional<Usuarios> usuarioID = usuarioRepository.findById(usuarioBuscado.getIdusuarios());
+            Integer usuarioID= usuarioBuscado.getIdusuarios();
             BCryptPasswordEncoder hasheadoId = new BCryptPasswordEncoder();
+            System.out.println(usuarioBuscado.getPassword());
             usuarioBuscado.setHasheado(hasheadoId.encode(usuarioBuscado.getPassword()));
             String hasheado = usuarioRepository.seleccionarHash(usuarioID);
 
