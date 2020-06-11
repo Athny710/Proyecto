@@ -587,6 +587,16 @@ public class GestorController {
         return "Gestor/G-ProdRecha";
     }
 
+    @GetMapping("borrarRechazoDeEnvio")
+    public String borrarProductosRechazados(@RequestParam("id") int idRechazado, RedirectAttributes attr) {
+        Optional<Estadoenviosede> obtenerEstado = estadoenviosedeRepository.findById(idRechazado);
+        if (obtenerEstado.isPresent()) {
+            estadoenviosedeRepository.deleteById(idRechazado);
+            attr.addFlashAttribute("msg", "El producto rechazado ha sido eliminado exitosamente");
+        }
+        return "redirect:/gestor/gestorProductosRechazados";
+    }
+
     @GetMapping("gestorEditarEnvio")
     public String editarEnvio(@RequestParam("id") int id, @ModelAttribute("estadoenviosede") Estadoenviosede estadoenviosede, Model model){
         Optional<Estadoenviosede> estadoPorID = estadoenviosedeRepository.findById(id);
