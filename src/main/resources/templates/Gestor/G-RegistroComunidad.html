@@ -34,7 +34,8 @@
                                     <input th:field="*{nombre}"  type="text" class="form-control form-control-user">
                                     <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
                                 </div>
-                                <div th:if="${comunidad.idComunidad  == 0}" class="form-group ">
+                                <div class="form-group ">
+                               <!-- <div th:if="${comunidad.idComunidad  == 0}" class="form-group ">  -->
                                     <label for="codigo">Código:</label>
                                     <input th:field="*{codigo}"  type="text" class="form-control form-control-user">
                                     <div class="text-danger" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></div>
