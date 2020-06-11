@@ -26,7 +26,8 @@ public class SystemController {
     UsuarioRepository usuarioRepository;
 
     @GetMapping("cambiarCont")
-    public String cambiarContraseña(){
+    public String cambiarContraseña(Model model, @RequestParam("hasheado") String hasheado){
+        model.addAttribute("hasheado",hasheado);
         return "Sistema/S-CambiarContra";
     }
 
@@ -68,11 +69,11 @@ public class SystemController {
 
     }
 
-
     @PostMapping("guardarCont")
     public String guardarCont(@RequestParam("psw1") String psw1,
                               @RequestParam("psw2") String psw2,
                               Model model, RedirectAttributes attr,
+                              @RequestParam("hasheado") String hasheado,
                               HttpSession session){
         if(!"".equals(psw1) && !"".equals(psw2)){
             if(psw1.equals(psw2)){

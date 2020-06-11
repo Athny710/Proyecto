@@ -49,7 +49,7 @@ public class Email {
         msg.setSubject("SOLICITUD DE RECUPERACIÓN DE CUENTA");
         msg.setText("Usted ha pedido recuperar su cuenta del sistema cambiando su contraseña \n" +
                 "Ingrese a este link para actualizar su contraseña:" + ipAdd + ":" +
-                localPort + "/Proyecto/controller/SystemController?hasheado=" + hash);
+                localPort + "/proyecto/system/cambiarCont?hasheado=" + hash);
 
         //Enviar el correo electronico
         Transport transporte = mailSession.getTransport("smtp");
