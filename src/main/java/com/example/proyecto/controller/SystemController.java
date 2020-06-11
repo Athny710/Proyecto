@@ -46,9 +46,9 @@ public class SystemController {
 
             //Se obtiene el usuario, se le crea su hash con ID y luego se le setea
             Optional<Usuarios> usuarioID = usuarioRepository.findById(usuarioBuscado.getIdusuarios());
-            usuarioRepository.crearHash(usuarioID, usuarioID);
+            BCryptPasswordEncoder hasheadoId = new BCryptPasswordEncoder();
+            usuarioBuscado.setHasheado(hasheadoId.encode(usuarioBuscado.getPassword()));
             String hasheado = usuarioRepository.seleccionarHash(usuarioID);
-            usuarioBuscado.setHasheado(hasheado);
 
             //Prepara para usar el método del email
             String context = request.getContextPath();

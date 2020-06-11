@@ -16,11 +16,6 @@ public interface UsuarioRepository extends JpaRepository<Usuarios,Integer> {
     public Usuarios findByCorreo(String email);
     public List<Usuarios> findByTipo(String tipo);
 
-    @Transactional
-    @Modifying
-    @Query(value="UPDATE usuarios SET hasheado=SHA2(?1,256) WHERE idUsuarios=?2", nativeQuery=true)
-    void crearHash(Optional<Usuarios> idUsuarios, Optional<Usuarios> idUsuarios2);
-
     @Query(value="select hasheado from usuarios WHERE idUsuarios=?1", nativeQuery=true)
     String seleccionarHash(Optional<Usuarios> idusuarios);
 
