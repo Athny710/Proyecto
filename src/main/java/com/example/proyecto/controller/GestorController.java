@@ -123,7 +123,7 @@ public class GestorController {
 
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede(Model model) {
-        List<Usuarios> listausuariosedes = usuarioRepository.findAll();
+        List<Usuarios> listausuariosedes = usuarioRepository.findByTipo("sede");
         model.addAttribute("listausuariosedes",listausuariosedes);
         return "Gestor/G-ListaUsuarioSede";
     }
