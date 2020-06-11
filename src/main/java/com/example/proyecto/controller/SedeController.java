@@ -208,7 +208,7 @@ public class SedeController {
             filedownload(fullPath,response,"ventas.pdf");
         }
     }
-
+    //EXCEL !!
     @GetMapping("createexcel")
     public void crearExcel(HttpServletRequest request, HttpServletResponse response){
         List<Venta> venta = ventasService.getVentas();

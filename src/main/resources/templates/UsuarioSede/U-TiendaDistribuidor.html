@@ -34,7 +34,6 @@
 
                                         <tbody>
                                         <tr align="center" th:each="tienda, info: ${listaTiendas}">
-
                                             <td th:text="${tienda.nombre}"></td>
                                             <td align="center">
                                                 <a style="margin-left: 10px" th:href="@{'/sede/editarTienda' + '?id=' + ${tienda.idtienda}}" class="far fa-edit text-orangeM"></a>
