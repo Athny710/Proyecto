@@ -33,6 +33,9 @@ public class SystemController {
     @GetMapping("recuperarCont")
     public String recuperarCuenta(){ return "Sistema/S-RecupContra"; }
 
+    @GetMapping("nuevaCont")
+    public String nuevaContraseña(){ return "Sistema/S-NuevContra"; }
+
     @PostMapping("enviarCorreoRecuperarCont")
     public String enviarCorreoRecupCuenta(Model model, RedirectAttributes attr, HttpSession session,
                                           @RequestParam("correo")String correo, HttpServletRequest request) throws MessagingException, UnknownHostException {
@@ -43,7 +46,7 @@ public class SystemController {
 
             //Se obtiene el usuario, se le crea su hash con ID y luego se le setea
             Optional<Usuarios> usuarioID = usuarioRepository.findById(usuarioBuscado.getIdusuarios());
-            usuarioRepository.crearHash(usuarioID);
+            usuarioRepository.crearHash(usuarioID, usuarioID);
             String hasheado = usuarioRepository.seleccionarHash(usuarioID);
             usuarioBuscado.setHasheado(hasheado);
 

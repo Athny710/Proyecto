@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="Fragmentos/FragmentosAdmin.html::cabecera(titulo='Recuperar Contraseña')">
+<head th:replace="Fragmentos/FragmentosAdmin.html::cabecera(titulo='Cambiar Contraseña')">
 </head>
 
 <body class="fondo">
 <div class="container">
     <!-- Outer Row -->
     <div class="row justify-content-center">
-        <div class="col-xl-8 col-lg-12 col-md-9">
+        <div class="col-xl-4 col-lg-12 col-md-9">
             <div class="card o-hidden border-0 shadow-lg my-5">
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
                     <div class="row h-25">
-                        <div class="col-lg-6 d-none d-lg-block bg-login-image h-25">
-                            <img th:src="@{/img/imgse.png}" width="372px" height="664.8px">
-                        </div>
-                        <div class="col-lg-6 bg-gray-100 h-25">
+                        <div class="col-lg-12 bg-gray-100 h-25">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <img th:src="@{/img/logofinal.jpg}" height="120px" width="240px">
-                                    <h1 class="h4 text-gray-900 mb-2">Se olvidó su contraseña?</h1>
-                                    <p class="mb-4">Por favor, ingrese su identificación de usuario para restablecer su contraseña!</p>
+                                    <img th:src="@{/img/logofinal.jpg}" height="100px" width="220px">
                                 </div>
-                                <form class="user">
-                                    <div class="form-group">
-                                        <input type="email" class="form-control-log form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Ingresar correo electrónico...">
+                                <br><br><br>
+                                <h4 class="text-gray-900" style="text-align: center">Recuperar Cuenta</h4>
+                                <br>
+                                <form th:action="@{'/system/enviarCorreoRecuperarCont'}" method="post" class="user">
+                                    <div class="form-group2">
+                                        <label class="peque">Ingresar el correo</label>
+                                        <input type="email" class="form-control-log form-control-user2" name="correo" id="correo">
                                     </div>
-                                    <p class="mb-4">Luego de hacer click en "Enviar", llegará a su correo electrónico una series de instrucciones que debe seguir para recuperar su cuenta</p>
-                                    <a class="btn btn-log btn-user btn-block" th:href="@{/system/}">Enviar</a>
+                                    <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${msg!=null}" th:text="${msg}"></div>
+                                    <hr>
+                                    <label class="peque">Haga click en "Enviar" para que le llegue un correo a su bandeja de entrada y pueda reestablecer su contraseña.</label>
+                                    <div class="d-flex">
+                                        <div style="width: 77.5px"></div>
+                                        <button type="submit" class="btn btn-log" style="border-radius: 10rem; text-align: center">Enviar</button>
+                                    </div>
                                 </form>
-                                <hr>
-                                <div class="text-center">
-                                    <a class="small" href="forgot-password.html" th:href="@{/system/}">Volver a pagina principal</a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -50,5 +50,5 @@
 <div th:replace="Fragmentos/FragmentosAdmin.html::Script"></div>
 
 </body>
-
+</html>
 </html>
