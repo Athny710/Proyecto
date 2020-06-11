@@ -58,7 +58,7 @@ public class Email {
     }
 
 
-    void emailEnviarPrimeraContraseña(String emailTo, String contraseña) throws MessagingException {
+    void emailEnviarPrimeraContraseña(String emailTo, String contrasenia) throws MessagingException {
 
         //Propiedades
         Properties properties1 = new Properties();
@@ -89,7 +89,7 @@ public class Email {
         //Asunto y mensaje
         msg.setSubject("BIENVENIDX A MOSQOY");
         msg.setText("Gracias por unirte a la familia Mosqoy! Ahora te enviamos el cual será la contraseña de tu cuenta.\n" +
-                "Recuerda que puedes cambiarla desde andentro de tu sesión:" + contraseña);
+                "Recuerda que puedes cambiarla desde andentro de tu sesión:" + contrasenia);
 
         //Enviar el correo electronico
         Transport transporte = mailSession.getTransport("smtp");
