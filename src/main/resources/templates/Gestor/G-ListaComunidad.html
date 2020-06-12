@@ -13,14 +13,18 @@
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <!-- Page Heading -->
                 <div class="container-fluid">
-                    <div class="col-lg-2">
+                 <!--   <div class="col-lg-2">
                         <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistroComunidad}">Nueva Comunidad</a>
                     </div>
-                    <br>
+                    <br> -->
                     <div class="card shadowA mb-4">
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Comunidades</h5>
+                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                    <divc lass="col-lg-4">
+                                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistroComunidad}">Nueva Comunidad</a>
+                                    </div>
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
@@ -46,12 +50,14 @@
                                         <td th:text="${comunidad.codigo}"></td>
                                         <td align="center">
                                             <a style="margin-left: 10px"
-                                               th:href="@{'/gestor/gestorEditComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}">
-                                                <i class="far fa-list-alt text-orangeM"></i>
+                                               th:href="@{'/gestor/gestorEditComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}"
+                                               class="far fa-edit text-orangeM">
+                                               <!-- <i class="far fa-list-alt text-orangeM"></i> -->
                                             </a>
                                             <a style="margin-left: 10px"
-                                               th:href="@{'/gestor/gestorBorarComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}">
-                                                <i class="far fa-trash-alt text-redM"></i>
+                                               th:href="@{'/gestor/gestorBorarComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}"
+                                               class="far fa-trash-alt text-redM">
+                                               <!-- <i class="far fa-trash-alt text-redM"></i> -->
                                             </a>
                                         </td>
                                     </tr>
