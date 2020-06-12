@@ -72,8 +72,8 @@ public class SystemController {
     @PostMapping("guardarCont")
     public String guardarCont(@RequestParam("psw1") String psw1,
                               @RequestParam("psw2") String psw2,
-                              Model model, RedirectAttributes attr,
                               @RequestParam("hasheado") String hasheado,
+                              Model model, RedirectAttributes attr,
                               HttpSession session){
         if(!"".equals(psw1) && !"".equals(psw2)){
             if(psw1.equals(psw2)){
@@ -89,7 +89,7 @@ public class SystemController {
                     usuarioLog.setPassword(new BCryptPasswordEncoder().encode(psw1));
                     session.setAttribute("user", usuarioLog);
                     usuarioRepository.save(usuarioLog);
-                    return "redirect:/admin";
+                    return "redirect:/system/cambiarCont";
                 }
             }else{
                 attr.addFlashAttribute("msg", "Las contraseñas no coinciden");

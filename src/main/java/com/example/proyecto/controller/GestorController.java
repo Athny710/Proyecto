@@ -164,7 +164,7 @@ public class GestorController {
                 usuarioRepository.save(usuarios);
                 //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
                 Email email = new Email();
-                email.emailEnviarPrimeraContraseña(usuarios.getCorreo(),usuarios.getPassword());
+                email.emailEnviarPrimeraContraseña(usuarios.getCorreo(),usuarios.getPassword(), usuarios.getCorreo());
 
                 attr.addFlashAttribute("msg", "Usuario sede creado exitosamente");
                 return "redirect:/gestor/gestorListaUsuarioSede";
