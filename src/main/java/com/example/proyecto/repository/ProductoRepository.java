@@ -37,7 +37,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
             "inner join sw2_proyecto.sede s on invs.idSede = s.idSede and est.estado = 'rechazado'",nativeQuery = true)
     List<ProductosEstadoRechazado> listaProductosRechazados();
 
-    @Query(value = "SELECT p.codigoGenerado,est.cantidad,i.color,i.precioMosqoy,est.fecha,est.estado,est.idEnvioSede\n" +
+    @Query(value = "SELECT p.codigoGenerado,est.cantidad,i.color,i.precioMosqoy,est.fecha,est.estado,est.idEnvioSede,est.comentario\n" +
             "             FROM producto p \n" +
             "                        inner join denominacion d on p.idDenominacion = d.idDenominacion\n" +
             "                        inner join inventario i on p.idProducto = i.idProducto\n" +

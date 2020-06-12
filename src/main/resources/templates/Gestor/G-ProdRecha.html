@@ -12,18 +12,33 @@
             <div id="content">
                 <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
-                <div class="container-fluid">
+
                     <!-- Page Heading -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 text-gray-900 font-weight-bold text-primary">Productos rechazados</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="container-fluid">
+                        <br>
+                        <div class="card shadowA mb-4">
+                            <div class="card-header2 py-3">
+                                <div class="d-flex justify-content-between centrado">
+                                    <h5 class="m-0 font-weight-bold text-redM">Productos rechazados</h5>
+                                    <form>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control bg-light border-0 small bg-white"
+                                                   placeholder="Search for..." aria-label="Search"
+                                                   aria-describedby="basic-addon2">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-searchTop text-gray-900" type="button">
+                                                    <i class="fas fa-search fa-sm text-gray-100"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="card-body bg-gray-100">
+                                <div class="table-responsive bg-white">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
-                                        <tr>
+                                        <tr class="bg-gray-900 text-white" align="center">
                                             <th>Código</th>
                                             <th>Sede</th>
                                             <th>Producto</th>
@@ -48,7 +63,7 @@
                                             <td th:text="${p.getComentario()}"></td>
                                             <td align="center">
                                                 <a style="margin-left: 10px" th:href="@{'/gestor/gestorEditarEnvio' + '?id=' + ${p.getIdestado()}}" class="far fa-edit text-orangeM"></a>
-                                                <a style="margin-left: 10px" class="far fa-trash-alt text-redM" th:href="@{'/sede/borrarTienda' + '?id=' + ${p.getIdestado()}}"></a>
+                                                <a style="margin-left: 10px" class="far fa-trash-alt text-redM" th:href="@{'/gestor/borrarRechazoDeEnvio' + '?id=' + ${p.getIdestado()}}"></a>
                                                 <!-- data-toggle="modal" data-target="#modalborrar" th:attrappend="data-target=${tienda.idtienda}"-->
                                             </td>
 
@@ -57,7 +72,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>

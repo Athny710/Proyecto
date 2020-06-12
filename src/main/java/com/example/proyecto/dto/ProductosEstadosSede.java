@@ -10,5 +10,6 @@ public interface ProductosEstadosSede {
     LocalDate getFecha();
     String getEstado();
     int getIdenviosede();
+    String getComentario();
 
 }

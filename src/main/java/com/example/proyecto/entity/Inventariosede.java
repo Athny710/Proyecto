@@ -2,6 +2,7 @@ package com.example.proyecto.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.Optional;
 
 @Entity
@@ -12,7 +13,7 @@ public class Inventariosede {
     @Column(name = "idinventariosede")
     private int idinventariosede;
     @Column
-    @Positive
+    @PositiveOrZero
     private int stock;
     @ManyToOne
     @JoinColumn(name = "idsede")
