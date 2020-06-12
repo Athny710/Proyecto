@@ -50,47 +50,6 @@
                             </div>
                         </form>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>Código</th>
-                                        <th>Sede</th>
-                                        <th>Producto</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio de venta</th>
-                                        <th>Fecha de envío</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Código</th>
-                                        <th>Sede</th>
-                                        <th>Producto</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio de venta</th>
-                                        <th>Fecha de envío</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                    </tfoot>
-                                    <tbody>
-                                    <tr th:each="p : ${listaProdEnv}">
-                                        <td th:text="${p.getCodigogenerado()}"></td>
-                                        <td th:text="${p.getNombre_sede()}"></td>
-                                        <td th:text="${p.getNombre()}"></td>
-                                        <td th:text="${p.getCantidad()}"></td>
-                                        <td th:text="${p.getPreciomosqoy()}"></td>
-                                        <td th:text="${p.getFecha()}"></td>
-                                        <td th:text="${p.getEstado()}"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

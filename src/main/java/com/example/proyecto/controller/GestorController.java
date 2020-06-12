@@ -99,7 +99,7 @@ public class GestorController {
                 session.setAttribute("user", usuarioLog);
                 return "redirect:/gestor";
             } else {
-                if (usuarioRepository.findByCorreo(usuarioLog.getCorreo()) != null) {
+                if (usuarioRepository.findByCorreo(perfil.getCorreo()) != null) {
                     model.addAttribute("msg", "Este correo ya está registrado");
                     return "Gestor/G-Perfil";
                 } else {
