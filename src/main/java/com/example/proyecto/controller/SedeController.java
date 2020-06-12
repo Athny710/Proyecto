@@ -160,7 +160,7 @@ public class SedeController {
                 session.setAttribute("user", usuarioLog);
                 return "redirect:/sede";
             }else{
-                if(usuarioRepository.findByCorreo(usuarioLog.getCorreo())!=null){
+                if(usuarioRepository.findByCorreo(perfil.getCorreo())!=null){
                     model.addAttribute("msg", "Este correo ya está registrado");
                     return "UsuarioSede/U-Perfil";
                 }else{
