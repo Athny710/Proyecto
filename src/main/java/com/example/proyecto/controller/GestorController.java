@@ -275,6 +275,8 @@ public class GestorController {
     @GetMapping(value = {"", "gestorPrincipal"})
     public String inventarioGestor(Model model) {
         List<Inventario> inventario = inventarioRepository.findAll();
+        //todo mostrar  mensaje de stock bajo
+
         model.addAttribute("inventario", inventario);
         return "Gestor/G-Inventario";
     }
