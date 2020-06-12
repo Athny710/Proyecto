@@ -148,6 +148,7 @@ public class GestorController {
     }
 
 
+    @PostMapping("guardarUsuarioSede")
     public String guardarUsuarioSede(@ModelAttribute("usuarios") @Valid Usuarios usuarios, BindingResult bindingResult,
                                      Model model,
                                      RedirectAttributes attr,HttpServletRequest request) throws MessagingException {
@@ -158,13 +159,14 @@ public class GestorController {
                 usuarios.setPassword(getAlphaNumericString(12));
                 usuarios.setTipo("sede");
                 usuarios.setActivo(1);
+                String passwordSinEncriptar = usuarios.getPassword();
                 BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
                 usuarios.setPassword(bCryptPasswordEncoder.encode(usuarios.getPassword()));
                 System.out.println(usuarios.getPassword());
                 usuarioRepository.save(usuarios);
                 //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
                 Email email = new Email();
-                email.emailEnviarPrimeraContraseña(usuarios.getCorreo(),usuarios.getPassword(), usuarios.getCorreo());
+                email.emailEnviarPrimeraContraseña(usuarios.getCorreo(), passwordSinEncriptar, usuarios.getCorreo());
 
                 attr.addFlashAttribute("msg", "Usuario sede creado exitosamente");
                 return "redirect:/gestor/gestorListaUsuarioSede";
