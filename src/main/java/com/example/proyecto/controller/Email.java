@@ -18,7 +18,7 @@ public class Email {
     private InternetAddress[] address;
 
 
-    void emailRecuperarCuenta(String emailTo, String hash, String ipAdd, int localPort, String context) throws MessagingException {
+    void emailRecuperarCuenta(String emailTo, String hasheado, String ipAdd, int localPort, String context) throws MessagingException {
         //Propiedades
         Properties properties = new Properties();
         properties.put("mail.smtp.auth","true");
@@ -49,7 +49,7 @@ public class Email {
         msg.setSubject("SOLICITUD DE RECUPERACIÓN DE CUENTA");
         msg.setText("Usted ha pedido recuperar su cuenta del sistema cambiando su contraseña \n" +
                 "Ingrese a este link para actualizar su contraseña:" + ipAdd + ":" +
-                localPort + "/proyecto/system/cambiarCont?hasheado=" + hash);
+                localPort + "/proyecto/system/cambiarCont?hasheado=" + hasheado);
 
         //Enviar el correo electronico
         Transport transporte = mailSession.getTransport("smtp");

@@ -26,7 +26,8 @@ public class SystemController {
     UsuarioRepository usuarioRepository;
 
     @GetMapping("cambiarCont")
-    public String cambiarContraseña(Model model, @RequestParam("hasheado") String hasheado){
+    public String cambiarContraseña(Model model,
+                                    @RequestParam("hasheado") String hasheado){
         model.addAttribute("hasheado",hasheado);
         return "Sistema/S-CambiarContra";
     }
@@ -46,11 +47,13 @@ public class SystemController {
         if(usuarioBuscado!= null){
             //Se obtiene el usuario, se le crea su hash con ID y luego se le setea
             Integer usuarioID= usuarioBuscado.getIdusuarios();
-            BCryptPasswordEncoder hasheadoId = new BCryptPasswordEncoder();
             System.out.println(usuarioBuscado.getPassword());
-            usuarioBuscado.setHasheado(hasheadoId.encode(usuarioBuscado.getPassword()));
             String hasheado = usuarioRepository.seleccionarHash(usuarioID);
-
+            if (hasheado == null){
+                BCryptPasswordEncoder hasheadoId = new BCryptPasswordEncoder();
+                usuarioBuscado.setHasheado(hasheadoId.encode(usuarioBuscado.getPassword()));
+                usuarioRepository.save(usuarioBuscado);
+            }
             //Prepara para usar el método del email
             String context = request.getContextPath();
             int localPort= request.getLocalPort();
@@ -58,7 +61,7 @@ public class SystemController {
 
             //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
             Email email = new Email();
-            email.emailRecuperarCuenta(correo,hasheado,ipAddr,localPort,context);
+            email.emailRecuperarCuenta(correo,usuarioBuscado.getHasheado(),ipAddr,localPort,context);
             attr.addFlashAttribute("msg", "Se ha enviado el correo exitosamente");
             return "redirect:/system/recuperarCont";
 
@@ -73,31 +76,40 @@ public class SystemController {
     public String guardarCont(@RequestParam("psw1") String psw1,
                               @RequestParam("psw2") String psw2,
                               @RequestParam("hasheado") String hasheado,
-                              Model model, RedirectAttributes attr,
-                              HttpSession session){
+                              Model model, RedirectAttributes attr){
         if(!"".equals(psw1) && !"".equals(psw2)){
             if(psw1.equals(psw2)){
                 if(psw1.length()<8){
-                    attr.addFlashAttribute("msg", "Mínimo 8 caracteres");
-                    return "redirect:/system/cambiarCont";
+                    model.addAttribute("msg", "Mínimo 8 caracteres");
+                    model.addAttribute("hasheado",hasheado);
+                    return "Sistema/S-CambiarContra";
                 }else if(psw1.length()>40){
-                    attr.addFlashAttribute("msg", "Demasiados caracteres");
-                    return "redirect:/system/cambiarCont";
+                    model.addAttribute("msg", "Demasiados caracteres");
+                    model.addAttribute("hasheado",hasheado);
+                    return "Sistema/S-CambiarContra";
                 }else {
-                    attr.addFlashAttribute("msg", "Contraseña actualizada.");
-                    Usuarios usuarioLog=(Usuarios) session.getAttribute("user");
-                    usuarioLog.setPassword(new BCryptPasswordEncoder().encode(psw1));
-                    session.setAttribute("user", usuarioLog);
-                    usuarioRepository.save(usuarioLog);
-                    return "redirect:/system/cambiarCont";
+                    Usuarios usuBuscado = usuarioRepository.obtenerUsuarioPorHash(hasheado);
+                    if (usuBuscado!= null){
+                        usuBuscado.setPassword(new BCryptPasswordEncoder().encode(psw1));
+                        usuarioRepository.save(usuBuscado);
+                        model.addAttribute("msg", "Contraseña actualizada.");
+                        model.addAttribute("hasheado",hasheado);
+                        return "index";
+                    }else {
+                        model.addAttribute("msg", "No funciono el cambio");
+                        model.addAttribute("hasheado",hasheado);
+                        return "Sistema/S-CambiarContra";
+                    }
                 }
             }else{
-                attr.addFlashAttribute("msg", "Las contraseñas no coinciden");
-                return "redirect:/system/cambiarCont";
+                model.addAttribute("msg", "Las contraseñas no coinciden");
+                model.addAttribute("hasheado",hasheado);
+                return "Sistema/S-CambiarContra";
             }
         }else{
-            attr.addFlashAttribute("msg", "No puede haber campos vacíos.");
-            return "redirect:/system/cambiarCont";
+            model.addAttribute("msg", "No puede haber campos vacíos.");
+            model.addAttribute("hasheado",hasheado);
+            return "Sistema/S-CambiarContra";
         }
     }
 }
