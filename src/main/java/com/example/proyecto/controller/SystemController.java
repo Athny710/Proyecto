@@ -12,11 +12,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/system")
@@ -29,7 +26,7 @@ public class SystemController {
     public String cambiarContraseña(Model model,
                                     @RequestParam("hasheado") String hasheado){
         model.addAttribute("hasheado",hasheado);
-        return "Sistema/S-CambiarContra";
+        return "Sistema/S-NuevContra2";
     }
 
     @GetMapping("recuperarCont")
@@ -82,11 +79,11 @@ public class SystemController {
                 if(psw1.length()<8){
                     model.addAttribute("msg", "Mínimo 8 caracteres");
                     model.addAttribute("hasheado",hasheado);
-                    return "Sistema/S-CambiarContra";
+                    return "Sistema/S-NuevContra2";
                 }else if(psw1.length()>40){
                     model.addAttribute("msg", "Demasiados caracteres");
                     model.addAttribute("hasheado",hasheado);
-                    return "Sistema/S-CambiarContra";
+                    return "Sistema/S-NuevContra2";
                 }else {
                     Usuarios usuBuscado = usuarioRepository.obtenerUsuarioPorHash(hasheado);
                     if (usuBuscado!= null){
@@ -99,18 +96,18 @@ public class SystemController {
                     }else {
                         model.addAttribute("msg", "No funciono el cambio");
                         model.addAttribute("hasheado",hasheado);
-                        return "Sistema/S-CambiarContra";
+                        return "Sistema/S-NuevContra2";
                     }
                 }
             }else{
                 model.addAttribute("msg", "Las contraseñas no coinciden");
                 model.addAttribute("hasheado",hasheado);
-                return "Sistema/S-CambiarContra";
+                return "Sistema/S-NuevContra2";
             }
         }else{
             model.addAttribute("msg", "No puede haber campos vacíos.");
             model.addAttribute("hasheado",hasheado);
-            return "Sistema/S-CambiarContra";
+            return "Sistema/S-NuevContra2";
         }
     }
 }
