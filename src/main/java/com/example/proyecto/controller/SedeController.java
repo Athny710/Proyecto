@@ -389,7 +389,8 @@ public class SedeController {
             inventariosede.setStock(estadoenviosede.get().getCantidad() + inventariosede.getStock());
             inventariosedeRepository.save(inventariosede);
             System.out.println("Se Guardo el inventariosede actualizado");
-            estadoenviosedeRepository.deleteById(id);
+            estadoenviosede.get().setEstado("recibido");
+            estadoenviosedeRepository.save(estadoenviosede.get());
             System.out.println("-------se borro el estado envio sede");
             return "redirect:/sede/productosEnEspera";
 

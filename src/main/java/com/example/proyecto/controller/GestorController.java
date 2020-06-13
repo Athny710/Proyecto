@@ -657,6 +657,7 @@ public class GestorController {
             List<Sede> listaSede = sedeRepository.findAll();
             model.addAttribute("listaInventario", listaInventario);
             model.addAttribute("listaSede", listaSede);
+            //todo hacer que de alguna manera se borre el estadoenviosede con estado "rechazado"
             return "Gestor/G-GestionEnvios";
         } else {
             return "redirect:/gestor/gestorProductosRechazados";
@@ -691,7 +692,7 @@ public class GestorController {
 
         } else {
 
-
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + estadoenviosede.getIdenviosede());
             int invkey = estadoenviosede.getInventariosede().getInventario().getIdInventario();
             int sedkey = estadoenviosede.getInventariosede().getSede().getIdsede();
             if (sedeRepository.findById(sedkey).isPresent() && inventarioRepository.findById(invkey).isPresent()) {
@@ -720,7 +721,7 @@ public class GestorController {
                     List<Sede> listaSede = sedeRepository.findAll();
                     model.addAttribute("listaInventario", listaInventario);
                     model.addAttribute("listaSede", listaSede);
-                    attr.addFlashAttribute("msg", "Se esta tratando de enviar mas de lo que se tiene");
+                    model.addAttribute("msg", "Se esta tratando de enviar mas de lo que se tiene");
                     return "Gestor/G-GestionEnvios";
                 }
                 System.out.println("El stock nuevo del inventario es:" + estadoenviosede.getInventariosede().getInventario().getStock());
