@@ -91,6 +91,7 @@ public class SystemController {
                     Usuarios usuBuscado = usuarioRepository.obtenerUsuarioPorHash(hasheado);
                     if (usuBuscado!= null){
                         usuBuscado.setPassword(new BCryptPasswordEncoder().encode(psw1));
+                        usuBuscado.setHasheado(null);
                         usuarioRepository.save(usuBuscado);
                         model.addAttribute("msg", "Contraseña actualizada.");
                         model.addAttribute("hasheado",hasheado);
