@@ -14,26 +14,14 @@
             <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                <div class="col-lg-2">
-                    <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/nuevaVenta}">Añadir Venta</a>
-                </div>
-                <br>
                 <div class="card shadowA mb-4">
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
                             <h5 class="m-0 font-weight-bold text-redM">Lista de Ventas</h5>
-                            <form method="post" th:action="@{/gestor/buscarVenta}">
-                                <div class="input-group">
-                                    <input name="searchField" type="text"
-                                           class="form-control bg-light border-0 small bg-white"
-                                           placeholder="Filtrar..." aria-label="Search" aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-searchTop text-gray-900" type="submit">
-                                            <i class="fas fa-search fa-sm text-gray-100"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+                            <div class="col-lg-4">
+                                <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/nuevaVenta}">Añadir
+                                    Venta</a>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
@@ -42,10 +30,10 @@
                                 <thead>
                                 <tr class="bg-gray-900 text-white" align="center">
                                     <th>Nombre del Cliente</th>
-                                    <th>Tipo de documento de Identidad</th>
                                     <th>N° de documento de Identidad</th>
-                                    <th>Tipo de documento de Venta</th>
                                     <th>Número de documento de Venta</th>
+                                    <th>Producto</th>
+                                    <th>Sede</th>
                                     <th>Lugar de Venta</th>
                                     <th>Precio unitario de Venta</th>
                                     <th>Cantidad adquirida</th>
@@ -55,10 +43,10 @@
                                 <tbody>
                                 <tr th:each="venta, info : ${listaVentas}">
                                     <td th:text="${venta.nombrecliente}"></td>
-                                    <td th:text="${venta.tipodocumentoidentidad}"></td>
                                     <td th:text="${venta.numerodocumentoidentidad}"></td>
-                                    <td th:text="${venta.tipodocumentoventa}"></td>
                                     <td th:text="${venta.numerodocumentoventa}"></td>
+                                    <td th:text="${venta.inventario.producto.codigoGenerado}"></td>
+                                    <td th:text="${venta.tienda==null?'Venta de gestor':venta.tienda.getSede().getNombre()}"></td>
                                     <td th:text="${venta.lugardeventa}"></td>
                                     <td th:text="${venta.preciounitarioventa}"></td>
                                     <td th:text="${venta.cantidad}"></td>
@@ -73,12 +61,12 @@
         </div>
     </div>
 </div>
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
 
-    <div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
+<div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
 
 </body>
 </html>

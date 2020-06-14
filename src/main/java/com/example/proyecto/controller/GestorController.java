@@ -1,7 +1,10 @@
 package com.example.proyecto.controller;
 
+import com.example.proyecto.dto.ReporteConCamposOriginales;
+import com.example.proyecto.dto.VentaPorCodigo;
 import com.example.proyecto.entity.*;
 import com.example.proyecto.repository.*;
+import com.example.proyecto.services.VentasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -10,12 +13,19 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +60,10 @@ public class GestorController {
     DenominacionRepository denominacionRepository;
     @Autowired
     TamañoRepository tamañoRepository;
+    @Autowired
+    VentasService ventasService;
+    @Autowired
+    ServletContext context;
 
 
     // ----------------------- ENLACES ---------------------------------
@@ -61,20 +75,19 @@ public class GestorController {
 
     @GetMapping("gestorGestionVentas")
     public String registroVentas() {
+
         return "G-GestionVentas";
     }
 
 
     @GetMapping("gestorReporteVentas")
-    public String reporteVentas1() {
+    public String reporteVentas1(Model model) {
+        model.addAttribute("listaClientes",ventaRepository.findAll());
+        model.addAttribute("listasedes",sedeRepository.findAll());
+        model.addAttribute("listacomunidades",comunidadRepository.findAll());
+        model.addAttribute("listaarticulos",denominacionRepository.findAll());
         return "Gestor/G-GenReporte";
     }
-
-    @GetMapping("gestorReporteVentas2")
-    public String reporteVentas2() {
-        return "Gestor/G-GenReporte2";
-    }
-
 
     //------------------------Perfil-------------------------------------------
     @GetMapping("editarInfo")
@@ -772,6 +785,8 @@ public class GestorController {
     //--------------------CRUD VENTAS---------------
     @GetMapping("/nuevaVenta")
     public String nuevaVenta(@ModelAttribute("venta") Venta venta, Model model) {
+        List<Inventario> listaInventario = inventarioRepository.findAll();
+        model.addAttribute("listaInventario", listaInventario);
         return "Gestor/G-NuevaVenta";
     }
 
@@ -782,28 +797,40 @@ public class GestorController {
         return "Gestor/G-GestionVentas";
     }
 
+
     @PostMapping("/guardarVenta")
-    public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult bindingResult, RedirectAttributes att) {
+    public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult bindingResult, Model model,
+                               HttpSession session, RedirectAttributes attr) {
 
         if (bindingResult.hasErrors()) {
+            List<Inventario> listaInventario = inventarioRepository.findAll();
+            model.addAttribute("listaInventario", listaInventario);
             return "Gestor/G-NuevaVenta";
         } else {
-            Inventario inventario = new Inventario();
-            Usuarios usuarios = new Usuarios();
-            Tienda tienda = new Tienda();
 
-            inventario.setIdInventario(1);
-            usuarios.setIdusuarios(1);
-            tienda.setIdtienda(1);
 
-            if (venta.getIdventa() == 0) {
-                venta.setInventario(inventario);
-                venta.setUsuarios(usuarios);
-                venta.setTienda(tienda);
-                ventaRepository.save(venta);
-                att.addFlashAttribute("msg", "Venta añadida exitosamente");
+            int invkey = venta.getInventario().getIdInventario();
+            if (inventarioRepository.findById(invkey).isPresent()) {
+                Optional<Inventario> inventario1 = inventarioRepository.findById(invkey);
+                if ((inventario1.get().getStock() - venta.getCantidad()) >= 0) {
+                    inventario1.get().setStock(inventario1.get().getStock() - venta.getCantidad());
+                    Usuarios u = (Usuarios) session.getAttribute("user");
+                    venta.setInventario(inventario1.get());
+                    venta.setUsuarios(u);
+                    ventaRepository.save(venta);
+                    attr.addFlashAttribute("msg", "Venta añadida exitosamente");
+                    return "redirect:/gestor/gestionVentas";
+                } else {
+                    List<Inventario> listaInventario = inventarioRepository.findAll();
+                    model.addAttribute("listaInventario", listaInventario);
+                    attr.addFlashAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
+                    return "redirect:/gestor/nuevaVenta";
+                }
+
+            } else {
+                return "Gestor/G-NuevaVenta";
+
             }
-            return "redirect:/gestor/gestionVentas";
 
         }
     }
@@ -846,5 +873,186 @@ public class GestorController {
         return sb.toString();
     }
 
+///////////// REPORTES DE EXCEL ///////////////////
 
+    //EXCEL !!
+    @PostMapping("createExcelPorCodigo")
+    public void crearExcelCodigo(@RequestParam("codigo") String codigo, @RequestParam("nombre") String nombre, HttpServletRequest request, HttpServletResponse response) {
+        List<VentaPorCodigo> ventaCodigo = ventasService.getVentasPorCodigo(codigo);
+        boolean isFlag = ventasService.createExcelXCodigo(ventaCodigo, context, request, response);
+        if (isFlag) {
+            String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_codigo" + ".xls");
+            filedownload(fullpath, response, "ventas.xls");
+        }
+    }
+
+    @PostMapping("crearExcelPorCliente")
+    public void crearExcelCliente(@RequestParam("cliente") String cliente, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response) {
+        if (mes.equals("todo")){
+            List<ReporteConCamposOriginales> ventaXClienteAnual = ventasService.getVentasPorClienteAnual(año,cliente);
+            String titulo = "Ventas anuales realizadas al cliente " + cliente ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXClienteAnual,titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_clientes_anual.xls");
+            }
+        }else if (mes.equals("trimestre")){
+            List<ReporteConCamposOriginales> ventaXClienteTrimestral = ventasService.getVentasPorClienteTrimestral(año,cliente);
+            String titulo = "Ventas trimestrales realizadas al cliente " + cliente ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXClienteTrimestral,titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_clientes_trimestral.xls");
+            }
+        }else {
+            List<ReporteConCamposOriginales> ventaXClienteMensual = ventasService.getVentasPorCliente(mes, año, cliente);
+            String titulo = "Ventas mensuales realizadas al cliente " + cliente ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXClienteMensual,titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_clientes_mensual.xls");
+            }
+        }
+    }
+
+    @PostMapping("crearExcelPorSede")
+    public void crearExcelPorSede(@RequestParam("idsede") String idsede, @RequestParam("mes1") String mes, @RequestParam("año1") String año, HttpServletRequest request, HttpServletResponse response) {
+        if (mes.equals("todo")){
+            List<ReporteConCamposOriginales> ventaXSedeAnual = ventasService.getVentasPorSedeAnual(año,idsede);
+            String titulo = "Ventas anuales realizadas por la sede " + idsede ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXSedeAnual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_sedes_anual.xls");
+            }
+        }else if (mes.equals("trimestre")){
+            List<ReporteConCamposOriginales> ventaXSedeTrimestral = ventasService.getVentasPorSedeTrimestral(año,idsede);
+            String titulo = "Ventas trimestrales realizadas al cliente " + idsede ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXSedeTrimestral, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_sedes_trimestral.xls");
+            }
+        }else {
+            List<ReporteConCamposOriginales> ventaXSedeMensual = ventasService.getVentasPorSede(mes, año, idsede);
+            String titulo = "Ventas mensuales realizadas al cliente " + idsede ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXSedeMensual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_sedes_mensual.xls");
+            }
+        }
+    }
+
+    @PostMapping("crearExcelPorArticulo")
+    public void crearExcelPorArticulo(@RequestParam("articulo") String articulo, @RequestParam("mes2") String mes, @RequestParam("año2") String año, HttpServletRequest request, HttpServletResponse response) {
+        if (mes.equals("todo")){
+            List<ReporteConCamposOriginales> ventaXArticuloAnual = ventasService.getVentasPorArticuloAnual(año,articulo);
+            String titulo = "Ventas anuales del artículo " + articulo ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloAnual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_articulo_anual.xls");
+            }
+        }else if (mes.equals("trimestre")){
+            List<ReporteConCamposOriginales> ventaXArticuloTrimestral = ventasService.getVentasPorArticuloTrimestral(año,articulo);
+            String titulo = "Ventas trimestrales del artículo " + articulo ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloTrimestral, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_articulo_trimestral.xls");
+            }
+        }else {
+            List<ReporteConCamposOriginales> ventaXArticuloMensual = ventasService.getVentasPorArticuloMensual(mes, año, articulo);
+            String titulo = "Ventas mensuales del artículo " + articulo ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloMensual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_articulo_mensual.xls");
+            }
+        }
+    }
+
+    @PostMapping("crearExcelPorComunidad")
+    public void crearExcelPorComunidad(@RequestParam("comunidad") String comunidad, @RequestParam("mes3") String mes, @RequestParam("año3") String año, HttpServletRequest request, HttpServletResponse response) {
+        if (mes.equals("todo")){
+            List<ReporteConCamposOriginales> ventaXComunidadAnual = ventasService.getVentasPorComunidadAnual(año,comunidad);
+            String titulo = "Ventas anuales de los productos de la comunidad " + comunidad ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadAnual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_comunidad_anual.xls");
+            }
+        }else if (mes.equals("trimestre")){
+            List<ReporteConCamposOriginales> ventaXComunidadTrimestral = ventasService.getVentasPorComunidadTrimestral(año,comunidad);
+            String titulo = "Ventas trimestrales de los productos de la comunidad " + comunidad ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadTrimestral, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_comunidad_trimestral.xls");
+            }
+        }else {
+            List<ReporteConCamposOriginales> ventaXComunidadMensual = ventasService.getVentasPorComunidadMensual(mes, año, comunidad);
+            String titulo = "Ventas mensuales de los productos de la comunidad " + comunidad ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadMensual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_comunidad_mensual.xls");
+            }
+        }
+    }
+
+    @PostMapping("crearExcelTotal")
+    public void crearExcelTotal(@RequestParam("mes4") String mes, @RequestParam("año4") String año, HttpServletRequest request, HttpServletResponse response) {
+        if (mes.equals("todo")){
+            List<ReporteConCamposOriginales> ventaXAnual = ventasService.getVentaAnual(año);
+            String titulo = "Ventas totales de Mosqoy del año " + año ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXAnual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_total_anual.xls");
+            }
+        }else if (mes.equals("trimestre")){
+            List<ReporteConCamposOriginales> ventaXTrimestral = ventasService.getVentaTrimestral(año);
+            String titulo = "Ventas trimestrales de Mosqoy del año " + año ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXTrimestral, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_total_trimestral.xls");
+            }
+        }else {
+            List<ReporteConCamposOriginales> ventaXMensual = ventasService.getVentaMensual(mes,año);
+            String titulo = "Ventas Mosqoy de " + mes + " del año " + año ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXMensual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_total_mensual.xls");
+            }
+        }
+    }
+
+    private void filedownload(String fullpath, HttpServletResponse response, String filename) {
+        File file = new File(fullpath);
+        final int BUFFER_SIZE = 4096;
+        if (file.exists()) {
+            try {
+                FileInputStream inputStream = new FileInputStream(file);
+                String mimeType = context.getMimeType(fullpath);
+                response.setContentType(mimeType);
+                response.setHeader("content-disposition", "attachment; filename=" + filename);
+                OutputStream outputStream = response.getOutputStream();
+                byte[] buffer = new byte[BUFFER_SIZE];
+                int bytesRead = -1;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                inputStream.close();
+                outputStream.close();
+                file.delete();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

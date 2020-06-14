@@ -27,8 +27,10 @@ import javax.xml.bind.SchemaOutputResolver;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,7 +55,6 @@ public class SedeController {
     UsuarioRepository usuarioRepository;
     @Autowired
     SedeRepository sedeRepository;
-
     @Autowired
     VentasService ventasService;
     @Autowired
@@ -170,7 +171,8 @@ public class SedeController {
                 session.setAttribute("user", usuarioLog);
                 return "redirect:/sede";
             } else {
-                if (usuarioRepository.findByCorreo(perfil.getCorreo()) != null) {
+
+                if (usuarioRepository.findByCorreo(usuarioLog.getCorreo()) != null) {
                     model.addAttribute("msg", "Este correo ya está registrado");
                     return "UsuarioSede/U-Perfil";
                 } else {
@@ -187,7 +189,13 @@ public class SedeController {
 
     //--------------------CRUD VENTAS---------------
     @GetMapping("/nuevaVenta")
-    public String nuevaVenta(@ModelAttribute("venta") Venta venta, Model model) {
+    public String nuevaVenta(@ModelAttribute("venta") Venta venta, Model model, HttpSession session) {
+        session.getAttribute("user");
+        Usuarios u = (Usuarios) session.getAttribute("user");
+        List<Inventariosede> listaInventarioSede = inventariosedeRepository.findBySede(u.getSede());
+        List<Tienda> listaTiendas = tiendaRepository.findBySede(u.getSede());
+        model.addAttribute("listaInventarioSede", listaInventarioSede);
+        model.addAttribute("listaTiendas", listaTiendas);
         return "UsuarioSede/U-NuevaVenta";
     }
 
@@ -202,9 +210,63 @@ public class SedeController {
     }
 
 
+    @PostMapping("/guardarVenta")
+    public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult bindingResult, Model model,
+                               HttpSession session, RedirectAttributes attr) {
+
+        if (bindingResult.hasErrors()) {
+            session.getAttribute("user");
+            Usuarios u = (Usuarios) session.getAttribute("user");
+            List<Inventariosede> listaInventarioSede = inventariosedeRepository.findBySede(u.getSede());
+            model.addAttribute("listaInventarioSede", listaInventarioSede);
+            return "UsuarioSede/U-NuevaVenta";
+        } else {
+            Usuarios u = (Usuarios) session.getAttribute("user");
+            List<Tienda> tienda1 = tiendaRepository.findByIdtienda(venta.getTienda().getIdtienda());
+            if (tienda1.isEmpty()) {
+                return "";
+            } else {
+                venta.setTienda(tienda1.get(0));
+                venta.getTienda().getSede().setIdsede(u.getSede().getIdsede());
+                int sedkey = venta.getTienda().getSede().getIdsede();
+                int invkey = venta.getInventario().getIdInventario();
+                Inventariosede inventariosede = inventariosedeRepository.findByInventarioAndSede(inventarioRepository.findById(invkey).get(),
+                        sedeRepository.findById(sedkey).get()).get(0);
+                if ((inventariosede.getStock() - venta.getCantidad()) >= 0) {
+                    inventariosede.setStock(inventariosede.getStock() - venta.getCantidad());
+                    venta.setInventario(inventariosede.getInventario());
+                    venta.setUsuarios(u);
+                    ventaRepository.save(venta);
+                    attr.addFlashAttribute("msg", "Venta añadida exitosamente");
+                    return "redirect:/sede/gestionVentas";
+                } else {
+                    List<Inventario> listaInventario = inventarioRepository.findAll();
+                    model.addAttribute("listaInventario", listaInventario);
+                    attr.addFlashAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
+                    return "redirect:/sede/gestionVentas";
+                }
+            }
+        }
+
+    }
+
     @GetMapping("gestionVentas")
-    public String gestionDeVentas(@ModelAttribute("venta") Venta venta, Model model) {
-        model.addAttribute("listaVentas", ventasService.getVentas());
+    public String gestionDeVentas(@ModelAttribute("venta") Venta venta, Model model, HttpSession session) {
+        Usuarios u = (Usuarios) session.getAttribute("user");
+        List<Venta> listaVentas = new ArrayList<Venta>();
+        List<Venta> listaVentas1 = ventaRepository.findAll();
+        for (Venta V : listaVentas1) {
+            if (V.getTienda() == null) {
+
+            } else {
+                if (V.getTienda().getSede().getIdsede().equals(u.getSede().getIdsede())) {
+                    listaVentas.add(V);
+                }
+            }
+
+        }
+        model.addAttribute("listaVentas", listaVentas);
+        //model.addAttribute("listaVentas", ventasService.getVentas());
         return "UsuarioSede/U-GestionVentas";
     }
 
@@ -255,33 +317,6 @@ public class SedeController {
         }
     }
 
-
-    @PostMapping("/guardarVenta")
-    public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult
-            bindingResult, RedirectAttributes att) {
-
-        if (bindingResult.hasErrors()) {
-            return "UsuarioSede/U-NuevaVenta";
-        } else {
-            Inventario inventario = new Inventario();
-            Usuarios usuarios = new Usuarios();
-            Tienda tienda = new Tienda();
-
-            inventario.setIdInventario(1);
-            usuarios.setIdusuarios(1);
-            tienda.setIdtienda(1);
-
-            if (venta.getIdventa() == 0) {
-                venta.setInventario(inventario);
-                venta.setUsuarios(usuarios);
-                venta.setTienda(tienda);
-                ventaRepository.save(venta);
-                att.addFlashAttribute("msg", "Venta añadida exitosamente");
-            }
-            return "redirect:/sede/gestionVentas";
-
-        }
-    }
 
     //----------------INICIO CRUD TIENDAS-------------------
     @GetMapping("registroTiendas")
