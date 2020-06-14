@@ -320,8 +320,9 @@ public class SedeController {
 
     //----------------INICIO CRUD TIENDAS-------------------
     @GetMapping("registroTiendas")
-    public String registroDeTiendas(@ModelAttribute("tienda") Tienda tienda, Model model) {
-        model.addAttribute("listaTiendas", tiendaRepository.findAll());
+    public String registroDeTiendas(@ModelAttribute("tienda") Tienda tienda, Model model, HttpSession session) {
+        Usuarios usuario = (Usuarios) session.getAttribute("user");
+        model.addAttribute("listaTiendas", tiendaRepository.findBySede(usuario.getSede()));
 
         return "UsuarioSede/U-TiendaDistribuidor";
     }
