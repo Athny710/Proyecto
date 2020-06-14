@@ -172,7 +172,21 @@ public class GestorController {
                                      Model model,
                                      RedirectAttributes attr, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
-            return "Gestor/G-EditUsuarioSede";
+            if(usuarios.getIdusuarios() != 0){
+                Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
+                if (usuariosID.isPresent()) {// todo mostrar errores
+                    usuarios = usuariosID.get();
+                    model.addAttribute("usuarios", usuarios);
+                    model.addAttribute("listasedes", sedeRepository.findAll());
+                    return "Gestor/G-EditUsuarioSede";
+                } else {//todo mostrar errores
+
+                    return "redirect:/gestor/gestorRegistroUsuarioSede";
+                }
+            }else{
+                return "redirect:/gestor/gestorRegistroUsuarioSede";
+            }
+
         } else {
             if (usuarios.getIdusuarios() == 0 && usuarioRepository.findByCorreo(usuarios.getCorreo()) == null) {
                 usuarios.setPassword(getAlphaNumericString(12));
