@@ -53,7 +53,6 @@ public class SedeController {
     UsuarioRepository usuarioRepository;
     @Autowired
     SedeRepository sedeRepository;
-
     @Autowired
     VentasService ventasService;
     @Autowired
