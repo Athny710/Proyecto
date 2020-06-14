@@ -145,9 +145,9 @@ public class SystemController {
                         model.addAttribute("hasheado",hasheado);
                         return "index";
                     }else {
-                        model.addAttribute("msg", "No funciono el cambio. Debe tener el hasheado correcto");
+                        model.addAttribute("msg", "No funciono el cambio. Debe tener el hasheado correcto.");
                         model.addAttribute("hasheado",hasheado);
-                        return "Sistema/S-NuevContra2";
+                        return "index";
                     }
                 }
             }else{
