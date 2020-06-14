@@ -19,7 +19,7 @@
                             <h4 class="m-0 font-weight-bold text-gray-900">Reporte de Ventas</h4>
                         </div>
                         <div class="card-body">
-                            <h5 class="m-0 font-weight-bold text-gray-900">Definición de Parámetros</h5><br>
+                            <h6 class="m-0 font-weight-bold text-gray-900">Reporte por nombre del cliente</h6><br>
                             <form method="post" th:action="@{/gestor/crearExcelPorCliente}">
                                 <div class="row">
                                     <div class="form-group col-md-6">
@@ -61,6 +61,7 @@
                                 </div>
                             </form>
                                 <hr style="width: 75%; height: 10px">
+                            <h6 class="m-0 font-weight-bold text-gray-900">Reporte por sede</h6><br>
                             <form method="post" th:action="@{/gestor/crearExcelPorSede}">
                                 <div class="row">
                                     <div class="form-group col-md-6">
@@ -102,6 +103,7 @@
                                 </div>
                             </form>
                                 <hr style="width: 75%; height: 10px">
+                            <h6 class="m-0 font-weight-bold text-gray-900">Reporte por nombre de artículo</h6><br>
                             <form method="post" th:action="@{/gestor/crearExcelPorArticulo}">
                                 <div class="row">
                                     <div class="form-group col-md-6">
@@ -141,8 +143,10 @@
                                         <button type="submit"><img th:src="@{/img/excel-xls-icon.png}" style="width:40px;"></button>
                                     </div>
                                 </div>
+
                             </form>
                                 <hr style="width: 75%; height: 10px">
+                            <h6 class="m-0 font-weight-bold text-gray-900">Reporte por nombre de comunidad</h6><br>
                             <form method="post" th:action="@{/gestor/crearExcelPorComunidad}">
                                 <div class="row">
                                     <div class="form-group col-md-6">

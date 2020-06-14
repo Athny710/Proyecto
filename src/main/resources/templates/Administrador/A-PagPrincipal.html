@@ -16,6 +16,7 @@
                 <div th:insert="Fragmentos/FragmentosAdmin.html::perfilModal(perfil=${perfil})"></div>
                 <div class="container-fluid">
                     <!-- Page Heading -->
+                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                     <div class="card shadowA mb-4">
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
@@ -23,7 +24,7 @@
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
-                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+
                             <div class="table-responsive bg-gray-100">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
@@ -39,7 +40,7 @@
                                     <tbody>
                                         <tr th:each="i : ${inventario}" class="bg-white" align="center">
                                             <td th:text="${i.producto.denominacion.nombre}">Chalina</td>
-                                            <td th:text="${i.producto.denominacion.codigoNombre}">DKLS45</td>
+                                            <td th:text="${i.producto.denominacion.codigonombre}">DKLS45</td>
                                             <td th:text="${i.stock}"></td>
                                             <td th:text="${i.producto.adquisicion.modalidad}">Compra</td>
                                             <td th:text="${i.producto.adquisicion.fecha}">10/04/2019</td>

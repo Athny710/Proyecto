@@ -20,6 +20,7 @@
                         <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/sede/nuevaVenta}">Añadir Venta</a>
                     </div>
                     <br>
+                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                     <div class="card shadowA mb-4">
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
@@ -44,7 +45,7 @@
                                     <tbody>
                                         <tr th:each="x : ${listaProductos}" align="center">
                                             <td th:text="${x.inventario.producto.denominacion.nombre}"></td>
-                                            <td th:text="${x.inventario.producto.denominacion.codigoNombre}"></td>
+                                            <td th:text="${x.inventario.producto.denominacion.codigonombre}"></td>
                                             <td th:text="${x.stock}"></td>
                                             <td th:text="${x.inventario.producto.adquisicion.modalidad}"></td>
                                             <td th:text="${x.inventario.producto.adquisicion.fecha}"></td>

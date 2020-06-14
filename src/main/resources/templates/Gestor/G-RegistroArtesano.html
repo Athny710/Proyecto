@@ -18,6 +18,7 @@
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
                             <h5 class="m-0 font-weight-bold text-gray-900" type="text">Registrar nuevo Artesano</h5>
+                            <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
                         </div>
                     </div>
                     <div class="card-body bg-gray-100">
