@@ -1,6 +1,8 @@
 package com.example.proyecto.services;
 
 
+import com.example.proyecto.dto.ReporteConCamposOriginales;
+import com.example.proyecto.dto.VentaPorCodigo;
 import com.example.proyecto.entity.Venta;
 import com.example.proyecto.repository.VentaRepository;
 import com.itextpdf.text.*;
@@ -9,7 +11,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.hibernate.boot.jaxb.hbm.spi.Adapter4;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,85 @@ public class VentasServiceImplement implements VentasService {
     @Override
     public List<Venta> getVentas() {
         return (List<Venta>) ventaRepository.findAll();
+    }
+
+    @Override
+    public List<VentaPorCodigo> getVentasPorCodigo(String codigo) { return (List<VentaPorCodigo>) ventaRepository.listarVentasXCodigo(codigo); }
+
+    @Override
+    public List<ReporteConCamposOriginales> getVentasPorCliente(String mes, String año, String cliente) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteMensualCliente(mes,año,cliente); }
+
+    @Override
+    public List<ReporteConCamposOriginales> getVentasPorClienteAnual(String año, String cliente) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteAnualCliente(año,cliente); }
+
+    @Override
+    public List<ReporteConCamposOriginales> getVentasPorClienteTrimestral(String año, String cliente) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteTrimestralCliente(año,cliente); }
+
+    @Override
+    public List<ReporteConCamposOriginales> getVentasPorSede(String mes, String año, String idsede) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteMensualSede(mes,año,idsede); }
+
+    @Override
+    public List<ReporteConCamposOriginales> getVentasPorSedeTrimestral(String año, String idsede) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteTrimestralSede(año,idsede); }
+
+    @Override
+    public List<ReporteConCamposOriginales> getVentasPorSedeAnual(String año, String idsede) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteAnualSede(año,idsede); }
+
+    @Override
+    public List<ReporteConCamposOriginales> getVentasPorArticuloAnual(String año, String articulo) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteAnualArticulo(año,articulo); }
+
+    @Override
+    public List<ReporteConCamposOriginales> getVentasPorArticuloTrimestral(String año, String articulo) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteTrimestralArticulo(año,articulo); }
+
+    @Override
+    public List<ReporteConCamposOriginales> getVentasPorArticuloMensual(String mes, String año, String articulo) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteMensualArticulo(mes,año,articulo); }
+
+    @Override
+    public List<ReporteConCamposOriginales> getVentasPorComunidadAnual(String año, String comunidad) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteAnualComunidad(año,comunidad); }
+
+    @Override
+    public List<ReporteConCamposOriginales> getVentasPorComunidadTrimestral(String año, String comunidad) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteTrimestralComunidad(año,comunidad); }
+
+    @Override
+    public List<ReporteConCamposOriginales> getVentasPorComunidadMensual(String mes, String año, String comunidad) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteMensualComunidad(mes,año,comunidad); }
+
+    @Override
+    public List<ReporteConCamposOriginales> getVentaAnual(String año) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteAnualTotal(año); }
+
+    @Override
+    public List<ReporteConCamposOriginales> getVentaTrimestral(String año) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteTrimestralTotal(año); }
+
+    @Override
+    public List<ReporteConCamposOriginales> getVentaMensual(String mes, String año) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteMensualTotal(mes,año); }
+
+
+    public String traductorDeMeses(String mesEnEnglish){
+        String mesEspanish = null;
+        if (mesEnEnglish.equals("January")){
+            mesEspanish = "enero";
+        }else if (mesEnEnglish.equals("February")){
+            mesEspanish = "febrero";
+        }else if (mesEnEnglish.equals("March")){
+            mesEspanish = "marzo";
+        }else if (mesEnEnglish.equals("April")){
+            mesEspanish = "abril";
+        }else if (mesEnEnglish.equals("May")){
+            mesEspanish = "mayo";
+        }else if (mesEnEnglish.equals("June")){
+            mesEspanish = "junio";
+        }else if (mesEnEnglish.equals("July")){
+            mesEspanish = "julio";
+        }else if (mesEnEnglish.equals("August")){
+            mesEspanish = "agosto";
+        }else if (mesEnEnglish.equals("September")){
+            mesEspanish = "setiembre";
+        }else if (mesEnEnglish.equals("October")){
+            mesEspanish = "octubre";
+        }else if (mesEnEnglish.equals("November")){
+            mesEspanish = "noviembre";
+        }else if (mesEnEnglish.equals("December")){
+            mesEspanish = "diciembre";
+        }
+        return mesEspanish;
     }
 
     @Override
@@ -215,5 +296,208 @@ public class VentasServiceImplement implements VentasService {
         }catch (Exception e){
             return false;
         }
+    }
+
+    @Override
+    public boolean createExcelXCodigo(List<VentaPorCodigo> venta, ServletContext context, HttpServletRequest request, HttpServletResponse response) {
+
+        String filepath = context.getRealPath("/resources/reports");
+        File file = new File(filepath);
+        boolean exists = new File(filepath).exists();
+        if(!exists){
+            new File(filepath).mkdirs();
+        }
+        try {
+            FileOutputStream outputStream = new FileOutputStream(file + "/" + "ventas_por_codigo" + ".xls");
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            HSSFSheet workSheet = workbook.createSheet("Ventas totales por codigo de producto");
+            workSheet.setDefaultColumnWidth(30);
+            HSSFCellStyle headerCellStyle = workbook.createCellStyle();
+            headerCellStyle.setFillForegroundColor(HSSFColor.BRIGHT_GREEN.index);
+            headerCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+            HSSFRow headerRow = workSheet.createRow(0);
+
+            HSSFCell dnioruc = headerRow.createCell(0);
+            dnioruc.setCellValue("DNI o RUC");
+            dnioruc.setCellStyle(headerCellStyle);
+
+            HSSFCell cliente = headerRow.createCell(1);
+            cliente.setCellValue("Nombre del cliente");
+            cliente.setCellStyle(headerCellStyle);
+
+            HSSFCell lugarventa = headerRow.createCell(2);
+            lugarventa.setCellValue("Lugar de venta");
+            lugarventa.setCellStyle(headerCellStyle);
+
+            HSSFCell fecha = headerRow.createCell(3);
+            fecha.setCellValue("Fecha");
+            fecha.setCellStyle(headerCellStyle);
+
+            int i = 1;
+            for (VentaPorCodigo venta1 : venta){
+                HSSFRow bodyROW = workSheet.createRow(i);
+                HSSFCellStyle bodyCellStyle = workbook.createCellStyle();
+                bodyCellStyle.setFillForegroundColor(HSSFColor.WHITE.index);
+
+                HSSFCell dniorucvalue = bodyROW.createCell(0);
+                dniorucvalue.setCellValue(venta1.getDnioruc());
+                dniorucvalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell clientevalue = bodyROW.createCell(1);
+                clientevalue.setCellValue(venta1.getCliente());
+                clientevalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell lugarvalue = bodyROW.createCell(2);
+                lugarvalue.setCellValue(venta1.getLugar());
+                lugarvalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell fechavalue = bodyROW.createCell(3);
+                fechavalue.setCellValue(venta1.getCodgen());
+                fechavalue.setCellStyle(bodyCellStyle);
+
+                i++;
+            }
+            workbook.write(outputStream);
+            outputStream.flush();
+            outputStream.close();
+            return true;
+
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    @Override
+    public boolean createExcelXCliente(List<ReporteConCamposOriginales> ventaXCliente, String cliente, ServletContext context, HttpServletRequest request, HttpServletResponse response) {
+        String filepath = context.getRealPath("/resources/reports");
+        File file = new File(filepath);
+        boolean exists = new File(filepath).exists();
+        if(!exists){
+            new File(filepath).mkdirs();
+        }
+        try {
+            FileOutputStream outputStream = new FileOutputStream(file + "/" + "ventas_por_cliente" + ".xls");
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            HSSFSheet workSheet = workbook.createSheet("Ventas Mosqoy");
+            workSheet.setDefaultColumnWidth(30);
+            HSSFCellStyle headerCellStyle = workbook.createCellStyle();
+            HSSFCellStyle headerCellStyle1 = workbook.createCellStyle();
+            headerCellStyle.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+            headerCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+            headerCellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+            headerCellStyle.setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
+            headerCellStyle.setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
+            headerCellStyle.setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
+
+            headerCellStyle1.setFillForegroundColor(HSSFColor.SKY_BLUE.index);
+            headerCellStyle1.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+            headerCellStyle1.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+            HSSFFont cellFont = workbook.createFont();
+            cellFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+            headerCellStyle1.setFont(cellFont);
+            workSheet.addMergedRegion(new CellRangeAddress(0,0,0,5));
+
+            HSSFRow headerRow = workSheet.createRow(1);
+
+            HSSFCell codigo = headerRow.createCell(0);
+            codigo.setCellValue("Código del producto");
+            codigo.setCellStyle(headerCellStyle);
+
+            HSSFCell nombreProducto = headerRow.createCell(1);
+            nombreProducto.setCellValue("Nombre del producto");
+            nombreProducto.setCellStyle(headerCellStyle);
+
+            HSSFCell cantidad = headerRow.createCell(2);
+            cantidad.setCellValue("Cantidad");
+            cantidad.setCellStyle(headerCellStyle);
+
+            HSSFCell precioUnit = headerRow.createCell(3);
+            precioUnit.setCellValue("Precio unitario");
+            precioUnit.setCellStyle(headerCellStyle);
+
+            HSSFCell fecha = headerRow.createCell(4);
+            fecha.setCellValue("Fecha");
+            fecha.setCellStyle(headerCellStyle);
+
+            HSSFCell totalxProducto = headerRow.createCell(5);
+            totalxProducto.setCellValue("Precio total por producto");
+            totalxProducto.setCellStyle(headerCellStyle);
+
+            HSSFRow tituRow1 = workSheet.createRow(0);
+            HSSFCell titulo = tituRow1.createCell(0);
+            titulo.setCellValue(cliente);
+            titulo.setCellStyle(headerCellStyle1);
+
+            int i = 2;
+            float totalTotal = 0;
+            for (ReporteConCamposOriginales venta1 : ventaXCliente){
+                HSSFRow bodyROW = workSheet.createRow(i);
+                HSSFCellStyle bodyCellStyle = workbook.createCellStyle();
+                bodyCellStyle.setFillForegroundColor(HSSFColor.YELLOW.index);
+                bodyCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+                bodyCellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+                bodyCellStyle.setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
+                bodyCellStyle.setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
+                bodyCellStyle.setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
+
+                HSSFCell codigovalue = bodyROW.createCell(0);
+                codigovalue.setCellValue(venta1.getCodgen());
+                codigovalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell nombreProductvalue = bodyROW.createCell(1);
+                nombreProductvalue.setCellValue(venta1.getNombreproduct());
+                nombreProductvalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell cantidadValue = bodyROW.createCell(2);
+                cantidadValue.setCellValue(venta1.getCantidad());
+                cantidadValue.setCellStyle(bodyCellStyle);
+
+                HSSFCell precioUnitvalue = bodyROW.createCell(3);
+                precioUnitvalue.setCellValue(venta1.getPreciounit());
+                precioUnitvalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell fechavalue = bodyROW.createCell(4);
+                fechavalue.setCellValue(traductorDeMeses(venta1.getFech()));
+                fechavalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell totalxProductovalue = bodyROW.createCell(5);
+                totalxProductovalue.setCellValue(venta1.getTotalxproduct());
+                totalxProductovalue.setCellStyle(bodyCellStyle);
+
+                totalTotal += venta1.getTotalxproduct();
+                i++;
+            }
+
+            HSSFRow bodyROW = workSheet.createRow(i);
+            HSSFCellStyle bodyCellStyle = workbook.createCellStyle();
+            bodyCellStyle.setFillForegroundColor(HSSFColor.WHITE.index);
+            //bodyCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+            bodyCellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+            bodyCellStyle.setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
+            bodyCellStyle.setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
+            bodyCellStyle.setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
+
+            HSSFCell totalxtotal = bodyROW.createCell(4);
+            totalxtotal.setCellValue("Total");
+            totalxtotal.setCellStyle(bodyCellStyle);
+
+            HSSFCell totalxtotalvalue = bodyROW.createCell(5);
+            totalxtotalvalue.setCellValue(totalTotal);
+            totalxtotalvalue.setCellStyle(bodyCellStyle);
+
+            workbook.write(outputStream);
+            outputStream.flush();
+            outputStream.close();
+            return true;
+
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    @Override
+    public boolean createExcelXSede(List<ReporteConCamposOriginales> ventaXSedeAnual, ServletContext context, HttpServletRequest request, HttpServletResponse response) {
+        return false;
     }
 }
