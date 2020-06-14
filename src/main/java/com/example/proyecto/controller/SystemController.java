@@ -91,9 +91,6 @@ public class SystemController {
                                           @RequestParam("correo")String correo,
                                           Model model,BindingResult bindingResult, HttpServletRequest request) throws MessagingException, UnknownHostException {
 
-        if(bindingResult.hasErrors()){
-            return "index";
-        } else {
             Usuarios usuarioBuscado = usuarioRepository.findByCorreo(correo);
 
             if (usuarioBuscado != null) {
@@ -121,7 +118,6 @@ public class SystemController {
                 attr.addFlashAttribute("msg", "No se ha encontrado el correo ingresado");
                 return "redirect:/system/recuperarCont";
             }
-        }
 
     }
 
@@ -130,9 +126,7 @@ public class SystemController {
                               @RequestParam("psw2") String psw2,
                               @RequestParam("hasheado") String hasheado,
                               Model model, BindingResult bindingResult, RedirectAttributes attr){
-        if(bindingResult.hasErrors()){
-            return "index";
-        } else {
+
             if(!"".equals(psw1) && !"".equals(psw2)){
                 if(psw1.equals(psw2)){
                     if(psw1.length()<8){
@@ -169,5 +163,5 @@ public class SystemController {
                 return "Sistema/S-NuevContra2";
             }
         }
-    }
+
 }
