@@ -33,11 +33,12 @@
                                             <input type="password" name="password" class="form-control-log form-control-user" id="exampleInputPassword" placeholder="Password">
                                         </div>
                                         <h6 th:if="${param.error}" class="text-danger" style="text-align: center; font-size: 0.8rem; padding-bottom: 1rem">Acceso Denegado </h6>
+                                        <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${msg!=null}" th:text="${msg}"></div>
                                         <button  type="submit" class="btn btn-log btn-user btn-block" >Ingresar</button>
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="forgot-password.html" th:href="@{/system/RecuperarContraseña}" >Recuperar Contraseña</a>
+                                        <a class="small" href="forgot-password.html" th:href="@{/system/recuperarCont}" >Recuperar Contraseña</a>
                                     </div>
                                 </div>
                             </div>

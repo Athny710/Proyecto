@@ -10,8 +10,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +52,7 @@ public class GestorController {
     TamañoRepository tamañoRepository;
 
 
-    // ----------------------- ENLACES ---------------------------------
+        // ----------------------- ENLACES ---------------------------------
     @GetMapping("perfil")
     public String perfil() {
         return "Gestor/G-Perfil";
@@ -147,7 +151,7 @@ public class GestorController {
     @PostMapping("guardarUsuarioSede")
     public String guardarUsuarioSede(@ModelAttribute("usuarios") @Valid Usuarios usuarios, BindingResult bindingResult,
                                      Model model,
-                                     RedirectAttributes attr) {
+                                     RedirectAttributes attr,HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
             return "Gestor/G-EditUsuarioSede";
         } else {
@@ -155,11 +159,14 @@ public class GestorController {
                 usuarios.setPassword(getAlphaNumericString(12));
                 usuarios.setTipo("sede");
                 usuarios.setActivo(1);
+                String passwordSinEncriptar = usuarios.getPassword();
                 BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
                 usuarios.setPassword(bCryptPasswordEncoder.encode(usuarios.getPassword()));
                 System.out.println(usuarios.getPassword());
                 usuarioRepository.save(usuarios);
-                //TODO ENVIAR CORREO CON EL PASSWORD
+                //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
+                Email email = new Email();
+                email.emailEnviarPrimeraContraseña(usuarios.getCorreo(), passwordSinEncriptar, usuarios.getCorreo());
 
                 attr.addFlashAttribute("msg", "Usuario sede creado exitosamente");
                 return "redirect:/gestor/gestorListaUsuarioSede";
