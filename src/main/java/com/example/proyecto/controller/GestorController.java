@@ -274,7 +274,7 @@ public class GestorController {
                 attr.addFlashAttribute("msg", "Sede actualizada exitosamente");
                 return "redirect:/gestor/gestorListaSedes";
             } else { //EL IDSEDE ES IGUAL A 0
-                System.out.println("ID SEDE ES 0 POR ALGUA RAZON");
+               // System.out.println("ID SEDE ES 0 POR ALGUA RAZON");
                 model.addAttribute(sede);
                 attr.addFlashAttribute("msgError", "Los datos ingresados ya existen, por favor modificarlo");
                 return "Gestor/G-RegistroSede";
