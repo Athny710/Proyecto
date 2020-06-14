@@ -87,9 +87,9 @@ public class Email {
         msg.setRecipients(Message.RecipientType.TO,address);
 
         //Asunto y mensaje
-        msg.setSubject("BIENVENIDX A MOSQOY");
+        msg.setSubject("BIENVENID@ A MOSQOY");
         msg.setText("Gracias por unirte a la familia Mosqoy! En este correo te enviamos el usuario y la contraseña de tu cuenta.\n" +
-                "Recuerda que puedes cambiarla desde andentro de tu sesión.\n" +
+                "Recuerda que puedes cambiarla desde tu perfil.\n" +
                 "Usuario: "+ usuario + "\n" + "Contraseña: "+ contrasenia);
 
         //Enviar el correo electronico

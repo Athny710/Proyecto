@@ -197,7 +197,7 @@ public class GestorController {
 
 
                 usuarioRepository.save(usuarios);
-                attr.addFlashAttribute("msg", "Sede actualizada exitosamente");
+                attr.addFlashAttribute("msg", "Usuario sede actualizado exitosamente");
                 return "redirect:/gestor/gestorListaUsuarioSede";
             } else { //ya existe el correo, mostrar errores
                 if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null) {
@@ -715,6 +715,8 @@ public class GestorController {
             return "Gestor/G-RegistroArtesano";
         } else {
 
+
+
             //validacion codigo de  artesano (INICIALES)
             String aux1 = null;
             String aux2 = null;
@@ -727,7 +729,40 @@ public class GestorController {
             }
             //fin validacion codigo de artesano
 
-            if (artesanoRepository.findByCodigo(artesano.getCodigo()).size() >= 1 ||  // en caso el codigo se repita o no tenga un codigo esperado
+
+
+            if (artesano.getIdArtesano()== null) {
+                if (artesanoRepository.findByCodigo(artesano.getCodigo()).size() >= 1 ||  // en caso el codigo se repita o no tenga un codigo esperado
+                        !(artesano.getCodigo().equalsIgnoreCase(aux1) || artesano.getCodigo().equalsIgnoreCase(aux2))) {
+                    model.addAttribute("listaComunidad", comunidadRepository.findAll());
+                    model.addAttribute("msgError", "Recuerde que el codigo debe ser las iniciales del artesano");
+                    return "Gestor/G-EditArtesano";
+                } else {
+                    System.out.println("ARTESANO NULL ----------- 1");
+                    Optional<Comunidad> comunidad = comunidadRepository.findById(artesano.getComunidad().getIdComunidad());
+                    System.out.println(comunidad.get().getIdComunidad() + "ID COMUNIDAD ---------");
+                    artesano.setComunidad(comunidad.get());
+                    artesanoRepository.save(artesano);
+                    attr.addFlashAttribute("msg", "Artesano creado exitosamente");
+                    return "redirect:/gestor/gestorListaArtesano";
+                }
+            } else {
+                    Optional<Artesano> artesano2 = artesanoRepository.findById(artesano.getIdArtesano());
+                    if(artesano2.isPresent()) { // El ID ESTA BIEN
+                        artesano.setComunidad(comunidadRepository.findById(artesano.getComunidad().getIdComunidad()).get());
+                        artesanoRepository.save(artesano);
+                        attr.addFlashAttribute("msg", "Artesano actualizado exitosamente");
+                    } else { // EL ID NO ESTA BIEN
+                        attr.addFlashAttribute("msg", "error en el ID del artesano");
+                    }
+                    return "redirect:/gestor/gestorListaArtesano";
+
+            }
+
+
+
+
+            /*if (artesanoRepository.findByCodigo(artesano.getCodigo()).size() >= 1 ||  // en caso el codigo se repita o no tenga un codigo esperado
                     !(artesano.getCodigo().equalsIgnoreCase(aux1) || artesano.getCodigo().equalsIgnoreCase(aux2))) {
                 model.addAttribute("listaComunidad", comunidadRepository.findAll());
                 attr.addFlashAttribute("msgError", "Recuerde que el codigo debe ser las iniciales del artesano");
@@ -760,7 +795,7 @@ public class GestorController {
                 model.addAttribute(artesano);
                 attr.addFlashAttribute("msgError", "Los datos ingresados ya existen, por favor modificarlo");
                 return "Gestor/G-RegistroArtesano";
-            }
+            }*/
         }
     }
 

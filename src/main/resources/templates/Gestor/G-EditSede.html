@@ -20,6 +20,9 @@
                             <h5 class="m-0 font-weight-bold text-gray-900" type="text">Editar Sede</h5>
                         </div>
                     </div>
+                    <!-- agregado -->
+                    <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
+                    <!-- agregado -->
                     <div class="card-body bg-gray-100">
                         <div class="row">
                             <div class="col-lg-6">
@@ -27,11 +30,20 @@
                                   <!--  <form method="post" class="user" th:action="@{/gestor/gestorGuardarSede}"  th:object="${sede}">
                                         <input th:value="*{idsede}" name="idSede" type="hidden" />   -->
                                     <form method="post" class="user" th:action="@{/gestor/guardarSede}"  th:object="${sede}">
-                                        <input  th:field="*{idsede}" name="idSede" type="hidden" />
-                                        <div class="form-group">
-                                            <input th:field="*{nombre}" type="text" class="form-control form-control-user" id="nombre" placeholder="Nombre">
-                                        </div>
-                                        <button type="submit" class="btn btn-searchTop btn-user btn-block" th:text="${sede.idsede==null?'Registrar':'Actualizar'}">
+                                        <!--       <input  th:field="*{idsede}" name="idSede" type="hidden" />
+                                              <div class="form-group">
+                                                  <input th:field="*{nombre}" type="text" class="form-control form-control-user" id="nombre" placeholder="Nombre">
+                                              </div>-->
+                                             <div class="form-group ">
+                                                  <label for="nombre">Nombre:</label>
+                                                  <input th:field="*{nombre}"  type="text" class="form-control form-control-user">
+                                                  <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+                                              </div>
+
+                                     <!--   <button type="submit" class="btn btn-searchTop btn-user btn-block" th:text="${sede.idsede==null?'Registrar':'Actualizar'}">
+                                        </button> -->
+                                        <button type="submit" class="btn btn-searchTop btn-user btn-block">
+                                            Guardar
                                         </button>
                                         <a class="btn btn-searchTop btn-danger btn-block" style="border-radius:10rem" th:href="@{'/gestor/gestorListaSedes'}"> Cancelar</a>
                                     </form>
