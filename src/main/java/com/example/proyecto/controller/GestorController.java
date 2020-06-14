@@ -174,7 +174,7 @@ public class GestorController {
                 attr.addFlashAttribute("msg", "Sede actualizada exitosamente");
                 return "redirect:/gestor/gestorListaUsuarioSede";
             } else { //ya existe el correo, mostrar errores
-                if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null){
+                if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null) {
                     model.addAttribute("msgError", "Ya hay un usuario con ese correo");
                 }
                 model.addAttribute("listasedes", sedeRepository.findAll());
@@ -746,6 +746,8 @@ public class GestorController {
     //--------------------CRUD VENTAS---------------
     @GetMapping("/nuevaVenta")
     public String nuevaVenta(@ModelAttribute("venta") Venta venta, Model model) {
+        List<Inventario> listaInventario = inventarioRepository.findAll();
+        model.addAttribute("listaInventario", listaInventario);
         return "Gestor/G-NuevaVenta";
     }
 
@@ -756,28 +758,40 @@ public class GestorController {
         return "Gestor/G-GestionVentas";
     }
 
+
     @PostMapping("/guardarVenta")
-    public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult bindingResult, RedirectAttributes att) {
+    public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult bindingResult, Model model,
+                               HttpSession session, RedirectAttributes attr) {
 
         if (bindingResult.hasErrors()) {
+            List<Inventario> listaInventario = inventarioRepository.findAll();
+            model.addAttribute("listaInventario", listaInventario);
             return "Gestor/G-NuevaVenta";
         } else {
-            Inventario inventario = new Inventario();
-            Usuarios usuarios = new Usuarios();
-            Tienda tienda = new Tienda();
 
-            inventario.setIdInventario(1);
-            usuarios.setIdusuarios(1);
-            tienda.setIdtienda(1);
 
-            if (venta.getIdventa() == 0) {
-                venta.setInventario(inventario);
-                venta.setUsuarios(usuarios);
-                venta.setTienda(tienda);
-                ventaRepository.save(venta);
-                att.addFlashAttribute("msg", "Venta añadida exitosamente");
+            int invkey = venta.getInventario().getIdInventario();
+            if (inventarioRepository.findById(invkey).isPresent()) {
+                Optional<Inventario> inventario1 = inventarioRepository.findById(invkey);
+                if ((inventario1.get().getStock() - venta.getCantidad()) >= 0) {
+                    inventario1.get().setStock(inventario1.get().getStock() - venta.getCantidad());
+                    Usuarios u = (Usuarios) session.getAttribute("user");
+                    venta.setInventario(inventario1.get());
+                    venta.setUsuarios(u);
+                    ventaRepository.save(venta);
+                    attr.addFlashAttribute("msg", "Venta añadida exitosamente");
+                    return "redirect:/gestor/gestionVentas";
+                } else {
+                    List<Inventario> listaInventario = inventarioRepository.findAll();
+                    model.addAttribute("listaInventario", listaInventario);
+                    attr.addFlashAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
+                    return "redirect:/gestor/nuevaVenta";
+                }
+
+            } else {
+                return "Gestor/G-NuevaVenta";
+
             }
-            return "redirect:/gestor/gestionVentas";
 
         }
     }
