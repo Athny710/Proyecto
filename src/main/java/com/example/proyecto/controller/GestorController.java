@@ -197,7 +197,7 @@ public class GestorController {
 
 
                 usuarioRepository.save(usuarios);
-                attr.addFlashAttribute("msg", "Sede actualizada exitosamente");
+                attr.addFlashAttribute("msg", "Usuario sede actualizado exitosamente");
                 return "redirect:/gestor/gestorListaUsuarioSede";
             } else { //ya existe el correo, mostrar errores
                 if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null) {
