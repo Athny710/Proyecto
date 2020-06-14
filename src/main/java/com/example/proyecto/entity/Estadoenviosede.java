@@ -19,7 +19,7 @@ public class Estadoenviosede {
     @Positive(message = "Debe ser mayor a 0")
     private int cantidad;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull
+    @NotNull(message = "por favor ingrese una fecha")
     private LocalDate fecha;
     private String comentario;
     @ManyToOne

@@ -52,7 +52,7 @@ public class GestorController {
     TamañoRepository tamañoRepository;
 
 
-        // ----------------------- ENLACES ---------------------------------
+    // ----------------------- ENLACES ---------------------------------
     @GetMapping("perfil")
     public String perfil() {
         return "Gestor/G-Perfil";
@@ -151,7 +151,7 @@ public class GestorController {
     @PostMapping("guardarUsuarioSede")
     public String guardarUsuarioSede(@ModelAttribute("usuarios") @Valid Usuarios usuarios, BindingResult bindingResult,
                                      Model model,
-                                     RedirectAttributes attr,HttpServletRequest request) throws MessagingException {
+                                     RedirectAttributes attr, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
             return "Gestor/G-EditUsuarioSede";
         } else {
@@ -181,7 +181,7 @@ public class GestorController {
                 attr.addFlashAttribute("msg", "Sede actualizada exitosamente");
                 return "redirect:/gestor/gestorListaUsuarioSede";
             } else { //ya existe el correo, mostrar errores
-                if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null){
+                if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null) {
                     model.addAttribute("msgError", "Ya hay un usuario con ese correo");
                 }
                 model.addAttribute("listasedes", sedeRepository.findAll());
@@ -708,9 +708,9 @@ public class GestorController {
                 List<Inventariosede> inventariosede1 = inventariosedeRepository.findByInventarioAndSede(inventario1.get(), sede1.get());
                 if ((inventario1.get().getStock() - estadoenviosede.getCantidad()) >= 0) {
                     //conseguir inventariosede
-                    if (!inventariosede1.isEmpty()) {
+                    if (!inventariosede1.isEmpty()) {// si ya hay un registro se usa
                         estadoenviosede.setInventariosede(inventariosede1.get(0));
-                    } else {
+                    } else {// sino se crea uno
                         Inventariosede inventariosede2 = new Inventariosede();
                         inventariosede2.setInventario(inventario1.get());
                         inventariosede2.setSede(sede1.get());
@@ -720,7 +720,25 @@ public class GestorController {
                     }
                     //fin conseguir invetariosede
                     estadoenviosede.setEstado("En camino");
-                    estadoenviosedeRepository.save(estadoenviosede);
+                    if (estadoenviosede.getIdenviosede() != 0) {// este es un reenvio (creo)
+                        if (estadoenviosedeRepository.findById(estadoenviosede.getIdenviosede()).get().getEstado().equalsIgnoreCase("rechazado")) {
+                            //es un producto rechazado
+                            estadoenviosedeRepository.deleteById(estadoenviosede.getIdenviosede());
+                            estadoenviosedeRepository.save(estadoenviosede);
+                        }else{
+                            //fue hackerman
+                            List<Inventario> listaInventario = inventarioRepository.findAll();
+                            List<Sede> listaSede = sedeRepository.findAll();
+                            model.addAttribute("listaInventario", listaInventario);
+                            model.addAttribute("listaSede", listaSede);
+                            model.addAttribute("msg", "Por favor no editar el HTML con F12 :>");
+                            return "Gestor/G-GestionEnvios";
+                        }
+                        //todo logica de borrar el anterior y aquello ??????
+                    } else {//este no es un reenvio
+                        estadoenviosedeRepository.save(estadoenviosede);
+                    }
+
                     int cantidadrestada = estadoenviosede.getInventariosede().getInventario().getStock() - estadoenviosede.getCantidad();
                     estadoenviosede.getInventariosede().getInventario().setStock(cantidadrestada);
                 } else { // cantidad restada menor a 0
@@ -736,9 +754,7 @@ public class GestorController {
                 attr.addFlashAttribute("msg", "Envio guardado correctamente");
                 return "redirect:/gestor/gestorProductosEnviados";
             }
-
-
-            System.out.println("la ide del envio sede es: " + estadoenviosede.getIdenviosede());
+            // aqui solo se entra si alguien edita el HTML con F12
             List<Sede> listaSede = sedeRepository.findAll();
             model.addAttribute("listaSede", listaSede);
             List<Inventario> listaInventario = inventarioRepository.findAll();
