@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="Fragmentos/FragmentosAdmin.html::cabecera(titulo='Cambiar Contraseña')">
+</head>
+
+<body class="fondo">
+<div class="container">
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+        <div class="col-xl-4 col-lg-12 col-md-9">
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row h-25">
+                        <div class="col-lg-12 bg-gray-100 h-25">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <img th:src="@{/img/logofinal.jpg}" height="100px" width="220px">
+                                </div>
+                                <br><br><br>
+                                <h4 class="text-gray-900" style="text-align: center">Cambiar contraseña</h4>
+                                <br>
+                                <form th:action="@{/system/guardarContSession}" method="post" class="user">
+                                    <div class="form-group2">
+                                        <label class="peque">Ingresar nueva contraseña</label>
+                                        <input type="password" class="form-control-log form-control-user2" name="psw1" id="psw1">
+                                    </div>
+                                    <div class="form-group2">
+                                        <label class="peque">Confirmar nueva contraseña</label>
+                                        <input type="password" class="form-control-log form-control-user2" name="psw2" id="psw2" >
+                                    </div>
+                                    <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${msg!=null}" th:text="${msg}"></div>
+                                    <hr>
+                                    <div class="d-flex">
+                                        <div style="width: 77.5px"></div>
+                                        <button type="submit" class="btn btn-log" style="border-radius: 10rem; text-align: center">Confirmar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+<div th:replace="Fragmentos/FragmentosAdmin.html::Script"></div>
+
+</body>
+</html>

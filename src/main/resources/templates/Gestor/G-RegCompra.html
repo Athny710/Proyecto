@@ -20,55 +20,55 @@
                         <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
                         <div class="card-body">
                             <form method="post" th:action="@{/gestor/guardarProducto}"  th:object="${formulario}">
-                                <input th:value="*{crearActualizar}" name="crearActualizar" type="hidden"/>
+                                <input  th:value="*{crearActualizar}" name="crearActualizar" type="hidden"/>
                                 <div  class="form-group col-md-6" >
                                     <label >Nombre del Producto</label>
-                                    <input type="text" class="form-control" th:field="*{nombreProducto}">
+                                    <input style="border-radius: 10rem" type="text" class="form-control" th:field="*{nombreProducto}">
                                     <div class="text-danger" th:if="${#fields.hasErrors('nombreProducto')}" th:errors="*{nombreProducto}" ></div>
                                 </div>
                                 <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6" >
                                     <label >Código del Nombre del Producto</label>
-                                    <input type="text" class="form-control" id="codigoProducto" name="codigoProducto"
+                                    <input style="border-radius: 10rem" type="text" class="form-control" id="codigoProducto" name="codigoProducto"
                                            th:value="*{codigoProducto}">
                                     <div class="text-danger" th:if="${#fields.hasErrors('codigoProducto')}" th:errors="*{codigoProducto}" ></div>
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label >Descripción</label>
-                                    <input type="text" class="form-control" id="descripcion" name="descripcion"
+                                    <input style="border-radius: 10rem" type="text" class="form-control" id="descripcion" name="descripcion"
                                            th:value="*{descripcion}">
                                     <div class="text-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" ></div>
                                 </div>
                                 <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
                                     <label >Código de la Descripción</label>
-                                    <input type="text" class="form-control" id="codDescripcion" name="codDescripcion"
+                                    <input style="border-radius: 10rem" type="text" class="form-control" id="codDescripcion" name="codDescripcion"
                                            th:value="*{codDescripcion}">
                                     <div class="text-danger" th:if="${#fields.hasErrors('codDescripcion')}" th:errors="*{codDescripcion}" ></div>
                                 </div>
                                 <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
                                     <label >Categoría</label>
-                                    <select class="form-control" name="nombreCategoria" id="nombreCategoria">
+                                    <select style="border-radius: 10rem" class="form-control" name="nombreCategoria" id="nombreCategoria">
                                         <option th:each="cat: ${listaCategorias}" th:value="${cat.nombre}"
                                                 th:text="${cat.nombre}" th:selected="${cat.nombre.equals(formulario.nombreCategoria)}">uno</option>
                                     </select>
                                 </div>
                                 <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
                                     <label >Línea</label>
-                                    <select class="form-control" name="nombreLinea" id="nombreLinea">
+                                    <select style="border-radius: 10rem" class="form-control" name="nombreLinea" id="nombreLinea">
                                         <option th:each="lin: ${listaLinea }" th:value="${lin.nombre}"
                                                 th:text="${lin.nombre}" th:selected="${lin.nombre.equals(formulario.nombreLinea)}">uno</option>
                                     </select>
                                 </div>
                                 <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
                                     <label >Tamaño</label>
-                                    <select class="form-control" name="nombreTama" id="nombreTama}">
+                                    <select style="border-radius: 10rem" class="form-control" name="nombreTama" id="nombreTama}">
                                         <option th:each=" tam : ${listaTama}" th:value="${tam.nombre}"
                                                 th:text="${tam.nombre}" th:selected="${tam.nombre.equals(formulario.nombreTama)}" >uno</option>
                                     </select>
                                 </div>
                                 <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
                                     <label >Comunidad a la que pertenece</label>
-                                    <select class="form-control" name="nombreComun" id="nombreComun">
+                                    <select style="border-radius: 10rem" class="form-control" name="nombreComun" id="nombreComun">
                                         <option th:each="comu : ${listaComunidades}" th:value="${comu.nombre}"
                                                 th:text="${comu.nombre}" th:selected="${comu.nombre.equals(formulario.nombreComun)}" >uno</option>
                                     </select>
