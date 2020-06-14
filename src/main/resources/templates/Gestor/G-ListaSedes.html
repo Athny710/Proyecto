@@ -14,14 +14,18 @@
             <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
             <!-- Page Heading -->
             <div class="container-fluid">
-                <div class="col-lg-2">
+            <!--    <div class="col-lg-2">
                     <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorResgistroSede}">Nueva Sede</a>
                 </div>
-                <br>
+                <br> -->
+                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                 <div class="card shadowA mb-4">
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
                             <h5 class="m-0 font-weight-bold text-redM">Lista de Sedes</h5>
+                            <div class="col-lg-4">
+                                <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorResgistroSede}">Nueva Sede</a>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body bg-gray-100">
