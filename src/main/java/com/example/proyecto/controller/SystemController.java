@@ -89,7 +89,7 @@ public class SystemController {
     @PostMapping("enviarCorreoRecuperarCont")
     public String enviarCorreoRecupCuenta(RedirectAttributes attr,
                                           @RequestParam("correo")String correo,
-                                          Model model,BindingResult bindingResult, HttpServletRequest request) throws MessagingException, UnknownHostException {
+                                          Model model,HttpServletRequest request) throws MessagingException, UnknownHostException {
 
             Usuarios usuarioBuscado = usuarioRepository.findByCorreo(correo);
 
@@ -125,7 +125,7 @@ public class SystemController {
     public String guardarCont(@RequestParam("psw1") String psw1,
                               @RequestParam("psw2") String psw2,
                               @RequestParam("hasheado") String hasheado,
-                              Model model, BindingResult bindingResult, RedirectAttributes attr){
+                              Model model, RedirectAttributes attr){
 
             if(!"".equals(psw1) && !"".equals(psw2)){
                 if(psw1.equals(psw2)){
