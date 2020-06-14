@@ -21,7 +21,8 @@
                                     <br><br><br>
                                     <h4 class="text-gray-900" style="text-align: center">Cambiar contraseña</h4>
                                     <br>
-                                    <form th:action="@{'/system/guardarCont'}" method="post" class="user">
+                                    <form th:action="@{/system/guardarCont}" method="post" class="user">
+                                        <input th:value="${hasheado}" name="hasheado" type="hidden" />
                                         <div class="form-group2">
                                             <label class="peque">Ingresar nueva contraseña</label>
                                             <input type="password" class="form-control-log form-control-user2" name="psw1" id="psw1">

@@ -55,7 +55,6 @@ public class SedeController {
     UsuarioRepository usuarioRepository;
     @Autowired
     SedeRepository sedeRepository;
-
     @Autowired
     VentasService ventasService;
     @Autowired
@@ -162,8 +161,13 @@ public class SedeController {
                 usuarioRepository.save(usuarioLog);
                 session.setAttribute("user", usuarioLog);
                 return "redirect:/sede";
+<<<<<<< HEAD
             } else {
                 if (usuarioRepository.findByCorreo(usuarioLog.getCorreo()) != null) {
+=======
+            }else{
+                if(usuarioRepository.findByCorreo(perfil.getCorreo())!=null){
+>>>>>>> ed94dca40d42f2d5849acd4e33aba373045eb8fa
                     model.addAttribute("msg", "Este correo ya está registrado");
                     return "UsuarioSede/U-Perfil";
                 } else {
