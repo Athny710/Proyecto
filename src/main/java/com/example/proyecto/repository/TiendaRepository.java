@@ -1,5 +1,6 @@
 package com.example.proyecto.repository;
 
+import com.example.proyecto.entity.Sede;
 import com.example.proyecto.entity.Tienda;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +16,5 @@ public interface TiendaRepository extends JpaRepository<Tienda,Integer> {
     List<Tienda> buscarPorNombreDeTienda(String name);
     List<Tienda> findByNombre(String nombre);
     List<Tienda> findByIdtienda(int idtienda);
+    List<Tienda> findBySede(Sede sede);
 }

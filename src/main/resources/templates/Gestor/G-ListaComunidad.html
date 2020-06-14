@@ -5,39 +5,6 @@
 </head>
 
 <body id="page-top">
-
-<<<<<<< HEAD
-<div id="wrapper">
-    <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
-    <div id="content-wrapper" class="d-flex flex-column bg-white">
-        <div id="content">
-            <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
-            <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
-            <!-- Page Heading -->
-            <div class="container-fluid">
-                <div class="col-lg-2">
-                    <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistroComunidad}">Nueva
-                        Comunidad</a>
-                </div>
-                <br>
-                <div class="card shadowA mb-4">
-                    <div class="card-header2 py-3">
-                        <div class="d-flex justify-content-between centrado">
-                            <h5 class="m-0 font-weight-bold text-redM">Lista de Comunidades</h5>
-                            <form method="post" th:action="@{/gestor/gestorBuscarComunidad}">
-                                <div class="input-group">
-                                    <input name="searchField" type="text"
-                                           class="form-control bg-light border-0 small bg-white"
-                                           placeholder="Search for..." aria-label="Search"
-                                           aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-searchTop text-gray-900" type="submit">
-                                            <i class="fas fa-search fa-sm text-gray-100"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-=======
     <div id="wrapper">
         <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
         <div id="content-wrapper" class="d-flex flex-column bg-white">
@@ -46,62 +13,58 @@
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <!-- Page Heading -->
                 <div class="container-fluid">
-                    <div class="col-lg-2">
+                 <!--   <div class="col-lg-2">
                         <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistroComunidad}">Nueva Comunidad</a>
                     </div>
-                    <br>
+                    <br> -->
                     <div class="card shadowA mb-4">
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Comunidades</h5>
-                            <!--    <form method="post" th:action="@{/gestor/gestorBuscarComunidad}">
-                                    <div class="input-group" >
-                                        <input name="searchField" type="text" class="form-control bg-light border-0 small bg-white" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-searchTop text-gray-900" type="submit">
-                                                <i class="fas fa-search fa-sm text-gray-100"></i>
-                                            </button>
-                                        </div>
+                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                    <divc lass="col-lg-4">
+                                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistroComunidad}">Nueva Comunidad</a>
                                     </div>
-                                </form>  -->
+
                             </div>
->>>>>>> d4daa74cd91bc7b9841e0c241a9dcb39b5af3db5
                         </div>
-                    </div>
-                    <div class="card-body bg-gray-100">
-                        <div class="table-responsive bg-white">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                <tr class="bg-gray-900 text-white" align="center">
-                                    <th>Nombre</th>
-                                    <th>Codigo</th>
-                                    <th>Editar/Borrar</th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr align="center">
-                                    <th>Nombre</th>
-                                    <th>Codigo</th>
-                                    <th>Editar/Borrar</th>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                <tr align="center" th:each="comunidad, info: ${listaComunidad}">
-                                    <td th:text="${comunidad.nombre}"></td>
-                                    <td th:text="${comunidad.codigo}"></td>
-                                    <td align="center">
-                                        <a style="margin-left: 10px"
-                                           th:href="@{'/gestor/gestorEditComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}">
-                                            <i class="far fa-list-alt text-orangeM"></i>
-                                        </a>
-                                        <a style="margin-left: 10px"
-                                           th:href="@{'/gestor/gestorBorarComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}">
-                                            <i class="far fa-trash-alt text-redM"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                        <div class="card-body bg-gray-100">
+                            <div class="table-responsive bg-white">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr class="bg-gray-900 text-white" align="center">
+                                        <th>Nombre</th>
+                                        <th>Codigo</th>
+                                        <th>Editar/Borrar</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr align="center">
+                                        <th>Nombre</th>
+                                        <th>Codigo</th>
+                                        <th>Editar/Borrar</th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    <tr align="center" th:each="comunidad, info: ${listaComunidad}">
+                                        <td th:text="${comunidad.nombre}"></td>
+                                        <td th:text="${comunidad.codigo}"></td>
+                                        <td align="center">
+                                            <a style="margin-left: 10px"
+                                               th:href="@{'/gestor/gestorEditComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}"
+                                               class="far fa-edit text-orangeM">
+                                               <!-- <i class="far fa-list-alt text-orangeM"></i> -->
+                                            </a>
+                                            <a style="margin-left: 10px"
+                                               th:href="@{'/gestor/gestorBorarComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}"
+                                               class="far fa-trash-alt text-redM">
+                                               <!-- <i class="far fa-trash-alt text-redM"></i> -->
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

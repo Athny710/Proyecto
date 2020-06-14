@@ -74,7 +74,8 @@ public class AdminController {
                 session.setAttribute("user", usuarioLog);
                 return "redirect:/admin";
             }else{
-                if(usuarioRepository.findByCorreo(usuarioLog.getCorreo())!=null){
+                if(usuarioRepository.findByCorreo(perfil.getCorreo())!=null){
+                    System.out.println(usuarioLog.getCorreo());
                     model.addAttribute("msg", "Este correo ya está registrado");
                     return "Administrador/A-Perfil";
                 }else{

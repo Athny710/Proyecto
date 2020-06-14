@@ -20,18 +20,6 @@
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
                             <h5 class="m-0 font-weight-bold text-redM">Productos en espera</h5>
-                            <form>
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-0 small bg-white"
-                                           placeholder="Search for..." aria-label="Search"
-                                           aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-searchTop text-gray-900" type="button">
-                                            <i class="fas fa-search fa-sm text-gray-100"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
                         </div>
                     </div>
                     <div class="card-body bg-gray-100">
@@ -45,7 +33,7 @@
                                     <th>Precio referencial de venta</th>
                                     <th>Fecha de envío</th>
                                     <th>Estado</th>
-                                    <th>Enviado por</th>
+                                    <th>Comentario</th>
                                     <th>Aceptar</th>
                                     <th>Devolver</th>
                                 </tr>
@@ -58,7 +46,7 @@
                                     <td th:text="${p.getPreciomosqoy()}"></td>
                                     <td th:text="${p.getFecha()}"></td>
                                     <td th:text="${p.getEstado()}"></td>
-                                    <td th:text="${'p.getEstado()'}"></td>
+                                    <td th:text="${p.getComentario()}"></td>
                                     <td align="center">
                                         <a th:href="@{'/sede/AceptarProducto?id='+${p.getIdenviosede()}}">
                                             <i class="far fa-list-alt text-greenM"></i>

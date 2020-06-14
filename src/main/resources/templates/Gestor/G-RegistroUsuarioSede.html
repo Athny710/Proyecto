@@ -21,40 +21,54 @@
                         </div>
                     </div>
                     <div class="card-body bg-gray-100">
+                        <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger"
+                             role="alert"></div>
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="p-5">
-                                    <form method="post" class="user" th:action="@{/gestor/guardarUsuarioSede}" th:object="${usuarios}">
-                                        <input th:field="*{idusuarios}" name="idUsuarios" type="hidden" />
+                                    <form method="post" class="user" th:action="@{/gestor/guardarUsuarioSede}"
+                                          th:object="${usuarios}">
+                                        <input th:field="*{idusuarios}" name="idUsuarios" type="hidden"/>
                                         <div class="form-group">
-                                            <input th:field="*{nombre}" type="text" class="form-control form-control-user" id="nombre" placeholder="Nombre">
-                                            <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+                                            <input th:field="*{nombre}" type="text"
+                                                   class="form-control form-control-user" id="nombre"
+                                                   placeholder="Nombre">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('nombre')}"
+                                                 th:errors="*{nombre}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <input th:field="*{apellido}" type="text" class="form-control form-control-user" id="apellido" placeholder="Apellidos">
-                                            <div class="text-danger" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></div>
+                                            <input th:field="*{apellido}" type="text"
+                                                   class="form-control form-control-user" id="apellido"
+                                                   placeholder="Apellidos">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('apellido')}"
+                                                 th:errors="*{apellido}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <input th:field="*{correo}" type="text" class="form-control form-control-user" id="correo" placeholder="Correo">
-                                            <div class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></div>
+                                            <input th:field="*{correo}" type="text"
+                                                   class="form-control form-control-user" id="correo"
+                                                   placeholder="Correo">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('correo')}"
+                                                 th:errors="*{correo}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <input th:field="*{telefono}" type="text" class="form-control form-control-user" id="telefono" placeholder="Telefono">
-                                            <div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
+                                            <input th:field="*{telefono}" type="text"
+                                                   class="form-control form-control-user" id="telefono"
+                                                   placeholder="Telefono">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('telefono')}"
+                                                 th:errors="*{telefono}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <input th:field="*{password}" type="text" class="form-control form-control-user" id="password" placeholder="Contraseña">
-                                            <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
-                                        </div>
-                                        <div class="form-group">
-                                            <select th:field="*{sede.idsede}" class="form-control" id="sede" style="border-radius:10rem">
-                                                <option th:each="sede : ${listasedes}" th:value="${sede.idsede}" th:text="${sede.nombre}"></option>
+                                            <select th:field="*{sede.idsede}" class="form-control" id="sede"
+                                                    style="border-radius:10rem">
+                                                <option th:each="sede : ${listasedes}" th:value="${sede.idsede}"
+                                                        th:text="${sede.nombre}"></option>
                                             </select>
                                         </div>
                                         <button type="submit" class="btn btn-searchTop btn-user btn-block">
                                             Guardar
                                         </button>
-                                        <a class="btn btn-searchTop btn-danger btn-block" style="border-radius:10rem" th:href="@{'/gestor/gestorListaUsuarioSede'}"> Cancelar</a>
+                                        <a class="btn btn-searchTop btn-danger btn-block" style="border-radius:10rem"
+                                           th:href="@{'/gestor/gestorListaUsuarioSede'}"> Cancelar</a>
                                     </form>
                                     <hr>
                                 </div>

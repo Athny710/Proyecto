@@ -32,6 +32,11 @@ public class Usuarios  implements Serializable {
     @ManyToOne
     @JoinColumn(name = "idsede")
     private Sede sede;
+    private String hasheado;
+
+    public String getHasheado() { return hasheado; }
+
+    public void setHasheado(String hasheado) { this.hasheado = hasheado; }
 
     public int getIdusuarios() {
         return idusuarios;

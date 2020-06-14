@@ -1,8 +1,12 @@
 package com.example.proyecto.controller;
 
+import com.example.proyecto.dto.ReporteConCamposOriginales;
+import com.example.proyecto.dto.VentaPorCodigo;
 import com.example.proyecto.entity.*;
 import com.example.proyecto.repository.*;
+import com.example.proyecto.services.VentasService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,9 +14,24 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
 import java.util.*;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/gestor")
@@ -47,6 +66,10 @@ public class GestorController {
     TamañoRepository tamañoRepository;
     @Autowired
     LineaRepository lineaRepository;
+    @Autowired
+    VentasService ventasService;
+    @Autowired
+    ServletContext context;
 
 
     // ----------------------- ENLACES ---------------------------------
@@ -58,51 +81,51 @@ public class GestorController {
 
     @GetMapping("gestorGestionVentas")
     public String registroVentas() {
+
         return "G-GestionVentas";
     }
 
 
     @GetMapping("gestorReporteVentas")
-    public String reporteVentas1() {
+    public String reporteVentas1(Model model) {
+        model.addAttribute("listaClientes",ventaRepository.findAll());
+        model.addAttribute("listasedes",sedeRepository.findAll());
+        model.addAttribute("listacomunidades",comunidadRepository.findAll());
+        model.addAttribute("listaarticulos",denominacionRepository.findAll());
         return "Gestor/G-GenReporte";
     }
 
-    @GetMapping("gestorReporteVentas2")
-    public String reporteVentas2() {
-        return "Gestor/G-GenReporte2";
-    }
-
-
     //------------------------Perfil-------------------------------------------
     @GetMapping("editarInfo")
-    public String editarInfo(@ModelAttribute("perfil") Perfil perfil, HttpSession session){
+    public String editarInfo(@ModelAttribute("perfil") Perfil perfil, HttpSession session) {
         Usuarios u = (Usuarios) session.getAttribute("user");
         perfil.setCorreo(u.getCorreo());
         perfil.setTelefono(Integer.parseInt(u.getTelefono()));
         return "Gestor/G-Perfil";
     }
+
     @PostMapping("guardarPerfil")
     public String guardarInfo(@ModelAttribute("perfil") @Valid Perfil perfil,
                               BindingResult bindingResult,
-                              RedirectAttributes attr, HttpSession session, Model model){
+                              RedirectAttributes attr, HttpSession session, Model model) {
 
-        Usuarios usuarioLog=(Usuarios) session.getAttribute("user");
+        Usuarios usuarioLog = (Usuarios) session.getAttribute("user");
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "Gestor/G-Perfil";
-        }else{
-            if(perfil.getCorreo().equals(usuarioLog.getCorreo())){
+        } else {
+            if (perfil.getCorreo().equals(usuarioLog.getCorreo())) {
                 attr.addFlashAttribute("msg", "Información personal editada con éxito");
                 usuarioLog.setCorreo(perfil.getCorreo());
                 usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
                 usuarioRepository.save(usuarioLog);
                 session.setAttribute("user", usuarioLog);
                 return "redirect:/gestor";
-            }else{
-                if(usuarioRepository.findByCorreo(usuarioLog.getCorreo())!=null){
+            } else {
+                if (usuarioRepository.findByCorreo(perfil.getCorreo()) != null) {
                     model.addAttribute("msg", "Este correo ya está registrado");
                     return "Gestor/G-Perfil";
-                }else{
+                } else {
                     attr.addFlashAttribute("msg", "Información personal editada con éxito");
                     usuarioLog.setCorreo(perfil.getCorreo());
                     usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
@@ -125,8 +148,8 @@ public class GestorController {
 
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede(Model model) {
-        List<Usuarios> listausuariosedes = usuarioRepository.findAll();
-        model.addAttribute("listausuariosedes",listausuariosedes);
+        List<Usuarios> listausuariosedes = usuarioRepository.findByTipo("sede");
+        model.addAttribute("listausuariosedes", listausuariosedes);
         return "Gestor/G-ListaUsuarioSede";
     }
 
@@ -145,11 +168,48 @@ public class GestorController {
 
 
     @PostMapping("guardarUsuarioSede")
-    public String guardarUsuarioSede(){
+    public String guardarUsuarioSede(@ModelAttribute("usuarios") @Valid Usuarios usuarios, BindingResult bindingResult,
+                                     Model model,
+                                     RedirectAttributes attr, HttpServletRequest request) throws MessagingException {
+        if (bindingResult.hasErrors()) {
+            return "Gestor/G-EditUsuarioSede";
+        } else {
+            if (usuarios.getIdusuarios() == 0 && usuarioRepository.findByCorreo(usuarios.getCorreo()) == null) {
+                usuarios.setPassword(getAlphaNumericString(12));
+                usuarios.setTipo("sede");
+                usuarios.setActivo(1);
+                String passwordSinEncriptar = usuarios.getPassword();
+                BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+                usuarios.setPassword(bCryptPasswordEncoder.encode(usuarios.getPassword()));
+                System.out.println(usuarios.getPassword());
+                usuarioRepository.save(usuarios);
+                //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
+                Email email = new Email();
+                email.emailEnviarPrimeraContraseña(usuarios.getCorreo(), passwordSinEncriptar, usuarios.getCorreo());
 
-        //Aca falta la logica de guardar y actualizar
-        //DEBO METER EL TEMA DE GUARDAR EL TIPO=SEDE Y LA CONTRASEÑA PREESTABLECIDA
-        return "redirect:/gestorListaUsuarioSede";}
+                attr.addFlashAttribute("msg", "Usuario sede creado exitosamente");
+                return "redirect:/gestor/gestorListaUsuarioSede";
+            } else if (usuarios.getIdusuarios() != 0) {
+                usuarios.setTipo("sede");
+                usuarios.setActivo(usuarioRepository.findById(usuarios.getIdusuarios()).get().getActivo());
+                usuarios.setPassword(usuarioRepository.findById(usuarios.getIdusuarios()).get().getPassword());
+                usuarios.setCorreo(usuarioRepository.findById(usuarios.getIdusuarios()).get().getCorreo());
+
+
+                usuarioRepository.save(usuarios);
+                attr.addFlashAttribute("msg", "Sede actualizada exitosamente");
+                return "redirect:/gestor/gestorListaUsuarioSede";
+            } else { //ya existe el correo, mostrar errores
+                if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null) {
+                    model.addAttribute("msgError", "Ya hay un usuario con ese correo");
+                }
+                model.addAttribute("listasedes", sedeRepository.findAll());
+                model.addAttribute(usuarios);
+
+                return "Gestor/G-RegistroUsuarioSede";
+            }
+        }
+    }
 
 
     @GetMapping("borrarUsuarioSede")
@@ -157,8 +217,10 @@ public class GestorController {
 
         Optional<Usuarios> optionalUsuarios = usuarioRepository.findById(idusuarios);
         if (optionalUsuarios.isPresent()) {
-            categoriaRepository.deleteById(idusuarios);
+            usuarioRepository.deleteById(idusuarios);
             attr.addFlashAttribute("msg", "Usuario Sede Eliminado");
+        } else {
+            attr.addFlashAttribute("msg", "Este usuario no existe");
         }
         return "redirect:/gestor/gestorListaUsuarioSede";
     }
@@ -178,7 +240,7 @@ public class GestorController {
     @GetMapping("gestorListaSedes")
     public String listaSede(Model model) {
         List<Sede> listasedes = sedeRepository.findAll();
-        model.addAttribute("listasedes",listasedes);
+        model.addAttribute("listasedes", listasedes);
         return "Gestor/G-ListaSedes";
     }
 
@@ -203,14 +265,14 @@ public class GestorController {
         if (bindingResult.hasErrors()) {
             return "Gestor/G-RegistroSede";
         } else {
-            if (sede.getIdsede() == null ) {
-                    sedeRepository.save(sede);
-                    attr.addFlashAttribute("msg", "Sede creada exitosamente");
-                    return "redirect:/gestor/gestorListaSedes";
+            if (sede.getIdsede() == null) {
+                sedeRepository.save(sede);
+                attr.addFlashAttribute("msg", "Sede creada exitosamente");
+                return "redirect:/gestor/gestorListaSedes";
             } else if (sede.getIdsede() != 0) {
-                    sedeRepository.save(sede);
-                    attr.addFlashAttribute("msg", "Sede actualizada exitosamente");
-                    return "redirect:/gestor/gestorListaSedes";
+                sedeRepository.save(sede);
+                attr.addFlashAttribute("msg", "Sede actualizada exitosamente");
+                return "redirect:/gestor/gestorListaSedes";
             } else { //EL IDSEDE ES IGUAL A 0
                 System.out.println("ID SEDE ES 0 POR ALGUA RAZON");
                 model.addAttribute(sede);
@@ -239,6 +301,8 @@ public class GestorController {
     @GetMapping(value = {"", "gestorPrincipal"})
     public String inventarioGestor(Model model) {
         List<Inventario> inventario = inventarioRepository.findAll();
+        //todo mostrar  mensaje de stock bajo
+
         model.addAttribute("inventario", inventario);
         return "Gestor/G-Inventario";
     }
@@ -280,6 +344,7 @@ public class GestorController {
         }
     }
 
+
     @GetMapping("gestorEditProducto")
     public String EditProdCompra(@ModelAttribute("formulario") FormularioProducto formulario,
                                  Model model, @RequestParam("id") int id) {
@@ -318,6 +383,7 @@ public class GestorController {
         formulario.setCrearActualizar(0);
         return "Gestor/G-RegCompra";
     }
+
 
     @PostMapping("guardarProducto")
     public String guardarProducto(@ModelAttribute("formulario") @Valid FormularioProducto formulario,
@@ -381,7 +447,6 @@ public class GestorController {
                             model.addAttribute("listaLinea", lineaRepository.findAll());
                             return "Gestor/G-RegCompra";
                         }
-
                 }
             } else if (formulario.getCrearActualizar() > 0) {
                 System.out.println("Voy a actualizar");
@@ -401,10 +466,7 @@ public class GestorController {
                 attr.addFlashAttribute("msg", "ID no válido");
                 return "redirect:/gestor/productos";
             }
-
         }
-
-
     }
 
     @GetMapping("borrarProducto")
@@ -504,7 +566,7 @@ public class GestorController {
         Optional<Comunidad> optComunidad = comunidadRepository.findById(idcomunidad);
         if (optComunidad.isPresent()) {
             comunidadRepository.deleteById(idcomunidad);
-            attr.addFlashAttribute("msg", "Comunidad borrado exitosamente");
+            attr.addFlashAttribute("msg", "Comunidad borrada exitosamente");
         }
         return "redirect:/gestor/gestorListaComunidad";
     }
@@ -535,7 +597,7 @@ public class GestorController {
 
 
     @PostMapping("gestorGuardarCategoria")
-    public String GuardaCategoria(@ModelAttribute("categoria") @Valid Categoria categoria,BindingResult bindingResult, Model model, RedirectAttributes attr) {
+    public String GuardaCategoria(@ModelAttribute("categoria") @Valid Categoria categoria, BindingResult bindingResult, Model model, RedirectAttributes attr) {
         List<Categoria> listaCategoria = categoriaRepository.buscarCategoria(categoria.getNombre(), categoria.getCodigo());
         List<Categoria> listaCategoriaPorNombre = categoriaRepository.buscarCategoriaPorNombre(categoria.getNombre());
         List<Categoria> listaCategoriaPorCodigo = categoriaRepository.buscarCategoriaPorNombre(categoria.getNombre());
@@ -546,11 +608,11 @@ public class GestorController {
             return "Gestor/G-EditCategoria";
         } else {
 
-            if (categoria.getIdCategoria() == 0 && listaCategoria.size()==0) {
+            if (categoria.getIdCategoria() == 0 && listaCategoria.size() == 0) {
                 categoriaRepository.save(categoria);
                 attr.addFlashAttribute("msg", "Categoria creada exitosamente");
                 return "redirect:/gestor/gestorListaCategoria";
-            } else if (categoria.getIdCategoria() != 0 && listaCategoria.size()==1) {
+            } else if (categoria.getIdCategoria() != 0 && listaCategoria.size() == 1) {
                 categoriaRepository.save(categoria);
                 attr.addFlashAttribute("msg", "Categoria actualizada exitosamente");
                 return "redirect:/gestor/gestorListaCategoria";
@@ -564,7 +626,6 @@ public class GestorController {
 
 
     }
-
 
 
     @GetMapping("gestorEditCategoria")
@@ -657,17 +718,17 @@ public class GestorController {
             //validacion codigo de  artesano (INICIALES)
             String aux1 = null;
             String aux2 = null;
-            if(!artesano.getApellidoMaterno().isEmpty()) { // codigos con apellido materno
+            if (!artesano.getApellidoMaterno().isEmpty()) { // codigos con apellido materno
                 aux1 = artesano.getNombre().substring(0, 1) + artesano.getApellidoPaterno().substring(0, 1) + artesano.getApellidoMaterno().substring(0, 1);
                 aux2 = artesano.getNombre().substring(0, 2) + artesano.getApellidoPaterno().substring(0, 1) + artesano.getApellidoMaterno().substring(0, 1);
-            }else{// codigos sin apellido materno
+            } else {// codigos sin apellido materno
                 aux1 = artesano.getNombre().substring(0, 1) + artesano.getApellidoPaterno().substring(0, 1);
                 aux2 = artesano.getNombre().substring(0, 2) + artesano.getApellidoPaterno().substring(0, 1);
             }
             //fin validacion codigo de artesano
 
-            if(artesanoRepository.findByCodigo(artesano.getCodigo()).size() >= 1 ||  // en caso el codigo se repita o no tenga un codigo esperado
-                    !(artesano.getCodigo().equalsIgnoreCase(aux1) || artesano.getCodigo().equalsIgnoreCase(aux2)) ){
+            if (artesanoRepository.findByCodigo(artesano.getCodigo()).size() >= 1 ||  // en caso el codigo se repita o no tenga un codigo esperado
+                    !(artesano.getCodigo().equalsIgnoreCase(aux1) || artesano.getCodigo().equalsIgnoreCase(aux2))) {
                 model.addAttribute("listaComunidad", comunidadRepository.findAll());
                 attr.addFlashAttribute("msgError", "Recuerde que el codigo debe ser las iniciales del artesano");
                 return "Gestor/G-RegistroArtesano";
@@ -682,17 +743,14 @@ public class GestorController {
                 artesanoRepository.save(artesano);
                 attr.addFlashAttribute("msg", "Artesano creado exitosamente");
                 return "redirect:/gestor/gestorListaArtesano";
-            }
-
-
-            else if (artesano.getIdArtesano() != 0) { // Editar Artesano
+            } else if (artesano.getIdArtesano() != 0) { // Editar Artesano
                 Optional<Artesano> artesano2 = artesanoRepository.findById(artesano.getIdArtesano());
-                if(artesano2.isPresent()) { // El ID ESTA BIEN
+                if (artesano2.isPresent()) { // El ID ESTA BIEN
                     artesano.setComunidad(comunidadRepository.findById(artesano.getComunidad().getIdComunidad()).get());
                     artesanoRepository.save(artesano);
                     attr.addFlashAttribute("msg", "Artesano actualizado exitosamente");
                     return "redirect:/gestor/gestorListaArtesano";
-                }else{ // EL ID NO ESTA BIEN
+                } else { // EL ID NO ESTA BIEN
                     attr.addFlashAttribute("msg", "error en el ID del artesano");
                     return "redirect:/gestor/gestorListaArtesano";
                 }
@@ -728,8 +786,18 @@ public class GestorController {
         return "Gestor/G-ProdRecha";
     }
 
+    @GetMapping("borrarRechazoDeEnvio")
+    public String borrarProductosRechazados(@RequestParam("id") int idRechazado, RedirectAttributes attr) {
+        Optional<Estadoenviosede> obtenerEstado = estadoenviosedeRepository.findById(idRechazado);
+        if (obtenerEstado.isPresent()) {
+            estadoenviosedeRepository.deleteById(idRechazado);
+            attr.addFlashAttribute("msg", "El producto rechazado ha sido eliminado exitosamente");
+        }
+        return "redirect:/gestor/gestorProductosRechazados";
+    }
+
     @GetMapping("gestorEditarEnvio")
-    public String editarEnvio(@RequestParam("id") int id, @ModelAttribute("estadoenviosede") Estadoenviosede estadoenviosede, Model model){
+    public String editarEnvio(@RequestParam("id") int id, @ModelAttribute("estadoenviosede") Estadoenviosede estadoenviosede, Model model) {
         Optional<Estadoenviosede> estadoPorID = estadoenviosedeRepository.findById(id);
         if (estadoPorID.isPresent()) {
             estadoenviosede = estadoPorID.get();
@@ -738,6 +806,7 @@ public class GestorController {
             List<Sede> listaSede = sedeRepository.findAll();
             model.addAttribute("listaInventario", listaInventario);
             model.addAttribute("listaSede", listaSede);
+            //todo hacer que de alguna manera se borre el estadoenviosede con estado "rechazado"
             return "Gestor/G-GestionEnvios";
         } else {
             return "redirect:/gestor/gestorProductosRechazados";
@@ -758,7 +827,6 @@ public class GestorController {
     }
 
 
-
     @PostMapping("gestorGuardarEnvio")
     public String guardarEnvio(@ModelAttribute("estadoenviosede") @Valid Estadoenviosede estadoenviosede, BindingResult bindingResult,
                                RedirectAttributes attr,
@@ -772,9 +840,8 @@ public class GestorController {
 
 
         } else {
-            System.out.println("tal vez no la cagaste no binding errors");
 
-
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + estadoenviosede.getIdenviosede());
             int invkey = estadoenviosede.getInventariosede().getInventario().getIdInventario();
             int sedkey = estadoenviosede.getInventariosede().getSede().getIdsede();
             if (sedeRepository.findById(sedkey).isPresent() && inventarioRepository.findById(invkey).isPresent()) {
@@ -783,9 +850,9 @@ public class GestorController {
                 List<Inventariosede> inventariosede1 = inventariosedeRepository.findByInventarioAndSede(inventario1.get(), sede1.get());
                 if ((inventario1.get().getStock() - estadoenviosede.getCantidad()) >= 0) {
                     //conseguir inventariosede
-                    if (!inventariosede1.isEmpty()) {
+                    if (!inventariosede1.isEmpty()) {// si ya hay un registro se usa
                         estadoenviosede.setInventariosede(inventariosede1.get(0));
-                    } else {
+                    } else {// sino se crea uno
                         Inventariosede inventariosede2 = new Inventariosede();
                         inventariosede2.setInventario(inventario1.get());
                         inventariosede2.setSede(sede1.get());
@@ -795,7 +862,25 @@ public class GestorController {
                     }
                     //fin conseguir invetariosede
                     estadoenviosede.setEstado("En camino");
-                    estadoenviosedeRepository.save(estadoenviosede);
+                    if (estadoenviosede.getIdenviosede() != 0) {// este es un reenvio (creo)
+                        if (estadoenviosedeRepository.findById(estadoenviosede.getIdenviosede()).get().getEstado().equalsIgnoreCase("rechazado")) {
+                            //es un producto rechazado
+                            estadoenviosedeRepository.deleteById(estadoenviosede.getIdenviosede());
+                            estadoenviosedeRepository.save(estadoenviosede);
+                        }else{
+                            //fue hackerman
+                            List<Inventario> listaInventario = inventarioRepository.findAll();
+                            List<Sede> listaSede = sedeRepository.findAll();
+                            model.addAttribute("listaInventario", listaInventario);
+                            model.addAttribute("listaSede", listaSede);
+                            model.addAttribute("msg", "Por favor no editar el HTML con F12 :>");
+                            return "Gestor/G-GestionEnvios";
+                        }
+                        //todo logica de borrar el anterior y aquello ??????
+                    } else {//este no es un reenvio
+                        estadoenviosedeRepository.save(estadoenviosede);
+                    }
+
                     int cantidadrestada = estadoenviosede.getInventariosede().getInventario().getStock() - estadoenviosede.getCantidad();
                     estadoenviosede.getInventariosede().getInventario().setStock(cantidadrestada);
                 } else { // cantidad restada menor a 0
@@ -803,7 +888,7 @@ public class GestorController {
                     List<Sede> listaSede = sedeRepository.findAll();
                     model.addAttribute("listaInventario", listaInventario);
                     model.addAttribute("listaSede", listaSede);
-                    attr.addFlashAttribute("msg", "Se esta tratando de enviar mas de lo que se tiene");
+                    model.addAttribute("msg", "Se esta tratando de enviar mas de lo que se tiene");
                     return "Gestor/G-GestionEnvios";
                 }
                 System.out.println("El stock nuevo del inventario es:" + estadoenviosede.getInventariosede().getInventario().getStock());
@@ -811,9 +896,7 @@ public class GestorController {
                 attr.addFlashAttribute("msg", "Envio guardado correctamente");
                 return "redirect:/gestor/gestorProductosEnviados";
             }
-
-
-            System.out.println("la ide del envio sede es: " + estadoenviosede.getIdenviosede());
+            // aqui solo se entra si alguien edita el HTML con F12
             List<Sede> listaSede = sedeRepository.findAll();
             model.addAttribute("listaSede", listaSede);
             List<Inventario> listaInventario = inventarioRepository.findAll();
@@ -831,6 +914,8 @@ public class GestorController {
     //--------------------CRUD VENTAS---------------
     @GetMapping("/nuevaVenta")
     public String nuevaVenta(@ModelAttribute("venta") Venta venta, Model model) {
+        List<Inventario> listaInventario = inventarioRepository.findAll();
+        model.addAttribute("listaInventario", listaInventario);
         return "Gestor/G-NuevaVenta";
     }
 
@@ -841,28 +926,40 @@ public class GestorController {
         return "Gestor/G-GestionVentas";
     }
 
+
     @PostMapping("/guardarVenta")
-    public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult bindingResult, RedirectAttributes att) {
+    public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult bindingResult, Model model,
+                               HttpSession session, RedirectAttributes attr) {
 
         if (bindingResult.hasErrors()) {
+            List<Inventario> listaInventario = inventarioRepository.findAll();
+            model.addAttribute("listaInventario", listaInventario);
             return "Gestor/G-NuevaVenta";
         } else {
-            Inventario inventario = new Inventario();
-            Usuarios usuarios = new Usuarios();
-            Tienda tienda = new Tienda();
 
-            inventario.setIdInventario(1);
-            usuarios.setIdusuarios(1);
-            tienda.setIdtienda(1);
 
-            if (venta.getIdventa() == 0) {
-                venta.setInventario(inventario);
-                venta.setUsuarios(usuarios);
-                venta.setTienda(tienda);
-                ventaRepository.save(venta);
-                att.addFlashAttribute("msg", "Venta añadida exitosamente");
+            int invkey = venta.getInventario().getIdInventario();
+            if (inventarioRepository.findById(invkey).isPresent()) {
+                Optional<Inventario> inventario1 = inventarioRepository.findById(invkey);
+                if ((inventario1.get().getStock() - venta.getCantidad()) >= 0) {
+                    inventario1.get().setStock(inventario1.get().getStock() - venta.getCantidad());
+                    Usuarios u = (Usuarios) session.getAttribute("user");
+                    venta.setInventario(inventario1.get());
+                    venta.setUsuarios(u);
+                    ventaRepository.save(venta);
+                    attr.addFlashAttribute("msg", "Venta añadida exitosamente");
+                    return "redirect:/gestor/gestionVentas";
+                } else {
+                    List<Inventario> listaInventario = inventarioRepository.findAll();
+                    model.addAttribute("listaInventario", listaInventario);
+                    attr.addFlashAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
+                    return "redirect:/gestor/nuevaVenta";
+                }
+
+            } else {
+                return "Gestor/G-NuevaVenta";
+
             }
-            return "redirect:/gestor/gestionVentas";
 
         }
     }
@@ -876,5 +973,215 @@ public class GestorController {
         return "gestor/G-GestionVentas";
     }
 
+    // Java program generate a random AlphaNumeric String
+    // using Math.random() method
+    // function to generate a random string of length n
+    public String getAlphaNumericString(int n) {
 
+        // chose a Character random from this String
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        // create StringBuffer size of AlphaNumericString
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+
+            // generate a random number between
+            // 0 to AlphaNumericString variable length
+            int index
+                    = (int) (AlphaNumericString.length()
+                    * Math.random());
+
+            // add Character one by one in end of sb
+            sb.append(AlphaNumericString
+                    .charAt(index));
+        }
+
+        return sb.toString();
+    }
+
+///////////// REPORTES DE EXCEL ///////////////////
+
+    //EXCEL !!
+    @PostMapping("createExcelPorCodigo")
+    public void crearExcelCodigo(@RequestParam("codigo") String codigo, @RequestParam("nombre") String nombre, HttpServletRequest request, HttpServletResponse response) {
+        List<VentaPorCodigo> ventaCodigo = ventasService.getVentasPorCodigo(codigo);
+        boolean isFlag = ventasService.createExcelXCodigo(ventaCodigo, context, request, response);
+        if (isFlag) {
+            String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_codigo" + ".xls");
+            filedownload(fullpath, response, "ventas.xls");
+        }
+    }
+
+    @PostMapping("crearExcelPorCliente")
+    public void crearExcelCliente(@RequestParam("cliente") String cliente, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response) {
+        if (mes.equals("todo")){
+            List<ReporteConCamposOriginales> ventaXClienteAnual = ventasService.getVentasPorClienteAnual(año,cliente);
+            String titulo = "Ventas anuales realizadas al cliente " + cliente ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXClienteAnual,titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_clientes_anual.xls");
+            }
+        }else if (mes.equals("trimestre")){
+            List<ReporteConCamposOriginales> ventaXClienteTrimestral = ventasService.getVentasPorClienteTrimestral(año,cliente);
+            String titulo = "Ventas trimestrales realizadas al cliente " + cliente ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXClienteTrimestral,titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_clientes_trimestral.xls");
+            }
+        }else {
+            List<ReporteConCamposOriginales> ventaXClienteMensual = ventasService.getVentasPorCliente(mes, año, cliente);
+            String titulo = "Ventas mensuales realizadas al cliente " + cliente ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXClienteMensual,titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_clientes_mensual.xls");
+            }
+        }
+    }
+
+    @PostMapping("crearExcelPorSede")
+    public void crearExcelPorSede(@RequestParam("idsede") String idsede, @RequestParam("mes1") String mes, @RequestParam("año1") String año, HttpServletRequest request, HttpServletResponse response) {
+        if (mes.equals("todo")){
+            List<ReporteConCamposOriginales> ventaXSedeAnual = ventasService.getVentasPorSedeAnual(año,idsede);
+            String titulo = "Ventas anuales realizadas por la sede " + idsede ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXSedeAnual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_sedes_anual.xls");
+            }
+        }else if (mes.equals("trimestre")){
+            List<ReporteConCamposOriginales> ventaXSedeTrimestral = ventasService.getVentasPorSedeTrimestral(año,idsede);
+            String titulo = "Ventas trimestrales realizadas al cliente " + idsede ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXSedeTrimestral, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_sedes_trimestral.xls");
+            }
+        }else {
+            List<ReporteConCamposOriginales> ventaXSedeMensual = ventasService.getVentasPorSede(mes, año, idsede);
+            String titulo = "Ventas mensuales realizadas al cliente " + idsede ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXSedeMensual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_sedes_mensual.xls");
+            }
+        }
+    }
+
+    @PostMapping("crearExcelPorArticulo")
+    public void crearExcelPorArticulo(@RequestParam("articulo") String articulo, @RequestParam("mes2") String mes, @RequestParam("año2") String año, HttpServletRequest request, HttpServletResponse response) {
+        if (mes.equals("todo")){
+            List<ReporteConCamposOriginales> ventaXArticuloAnual = ventasService.getVentasPorArticuloAnual(año,articulo);
+            String titulo = "Ventas anuales del artículo " + articulo ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloAnual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_articulo_anual.xls");
+            }
+        }else if (mes.equals("trimestre")){
+            List<ReporteConCamposOriginales> ventaXArticuloTrimestral = ventasService.getVentasPorArticuloTrimestral(año,articulo);
+            String titulo = "Ventas trimestrales del artículo " + articulo ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloTrimestral, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_articulo_trimestral.xls");
+            }
+        }else {
+            List<ReporteConCamposOriginales> ventaXArticuloMensual = ventasService.getVentasPorArticuloMensual(mes, año, articulo);
+            String titulo = "Ventas mensuales del artículo " + articulo ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloMensual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_articulo_mensual.xls");
+            }
+        }
+    }
+
+    @PostMapping("crearExcelPorComunidad")
+    public void crearExcelPorComunidad(@RequestParam("comunidad") String comunidad, @RequestParam("mes3") String mes, @RequestParam("año3") String año, HttpServletRequest request, HttpServletResponse response) {
+        if (mes.equals("todo")){
+            List<ReporteConCamposOriginales> ventaXComunidadAnual = ventasService.getVentasPorComunidadAnual(año,comunidad);
+            String titulo = "Ventas anuales de los productos de la comunidad " + comunidad ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadAnual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_comunidad_anual.xls");
+            }
+        }else if (mes.equals("trimestre")){
+            List<ReporteConCamposOriginales> ventaXComunidadTrimestral = ventasService.getVentasPorComunidadTrimestral(año,comunidad);
+            String titulo = "Ventas trimestrales de los productos de la comunidad " + comunidad ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadTrimestral, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_comunidad_trimestral.xls");
+            }
+        }else {
+            List<ReporteConCamposOriginales> ventaXComunidadMensual = ventasService.getVentasPorComunidadMensual(mes, año, comunidad);
+            String titulo = "Ventas mensuales de los productos de la comunidad " + comunidad ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadMensual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_comunidad_mensual.xls");
+            }
+        }
+    }
+
+    @PostMapping("crearExcelTotal")
+    public void crearExcelTotal(@RequestParam("mes4") String mes, @RequestParam("año4") String año, HttpServletRequest request, HttpServletResponse response) {
+        if (mes.equals("todo")){
+            List<ReporteConCamposOriginales> ventaXAnual = ventasService.getVentaAnual(año);
+            String titulo = "Ventas totales de Mosqoy del año " + año ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXAnual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_total_anual.xls");
+            }
+        }else if (mes.equals("trimestre")){
+            List<ReporteConCamposOriginales> ventaXTrimestral = ventasService.getVentaTrimestral(año);
+            String titulo = "Ventas trimestrales de Mosqoy del año " + año ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXTrimestral, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_total_trimestral.xls");
+            }
+        }else {
+            List<ReporteConCamposOriginales> ventaXMensual = ventasService.getVentaMensual(mes,año);
+            String titulo = "Ventas Mosqoy de " + mes + " del año " + año ;
+            boolean isFlag = ventasService.createExcelXCliente(ventaXMensual, titulo, context, request, response);
+            if (isFlag) {
+                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                filedownload(fullpath, response, "ventas_total_mensual.xls");
+            }
+        }
+    }
+
+    private void filedownload(String fullpath, HttpServletResponse response, String filename) {
+        File file = new File(fullpath);
+        final int BUFFER_SIZE = 4096;
+        if (file.exists()) {
+            try {
+                FileInputStream inputStream = new FileInputStream(file);
+                String mimeType = context.getMimeType(fullpath);
+                response.setContentType(mimeType);
+                response.setHeader("content-disposition", "attachment; filename=" + filename);
+                OutputStream outputStream = response.getOutputStream();
+                byte[] buffer = new byte[BUFFER_SIZE];
+                int bytesRead = -1;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                inputStream.close();
+                outputStream.close();
+                file.delete();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

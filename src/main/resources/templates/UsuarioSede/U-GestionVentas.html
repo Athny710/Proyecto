@@ -16,17 +16,17 @@
             <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
             <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
             <div class="container-fluid">
-                <div class="col-lg-2">
-                    <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/sede/nuevaVenta}">Añadir Venta</a>
-                </div>
-                <br>
                 <div class="card shadowA mb-4">
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
                             <h5 class="m-0 font-weight-bold text-redM">Lista de Ventas</h5>
                             <div>
-                                <a th:href="@{/sede/createpdf}" style="float:right;"><img th:src="@{/img/pdf-icon.png}" style="width:40px;margin-left: 10px;"></a>
-                                <a th:href="@{/sede/createexcel}" style="float:right;"><img th:src="@{/img/excel-xls-icon.png}" style="width:40px;"></a>
+                                <a th:href="@{/sede/createpdf}" style="float:right;"><img th:src="@{/img/pdf-icon.png}"
+                                                                                          style="width:40px;margin-left: 10px;"></a>
+                                <a th:href="@{/sede/createexcel}" style="float:right;"><img
+                                        th:src="@{/img/excel-xls-icon.png}" style="width:40px;"></a>
+                                <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/sede/nuevaVenta}">Añadir
+                                    Venta</a>
                             </div>
                         </div>
                     </div>
@@ -36,10 +36,10 @@
                                 <thead>
                                 <tr class="bg-gray-900 text-white" align="center">
                                     <th>Nombre del Cliente</th>
-                                    <th>Tipo de documento de Identidad</th>
                                     <th>N° de documento de Identidad</th>
-                                    <th>Tipo de documento de Venta</th>
                                     <th>Número de documento de Venta</th>
+                                    <th>Producto</th>
+                                    <th>Sede</th>
                                     <th>Lugar de Venta</th>
                                     <th>Precio unitario de Venta</th>
                                     <th>Cantidad adquirida</th>
@@ -49,10 +49,10 @@
                                 <tbody>
                                 <tr th:each="venta, info : ${listaVentas}">
                                     <td th:text="${venta.nombrecliente}"></td>
-                                    <td th:text="${venta.tipodocumentoidentidad}"></td>
                                     <td th:text="${venta.numerodocumentoidentidad}"></td>
-                                    <td th:text="${venta.tipodocumentoventa}"></td>
                                     <td th:text="${venta.numerodocumentoventa}"></td>
+                                    <td th:text="${venta.inventario.producto.codigoGenerado}"></td>
+                                    <td th:text="${venta.tienda.getSede().getNombre()}"></td>
                                     <td th:text="${venta.lugardeventa}"></td>
                                     <td th:text="${venta.preciounitarioventa}"></td>
                                     <td th:text="${venta.cantidad}"></td>
