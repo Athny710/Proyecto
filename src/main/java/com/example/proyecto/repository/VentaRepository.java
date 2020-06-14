@@ -13,19 +13,19 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface VentaRepository extends JpaRepository<Venta,Integer> {
+public interface VentaRepository extends JpaRepository<Venta, Integer> {
 
     @Query(value = "select * from venta where nombreCliente = ?1 ",
             nativeQuery = true)
-    List<Venta> buscarPorNombre (String nombre);
+    List<Venta> buscarPorNombre(String nombre);
 
-<<<<<<< HEAD
+
     @Query(value = "select * from venta where nombreCliente = ?1 ",
             nativeQuery = true)
     List<Venta> buscarPorSede(int sedeid);
 
     List<Venta> findByTienda(Tienda tienda);
-=======
+
     @Query(value = "select v.numeroDocumentoIdentidad as dnioruc, v.nombreCliente as cliente, v.numeroDocumentoVenta as numerodoc, v.lugarDeVenta as lugar, p.codigoGenerado as codgen,\n" +
             "v.precioUnitarioVenta as preciounit, v.fecha as fecha, v.Cantidad as cantidad from venta v\n" +
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
@@ -188,6 +188,5 @@ public interface VentaRepository extends JpaRepository<Venta,Integer> {
             "order by fech asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteTrimestralTotal(String año);
 
->>>>>>> ed94dca40d42f2d5849acd4e33aba373045eb8fa
 
 }
