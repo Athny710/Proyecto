@@ -16,4 +16,7 @@ public interface ComunidadRepository extends JpaRepository<Comunidad, Integer> {
             nativeQuery = true)
     List<Comunidad> buscarPorNombre (String nombre, String codigo);
 
+    List<Comunidad> findByNombre(String name);
+
+
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -18,6 +19,9 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import java.util.*;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import javax.servlet.ServletContext;
@@ -60,6 +64,8 @@ public class GestorController {
     DenominacionRepository denominacionRepository;
     @Autowired
     TamañoRepository tamañoRepository;
+    @Autowired
+    LineaRepository lineaRepository;
     @Autowired
     VentasService ventasService;
     @Autowired
@@ -301,6 +307,13 @@ public class GestorController {
         return "Gestor/G-Inventario";
     }
 
+    @GetMapping("productos")
+    public String listarProductos(Model model) {
+        List<Producto> productos = productoRepository.findAll();
+        model.addAttribute("productos", productos);
+        return "Gestor/G-ListarProductos";
+    }
+
     @GetMapping("gestorListarSinStock")
     public String listaSinStock(Model model) {
         List<Inventario> listaSinStock = inventarioRepository.findByStock(0);
@@ -331,37 +344,153 @@ public class GestorController {
         }
     }
 
-    @GetMapping("gestorEditProdCompra")
-    public String EditProdCompra(@ModelAttribute("inventario") Inventario inventario, @ModelAttribute("producto") Producto producto,
-                                 @ModelAttribute("historial") Historial historial,
-                                 Model model, @RequestParam("id") int id) {
 
-        return "Gestor/G-EditProdCompra";
+    @GetMapping("gestorEditProducto")
+    public String EditProdCompra(@ModelAttribute("formulario") FormularioProducto formulario,
+                                 Model model, @RequestParam("id") int id) {
+        formulario.setCrearActualizar(id);
+        Optional<Producto> producto = productoRepository.findById(id);
+        if (producto.isPresent()){
+            Producto productooooo = producto.get();
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
+            model.addAttribute("listaCategorias", categoriaRepository.findAll());
+            model.addAttribute("listaTama", tamañoRepository.findAll());
+            model.addAttribute("listaLinea", lineaRepository.findAll());
+            formulario.setDescripcion(productooooo.getDenominacion().getDescripcion());
+            formulario.setNombreCategoria(productooooo.getCategoria().getNombre());
+            formulario.setNombreComun(productooooo.getComunidad().getNombre());
+            formulario.setNombreLinea(productooooo.getDenominacion().getLinea().getNombre());
+            formulario.setNombreProducto(productooooo.getDenominacion().getNombre());
+            formulario.setNombreTama(productooooo.getTamanho().getNombre());
+            formulario.setCodigoProducto(productooooo.getDenominacion().getCodigonombre());
+            formulario.setCodDescripcion(productooooo.getDenominacion().getCodigodescripcion());
+            return "Gestor/G-EditProdCompra";
+        }else{
+            return "redirect:/gestor/productos";
+        }
+
     }
 
     @GetMapping("gestorRegProducto")
-    public String RegistroCompra(@ModelAttribute("inventario") Inventario inventario, @ModelAttribute("producto") Producto producto,
-                                 @ModelAttribute("historial") Historial historial,
+    public String RegistroCompra(@ModelAttribute("formulario") FormularioProducto formulario,
                                  Model model) {
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
         model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
         model.addAttribute("listaCategorias", categoriaRepository.findAll());
         model.addAttribute("listaTama", tamañoRepository.findAll());
-        model.addAttribute("listaAdqui", adquisicionRepository.findAll());
+        model.addAttribute("listaLinea", lineaRepository.findAll());
+        formulario.setCrearActualizar(0);
         return "Gestor/G-RegCompra";
     }
 
-    @GetMapping("/guardarProducto")
-    public String guardarProducto(@ModelAttribute("inventario") @Valid Inventario inventario, @ModelAttribute("producto") @Valid Producto producto,
-                                  @ModelAttribute("historial") @Valid Historial historial, BindingResult bindingResult, RedirectAttributes attr) {
 
+    @PostMapping("guardarProducto")
+    public String guardarProducto(@ModelAttribute("formulario") @Valid FormularioProducto formulario,
+                                  BindingResult bindingResult, RedirectAttributes attr, Model model) {
 
-        return "redirect:/gestorPrincipal";
+        if (bindingResult.hasErrors() ){
+            System.out.println("Tiene errores");
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
+            model.addAttribute("listaCategorias", categoriaRepository.findAll());
+            model.addAttribute("listaTama", tamañoRepository.findAll());
+            model.addAttribute("listaLinea", lineaRepository.findAll());
+            return "Gestor/G-RegCompra";
+        }else {
+            System.out.println("NO Tiene errores");
+            List<Categoria> categoria1 = categoriaRepository.findByNombre(formulario.getNombreCategoria());
+            List<Linea> linea1 = lineaRepository.findByNombre(formulario.getNombreLinea());
+            List<Comunidad> comu = comunidadRepository.findByNombre(formulario.getNombreComun());
+            List<Tamaño> tamaños = tamañoRepository.findByNombre(formulario.getNombreTama());
+            List<Denominacion> denomi1 = denominacionRepository.buscarRepetido(formulario.getNombreProducto(), formulario.getCodigoProducto(),
+                    formulario.getDescripcion(), formulario.getCodDescripcion());
+
+            if (formulario.getCrearActualizar() == 0) {
+                System.out.println("Voy a crear");
+                if (!denomi1.isEmpty()) {
+                    model.addAttribute("msg", "Los datos ingresados ya existen");
+                    model.addAttribute("listaComunidades", comunidadRepository.findAll());
+                    model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
+                    model.addAttribute("listaCategorias", categoriaRepository.findAll());
+                    model.addAttribute("listaTama", tamañoRepository.findAll());
+                    model.addAttribute("listaLinea", lineaRepository.findAll());
+                    return "Gestor/G-RegCompra";
+                } else {
+                        if (!categoria1.isEmpty() && !linea1.isEmpty() && !comu.isEmpty() && !tamaños.isEmpty()) {
+                            Producto producto = new Producto();
+                            Denominacion denominacion = new Denominacion();
+                            denominacion.setCodigodescripcion(formulario.getCodDescripcion());
+                            denominacion.setCodigonombre(formulario.getCodigoProducto());
+                            denominacion.setNombre(formulario.getNombreProducto());
+                            denominacion.setDescripcion(formulario.getDescripcion());
+                            producto.setAdquisicion(adquisicionRepository.findById(1).get());
+                            producto.setCategoria(categoria1.get(0));
+                            producto.setComunidad(comu.get(0));
+                            producto.setTamanho(tamaños.get(0));
+                            denominacion.setLinea(linea1.get(0));
+                            denominacionRepository.save(denominacion);
+                            List<Denominacion> denomi2 = denominacionRepository.findByNombre(denominacion.getNombre());
+                            producto.setDenominacion(denomi2.get(0));
+                            String codigo = denomi2.get(0).getLinea().getCodigo() + categoria1.get(0).getCodigo() + denomi2.get(0).getCodigonombre() +
+                                    denomi2.get(0).getCodigodescripcion() + tamaños.get(0).getCodigo() + comu.get(0).getCodigo();
+                            producto.setCodigoGenerado(codigo);
+                            productoRepository.save(producto);
+                            attr.addFlashAttribute("msg1", "Guardado Exitósamente");
+                            return "redirect:/gestor/productos";
+                        } else {
+                            model.addAttribute("msg", "Valor seleccionado nó válido");
+                            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+                            model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
+                            model.addAttribute("listaCategorias", categoriaRepository.findAll());
+                            model.addAttribute("listaTama", tamañoRepository.findAll());
+                            model.addAttribute("listaLinea", lineaRepository.findAll());
+                            return "Gestor/G-RegCompra";
+                        }
+                }
+            } else if (formulario.getCrearActualizar() > 0) {
+                System.out.println("Voy a actualizar");
+                Optional<Producto> producto2 = productoRepository.findById(formulario.getCrearActualizar());
+                    if (producto2.isPresent()) {
+                        Producto producto1 = producto2.get();
+                        producto1.getDenominacion().setDescripcion(formulario.getDescripcion());
+                        producto1.getDenominacion().setNombre(formulario.getNombreProducto());
+                        productoRepository.save(producto1);
+                        attr.addFlashAttribute("msg1", "Actualizado Correctamente");
+                        return "redirect:/gestor/productos";
+                    } else {
+                        attr.addFlashAttribute("msg", "ID no válido");
+                        return "redirect:/gestor/productos";
+                    }
+            } else {
+                attr.addFlashAttribute("msg", "ID no válido");
+                return "redirect:/gestor/productos";
+            }
+        }
     }
 
     @GetMapping("borrarProducto")
-    public String borrarProducto(@ModelAttribute("inventario") Inventario inventario, Model model) {
-        return "redirect:/gestorPrincipal";
+    public String borrarProducto(@RequestParam("id") int id, Model model, RedirectAttributes attr) {
+
+        Optional<Producto> producto1 = productoRepository.findById(id);
+        if(producto1.isPresent()){
+            Producto producto2 = producto1.get();
+            List<Inventario> lista = inventarioRepository.findByProducto(producto2);
+            if(lista.isEmpty()){
+                productoRepository.deleteById(producto2.getIdProducto());
+                denominacionRepository.deleteById(producto2.getDenominacion().getIddenominacion());
+                attr.addFlashAttribute("msg1","Producto borrado exitósamente");
+                return "redirect:/gestor/productos";
+            }else {
+                attr.addFlashAttribute("msg","Producto en Inventario, No puede ser borrado");
+                return "redirect:/gestor/productos";
+            }
+
+        }else{
+            attr.addFlashAttribute("msg","ID no válido");
+            return "redirect:/gestor/productos";
+        }
+
     }
 
     // ----------------------- FIN CRUD INVENTARIO ---------------------------------

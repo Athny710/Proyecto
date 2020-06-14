@@ -17,119 +17,65 @@
                         <div class="card-header py-3">
                             <h4 class="m-0 font-weight-bold text-gray-900">Registrando un Producto</h4>
                         </div>
+                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
                         <div class="card-body">
-                            <form method="post" th:action="@{/gestor/guardarProducto}">
-                                <div class="form-group col-md-6">
-                                    <label >Modalidad</label>
-                                    <select class="form-control" name="producto.adquisicion.modalidad" id="producto.adquisicion.modalidad">
-                                        <option th:value="compra">Compra</option>
-                                        <option th:value="consignación">Consignación</option>
-                                    </select>
+                            <form method="post" th:action="@{/gestor/guardarProducto}"  th:object="${formulario}">
+                                <input th:value="*{crearActualizar}" name="crearActualizar" type="hidden"/>
+                                <div  class="form-group col-md-6" >
+                                    <label >Nombre del Producto</label>
+                                    <input type="text" class="form-control" th:field="*{nombreProducto}">
+                                    <div class="text-danger" th:if="${#fields.hasErrors('nombreProducto')}" th:errors="*{nombreProducto}" ></div>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label >Número de pedido</label>
-                                    <input type="email" class="form-control" id="historial.numeropedido"  name="historial.numeropedido"
-                                           th:value="${historial.numeropedido}">
+                                <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6" >
+                                    <label >Código del Nombre del Producto</label>
+                                    <input type="text" class="form-control" id="codigoProducto" name="codigoProducto"
+                                           th:value="*{codigoProducto}">
+                                    <div class="text-danger" th:if="${#fields.hasErrors('codigoProducto')}" th:errors="*{codigoProducto}" ></div>
                                 </div>
 
-                                <div class="form-group col-md-6">
-                                    <label >Línea</label>
-                                    <select class="form-control" name="producto.denominacion.linea" id="producto.denominacion.linea">
-                                        <option th:each="deno : ${ listaDenominaciones}" th:value="${deno.linea.idLinea}"
-                                                th:text="${deno.linea.nombre}">uno</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label >Categoría</label>
-                                    <select class="form-control" name="producto.categoria.nombre" id="producto.categoria.nombre">
-                                        <option th:each="cat: ${listaCategorias}" th:value="${cat.idCategoria}"
-                                                th:text="${cat.nombre}">uno</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label >Nombre del Producto</label>
-                                    <select class="form-control" name="producto.denominacion.nombre" id="producto.denominacion.nombre">
-                                        <option th:each="denominaciones : ${listaDenominaciones}" th:value="${denominaciones.idDenominacion}"
-                                                th:text="${denominaciones.nombre}">uno</option>
-                                    </select>
-                                </div>
-                                //PREGUNTAR
                                 <div class="form-group col-md-6">
                                     <label >Descripción</label>
-                                    <input type="text" class="form-control" id="producto.denominacion.descripcion" name="producto.denominacion.descripcion"
-                                          >
+                                    <input type="text" class="form-control" id="descripcion" name="descripcion"
+                                           th:value="*{descripcion}">
+                                    <div class="text-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" ></div>
                                 </div>
-                                //PREGUNTAR
-                                <div class="form-group col-md-6">
+                                <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
+                                    <label >Código de la Descripción</label>
+                                    <input type="text" class="form-control" id="codDescripcion" name="codDescripcion"
+                                           th:value="*{codDescripcion}">
+                                    <div class="text-danger" th:if="${#fields.hasErrors('codDescripcion')}" th:errors="*{codDescripcion}" ></div>
+                                </div>
+                                <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
+                                    <label >Categoría</label>
+                                    <select class="form-control" name="nombreCategoria" id="nombreCategoria">
+                                        <option th:each="cat: ${listaCategorias}" th:value="${cat.nombre}"
+                                                th:text="${cat.nombre}" th:selected="${cat.nombre.equals(formulario.nombreCategoria)}">uno</option>
+                                    </select>
+                                </div>
+                                <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
+                                    <label >Línea</label>
+                                    <select class="form-control" name="nombreLinea" id="nombreLinea">
+                                        <option th:each="lin: ${listaLinea }" th:value="${lin.nombre}"
+                                                th:text="${lin.nombre}" th:selected="${lin.nombre.equals(formulario.nombreLinea)}">uno</option>
+                                    </select>
+                                </div>
+                                <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
                                     <label >Tamaño</label>
-                                    <select class="form-control" name="producto.tamanho.nombre}" id="producto.tamanho.nombre}">
-                                        <option th:each=" tama : ${listaTama}" th:value="${tama.idTamanho}"
-                                                th:text="${tama.nombre}" >uno</option>
+                                    <select class="form-control" name="nombreTama" id="nombreTama}">
+                                        <option th:each=" tam : ${listaTama}" th:value="${tam.nombre}"
+                                                th:text="${tam.nombre}" th:selected="${tam.nombre.equals(formulario.nombreTama)}" >uno</option>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
                                     <label >Comunidad a la que pertenece</label>
-                                    <select class="form-control" name="producto.comunidad.nombre" id="producto.comunidad.nombre">
-                                        <option th:each="comu : ${listaComunidades}" th:value="${comu.idComunidad}"
-                                                th:text="${comu.nombre}" >uno</option>
+                                    <select class="form-control" name="nombreComun" id="nombreComun">
+                                        <option th:each="comu : ${listaComunidades}" th:value="${comu.nombre}"
+                                                th:text="${comu.nombre}" th:selected="${comu.nombre.equals(formulario.nombreComun)}" >uno</option>
                                     </select>
                                 </div>
-
-
-
-                                // PREGUNTAR
-                                <div th:if="${inventario != null}" class="form-group col-md-6" >
-                                    <label >Stock</label>
-                                    <input type="text" class="form-control" id="inventario.stock" name="inventario.stock"
-                                    th:value="${inventario.stock}">
-                                </div>
-                                <div th:if="${inventario == null}" class="form-group col-md-6" >
-                                    <label >Stock</label>
-                                    <input type="text" class="form-control" id="inventario.stock" name="inventario.stock">
-                                </div>
-
-
-                                <div id="consigna" class="form-group col-md-6">
-                                    <label >Tipo</label>
-                                    <input type="text" class="form-control" id="tipoooo" >
-                                </div>
-                                <div id="consigna1" class="form-group col-md-6">
-                                    <label >Fecha</label>
-                                    <input type="date" class="form-control" id="fecha" >
-                                </div>
-                                // PREGUNTAR
-
-
-
-                                <div class="form-group col-md-6">
-                                    <label >Color</label>
-                                    <input type="text" class="form-control" id="inventario.color" name="inventario.color"
-                                           th:value="${inventario.color}">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label >Foto</label>
-                                    <p><input type="file" accept="image/*" id="image" name="image" ></p>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label >Costo Tejedor (S/.)</label>
-                                    <input type="text" class="form-control" id="historial.costotejedor" name="historial.costotejedor"
-                                           th:value="${historial.costotejedor}">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label >Costo Mosqoy (S/.)</label>
-                                    <input type="text" class="form-control" id="inventario.preciomosqoy" name="inventario.preciomosqoy"
-                                           th:value="${inventario.preciomosqoy}">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label >Facilitador</label>
-                                    <input type="text" class="form-control" id="historial.facilitador" name="historial.facilitador"
-                                           th:value="${historial.facilitador}">
-                                </div>
-                                **/
-
                                 <div class="form-row col-md-2">
                                 <div class="form-group col-md-8">
-                                    <button type="submit" class="btn btn-danger">Cancelar</button>
+                                    <a th:href="@{/gestor/productos}" class="btn btn-danger">Cancelar</a>
                                 </div>
                                 <div class="form-group col-md-2"  >
                                     <button type="submit" class="btn btn-primary">Guardar</button>
@@ -149,20 +95,5 @@
     </a>
 
     <div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
-
-<script>
-    var modalidad =  document.getElementById("producto.adquisicion.modalidad");
-    var text = modalidad.options[modalidad.selectedIndex].text;
-
-    if(text  == 'Compra'){
-        document.getElementById("consigna").style.display ="none";
-        document.getElementById("consigna1").style.display ="none";
-    }else {
-        document.getElementById("consigna").style.display ="block";
-        document.getElementById("consigna1").style.display ="block";
-    }
-
-</script>
-
 </body>
 </html>

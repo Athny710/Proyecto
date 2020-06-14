@@ -1,127 +1,71 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="Fragmentos/FragmentosGestor.html::cabecera(titulo='Editar Compra ')">
+<head th:replace="Fragmentos/FragmentosGestor.html::cabecera(titulo='Registrar Compra')">
 </head>
 
 <body id="page-top">
-    <div id="wrapper">
-        <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
-        <div id="content-wrapper" class="d-flex flex-column bg-white">
-            <div id="content">
-                <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
-                <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h4 class="m-0 font-weight-bold text-gray-900">Edición del Producto</h4>
-                        </div>
-                        <div class="card-body">
-                            <form>
-                                <div class="form-group col-md-6">
-                                    <label for="inputEmail4">Número de pedido</label>
-                                    <input type="email" class="form-control" id="inputEmail4" >
+<div id="wrapper">
+    <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
+    <div id="content-wrapper" class="d-flex flex-column bg-white">
+        <div id="content">
+            <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
+            <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h4 class="m-0 font-weight-bold text-gray-900">Registrando un Producto</h4>
+                    </div>
+                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
+                    <div class="card-body">
+                        <form method="post" th:action="@{/gestor/guardarProducto}"  th:object="${formulario}">
+                            <input th:value="*{crearActualizar}" name="crearActualizar" type="hidden"/>
+                            <div  class="form-group col-md-6" >
+                                <label >Nombre del Producto</label>
+                                <input type="text" class="form-control" th:field="*{nombreProducto}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('nombreProducto')}" th:errors="*{nombreProducto}" ></div>
+                            </div>
+                            <div  class="form-group col-md-6" >
+                                <label th:if="${formulario.crearActualizar == 0}" >Código del Nombre del Producto</label>
+                                <input type="hidden" class="form-control" id="codigoProducto" name="codigoProducto"
+                                       th:value="*{codigoProducto}">
+                                <div  class="text-danger" th:if="${#fields.hasErrors('codigoProducto') || formulario.crearActualizar == 0}" th:errors="*{codigoProducto}" ></div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label >Descripción</label>
+                                <input type="text" class="form-control" id="descripcion" name="descripcion"
+                                       th:value="*{descripcion}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" ></div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label  th:if="${formulario.crearActualizar == 0}" >Código de la Descripción</label>
+                                <input type="hidden" class="form-control" id="codDescripcion" name="codDescripcion"
+                                       th:value="*{codDescripcion}">
+                                <div  class="text-danger" th:if="${#fields.hasErrors('codDescripcion') || formulario.crearActualizar == 0}" th:errors="*{codDescripcion}" ></div>
+                            </div>
+
+                            <div class="form-row col-md-2">
+                                <div class="form-group col-md-8">
+                                    <a th:href="@{/gestor/productos}" class="btn btn-danger">Cancelar</a>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="supplier">Línea</label>
-                                    <select class="form-control" name="supplier" id="supplier">
-                                        <option >uno</option>
-                                        <option >dos</option>
-                                        <option >tres</option>
-                                        <option >cuatro</option>
-                                    </select>
+                                <div class="form-group col-md-2"  >
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="efe">Categoría</label>
-                                    <select class="form-control" name="efe" id="efe">
-                                        <option >uno</option>
-                                        <option >dos</option>
-                                        <option >tres</option>
-                                        <option >cuatro</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="adasas">Nombre del Producto</label>
-                                    <select class="form-control" name="supplier" id="adasas">
-                                        <option >uno</option>
-                                        <option >dos</option>
-                                        <option >tres</option>
-                                        <option >cuatro</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="rew">Tamaño</label>
-                                    <select class="form-control" name="supplier" id="rew">
-                                        <option >uno</option>
-                                        <option >dos</option>
-                                        <option >tres</option>
-                                        <option >cuatro</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="dsa">Comunidad a la que pertenece</label>
-                                    <select class="form-control" name="supplier" id="dsa">
-                                        <option >uno</option>
-                                        <option >dos</option>
-                                        <option >tres</option>
-                                        <option >cuatro</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="zxc">Cantidad</label>
-                                    <input type="text" class="form-control" id="zxc" >
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="ert">Tipo</label>
-                                    <input type="text" class="form-control" id="ert" >
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="wer">Fecha</label>
-                                    <input type="date" class="form-control" id="wer" >
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="tyu">Color</label>
-                                    <input type="text" class="form-control" id="tyu" >
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="uio">Foto</label>
-                                    <p><input type="file" accept="image/*" id="uio"></p>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="ef">Costo Tejedor (S/.)</label>
-                                    <input type="text" class="form-control" id="ef" >
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="ghj">Costo Mosqoy (S/.)</label>
-                                    <input type="text" class="form-control" id="ghj" >
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="az">Facilitador</label>
-                                    <input type="text" class="form-control" id="az" >
-                                </div>
-                                <div class="form-row col-md-2">
-                                    <div class="form-group col-md-8">
-                                        <a href="#" class="btn btn-danger">Cancelar</a>
-                                    </div>
-                                    <div class="form-group col-md-2"  >
-                                        <a href="#" class="btn btn-primary">Guardar</a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
 
-    <div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
-
+<div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
 </body>
 </html>

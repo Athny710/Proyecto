@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="Fragmentos/FragmentosGestor.html::cabecera(titulo='Inventario')">
+</head>
+
+<body id="page-top">
+
+<div id="wrapper">
+    <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
+    <div id="content-wrapper" class="d-flex flex-column bg-white">
+        <div id="content">
+            <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
+            <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
+            <div class="container-fluid">
+                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
+                <div th:if="${msg1 != null}" th:text="${msg1}" class="alert alert-success" role="alert"></div>
+                <div class="row">
+
+                </div>
+                <br>
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <div class="d-flex justify-content-between centrado">
+                            <h5 class="m-0 font-weight-bold text-redM">Productos</h5>
+                            <div class="col-sm-12 col-md-3">
+                                <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegProducto}">Agregar Nuevo Producto</a>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Codigo de Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Código de Descripción</th>
+                                        <th>Linea</th>
+                                        <th>Comunidad</th>
+                                        <th>Tamaño</th>
+                                        <th>Categoría</th>
+                                        <th>Editar/borrar</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr align="center" th:each="producto, info: ${productos}">
+                                        <td th:text="${producto.denominacion.nombre}"></td>
+                                        <td th:text="${producto.denominacion.codigonombre}"></td>
+                                        <td th:text="${producto.denominacion.descripcion}"></td>
+                                        <td th:text="${producto.denominacion.codigodescripcion}"></td>
+                                        <td th:text="${producto.denominacion.linea.nombre}"></td>
+                                        <td th:text="${producto.comunidad.nombre}"></td>
+                                        <td th:text="${producto.tamanho.nombre}"></td>
+                                        <td th:text="${producto.categoria.nombre}"></td>
+                                        <td align="center">
+                                            <a th:href="@{'/gestor/gestorEditProducto?id='+${producto.idProducto}}">
+                                                <i class="far fa-edit text-orangeM" style="margin-right: 5px"></i>
+                                            </a>
+                                            <a th:href="@{'/gestor/borrarProducto?id='+${producto.idProducto}}">
+                                                <i class="far fa-trash-alt text-redM" style="margin-left: 5px"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
+
+</body>
+
+</html>
