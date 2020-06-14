@@ -1,6 +1,8 @@
 package com.example.proyecto.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "denominacion")
@@ -9,23 +11,31 @@ public class Denominacion {
     @Id
     private int iddenominacion;
     @Column(nullable = false)
+    @NotBlank(message = "Este campo no puede estar vacío")
+    @Size(max = 45, message = "No puede tener más de 45 caracteres")
     private String nombre;
     @Column(nullable = false)
+    @NotBlank(message = "Este campo no puede estar vacío")
+    @Size(min = 3 ,max = 3, message = "Solo 3 caracteres")
     private String codigonombre;
+    @NotBlank(message = "Este campo no puede estar vacío")
+    @Size(max = 45, message = "No puede tener más de 45 caracteres")
     private String descripcion;
     @Column(nullable = false)
+    @NotBlank(message = "Este campo no puede estar vacío")
+    @Size(min = 3 ,max = 3, message = "Solo 3 caracteres")
     private String codigodescripcion;
     @ManyToOne
     @JoinColumn(name="idlinea")
     private Linea linea;
 
 
-    public int getIdDenominacion() {
+    public int getIddenominacion() {
         return iddenominacion;
     }
 
-    public void setIdDenominacion(int idDenominacion) {
-        this.iddenominacion = idDenominacion;
+    public void setIddenominacion(int iddenominacion) {
+        this.iddenominacion = iddenominacion;
     }
 
     public String getNombre() {
@@ -36,12 +46,12 @@ public class Denominacion {
         this.nombre = nombre;
     }
 
-    public String getCodigoNombre() {
+    public String getCodigonombre() {
         return codigonombre;
     }
 
-    public void setCodigoNombre(String codigoNombre) {
-        this.codigonombre = codigoNombre;
+    public void setCodigonombre(String codigonombre) {
+        this.codigonombre = codigonombre;
     }
 
     public String getDescripcion() {
@@ -52,12 +62,12 @@ public class Denominacion {
         this.descripcion = descripcion;
     }
 
-    public String getCodigoDescripcion() {
+    public String getCodigodescripcion() {
         return codigodescripcion;
     }
 
-    public void setCodigoDescripcion(String codigoDescripcion) {
-        this.codigodescripcion = codigoDescripcion;
+    public void setCodigodescripcion(String codigodescripcion) {
+        this.codigodescripcion = codigodescripcion;
     }
 
     public Linea getLinea() {

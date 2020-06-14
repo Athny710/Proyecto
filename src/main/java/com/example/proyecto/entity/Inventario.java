@@ -13,7 +13,7 @@ public class Inventario {
     @JoinColumn(name = "idinventario")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idinventario;
-    private Integer stock;
+    private int stock;
     private String comentario;
     private String foto;
     private String color;

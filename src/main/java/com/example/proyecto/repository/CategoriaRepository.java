@@ -19,5 +19,6 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Integer> {
     @Query(value="select * from categoria where nombre= ?1",nativeQuery = true)
     List<Categoria> buscarCategoriaPorNombre(String nombre);
 
+    List<Categoria> findByNombre(String name);
 
 }
