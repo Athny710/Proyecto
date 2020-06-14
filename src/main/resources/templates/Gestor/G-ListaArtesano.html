@@ -22,6 +22,7 @@
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Artesanos</h5>
+                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
@@ -48,9 +49,25 @@
                                         <td align="center">
 
                                                 <a th:href="@{'/gestor/gestorEditArtesano' + '?idartesano=' + ${artesano.idArtesano}}" class="far fa-list-alt text-orangeM"></a>
-
-
-                                                <a th:href="@{'/gestor/gestorBorrarArtesano' + '?idartesano=' + ${artesano.idArtesano}}"class="far fa-trash-alt text-redM"></a>
+                                            <a style="margin-left: 10px" class="far fa-trash-alt text-redM" th:href="@{'/gestor/gestorBorrarArtesano' + '?idartesano=' + ${artesano.idArtesano}}"
+                                               data-toggle="modal" data-target="#modalborrar" th:attrappend="data-target=${artesano.idArtesano}"></a>
+                                            <div class="modal fade" id="modalborrar"  tabindex="-1" role="dialog" th:attrappend="id=${artesano.idArtesano}" aria-labelledby="myModalLabel">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header text-center">
+                                                            <h4 class="modal-title w-100 font-weight-bold">Eliminar Artesano del registro</h4>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h6 th:text="'¿Está seguro que desea eliminar ' + ${artesano.nombre} + ' del registro?'"></h6>
+                                                            <a th:href="@{'/gestor/gestorBorrarArtesano' + '?idartesano=' + ${artesano.idArtesano}}" class="btn btn-danger btn-primary btn-block" >Eliminar permanentemente</a>
+                                                            <a th:href="@{/gestor/gestorListaArtesano}" class="btn btn-searchTop btn-user btn-block">Cancelar</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </td>
                                     </tr>
