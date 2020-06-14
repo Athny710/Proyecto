@@ -87,7 +87,8 @@ public class SystemController {
 
     @PostMapping("enviarCorreoRecuperarCont")
     public String enviarCorreoRecupCuenta(RedirectAttributes attr,
-                                          @RequestParam("correo")String correo, HttpServletRequest request) throws MessagingException, UnknownHostException {
+                                          @RequestParam("correo")String correo,
+                                          Model model, HttpServletRequest request) throws MessagingException, UnknownHostException {
 
         Usuarios usuarioBuscado = usuarioRepository.findByCorreo(correo);
 
@@ -109,8 +110,8 @@ public class SystemController {
             //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
             Email email = new Email();
             email.emailRecuperarCuenta(correo,usuarioBuscado.getHasheado(),ipAddr,localPort,context);
-            attr.addFlashAttribute("msg", "Se ha enviado el correo exitosamente");
-            return "redirect:/system/recuperarCont";
+            model.addAttribute("msg", "Se ha enviado el correo exitosamente");
+            return "index";
 
         }else{
             attr.addFlashAttribute("msg", "No se ha encontrado el correo ingresado");
@@ -144,7 +145,7 @@ public class SystemController {
                         model.addAttribute("hasheado",hasheado);
                         return "index";
                     }else {
-                        model.addAttribute("msg", "No funciono el cambio");
+                        model.addAttribute("msg", "No funciono el cambio. Debe tener el hasheado correcto");
                         model.addAttribute("hasheado",hasheado);
                         return "Sistema/S-NuevContra2";
                     }
