@@ -891,7 +891,6 @@ public class GestorController {
 
         } else {
 
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + estadoenviosede.getIdenviosede());
             int invkey = estadoenviosede.getInventariosede().getInventario().getIdInventario();
             int sedkey = estadoenviosede.getInventariosede().getSede().getIdsede();
             if (sedeRepository.findById(sedkey).isPresent() && inventarioRepository.findById(invkey).isPresent()) {
@@ -947,6 +946,7 @@ public class GestorController {
                 return "redirect:/gestor/gestorProductosEnviados";
             }
             // aqui solo se entra si alguien edita el HTML con F12
+            model.addAttribute("msg", "Por favor no editar el HTML :)");
             List<Sede> listaSede = sedeRepository.findAll();
             model.addAttribute("listaSede", listaSede);
             List<Inventario> listaInventario = inventarioRepository.findAll();
