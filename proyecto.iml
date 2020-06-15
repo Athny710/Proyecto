@@ -6,8 +6,8 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
-          <factory-entry name="entityManagerFactory" value="97c1fcb8-7a56-4f47-8568-e559cc60dd5b" />
           <factory-entry name="Entities" />
+          <factory-entry name="entityManagerFactory" value="97c1fcb8-7a56-4f47-8568-e559cc60dd5b" />
         </datasource-mapping>
         <naming-strategy-map />
       </configuration>
