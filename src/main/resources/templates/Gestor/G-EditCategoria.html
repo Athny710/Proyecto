@@ -25,7 +25,7 @@
                         <div class="card-body bg-gray-100">
                             <div class="row">
                                 <div class="col-lg-1"></div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-5">
 
                                     <div class="p-5">
                                         <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
@@ -61,13 +61,14 @@
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-12">
                                                     <button type="submit" class="btn btn-searchTop btn-user btn-block" th:text="${categoria.idCategoria==0?'Registrar':'Actualizar'}"></button>
                                                 </div>
+                                                <br>
 
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-12">
                                                     <div class="form-group">
-                                                        <a th:href="@{/gestor/gestorListaCategoria}" class="btn btn-searchTop btn-user btn-block">Cancelar</a>
+                                                        <a th:href="@{/gestor/gestorListaCategoria}" style="border-radius:10rem" class="btn btn-searchTop btn-danger btn-block">Cancelar</a>
                                                     </div>
                                                 </div>
                                             </div>

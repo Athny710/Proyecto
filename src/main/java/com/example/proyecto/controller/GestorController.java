@@ -737,7 +737,7 @@ public class GestorController {
                         !(artesano.getCodigo().equalsIgnoreCase(aux1) || artesano.getCodigo().equalsIgnoreCase(aux2))) {
                     model.addAttribute("listaComunidad", comunidadRepository.findAll());
                     model.addAttribute("msgError", "Recuerde que el codigo debe ser las iniciales del artesano");
-                    return "Gestor/G-EditArtesano";
+                    return "Gestor/G-RegistroArtesano";
                 } else {
                     System.out.println("ARTESANO NULL ----------- 1");
                     Optional<Comunidad> comunidad = comunidadRepository.findById(artesano.getComunidad().getIdComunidad());

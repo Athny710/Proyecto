@@ -14,15 +14,18 @@
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <!-- Page Heading -->
                 <div class="container-fluid">
-                    <div class="col-lg-2">
-                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistrarCategoria}">Nueva Categoría</a>
-                    </div>
+
+                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+
                     <br>
                     <div class="card shadowA mb-4">
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Categorías</h5>
-                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                <div class="col-lg-2">
+                                    <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistrarCategoria}">Nueva Categoría</a>
+                                </div>
+
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
