@@ -14,14 +14,18 @@
             <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
             <!-- Page Heading -->
             <div class="container-fluid">
-                <div class="col-lg-2">
+            <!--    <div class="col-lg-2">
                     <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorResgistroSede}">Nueva Sede</a>
                 </div>
-                <br>
+                <br> -->
+                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                 <div class="card shadowA mb-4">
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
                             <h5 class="m-0 font-weight-bold text-redM">Lista de Sedes</h5>
+                            <div class="col-lg-4">
+                                <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorResgistroSede}">Nueva Sede</a>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body bg-gray-100">
@@ -29,7 +33,7 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr class="bg-gray-900 text-white" align="center">
-                                    <th>ID</th>
+                                 <!--   <th>ID</th> -->
                                     <th>Nombre</th>
                                     <th>Editar/Borrar</th>
                                 </tr>
@@ -37,11 +41,19 @@
 
                                 <tbody>
                                 <tr align="center" th:each="sedes, info: ${listasedes}">
-                                    <td th:text="${sedes.idsede}"></td>
+                                  <!--  <td th:text="${sedes.idsede}"></td> -->
                                     <td th:text="${sedes.nombre}"></td>
                                     <td align="center">
-                                        <a th:href="@{'/gestor/gestorEditSede' + '?idsede=' + ${sedes.idsede}}" class="far fa-list-alt text-orangeM"></a>
-                                        <a th:href="@{'/gestor/borrarSede' + '?idsede=' + ${sedes.idsede}}"class="far fa-trash-alt text-redM"></a>
+                          <!-- <a th:href="@{'/gestor/gestorEditSede' + '?idsede=' + ${sedes.idsede}}" class="far fa-list-alt text-orangeM"></a>
+                                        <a th:href="@{'/gestor/borrarSede' + '?idsede=' + ${sedes.idsede}}"class="far fa-trash-alt text-redM"></a> -->
+                                        <a style="margin-left: 10px"
+                                           th:href="@{'/gestor/gestorEditSede' + '?idsede=' + ${sedes.idsede}}"
+                                           class="far fa-edit text-orangeM">
+                                        </a>
+                                        <a style="margin-left: 10px"
+                                           th:href="@{'/gestor/borrarSede' + '?idsede=' + ${sedes.idsede}}"
+                                           class="far fa-trash-alt text-redM">
+                                        </a>
                                     </td>
                                 </tr>
                                 </tbody>

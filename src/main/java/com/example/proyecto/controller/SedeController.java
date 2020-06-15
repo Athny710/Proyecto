@@ -218,13 +218,15 @@ public class SedeController {
             session.getAttribute("user");
             Usuarios u = (Usuarios) session.getAttribute("user");
             List<Inventariosede> listaInventarioSede = inventariosedeRepository.findBySede(u.getSede());
+            List<Tienda> listaTiendas = tiendaRepository.findBySede(u.getSede());
             model.addAttribute("listaInventarioSede", listaInventarioSede);
+            model.addAttribute("listaTiendas", listaTiendas);
             return "UsuarioSede/U-NuevaVenta";
         } else {
             Usuarios u = (Usuarios) session.getAttribute("user");
             List<Tienda> tienda1 = tiendaRepository.findByIdtienda(venta.getTienda().getIdtienda());
             if (tienda1.isEmpty()) {
-                return "";
+                return "UsuarioSede/U-NuevaVenta";
             } else {
                 venta.setTienda(tienda1.get(0));
                 venta.getTienda().getSede().setIdsede(u.getSede().getIdsede());
@@ -243,7 +245,7 @@ public class SedeController {
                     List<Inventario> listaInventario = inventarioRepository.findAll();
                     model.addAttribute("listaInventario", listaInventario);
                     attr.addFlashAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
-                    return "redirect:/sede/gestionVentas";
+                    return "redirect:/sede/nuevaVenta";
                 }
             }
         }
@@ -320,8 +322,9 @@ public class SedeController {
 
     //----------------INICIO CRUD TIENDAS-------------------
     @GetMapping("registroTiendas")
-    public String registroDeTiendas(@ModelAttribute("tienda") Tienda tienda, Model model) {
-        model.addAttribute("listaTiendas", tiendaRepository.findAll());
+    public String registroDeTiendas(@ModelAttribute("tienda") Tienda tienda, Model model, HttpSession session) {
+        Usuarios usuario = (Usuarios) session.getAttribute("user");
+        model.addAttribute("listaTiendas", tiendaRepository.findBySede(usuario.getSede()));
 
         return "UsuarioSede/U-TiendaDistribuidor";
     }
