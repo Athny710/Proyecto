@@ -179,16 +179,32 @@ public class GestorController {
                     usuarios = usuariosID.get();
                     model.addAttribute("usuarios", usuarios);
                     model.addAttribute("listasedes", sedeRepository.findAll());
-                    return "Gestor/G-EditUsuarioSede";
+                    return "/Gestor/G-EditUsuarioSede";
                 } else {//todo mostrar errores
-
-                    return "redirect:/gestor/gestorRegistroUsuarioSede";
+                    model.addAttribute("listasedes", sedeRepository.findAll());
+                    return "/Gestor/G-RegistroUsuarioSede";
                 }
             }else{
                 return "redirect:/gestor/gestorRegistroUsuarioSede";
             }
 
         } else {
+            if(!usuarios.getCorreo().matches("^[a-z0-9\\._-]+@[a-z0-9\\._-]+\\.[a-z0-9]+$")){// validacion tipo correo
+                if(usuarios.getIdusuarios() != 0){
+                    Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
+                    if (usuariosID.isPresent()) {// todo mostrar errores
+                        usuarios = usuariosID.get();
+                        model.addAttribute("usuarios", usuarios);
+                        model.addAttribute("listasedes", sedeRepository.findAll());
+                        return "gestor/G-EditUsuarioSede";
+                    } else {//todo mostrar errores
+                        model.addAttribute("listasedes", sedeRepository.findAll());
+                        return "/Gestor/G-RegistroUsuarioSede";
+                    }
+                }else{
+                    return "redirect:/gestor/gestorRegistroUsuarioSede";
+                }
+            }
             if (usuarios.getIdusuarios() == 0 && usuarioRepository.findByCorreo(usuarios.getCorreo()) == null) {
                 usuarios.setPassword(getAlphaNumericString(12));
                 usuarios.setTipo("sede");
