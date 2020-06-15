@@ -92,6 +92,7 @@ public class GestorController {
         model.addAttribute("listasedes",sedeRepository.findAll());
         model.addAttribute("listacomunidades",comunidadRepository.findAll());
         model.addAttribute("listaarticulos",denominacionRepository.findAll());
+        model.addAttribute("listaAnhos",ventaRepository.obtenerAñosDeVenta());
         return "Gestor/G-GenReporte";
     }
 
@@ -211,7 +212,7 @@ public class GestorController {
 
 
                 usuarioRepository.save(usuarios);
-                attr.addFlashAttribute("msg", "Sede actualizada exitosamente");
+                attr.addFlashAttribute("msg", "Usuario sede actualizado exitosamente");
                 return "redirect:/gestor/gestorListaUsuarioSede";
             } else { //ya existe el correo, mostrar errores
                 if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null) {

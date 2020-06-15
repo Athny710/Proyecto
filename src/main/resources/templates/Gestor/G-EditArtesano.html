@@ -29,15 +29,19 @@
                                         <input th:value="*{idArtesano}" name="idArtesano" type="hidden" />
                                         <div class="form-group">
                                             <input th:field="*{nombre}" type="text" class="form-control form-control-user" id="nombre" placeholder="Nombre">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
                                         </div>
                                         <div class="form-group">
                                             <input th:field="*{apellidoPaterno}" type="text" class="form-control form-control-user" id="apellidoPaterno" placeholder="Apellido Paterno">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('apellidoPaterno')}" th:errors="*{apellidoPaterno}"></div>
                                         </div>
                                         <div class="form-group">
                                             <input th:field="*{apellidoMaterno}" type="text" class="form-control form-control-user" id="apellidoMaterno" placeholder="Apellido Materno">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('apellidoMaterno')}" th:errors="*{apellidoMaterno}"></div>
                                         </div>
                                         <div class="form-group">
                                             <input th:field="*{codigo}" type="hidden" class="form-control form-control-user" id="codigo" placeholder="Codigo de artesano (Iniciales)">
+
                                         </div>
 
                                         <div class="form-group">
