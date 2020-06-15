@@ -92,6 +92,7 @@ public class GestorController {
         model.addAttribute("listasedes",sedeRepository.findAll());
         model.addAttribute("listacomunidades",comunidadRepository.findAll());
         model.addAttribute("listaarticulos",denominacionRepository.findAll());
+        model.addAttribute("listaAnhos",ventaRepository.obtenerAñosDeVenta());
         return "Gestor/G-GenReporte";
     }
 

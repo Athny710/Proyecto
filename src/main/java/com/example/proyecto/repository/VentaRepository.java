@@ -1,5 +1,6 @@
 package com.example.proyecto.repository;
 
+import com.example.proyecto.dto.AñosVenta;
 import com.example.proyecto.dto.ReporteConCamposOriginales;
 import com.example.proyecto.dto.VentaPorCodigo;
 import com.example.proyecto.dto.VentasXNombreDeProducto;
@@ -188,5 +189,7 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "order by fech asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteTrimestralTotal(String año);
 
+    @Query(value = "SELECT DISTINCT(year(v.fecha)) as fecha FROM venta v", nativeQuery = true)
+    List<AñosVenta> obtenerAñosDeVenta();
 
 }
