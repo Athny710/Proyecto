@@ -173,8 +173,38 @@ public class GestorController {
                                      Model model,
                                      RedirectAttributes attr, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
-            return "Gestor/G-EditUsuarioSede";
+            if(usuarios.getIdusuarios() != 0){
+                Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
+                if (usuariosID.isPresent()) {// todo mostrar errores
+                    usuarios = usuariosID.get();
+                    model.addAttribute("usuarios", usuarios);
+                    model.addAttribute("listasedes", sedeRepository.findAll());
+                    return "/Gestor/G-EditUsuarioSede";
+                } else {//todo mostrar errores
+                    model.addAttribute("listasedes", sedeRepository.findAll());
+                    return "/Gestor/G-RegistroUsuarioSede";
+                }
+            }else{
+                return "redirect:/gestor/gestorRegistroUsuarioSede";
+            }
+
         } else {
+            if(!usuarios.getCorreo().matches("^[a-z0-9\\._-]+@[a-z0-9\\._-]+\\.[a-z0-9]+$")){// validacion tipo correo
+                if(usuarios.getIdusuarios() != 0){
+                    Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
+                    if (usuariosID.isPresent()) {// todo mostrar errores
+                        usuarios = usuariosID.get();
+                        model.addAttribute("usuarios", usuarios);
+                        model.addAttribute("listasedes", sedeRepository.findAll());
+                        return "gestor/G-EditUsuarioSede";
+                    } else {//todo mostrar errores
+                        model.addAttribute("listasedes", sedeRepository.findAll());
+                        return "/Gestor/G-RegistroUsuarioSede";
+                    }
+                }else{
+                    return "redirect:/gestor/gestorRegistroUsuarioSede";
+                }
+            }
             if (usuarios.getIdusuarios() == 0 && usuarioRepository.findByCorreo(usuarios.getCorreo()) == null) {
                 usuarios.setPassword(getAlphaNumericString(12));
                 usuarios.setTipo("sede");
@@ -737,7 +767,7 @@ public class GestorController {
                         !(artesano.getCodigo().equalsIgnoreCase(aux1) || artesano.getCodigo().equalsIgnoreCase(aux2))) {
                     model.addAttribute("listaComunidad", comunidadRepository.findAll());
                     model.addAttribute("msgError", "Recuerde que el codigo debe ser las iniciales del artesano");
-                    return "Gestor/G-EditArtesano";
+                    return "Gestor/G-RegistroArtesano";
                 } else {
                     System.out.println("ARTESANO NULL ----------- 1");
                     Optional<Comunidad> comunidad = comunidadRepository.findById(artesano.getComunidad().getIdComunidad());
@@ -877,7 +907,6 @@ public class GestorController {
 
         } else {
 
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + estadoenviosede.getIdenviosede());
             int invkey = estadoenviosede.getInventariosede().getInventario().getIdInventario();
             int sedkey = estadoenviosede.getInventariosede().getSede().getIdsede();
             if (sedeRepository.findById(sedkey).isPresent() && inventarioRepository.findById(invkey).isPresent()) {
@@ -933,6 +962,7 @@ public class GestorController {
                 return "redirect:/gestor/gestorProductosEnviados";
             }
             // aqui solo se entra si alguien edita el HTML con F12
+            model.addAttribute("msg", "Por favor no editar el HTML :)");
             List<Sede> listaSede = sedeRepository.findAll();
             model.addAttribute("listaSede", listaSede);
             List<Inventario> listaInventario = inventarioRepository.findAll();

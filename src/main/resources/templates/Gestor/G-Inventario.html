@@ -21,7 +21,7 @@
                             <h5 class="m-0 font-weight-bold text-redM">Inventario</h5>
                                 <div class="row">
                                     <div style="width: 170px">
-                                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorListarSinStock}">Lista de Productos sin Stock</a>
+                                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorListarSinStock}">Productos sin Stock</a>
                                     </div>
                                     <div style="width: 150px; margin-left: 15px">
                                         <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegInventario}">Añadir Producto en Inventario</a>
@@ -35,12 +35,11 @@
 
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
-                                        <tr>
+                                        <tr class="bg-gray-900 text-white" align="center">
                                             <th>Linea</th>
                                             <th>Categoría</th>
                                             <th>Nombre</th>
                                             <th>Descripción</th>
-                                            <th>Tamaño</th>
                                             <th>Comunidad</th>
                                             <th>Tipo</th>
                                             <th>Stock total</th>
@@ -54,7 +53,6 @@
                                             <td th:text="${productos.producto.categoria.nombre}"></td>
                                             <td th:text="${productos.producto.denominacion.nombre}"></td>
                                             <td th:text="${productos.comentario}"></td>
-                                            <td th:text="${productos.producto.tamanho.nombre}"></td>
                                             <td th:text="${productos.producto.comunidad.nombre }"></td>
                                             <td th:text="${productos.producto.adquisicion.modalidad}"></td>
                                             <td th:text="${productos.stock}"></td>
