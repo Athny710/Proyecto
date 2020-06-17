@@ -89,7 +89,7 @@
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i class="fa fa-bars"></i>
     </button>
-    <h4 class="text-gray-900 " th:text="'Sede: ' + ${session.user.sede.nombre}" ><b>Usuario Sede </b></h4>
+    <h4 class="text-gray-900 "><b th:text="'Sede ' + ${session.user.sede.nombre}"></b></h4>
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
@@ -119,7 +119,7 @@
                 <img class="img-profile rounded-circle" th:src="@{/img/imgPerfil.png}" style="margin-left: 1rem">
             </a>
             <!-- Dropdown - User Information -->
-            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in bg-orangeM" aria-labelledby="userDropdown">
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in bg-greenM" aria-labelledby="userDropdown">
                 <a class="dropdown-item text-white" th:href="@{/sede/editarInfo}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-100"></i>
                     Perfil
@@ -147,7 +147,7 @@
             </div>
             <div class="modal-body">Click en "Aceptar" si está seguro de que quiere cerrar sesión.</div>
             <form class="modal-footer" th:action="@{/cerrar}" method="post" >
-                <button class="btn btn-gray-900" type="button" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-log" type="button" data-dismiss="modal">Cancelar</button>
                 <button class="btn btn-orange" type="submit">Aceptar</button>
             </form>
         </div>

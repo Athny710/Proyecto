@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
-                            <div class="table-responsive bg-white d-flex">
+                            <div class="table-responsive bg-gray-100 d-flex">
                                 <div class="col-lg-6 ">
                                     <br>
                                     <div class="d-flex">
@@ -39,7 +39,7 @@
                                         <div class="col-lg-5 centrado">
                                             <p>Código del Producto:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${d.producto.denominacion.codigoNombre}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${d.producto.denominacion.codigonombre}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
@@ -70,13 +70,13 @@
                                         <div class="col-lg-6"><p th:text="${d.producto.comunidad.nombre}"></p></div>
                                     </div>
                                     <hr>
-                                    <div class="d-flex">
+                                    <div th:if="${d.producto.adquisicion.artesano != null}" class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Artesano:</p>
                                         </div>
                                         <div class="col-lg-6"><p th:text="${d.producto.adquisicion.artesano.nombre}"></p></div>
                                     </div>
-                                    <hr>
+                                    <hr th:if="${d.producto.adquisicion.artesano != null}" >
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Cantidad:</p>

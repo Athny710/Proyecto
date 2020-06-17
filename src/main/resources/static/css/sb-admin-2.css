@@ -4987,6 +4987,8 @@ a.badge-dark:focus, a.badge-dark.focus {
   background-color: #d2f4e8;
   border-color: #bff0de;
   text-align: center;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
 }
 
 .alert-success hr {
