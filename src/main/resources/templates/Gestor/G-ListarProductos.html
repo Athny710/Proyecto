@@ -15,31 +15,26 @@
             <div class="container-fluid">
                 <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
                 <div th:if="${msg1 != null}" th:text="${msg1}" class="alert alert-success" role="alert"></div>
-                <div class="row">
-
-                </div>
-                <br>
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
+                <div class="card shadowA mb-4">
+                    <div class="card-header2" style="padding-top: 0.6rem; padding-bottom: 0.6rem">
                         <div class="d-flex justify-content-between centrado">
                             <h5 class="m-0 font-weight-bold text-redM">Productos</h5>
-                            <div class="col-sm-12 col-md-3">
-                                <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegProducto}">Agregar Nuevo Producto</a>
+                            <div class="col-lg-2">
+                                <a class="btn btn-orange btn-user btn-block" th:href="@{/gestor/gestorRegProducto}">Añadir Producto</a>
                             </div>
                             </form>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body bg-gray-100">
                         <div class="table-responsive">
-                            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
 
-                                <table class="table table-bordered" id="dataTable" width="100%" >
+
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                     <tr tr class="bg-gray-900 text-white" align="center">
                                         <th>Nombre</th>
-                                        <th>Codigo de Nombre</th>
+                                        <th>Codigo</th>
                                         <th>Descripción</th>
-                                        <th>Código de Descripción</th>
                                         <th>Linea</th>
                                         <th>Comunidad</th>
                                         <th>Tamaño</th>
@@ -48,11 +43,10 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr align="center" th:each="producto, info: ${productos}">
+                                    <tr class="bg-white" align="center" th:each="producto, info: ${productos}">
                                         <td th:text="${producto.denominacion.nombre}"></td>
                                         <td th:text="${producto.denominacion.codigonombre}"></td>
                                         <td th:text="${producto.denominacion.descripcion}"></td>
-                                        <td th:text="${producto.denominacion.codigodescripcion}"></td>
                                         <td th:text="${producto.denominacion.linea.nombre}"></td>
                                         <td th:text="${producto.comunidad.nombre}"></td>
                                         <td th:text="${producto.tamanho.nombre}"></td>
@@ -68,7 +62,7 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                            </div>
+
                         </div>
                     </div>
                 </div>

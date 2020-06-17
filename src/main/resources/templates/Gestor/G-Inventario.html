@@ -13,25 +13,23 @@
                 <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <div class="container-fluid">
-                    <br>
                     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
+                    <div class="card shadowA mb-4">
+                        <div class="card-header2" style="padding-top: 0.6rem; padding-bottom: 0.6rem">
                             <div class="d-flex justify-content-between centrado">
                             <h5 class="m-0 font-weight-bold text-redM">Inventario</h5>
-                                <div class="row">
+                                <div class="d-flex" style="width: 343px">
                                     <div style="width: 170px">
-                                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorListarSinStock}">Productos sin Stock</a>
+                                        <a class="btn btn-orange btn-user btn-block" th:href="@{/gestor/gestorListarSinStock}">Productos sin Stock</a>
                                     </div>
-                                    <div style="width: 150px; margin-left: 15px">
-                                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegInventario}">Añadir Producto en Inventario</a>
+                                    <div style="width: 150px; margin-left: 15px; margin-right: 8px">
+                                        <a class="btn btn-orange btn-user btn-block" th:href="@{/gestor/gestorRegInventario}">Añadir Producto</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body bg-gray-100">
                             <div class="table-responsive">
-                                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
 
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
@@ -39,20 +37,18 @@
                                             <th>Linea</th>
                                             <th>Categoría</th>
                                             <th>Nombre</th>
-                                            <th>Descripción</th>
                                             <th>Comunidad</th>
                                             <th>Tipo</th>
                                             <th>Stock total</th>
-                                            <th>Ver detalles</th>
+                                            <th>Detalles</th>
                                             <th>Editar/borrar</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr align="center" th:each="productos, info: ${inventario}">
+                                        <tr class="bg-white" align="center" th:each="productos, info: ${inventario}">
                                             <td th:text="${productos.producto.denominacion.linea.nombre}"></td>
                                             <td th:text="${productos.producto.categoria.nombre}"></td>
                                             <td th:text="${productos.producto.denominacion.nombre}"></td>
-                                            <td th:text="${productos.comentario}"></td>
                                             <td th:text="${productos.producto.comunidad.nombre }"></td>
                                             <td th:text="${productos.producto.adquisicion.modalidad}"></td>
                                             <td th:text="${productos.stock}"></td>
@@ -72,7 +68,7 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                </div>
+
                             </div>
                         </div>
                     </div>
