@@ -185,11 +185,12 @@ public class GestorController {
                     return "/Gestor/G-RegistroUsuarioSede";
                 }
             }else{
-                return "redirect:/gestor/gestorRegistroUsuarioSede";
+                model.addAttribute("listasedes", sedeRepository.findAll());
+                return "Gestor/G-RegistroUsuarioSede";
             }
 
         } else {
-            if(!usuarios.getCorreo().matches("^[a-z0-9\\._-]+@[a-z0-9\\._-]+\\.[a-z0-9]+$")){// validacion tipo correo
+            if(!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[a-z0-9\\._-]+\\.[A-Za-z0-9]+$")){// validacion tipo correo
                 if(usuarios.getIdusuarios() != 0){
                     Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
                     if (usuariosID.isPresent()) {// todo mostrar errores
