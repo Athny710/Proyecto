@@ -27,13 +27,12 @@
                                         th:src="@{/img/excel-xls-icon.png}" style="width:40px;"></a>
 
                             </div>
-                            <div class="col-lg-4">
-                                <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/sede/nuevaVenta}">Añadir
-                                    Venta</a>
+                            <div class="col-lg-2">
+                                <a class="btn btn-orange btn-user btn-block" th:href="@{/sede/nuevaVenta}">Añadir Venta</a>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body bg-gray-100">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
@@ -50,7 +49,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="venta, info : ${listaVentas}">
+                                <tr class="bg-white" align="center" th:each="venta, info : ${listaVentas}">
                                     <td th:text="${venta.nombrecliente}"></td>
                                     <td th:text="${venta.numerodocumentoidentidad}"></td>
                                     <td th:text="${venta.numerodocumentoventa}"></td>

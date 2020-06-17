@@ -15,6 +15,7 @@
                 <div th:insert="Fragmentos/FragmentosAdmin.html::TopBar"></div>
                 <div th:insert="Fragmentos/FragmentosAdmin.html::LogOut"></div>
                 <!-- Page Heading -->
+                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                 <div class="container-fluid">
                     <div class="card shadowA mb-4">
                         <div class="card-header2" style="padding-top: 0.6rem; padding-bottom: 0.6rem">
@@ -26,7 +27,6 @@
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
-                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
