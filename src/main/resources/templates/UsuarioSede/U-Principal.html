@@ -16,7 +16,6 @@
                 <div th:insert="Fragmentos/FragmentosSede.html::TopBar"></div>
                 <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
                 <div class="container-fluid">
-
                     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                     <div class="card shadowA mb-4">
                         <div class="card-header2 py-3">
@@ -44,7 +43,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="x : ${listaProductos}" align="center">
+                                        <tr class="bg-white" th:each="x : ${listaProductos}" align="center">
                                             <td th:text="${x.inventario.producto.denominacion.nombre}"></td>
                                             <td th:text="${x.inventario.producto.denominacion.codigonombre}"></td>
                                             <td th:text="${x.stock}"></td>

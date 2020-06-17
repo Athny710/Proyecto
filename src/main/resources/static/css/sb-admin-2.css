@@ -3147,7 +3147,7 @@ input[type="button"].btn-block {
 .dropdown-item:hover, .dropdown-item:focus {
   color: #2e2f37;
   text-decoration: none;
-  background-color: #f8f9fc;
+  background-color: #afb081;
 }
 
 .dropdown-item.active, .dropdown-item:active {
@@ -4987,6 +4987,8 @@ a.badge-dark:focus, a.badge-dark.focus {
   background-color: #d2f4e8;
   border-color: #bff0de;
   text-align: center;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
 }
 
 .alert-success hr {

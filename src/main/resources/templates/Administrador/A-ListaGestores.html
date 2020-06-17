@@ -15,19 +15,19 @@
                 <div th:insert="Fragmentos/FragmentosAdmin.html::TopBar"></div>
                 <div th:insert="Fragmentos/FragmentosAdmin.html::LogOut"></div>
                 <!-- Page Heading -->
+                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                 <div class="container-fluid">
                     <div class="card shadowA mb-4">
                         <div class="card-header2" style="padding-top: 0.6rem; padding-bottom: 0.6rem">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Gestores</h5>
                                 <div class="col-lg-2">
-                                    <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/admin/nuevoGestor}">Ingresar Gestor</a>
+                                    <a class="btn btn-orange btn-user btn-block" th:href="@{/admin/nuevoGestor}">Añadir Gestor</a>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
-                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                            <div class="table-responsive bg-gray-100">
+                            <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr class="bg-gray-900 text-white" align="center">

@@ -15,18 +15,17 @@
 
             <!-- Page Heading -->
             <div class="container-fluid">
-                <br>
                 <div class="card shadowA mb-4">
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
-                            <h5 class="m-0 font-weight-bold text-redM">Productos rechazados</h5>
+                            <h5 class="m-0 font-weight-bold text-redM">Productos Rechazados</h5>
                         </div>
                     </div>
                     <div class="card-body bg-gray-100">
-                        <div class="table-responsive bg-white">
+                        <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
-                                <tr class="bg-gray-900 text-white" align="center">
+                                <tr style="vertical-align: center" class="bg-gray-900 text-white" align="center">
                                     <th>Código</th>
                                     <th>Sede</th>
                                     <th>Producto</th>
@@ -40,7 +39,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="p : ${listaProdRecha}">
+                                <tr class="bg-white" align="center" th:each="p : ${listaProdRecha}">
                                     <td th:text="${p.getCodigogenerado()}"></td>
                                     <td th:text="${p.getNombre_sede()}"></td>
                                     <td th:text="${p.getNombre()}"></td>
