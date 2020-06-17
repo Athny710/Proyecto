@@ -76,9 +76,9 @@
                                     <hr th:if="${producto.producto.adquisicion.modalidad.equalsIgnoreCase('consignado')}">
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
-                                            <p>Cantidad:</p>
+                                            <p>Stock:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${historial.cantidad}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.stock}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">

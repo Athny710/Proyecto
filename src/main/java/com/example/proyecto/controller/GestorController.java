@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import java.io.IOException;
 import java.util.*;
 
 import java.net.InetAddress;
@@ -523,6 +524,64 @@ public class GestorController {
         }
 
     }
+
+    @GetMapping("gestorRegInventario")
+    public String añadirEnInventario(@ModelAttribute("historial") Historial historial ,Model model){
+        model.addAttribute("litaProductos",productoRepository.findAll());
+        return  "Gestor/G-AñadirEnInventario";
+    }
+
+    @PostMapping("guardarProductoEnInventario")
+    public String guardarEnInventario(@ModelAttribute("historial") @Valid Historial historial, BindingResult bindingResult,
+                                      RedirectAttributes attr, @RequestParam("archivo") MultipartFile file, Model model){
+        if (bindingResult.hasErrors()){
+            return  "Gestor/G-AñadirEnInventario";
+        }else{
+            if(file.isEmpty()){
+                model.addAttribute("msg", "Debe subir un archivo");
+                return  "Gestor/G-AñadirEnInventario";
+            }
+
+            String fileName = file.getOriginalFilename();
+
+            if(fileName.contains("..")){
+                model.addAttribute("msg", "No se permiten '..' en el archivo ");
+                return  "Gestor/G-AñadirEnInventario";
+            }
+
+            try {
+                historial.getInventario().setFoto(file.getBytes());
+                historial.getInventario().setFotonombre(fileName);
+                historial.getInventario().setFotocontenttype(file.getContentType());
+                Optional<Producto> producto = productoRepository.findById(historial.getInventario().getProducto().getIdProducto());
+                if(producto.isPresent()){
+                    Producto producto1 = producto.get();
+                    historial.getInventario().setProducto(producto1);
+                    historial.getInventario().setStock(historial.getCantidad());
+                    inventarioRepository.save(historial.getInventario());
+                    List<Inventario> inventarios = inventarioRepository.findAll();
+                    historial.setInventario(inventarios.get(inventarios.size()-1));
+                    historialRepository.save(historial);
+                    attr.addFlashAttribute("msg", "Agregado Exitosamente");
+                    return "redirect:/gestor/gestorPrincipal";
+
+                }else {
+                    model.addAttribute("msg", "El producto seleccionado no existe");
+                    return  "Gestor/G-AñadirEnInventario";
+                }
+
+
+
+            }catch (IOException e){
+                e.printStackTrace();
+                model.addAttribute("msg", "Ocurrió un error al subir el archivo ");
+                return  "Gestor/G-AñadirEnInventario";
+            }
+
+        }
+
+    }
+
 
     // ----------------------- FIN CRUD INVENTARIO ---------------------------------
 
