@@ -69,9 +69,11 @@ public class SedeController {
 
     //--------------------------Inventario---------------------------------------------
     @GetMapping(value = {"", "principal"})
-    public String principal(Model model, HttpSession session) {
+    public String principal( Model model, HttpSession session) {
         Usuarios usuario = (Usuarios) session.getAttribute("user");
         List<Inventariosede> lista = inventariosedeRepository.findBySede(usuario.getSede());
+        Integer cantidad = 0;
+        model.addAttribute("cantidad", cantidad);
         model.addAttribute("listaProductos", lista);
         return "UsuarioSede/U-Principal";
     }
@@ -113,22 +115,23 @@ public class SedeController {
         }
     }
 
-    @GetMapping("DevolverProducto")
-    public String devolverProducto(@RequestParam("id") int id, RedirectAttributes attr, HttpSession session) {
+    @PostMapping("DevolverProducto")
+    public String devolverProducto(@RequestParam("id") int id,@RequestParam("cantidad") int cantidad, RedirectAttributes attr, HttpSession session, Model model) {
         Optional<Inventariosede> inventariosede = inventariosedeRepository.findById(id);
         if (inventariosede.isPresent()) {// existe el inventariosede con esa id
             if (inventariosede.get().getSede().getIdsede().equals(((Usuarios) session.getAttribute("user")).getSede().getIdsede())) {// no es hackerman
-                if (inventariosede.get().getStock() > 0) {// se le resta a algo que no es 0
-                    //todo devolver 1
+                if (inventariosede.get().getStock() >= cantidad) {// se le resta a algo que no es 0
+
                     Inventario inventario = inventarioRepository.findById(inventariosede.get().getInventario().getIdInventario()).get();
-                    inventario.setStock( inventario.getStock() + 1  );
+                    inventario.setStock( inventario.getStock() + cantidad );
                     inventarioRepository.save(inventario);
-                    inventariosede.get().setStock(inventariosede.get().getStock() - 1);
+                    inventariosede.get().setStock(inventariosede.get().getStock() - cantidad);
                     inventariosedeRepository.save(inventariosede.get());
                     attr.addFlashAttribute("msg", "Un "+ inventario.getProducto().getDenominacion().getNombre()+" "+ inventario.getColor() + " devuelto exitosamente");
                     return "redirect:/sede";
                 } else {// se le esta restando a 0
-                    attr.addFlashAttribute("msg", "Ya no queda stock del producto en esta sede");
+                    attr.addFlashAttribute("msg", "Ya no queda stock de "+
+                            inventariosede.get().getInventario().getProducto().getCodigoGenerado() + " " + inventariosede.get().getInventario().getColor()   +" en esta sede");
                     return "redirect:/sede";
                 }
             } else {//hackerman detente por favor
