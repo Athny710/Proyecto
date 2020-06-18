@@ -103,43 +103,38 @@ public class AdminController {
     }
 
     @PostMapping("guardarGestor")
-    public String guardarGestor(@ModelAttribute("usurios") @Valid Usuarios usuarios,
+    public String guardarGestor(@ModelAttribute("usu") @Valid Usuarios usuarios,
                                 BindingResult bindingResult, Model model,
                                 RedirectAttributes attr) throws MessagingException {
 
         if(bindingResult.hasErrors()){
             return "Administrador/A-NuevoGestor";
         }else{
-            if (usuarios.getIdusuarios() == 0 && usuarioRepository.findByCorreo(usuarios.getCorreo()) == null) {
-
-                usuarios.setPassword(getAlphaNumericString(12));
-                usuarios.setTipo("gestor");
-                usuarios.setActivo(1);
-                String passwordSinEncriptar = usuarios.getPassword();
-                BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-                usuarios.setPassword(bCryptPasswordEncoder.encode(usuarios.getPassword()));
-                System.out.println(usuarios.getPassword());
-                usuarioRepository.save(usuarios);
-                //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
-                Email email = new Email();
-                email.emailEnviarPrimeraContraseña(usuarios.getCorreo(), passwordSinEncriptar, usuarios.getCorreo());
-                attr.addFlashAttribute("msg", "Gestor creado exitosamente");
-                return "redirect:/admin/listaGestores";
-
-            } else if (usuarios.getIdusuarios() != 0) {
-
-                usuarios.setTipo("gestor");
-                usuarios.setActivo(usuarioRepository.findById(usuarios.getIdusuarios()).get().getActivo());
-                usuarios.setPassword(usuarioRepository.findById(usuarios.getIdusuarios()).get().getPassword());
-                usuarios.setCorreo(usuarioRepository.findById(usuarios.getIdusuarios()).get().getCorreo());
-                usuarioRepository.save(usuarios);
-                attr.addFlashAttribute("msg", "Gestor actualizada exitosamente");
-
-                return "redirect:/admin/listaGestores";
-            } else { //ya existe el correo, mostrar errores
-                if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null) {
-                    model.addAttribute("msgError", "Ya hay un usuario con ese correo");
+            if (usuarioRepository.findByCorreo(usuarios.getCorreo()) == null) {
+                if(usuarioRepository.findByTelefono(usuarios.getTelefono())==null){
+                    if(usuarioRepository.findByNombreAndApellido(usuarios.getNombre(), usuarios.getApellido())==null){
+                        usuarios.setPassword(getAlphaNumericString(12));
+                        usuarios.setTipo("gestor");
+                        usuarios.setActivo(1);
+                        String passwordSinEncriptar = usuarios.getPassword();
+                        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+                        usuarios.setPassword(bCryptPasswordEncoder.encode(usuarios.getPassword()));
+                        usuarioRepository.save(usuarios);
+                        //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
+                        //Email email = new Email();
+                        //email.emailEnviarPrimeraContraseña(usuarios.getCorreo(), passwordSinEncriptar, usuarios.getCorreo());
+                        attr.addFlashAttribute("msg", "Gestor creado exitosamente");
+                        return "redirect:/admin/listaGestores";
+                    }else {
+                        model.addAttribute("msgNA", "Esta persona ya está registrada");
+                        return "Administrador/A-NuevoGestor";
+                    }
+                }else{
+                    model.addAttribute("msgT", "Este teléfono ya está registrado");
+                    return "Administrador/A-NuevoGestor";
                 }
+            }else { //ya existe el correo, mostrar errores
+                model.addAttribute("msgC", "Este correo ya está registrado");
                 return "Administrador/A-NuevoGestor";
             }
         }
