@@ -15,6 +15,8 @@ public interface UsuarioRepository extends JpaRepository<Usuarios,Integer> {
 
     public Usuarios findByCorreo(String email);
     public List<Usuarios> findByTipo(String tipo);
+    public Usuarios findByTelefono(String telefono);
+    public Usuarios findByNombreAndApellido(String nombre, String apellido);
 
     @Query(value="select hasheado from sw2_proyecto.usuarios WHERE idUsuarios=?1", nativeQuery=true)
     String seleccionarHash(Integer idusuarios);
