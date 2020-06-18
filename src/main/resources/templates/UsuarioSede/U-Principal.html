@@ -21,7 +21,11 @@
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Inventario</h5>
+                                <div style="width: 170px">
+                                    <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/sede/nuevaVenta}">Agregar Venta</a>
+                                </div>
                             </div>
+
                         </div>
                         <div class="card-body bg-gray-100">
                             <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
