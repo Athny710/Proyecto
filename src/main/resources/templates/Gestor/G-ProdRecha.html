@@ -35,7 +35,7 @@
                                     <th>Estado</th>
                                     <th>Comentario</th>
                                     <th>Editar Envío</th>
-                                    <th>Devolver</th>
+                                    <th>Eliminar</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -55,9 +55,34 @@
                                     </td>
                                     <td align="center">
                                         <a style="margin-left: 10px" class="far fa-trash-alt text-redM"
-                                           th:href="@{'/gestor/borrarRechazoDeEnvio' + '?id=' + ${p.getIdestado()}}"></a>
-                                        <!-- data-toggle="modal" data-target="#modalborrar" th:attrappend="data-target=${tienda.idtienda}"-->
+                                           href="#"
+                                           data-toggle="modal" data-target="#modalborrar"
+                                           th:attrappend="data-target=${p.getIdestado()}"></a>
                                     </td>
+                                    <div class="modal fade" id="modalborrar" tabindex="-1" role="dialog"
+                                         th:attrappend="id=${p.getIdestado()}" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header text-center">
+                                                    <h4 class="modal-title w-100 font-weight-bold">Eliminar producto
+                                                        rechazado del registro</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h6 th:text="'¿Está seguro que desea eliminar ' + ${p.getCodigogenerado()} + ' del registro?'"></h6>
+                                                    <a th:href="@{'/gestor/borrarRechazoDeEnvio' + '?id=' + ${p.getIdestado()}}"
+                                                       class="btn btn-danger btn-block">Eliminar</a>
+                                                    <button type="button" class="btn btn-searchTop btn-block"
+                                                            data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">Cancelar</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </tr>
                                 </tbody>
                             </table>
@@ -69,6 +94,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">

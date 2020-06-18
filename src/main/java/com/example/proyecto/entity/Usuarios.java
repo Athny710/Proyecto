@@ -9,13 +9,13 @@ import java.io.Serializable;
 public class Usuarios  implements Serializable {
 
     @Column(nullable = false)
-    @NotBlank
+    @NotBlank(message = "Este campo no puede ser vacío")
     @Size(max=45, message = "Demasiados caracteres")
     private String nombre;
-    @NotBlank
+    @NotBlank(message = "Este campo no puede ser vacío")
     @Size(max = 45, message = "Demsiados caracteres")
     private String apellido;
-    @NotBlank
+    @NotBlank(message = "Este campo no puede ser vacío")
     @Size(max = 45, message = "Demasiados caracteres")
     private String correo;
     private String password;

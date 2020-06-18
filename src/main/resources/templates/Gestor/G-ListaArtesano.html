@@ -46,8 +46,7 @@
                                         <td th:text="${artesano.comunidad.nombre}"></td>
                                         <td th:text="${artesano.codigo}"></td>
                                         <td align="center">
-
-                                                <a th:href="@{'/gestor/gestorEditArtesano' + '?idartesano=' + ${artesano.idArtesano}}" class="far fa-edit text-orangeM"></a>
+                                            <a th:href="@{'/gestor/gestorEditArtesano' + '?idartesano=' + ${artesano.idArtesano}}" class="far fa-edit text-orangeM"></a>
                                             <a style="margin-left: 10px" class="far fa-trash-alt text-redM" th:href="@{'/gestor/gestorBorrarArtesano' + '?idartesano=' + ${artesano.idArtesano}}"
                                                data-toggle="modal" data-target="#modalborrar" th:attrappend="data-target=${artesano.idArtesano}"></a>
                                             <div class="modal fade" id="modalborrar"  tabindex="-1" role="dialog" th:attrappend="id=${artesano.idArtesano}" aria-labelledby="myModalLabel">
