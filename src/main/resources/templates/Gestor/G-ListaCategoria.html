@@ -14,19 +14,18 @@
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <!-- Page Heading -->
                 <div class="container-fluid">
-                    <div class="col-lg-2">
-                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistrarCategoria}">Nueva Categoría</a>
-                    </div>
-                    <br>
+                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                     <div class="card shadowA mb-4">
-                        <div class="card-header2 py-3">
+                        <div class="card-header2" style="padding-top: 0.6rem; padding-bottom: 0.6rem">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Categorías</h5>
-                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                <div class="col-lg-2">
+                                    <a class="btn btn-orange btn-user btn-block" th:href="@{/gestor/gestorRegistrarCategoria}">Añadir Categoría</a>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
-                            <div class="table-responsive bg-white">
+                            <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                     <tr class="bg-gray-900 text-white" align="center">
@@ -35,15 +34,8 @@
                                         <th>Editar/Borrar</th>
                                     </tr>
                                     </thead>
-                                    <tfoot>
-                                    <tr align="center">
-                                        <th>Nombre</th>
-                                        <th>Codigo</th>
-                                        <th>Editar/Borrar</th>
-                                    </tr>
-                                    </tfoot>
                                     <tbody>
-                                    <tr align="center" th:each="categoria, info: ${listaCategoria}">
+                                    <tr class="bg-white" align="center" th:each="categoria, info: ${listaCategoria}">
                                         <td th:text="${categoria.nombre}"></td>
                                         <td th:text="${categoria.codigo}"></td>
                                         <td align="center" style="margin-left: 10px" >

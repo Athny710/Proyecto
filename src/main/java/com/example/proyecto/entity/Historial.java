@@ -1,17 +1,17 @@
 package com.example.proyecto.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
 public class Historial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "idHistorial")
+    @JoinColumn(name = "idhistorial")
     private
     int idhistorial;
     @Size(max = 45,message = "No puede sobrepasar los 45 caracteres")
@@ -19,11 +19,11 @@ public class Historial {
     @Digits(integer = 5,fraction = 2,message = "Solo puede tener 4 enteros y 2 decimales")
     @Positive(message = "no puede ser negativo")
     private Double costotejedor;
-    @NotBlank(message = "No puede ser vacío")
     @Positive(message = "No puede ser negativo")
     private Integer numeropedido;
-    private Date fecha;
-    @NotBlank(message = "No puede ser vacío")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "por favor ingrese una fecha")
+    private LocalDate fecha;
     @Positive(message = "No puede ser negativo")
     private Integer cantidad;
     @ManyToOne
@@ -62,13 +62,7 @@ public class Historial {
         this.numeropedido = numeropedido;
     }
 
-    public Date getFecha() {
-        return fecha;
-    }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
 
     public Integer getCantidad() {
         return cantidad;
@@ -84,5 +78,13 @@ public class Historial {
 
     public void setInventario(Inventario inventario) {
         this.inventario = inventario;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
     }
 }

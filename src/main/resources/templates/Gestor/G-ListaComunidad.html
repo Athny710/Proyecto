@@ -19,19 +19,16 @@
                     <br> -->
                     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                     <div class="card shadowA mb-4">
-                        <div class="card-header2 py-3">
+                        <div class="card-header2" style="padding-top: 0.6rem; padding-bottom: 0.6rem">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Comunidades</h5>
-                  <!--   <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>  -->
-                                  <!--  <divc lass="col-lg-4">  -->
-                                    <div class="col-lg-4">
-                                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/gestorRegistroComunidad}">Nueva Comunidad</a>
+                                    <div style="width: 180px">
+                                        <a class="btn btn-orange btn-user btn-block" th:href="@{/gestor/gestorRegistroComunidad}">Añadir Comunidad</a>
                                     </div>
-
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
-                            <div class="table-responsive bg-white">
+                            <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                     <tr class="bg-gray-900 text-white" align="center">
@@ -40,15 +37,8 @@
                                         <th>Editar/Borrar</th>
                                     </tr>
                                     </thead>
-                                    <tfoot>
-                                    <tr align="center">
-                                        <th>Nombre</th>
-                                        <th>Codigo</th>
-                                        <th>Editar/Borrar</th>
-                                    </tr>
-                                    </tfoot>
                                     <tbody>
-                                    <tr align="center" th:each="comunidad, info: ${listaComunidad}">
+                                    <tr class="bg-white" align="center" th:each="comunidad, info: ${listaComunidad}">
                                         <td th:text="${comunidad.nombre}"></td>
                                         <td th:text="${comunidad.codigo}"></td>
                                         <td align="center">

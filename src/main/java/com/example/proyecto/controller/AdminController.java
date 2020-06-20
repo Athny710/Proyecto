@@ -6,6 +6,10 @@ import com.example.proyecto.entity.Usuarios;
 import com.example.proyecto.repository.InventarioRepository;
 import com.example.proyecto.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +41,23 @@ public class AdminController {
         model.addAttribute("inventario", inventarioRepository.findAll());
         return "Administrador/A-PagPrincipal";
     }
+
+    @GetMapping("/image/{id}")
+    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id){
+        Optional<Inventario> inventario = inventarioRepository.findById(id);
+        if (inventario.isPresent()){
+            Inventario i = inventario.get();
+
+            byte[] imagenComoBytes = i.getFoto();
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setContentType(MediaType.parseMediaType(i.getFotocontenttype()));
+            return new ResponseEntity<>(imagenComoBytes,httpHeaders, HttpStatus.OK);
+
+        }else {
+            return null;
+        }
+    }
+
     @GetMapping("detalles")
     public String detalleInventario(@RequestParam("id") int id, Model model){
         Optional<Inventario> opt = inventarioRepository.findById(id);
@@ -103,43 +124,38 @@ public class AdminController {
     }
 
     @PostMapping("guardarGestor")
-    public String guardarGestor(@ModelAttribute("usurios") @Valid Usuarios usuarios,
+    public String guardarGestor(@ModelAttribute("usu") @Valid Usuarios usuarios,
                                 BindingResult bindingResult, Model model,
                                 RedirectAttributes attr) throws MessagingException {
 
         if(bindingResult.hasErrors()){
             return "Administrador/A-NuevoGestor";
         }else{
-            if (usuarios.getIdusuarios() == 0 && usuarioRepository.findByCorreo(usuarios.getCorreo()) == null) {
-
-                usuarios.setPassword(getAlphaNumericString(12));
-                usuarios.setTipo("gestor");
-                usuarios.setActivo(1);
-                String passwordSinEncriptar = usuarios.getPassword();
-                BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-                usuarios.setPassword(bCryptPasswordEncoder.encode(usuarios.getPassword()));
-                System.out.println(usuarios.getPassword());
-                usuarioRepository.save(usuarios);
-                //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
-                Email email = new Email();
-                email.emailEnviarPrimeraContraseña(usuarios.getCorreo(), passwordSinEncriptar, usuarios.getCorreo());
-                attr.addFlashAttribute("msg", "Gestor creado exitosamente");
-                return "redirect:/admin/listaGestores";
-
-            } else if (usuarios.getIdusuarios() != 0) {
-
-                usuarios.setTipo("gestor");
-                usuarios.setActivo(usuarioRepository.findById(usuarios.getIdusuarios()).get().getActivo());
-                usuarios.setPassword(usuarioRepository.findById(usuarios.getIdusuarios()).get().getPassword());
-                usuarios.setCorreo(usuarioRepository.findById(usuarios.getIdusuarios()).get().getCorreo());
-                usuarioRepository.save(usuarios);
-                attr.addFlashAttribute("msg", "Gestor actualizada exitosamente");
-
-                return "redirect:/admin/listaGestores";
-            } else { //ya existe el correo, mostrar errores
-                if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null) {
-                    model.addAttribute("msgError", "Ya hay un usuario con ese correo");
+            if (usuarioRepository.findByCorreo(usuarios.getCorreo()) == null) {
+                if(usuarioRepository.findByTelefono(usuarios.getTelefono())==null){
+                    if(usuarioRepository.findByNombreAndApellido(usuarios.getNombre(), usuarios.getApellido())==null){
+                        usuarios.setPassword(getAlphaNumericString(12));
+                        usuarios.setTipo("gestor");
+                        usuarios.setActivo(1);
+                        String passwordSinEncriptar = usuarios.getPassword();
+                        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+                        usuarios.setPassword(bCryptPasswordEncoder.encode(usuarios.getPassword()));
+                        usuarioRepository.save(usuarios);
+                        //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
+                        //Email email = new Email();
+                        //email.emailEnviarPrimeraContraseña(usuarios.getCorreo(), passwordSinEncriptar, usuarios.getCorreo());
+                        attr.addFlashAttribute("msg", "Gestor creado exitosamente");
+                        return "redirect:/admin/listaGestores";
+                    }else {
+                        model.addAttribute("msgNA", "Esta persona ya está registrada");
+                        return "Administrador/A-NuevoGestor";
+                    }
+                }else{
+                    model.addAttribute("msgT", "Este teléfono ya está registrado");
+                    return "Administrador/A-NuevoGestor";
                 }
+            }else { //ya existe el correo, mostrar errores
+                model.addAttribute("msgC", "Este correo ya está registrado");
                 return "Administrador/A-NuevoGestor";
             }
         }
