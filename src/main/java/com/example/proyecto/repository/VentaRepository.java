@@ -1,10 +1,6 @@
 package com.example.proyecto.repository;
 
-import com.example.proyecto.dto.AñosVenta;
-import com.example.proyecto.dto.ReporteConCamposOriginales;
-import com.example.proyecto.dto.VentaPorCodigo;
-import com.example.proyecto.dto.VentasXNombreDeProducto;
-import com.example.proyecto.entity.Comunidad;
+import com.example.proyecto.dto.*;
 import com.example.proyecto.entity.Tienda;
 import com.example.proyecto.entity.Venta;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -73,8 +69,8 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion\n" +
-            "inner join usuarios u on v.idUsuarios = u.idUsuarios\n" +
-            "inner join sede s on u.idSede = s.idSede and month(v.fecha) = ?1 and year(v.fecha) = ?2 and s.nombre = ?3\n" +
+            "inner join tienda t on v.idTienda = t.idTienda\n" +
+            "inner join sede s on t.idSede = s.idSede and month(v.fecha) = ?1 and year(v.fecha) = ?2 and s.nombre = ?3\n" +
             "order by v.fecha", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteMensualSede(String mes, String año, String idsede);
 
@@ -82,8 +78,8 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion\n" +
-            "inner join usuarios u on v.idUsuarios = u.idUsuarios\n" +
-            "inner join sede s on u.idSede = s.idSede and year(v.fecha) = ?1 and s.nombre = ?2\n" +
+            "inner join tienda t on v.idTienda = t.idTienda\n" +
+            "inner join sede s on t.idSede = s.idSede and year(v.fecha) = ?1 and s.nombre = ?2\n" +
             "order by v.fecha", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteAnualSede(String año, String idsede);
 
@@ -97,8 +93,8 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion\n" +
-            "inner join usuarios u on v.idUsuarios = u.idUsuarios\n" +
-            "inner join sede s on u.idSede = s.idSede and year(v.fecha) = ?1 and s.nombre = ?2\n" +
+            "inner join tienda t on v.idTienda = t.idTienda\n" +
+            "inner join sede s on t.idSede = s.idSede and year(v.fecha) = ?1 and s.nombre = ?2\n" +
             "order by v.fecha", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteTrimestralSede(String año, String idsede);
 
@@ -190,6 +186,41 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
     List<ReporteConCamposOriginales> reporteTrimestralTotal(String año);
 
     @Query(value = "SELECT DISTINCT(year(v.fecha)) as fecha FROM venta v", nativeQuery = true)
-    List<AñosVenta> obtenerAñosDeVenta();
+    List<FechaVenta> obtenerAñosDeVenta();
+
+    @Query(value = "SELECT month(v.fecha) as fecha, CASE WHEN MONTH(v.fecha) = 1 THEN \"enero\"\n" +
+            "WHEN MONTH(v.fecha) = 2 THEN \"febrero\"\n" +
+            "WHEN MONTH(v.fecha) = 3 THEN \"marzo\"\n" +
+            "WHEN MONTH(v.fecha) = 4 THEN \"abril\"\n" +
+            "WHEN MONTH(v.fecha) = 5 THEN \"mayo\"\n" +
+            "WHEN MONTH(v.fecha) = 6 THEN \"junio\"\n" +
+            "WHEN MONTH(v.fecha) = 7 THEN \"julio\"\n" +
+            "WHEN MONTH(v.fecha) = 8 THEN \"agosto\"\n" +
+            "WHEN MONTH(v.fecha) = 9 THEN \"septiembre\"\n" +
+            "WHEN MONTH(v.fecha) = 10 THEN \"octubre\"\n" +
+            "WHEN MONTH(v.fecha) = 11 THEN \"noviembre\"\n" +
+            "WHEN MONTH(v.fecha) = 12 THEN \"diciembre\" END AS fechaname FROM venta v\n" +
+            "group by fecha", nativeQuery = true)
+    List<FechaMesVenta> obtenerMesesDeVenta();
+
+    @Query(value = "select DISTINCT(d.nombre) from venta v\n" +
+            "inner join inventario inv on v.idInventario = inv.idInventario\n" +
+            "inner join producto p on inv.idProducto = p.idProducto\n" +
+            "inner join denominacion d on p.idDenominacion = d.idDenominacion ", nativeQuery = true)
+    List<ProductosQueSeVendieron> obtenerProductosVendidos();
+
+    @Query(value = "select distinct(c.nombre) as comunidad from venta v\n" +
+            "inner join inventario inv on v.idInventario = inv.idInventario\n" +
+            "inner join producto p on inv.idProducto = p.idProducto\n" +
+            "inner join denominacion d on p.idDenominacion = d.idDenominacion \n" +
+            "inner join comunidad c on c.idComunidad = p.idComunidad\n" +
+            "order by v.fecha",nativeQuery = true)
+    List<ProdComunidades> obtenerPComunidad();
+
+    @Query(value = "select distinct(s.nombre) as nombresede from venta v\n" +
+            "inner join tienda t on v.idTienda = t.idTienda\n" +
+            "inner join sede s on t.idSede = s.idSede\n" +
+            "order by v.fecha", nativeQuery = true)
+    List<ListaSedesQueVendieron> obtenerSedes();
 
 }

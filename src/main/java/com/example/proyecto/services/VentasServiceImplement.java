@@ -109,6 +109,8 @@ public class VentasServiceImplement implements VentasService {
             mesEspanish = "noviembre";
         }else if (mesEnEnglish.equals("December")){
             mesEspanish = "diciembre";
+        }else{
+            mesEspanish = mesEnEnglish;
         }
         return mesEspanish;
     }
@@ -390,7 +392,7 @@ public class VentasServiceImplement implements VentasService {
             headerCellStyle.setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
             headerCellStyle.setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
 
-            headerCellStyle1.setFillForegroundColor(HSSFColor.SKY_BLUE.index);
+            headerCellStyle1.setFillForegroundColor(HSSFColor.WHITE.index);
             headerCellStyle1.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
             headerCellStyle1.setAlignment(HSSFCellStyle.ALIGN_CENTER);
             HSSFFont cellFont = workbook.createFont();

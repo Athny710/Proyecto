@@ -34,6 +34,7 @@
                                               <div class="form-group">
                                                   <input th:field="*{nombre}" type="text" class="form-control form-control-user" id="nombre" placeholder="Nombre">
                                               </div>-->
+                                        <input  th:field="*{idsede}" name="idSede" type="hidden" />
                                              <div class="form-group ">
                                                   <label for="nombre">Nombre:</label>
                                                   <input th:field="*{nombre}"  type="text" class="form-control form-control-user">
@@ -43,7 +44,7 @@
                                      <!--   <button type="submit" class="btn btn-searchTop btn-user btn-block" th:text="${sede.idsede==null?'Registrar':'Actualizar'}">
                                         </button> -->
                                         <button type="submit" class="btn btn-searchTop btn-user btn-block">
-                                            Guardar
+                                            Actualizar
                                         </button>
                                         <a class="btn btn-searchTop btn-danger btn-block" style="border-radius:10rem" th:href="@{'/gestor/gestorListaSedes'}"> Cancelar</a>
                                     </form>

@@ -23,15 +23,16 @@
                                 <br>
                                 <form th:action="@{'/system/enviarCorreoRecuperarCont'}" method="post" class="user">
                                     <div class="form-group2">
-                                        <label class="peque">Ingresar el correo</label>
+                                        <label class="peque">Ingrese su correo:</label>
                                         <input type="email" class="form-control-log form-control-user2" name="correo" id="correo">
                                     </div>
                                     <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${msg!=null}" th:text="${msg}"></div>
                                     <hr>
-                                    <label class="peque">Haga click en "Enviar" para que le llegue un correo a su bandeja de entrada y pueda reestablecer su contraseña.</label>
+                                    <p class="peque" style="text-align: justify">Haga click en "Enviar" para que le llegue un correo a su bandeja de entrada y pueda reestablecer su contraseña.</p><br>
                                     <div class="d-flex">
-                                        <div style="width: 77.5px"></div>
-                                        <button type="submit" class="btn btn-log" style="border-radius: 10rem; text-align: center">Enviar</button>
+                                        <div style="width: 32px"></div>
+                                        <a style="border-radius: 10rem; text-align: center; margin-right: 5px" class="btn btn-gray-900" th:href="@{/loginForm}">Regresar</a>
+                                        <button type="submit" class="btn btn-log" style="border-radius: 10rem; text-align: center; width: 91px">Enviar</button>
                                     </div>
                                 </form>
                             </div>
