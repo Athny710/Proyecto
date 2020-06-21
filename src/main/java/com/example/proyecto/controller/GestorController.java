@@ -95,9 +95,10 @@ public class GestorController {
     public String reporteVentas1(Model model) {
         model.addAttribute("listaClientes",ventaRepository.findAll());
         model.addAttribute("listasedes",sedeRepository.findAll());
-        model.addAttribute("listacomunidades",comunidadRepository.findAll());
-        model.addAttribute("listaarticulos",denominacionRepository.findAll());
         model.addAttribute("listaAnhos",ventaRepository.obtenerAñosDeVenta());
+        model.addAttribute("listaMeses", ventaRepository.obtenerMesesDeVenta());
+        model.addAttribute("listaProductosVendidos", ventaRepository.obtenerProductosVendidos());
+        model.addAttribute("listaComunidades",ventaRepository.obtenerPComunidad());
         return "Gestor/G-GenReporte";
     }
 
@@ -1161,7 +1162,7 @@ public class GestorController {
     }
 
     @PostMapping("crearExcelPorCliente")
-    public void crearExcelCliente(@RequestParam("cliente") String cliente, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response) {
+    public void crearExcelCliente(@RequestParam("estandar") String cliente, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response) {
         if (mes.equals("todo")){
             List<ReporteConCamposOriginales> ventaXClienteAnual = ventasService.getVentasPorClienteAnual(año,cliente);
             String titulo = "Ventas anuales realizadas al cliente " + cliente ;
@@ -1190,7 +1191,7 @@ public class GestorController {
     }
 
     @PostMapping("crearExcelPorSede")
-    public void crearExcelPorSede(@RequestParam("idsede") String idsede, @RequestParam("mes1") String mes, @RequestParam("año1") String año, HttpServletRequest request, HttpServletResponse response) {
+    public void crearExcelPorSede(@RequestParam("estandar") String idsede, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response) {
         if (mes.equals("todo")){
             List<ReporteConCamposOriginales> ventaXSedeAnual = ventasService.getVentasPorSedeAnual(año,idsede);
             String titulo = "Ventas anuales realizadas por la sede " + idsede ;
@@ -1219,7 +1220,7 @@ public class GestorController {
     }
 
     @PostMapping("crearExcelPorArticulo")
-    public void crearExcelPorArticulo(@RequestParam("articulo") String articulo, @RequestParam("mes2") String mes, @RequestParam("año2") String año, HttpServletRequest request, HttpServletResponse response) {
+    public void crearExcelPorArticulo(@RequestParam("estandar") String articulo, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response) {
         if (mes.equals("todo")){
             List<ReporteConCamposOriginales> ventaXArticuloAnual = ventasService.getVentasPorArticuloAnual(año,articulo);
             String titulo = "Ventas anuales del artículo " + articulo ;
@@ -1248,7 +1249,7 @@ public class GestorController {
     }
 
     @PostMapping("crearExcelPorComunidad")
-    public void crearExcelPorComunidad(@RequestParam("comunidad") String comunidad, @RequestParam("mes3") String mes, @RequestParam("año3") String año, HttpServletRequest request, HttpServletResponse response) {
+    public void crearExcelPorComunidad(@RequestParam("estandar") String comunidad, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response) {
         if (mes.equals("todo")){
             List<ReporteConCamposOriginales> ventaXComunidadAnual = ventasService.getVentasPorComunidadAnual(año,comunidad);
             String titulo = "Ventas anuales de los productos de la comunidad " + comunidad ;
