@@ -32,24 +32,24 @@ public class Venta {
 
 
     @Column(nullable = false)
-    @Positive(message="No puede ser negativo")
+    @Positive(message="Debe ser mayor a 0")
     @Digits(integer = 11, fraction = 0, message="No puede ser decimal y debe tener 11 digitos")
     private int numerodocumentoventa;
 
     private String lugardeventa;
 
     @Column(nullable = false)
-    @Positive(message="No puede ser negativo")
+    @Positive(message="Debe ser mayor a 0")
     @Digits(integer = 7, fraction = 2, message="No puede tener más de 7 numeros enteros o 2 decimales")
     private float preciounitarioventa;
 
     @Column(nullable = false)
-    @Positive(message="No puede ser negativo")
+    @Positive(message="Debe ser mayor a 0")
     @Digits(integer = 11, fraction = 0, message="No puede ser decimal y debe tener 11 digitos")
     private int cantidad;
 
-    @Column(nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "por favor ingrese una fecha")
     private LocalDate fecha;
 
     @ManyToOne

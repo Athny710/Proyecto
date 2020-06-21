@@ -6,74 +6,128 @@
 
 <body id="page-top">
 
-    <div id="wrapper">
-        <div th:replace="Fragmentos/FragmentosSede.html::SideBarSede"></div>
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column bg-white">
+<div id="wrapper">
+    <div th:replace="Fragmentos/FragmentosSede.html::SideBarSede"></div>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column bg-white">
 
-            <!-- Main Content -->
-            <div id="content">
-                <div th:insert="Fragmentos/FragmentosSede.html::TopBar"></div>
-                <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
-                <div class="container-fluid">
-                    <div class="col-lg-2">
-                        <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/sede/nuevaVenta}">Añadir Venta</a>
-                    </div>
-                    <br>
-                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                    <div class="card shadowA mb-4">
-                        <div class="card-header2 py-3">
-                            <div class="d-flex justify-content-between centrado">
-                                <h5 class="m-0 font-weight-bold text-redM">Inventario</h5>
+        <!-- Main Content -->
+        <div id="content">
+            <div th:insert="Fragmentos/FragmentosSede.html::TopBar"></div>
+            <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
+            <div class="container-fluid">
+                <div th:if="${msgsuccess != null}" th:text="${msgsuccess}" class="alert alert-success"
+                     role="alert"></div>
+                <div class="card shadowA mb-4">
+                    <div class="card-header2 py-3">
+                        <div class="d-flex justify-content-between centrado">
+                            <h5 class="m-0 font-weight-bold text-redM">Inventario</h5>
+                            <div style="width: 170px">
+                                <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/sede/nuevaVenta}">Agregar
+                                    Venta</a>
                             </div>
                         </div>
-                        <div class="card-body bg-gray-100">
-                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
-                            <div class="table-responsive bg-gray-100">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr class="bg-gray-900 text-white" align="center">
-                                            <th>Nombre del Producto</th>
-                                            <th>Codigo</th>
-                                            <th>Stock</th>
-                                            <th>Tipo de Adquisicion</th>
-                                            <th>Fecha de adquisicion</th>
-                                            <th>Detalles</th>
-                                            <th>Devolver</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr th:each="x : ${listaProductos}" align="center">
-                                            <td th:text="${x.inventario.producto.denominacion.nombre}"></td>
-                                            <td th:text="${x.inventario.producto.denominacion.codigonombre}"></td>
-                                            <td th:text="${x.stock}"></td>
-                                            <td th:text="${x.inventario.producto.adquisicion.modalidad}"></td>
-                                            <td th:text="${x.inventario.producto.adquisicion.fecha}"></td>
-                                            <td align="center">
-                                                <a th:href="@{'/sede/DetallesProducto?id='+${x.idinventariosede}}">
-                                                    <i class="far fa-list-alt text-greenM"></i>
-                                                </a>
-                                            </td>
-                                            <td align="center">
-                                                <a th:href="@{'/sede/DevolverProducto?id='+${x.idinventariosede}}">
-                                                    <i class="far fa-trash-alt text-redM" style="margin-left: 5px"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+
+                    </div>
+                    <div class="card-body bg-gray-100">
+                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
+                        <div class="table-responsive bg-gray-100">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr class="bg-gray-900 text-white" align="center">
+                                    <th>Nombre del Producto</th>
+                                    <th>Codigo</th>
+                                    <th>Stock</th>
+                                    <th>Tipo de Adquisicion</th>
+                                    <th>Fecha de adquisicion</th>
+                                    <th>Detalles</th>
+                                    <th>Devolver</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="bg-white" th:each="x : ${listaProductos}" align="center">
+                                    <td th:text="${x.inventario.producto.denominacion.nombre}"></td>
+                                    <td th:text="${x.inventario.producto.denominacion.codigonombre}"></td>
+                                    <td th:text="${x.stock}"></td>
+                                    <td th:text="${x.inventario.producto.adquisicion.modalidad}"></td>
+                                    <td th:text="${x.inventario.producto.adquisicion.fecha}"></td>
+                                    <td align="center">
+                                        <a th:href="@{'/sede/DetallesProducto?id='+${x.idinventariosede}}">
+                                            <i class="far fa-list-alt text-greenM"></i>
+                                        </a>
+                                    </td>
+
+
+                                    <td align="center">
+                                        <a style="margin-left: 10px" class="far fa-trash-alt"
+                                           href="#"
+                                           data-toggle="modal" data-target="#modalborrar"
+                                           th:attrappend="data-target=${x.idinventariosede}"
+                                           th:classappend="${x.getStock() == 0} ? ' text-muted' : ' text-redM'"></a>
+                                    </td>
+
+
+                                    <div class="modal fade" id="modalborrar" tabindex="-1" role="dialog"
+                                         th:attrappend="id=${x.idinventariosede}" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header text-center">
+                                                    <h4 class="modal-title w-100 font-weight-bold">Devolver producto al
+                                                        almacen</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form method="post"
+                                                          th:action="@{'/sede/DevolverProducto?id='+${x.idinventariosede}}" >
+                                                    <h6 th:text="'Usted esta devolviendo ' + ${ x.inventario.producto.codigoGenerado + ' ' + x.getInventario().getColor() +'(s)'}"></h6>
+
+
+                                                        <div class="form-group">
+                                                            <label>Cantidad a devolver: (Quedan <span
+                                                                    th:text="${x.stock}"></span>)</label>
+                                                            <input  name="cantidad" type="number"
+                                                                   class="form-control form-control-user"
+                                                                   placeholder="cantidad" th:value="${cantidad}"
+                                                                   style="border-radius:10rem">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-searchTop btn-block"
+                                                                    style="background-color: #e74a3b;border-color: #e74a3b;">
+                                                                <span aria-hidden="true">Devolver</span>
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                        <div class="form-group">
+                                                            <button type="button" class="btn btn-searchTop btn-block"
+                                                                    data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">Cancelar</span>
+                                                            </button>
+                                                        </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-    <div th:replace="Fragmentos/FragmentosSede.html::Script"></div>
+</div>
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+<div th:replace="Fragmentos/FragmentosSede.html::Script"></div>
 
 </body>
 

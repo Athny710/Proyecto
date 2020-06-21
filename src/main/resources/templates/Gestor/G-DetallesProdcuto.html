@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
-                            <div class="table-responsive bg-white d-flex">
+                            <div class="table-responsive bg-gray-100 d-flex">
                                 <div class="col-lg-6 ">
                                     <br>
                                     <div class="d-flex">
@@ -76,9 +76,9 @@
                                     <hr th:if="${producto.producto.adquisicion.modalidad.equalsIgnoreCase('consignado')}">
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
-                                            <p>Cantidad:</p>
+                                            <p>Stock:</p>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${historial.cantidad}"></p></div>
+                                        <div class="col-lg-6"><p th:text="${producto.stock}"></p></div>
                                     </div>
                                     <hr>
                                     <div class="d-flex">
@@ -139,7 +139,7 @@
                                         <div class="col-xl-7 col-md-6 mb-4">
                                             <div class="card border-left-warning shadow h-100 py-2">
                                                 <div class="card-body">
-                                                    <img th:src="@{/img/bufanda.png}" width="210px" height="250">
+                                                    <img th:src="@{|/gestor/image/${producto.idInventario}|}" width="210px" height="250">
                                                 </div>
                                             </div>
                                         </div>

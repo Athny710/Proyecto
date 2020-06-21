@@ -13,7 +13,6 @@
             <div id="content">
                 <div th:insert="Fragmentos/FragmentosAdmin.html::TopBar"></div>
                 <div th:insert="Fragmentos/FragmentosAdmin.html::LogOut"></div>
-                <div th:insert="Fragmentos/FragmentosAdmin.html::perfilModal(perfil=${perfil})"></div>
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
@@ -45,7 +44,7 @@
                                             <td th:text="${i.producto.adquisicion.modalidad}">Compra</td>
                                             <td th:text="${i.producto.adquisicion.fecha}">10/04/2019</td>
                                             <td align="center"><a th:href="@{'/admin/detalles?id='+ ${i.idInventario}}" >
-                                                <i class="far fa-list-alt text-orangeM"></i>
+                                                <i class="far fa-list-alt text-greenM"></i>
                                             </a></td>
                                         </tr>
                                     </tbody>

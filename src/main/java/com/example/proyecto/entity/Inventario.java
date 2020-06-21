@@ -15,7 +15,9 @@ public class Inventario {
     private int idinventario;
     private int stock;
     private String comentario;
-    private String foto;
+    private byte[] foto;
+    private String fotonombre;
+    private String fotocontenttype;
     private String color;
     @Positive
     private Double preciomosqoy;
@@ -48,13 +50,6 @@ public class Inventario {
         this.comentario = comentario;
     }
 
-    public String getFoto() {
-        return foto;
-    }
-
-    public void setFoto(String foto) {
-        this.foto = foto;
-    }
 
     public String getColor() {
         return color;
@@ -80,5 +75,29 @@ public class Inventario {
 
     public void setPreciomosqoy(Double preciomosqoy) {
         this.preciomosqoy = preciomosqoy;
+    }
+
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
+    }
+
+    public String getFotonombre() {
+        return fotonombre;
+    }
+
+    public void setFotonombre(String fotonombre) {
+        this.fotonombre = fotonombre;
+    }
+
+    public String getFotocontenttype() {
+        return fotocontenttype;
+    }
+
+    public void setFotocontenttype(String fotocontenttype) {
+        this.fotocontenttype = fotocontenttype;
     }
 }

@@ -15,8 +15,8 @@
                         <div class="card shadowA mb-4">
                             <div class="card-header2 py-3 d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Tiendas</h5>
-                                <div class="col-lg-4">
-                                    <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/sede/registroRealTienda}">Nueva Tienda</a>
+                                <div class="col-lg-2">
+                                    <a class="btn btn-orange btn-user btn-block" th:href="@{/sede/registroRealTienda}">Añadir Tienda</a>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -25,15 +25,14 @@
                                     <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
                                     <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
-                                        <tr class = "bg-gray-900 text-white">
-
+                                        <tr class = "bg-gray-900 text-white" align="center">
                                             <th>Nombre de tienda</th>
                                             <th>Editar/Eliminar</th>
                                         </tr>
                                         </thead>
 
                                         <tbody>
-                                        <tr align="center" th:each="tienda, info: ${listaTiendas}">
+                                        <tr class="bg-white"  align="center" th:each="tienda, info: ${listaTiendas}">
                                             <td th:text="${tienda.nombre}"></td>
                                             <td align="center">
                                                 <a style="margin-left: 10px" th:href="@{'/sede/editarTienda' + '?id=' + ${tienda.idtienda}}" class="far fa-edit text-orangeM"></a>

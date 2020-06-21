@@ -14,21 +14,21 @@
             <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
             <div class="container-fluid">
                 <!-- Page Heading -->
-                <div class="card shadow mb-4">
+                <div class="card shadowA mb-4">
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
                             <h5 class="m-0 font-weight-bold text-redM">Productos Enviados</h5>
                         </div>
                     </div>
                     <div class="card-body bg-gray-100">
-                        <div class="table-responsive bg-white">
-                            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="table-responsive">
+
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                     <tr class="bg-gray-900 text-white" align="center">
+                                        <th>Producto</th>
                                         <th>Código</th>
                                         <th>Sede</th>
-                                        <th>Producto</th>
                                         <th>Cantidad</th>
                                         <th>Precio de venta</th>
                                         <th>Fecha de envío</th>
@@ -36,10 +36,10 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="p : ${listaProdEnv}">
+                                    <tr class="bg-white" align="center" th:each="p : ${listaProdEnv}">
+                                        <td th:text="${p.getNombre()}"></td>
                                         <td th:text="${p.getCodigogenerado()}"></td>
                                         <td th:text="${p.getNombre_sede()}"></td>
-                                        <td th:text="${p.getNombre()}"></td>
                                         <td th:text="${p.getCantidad()}"></td>
                                         <td th:text="${p.getPreciomosqoy()}"></td>
                                         <td th:text="${p.getFecha()}"></td>
@@ -47,7 +47,7 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                            </div>
+
                         </div>
                         </form>
                     </div>

@@ -14,31 +14,29 @@
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
+                    <div class="card shadowA mb-4">
+                        <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Productos sin Stock</h5>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                                </div>
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
-                                    <tr>
+                                    <tr class="bg-gray-900 text-white" align="center">
+                                        <th>Nombre</th>
                                         <th>Código</th>
                                         <th>Línea</th>
                                         <th>Categoría</th>
-                                        <th>Nombre</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr align="center" th:each="productos, info: ${listaSinStock}">
+                                    <tr class="bg-white" align="center" th:each="productos, info: ${listaSinStock}">
+                                        <td th:text="${productos.producto.denominacion.nombre}"></td>
                                         <td th:text="${productos.producto.codigoGenerado}"></td>
                                         <td th:text="${productos.producto.denominacion.linea.nombre}"></td>
                                         <td th:text="${productos.producto.categoria.nombre}"></td>
-                                        <td th:text="${productos.producto.denominacion.nombre}"></td>
                                     </tr>
                                     </tbody>
                                 </table>

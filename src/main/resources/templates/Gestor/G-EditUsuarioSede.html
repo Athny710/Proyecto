@@ -28,13 +28,16 @@
                                         <input th:field="*{idusuarios}" name="idUsuarios" type="hidden" />
                                         <div class="form-group">
                                             <input th:field="*{nombre}" type="text" class="form-control form-control-user" id="nombre" placeholder="Nombre">
-                                        </div>
+                                        </div><div class="text-danger" th:if="${#fields.hasErrors('nombre')}"
+                                                   th:errors="*{nombre}"></div>
                                         <div class="form-group">
                                             <input th:field="*{apellido}" type="text" class="form-control form-control-user" id="apellido" placeholder="Apellidos">
-                                        </div>
+                                        </div><div class="text-danger" th:if="${#fields.hasErrors('apellido')}"
+                                                   th:errors="*{apellido}"></div>
                                         <div class="form-group">
                                             <input th:field="*{telefono}" type="text" class="form-control form-control-user" id="telefono" placeholder="Telefono">
-                                        </div>
+                                        </div><div class="text-danger" th:if="${#fields.hasErrors('telefono')}"
+                                                   th:errors="*{telefono}"></div>
                                         <div class="form-group">
                                             <select th:field="*{sede.idsede}" class="form-control" id="sede" style="border-radius:10rem">
                                                 <option th:each="sede : ${listasedes}" th:value="${sede.idsede}" th:text="${sede.nombre}"></option>

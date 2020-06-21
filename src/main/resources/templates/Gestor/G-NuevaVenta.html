@@ -24,58 +24,65 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="p-5">
-                                    <form method="post" th:action="@{'/gestor/guardarVenta'}" th:object="${venta}">
+                                    <form method="post" class="user" th:action="@{'/gestor/guardarVenta'}"
+                                          th:object="${venta}">
                                         <input th:field="*{idventa}" type="hidden"/>
                                         <div class="form-group">
-                                            <input type="text" class="form-control"
-                                                   th:field="*{nombrecliente}" placeholder="Nombre del Cliente"/>
+                                            <Label>Nombre del Cliente</Label>
+                                            <input type="text" class="form-control form-control-user"
+                                                   th:field="*{nombrecliente}"/>
                                             <div class="text-danger"
                                                  th:if="${#fields.hasErrors('nombrecliente')}"
                                                  th:errors="*{nombrecliente}">Error
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control"
-                                                   th:field="*{tipodocumentoidentidad}" placeholder="Tipo de Documento de Identidad"/>
+                                            <Label>Tipo de documento de identidad</Label>
+                                            <input type="text" class="form-control form-control-user"
+                                                   th:field="*{tipodocumentoidentidad}"/>
                                             <div class="text-danger"
                                                  th:if="${#fields.hasErrors('tipodocumentoidentidad')}"
                                                  th:errors="*{tipodocumentoidentidad}">Error
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control"
-                                                   th:field="*{numerodocumentoidentidad}" placeholder="Número de documento de identidad" />
+                                            <Label>Número de documento de identidad</Label>
+                                            <input type="text" class="form-control form-control-user"
+                                                   th:field="*{numerodocumentoidentidad}"/>
                                             <div class="text-danger"
                                                  th:if="${#fields.hasErrors('numerodocumentoidentidad')}"
                                                  th:errors="*{numerodocumentoidentidad}">Error
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control"
-                                                   th:field="*{tipodocumentoventa}" placeholder="Tipo de documento de venta"/>
+                                            <Label>Tipo de documento de venta</Label>
+                                            <input type="text" class="form-control form-control-user"
+                                                   th:field="*{tipodocumentoventa}"/>
                                             <div class="text-danger" th:if="${#fields.hasErrors('tipodocumentoventa')}"
                                                  th:errors="*{tipodocumentoventa}">Error
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <Label>Número de documento de venta</Label>
-                                            <input type="text" class="form-control"
-                                                   th:field="*{numerodocumentoventa}" placeholder="Numero de documento de venta"/>
+                                            <input type="text" class="form-control form-control-user"
+                                                   th:field="*{numerodocumentoventa}"/>
                                             <div class="text-danger"
                                                  th:if="${#fields.hasErrors('numerodocumentoventa')}"
                                                  th:errors="*{numerodocumentoventa}">Error
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" th:field="*{lugardeventa}" placeholder="Lugar de Venta"/>
+                                            <Label>Lugar de venta</Label>
+                                            <input type="text" class="form-control form-control-user"
+                                                   th:field="*{lugardeventa}"/>
                                             <div class="text-danger" th:if="${#fields.hasErrors('lugardeventa')}"
                                                  th:errors="*{lugardeventa}">Error
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <Label>Precio Unitario del producto</Label>
-                                            <input type="text" class="form-control"
-                                                   th:field="*{preciounitarioventa}" placeholder="Precio unitario de Venta"/>
+                                            <input type="text" class="form-control form-control-user"
+                                                   th:field="*{preciounitarioventa}"/>
                                             <div class="text-danger" th:if="${#fields.hasErrors('preciounitarioventa')}"
                                                  th:errors="*{preciounitarioventa}">Error
                                             </div>
@@ -83,7 +90,7 @@
                                         <div class="form-group">
                                             <label for="inventario">Producto Vendido:</label>
                                             <select th:field="*{inventario.idInventario}"
-                                                    class="form-control form-control-user" id="inventario"
+                                                    class="form-control" id="inventario"
                                                     placeholder="producto">
                                                 <option th:each="inventario : ${listaInventario}"
                                                         th:value="${inventario.idInventario}" th:text="${
@@ -97,14 +104,16 @@
                                         </div>
                                         <div class="form-group">
                                             <Label>Cantidad Vendida</Label>
-                                            <input type="text" class="form-control" th:field="*{cantidad}" placeholder="Cantidad vendida"/>
+                                            <input type="text" class="form-control form-control-user"
+                                                   th:field="*{cantidad}" placeholder="Cantidad vendida"/>
                                             <div class="text-danger" th:if="${#fields.hasErrors('cantidad')}"
                                                  th:errors="*{cantidad}">Error
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <Label>Fecha de Venta</Label>
-                                            <input type="date" class="form-control" th:field="*{fecha}"/>
+                                            <input type="date" class="form-control form-control-user"
+                                                   th:field="*{fecha}"/>
 
                                             <div class="text-danger" th:if="${#fields.hasErrors('fecha')}"
                                                  th:errors="*{fecha}">Error
@@ -144,6 +153,6 @@
     </a>
 
     <div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
-
+</div>
 </body>
 </html>

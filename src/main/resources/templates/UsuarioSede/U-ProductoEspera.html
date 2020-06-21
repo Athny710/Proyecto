@@ -15,7 +15,6 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                <br>
                 <div class="card shadowA mb-4">
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
@@ -23,7 +22,7 @@
                         </div>
                     </div>
                     <div class="card-body bg-gray-100">
-                        <div class="table-responsive bg-white">
+                        <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr class="bg-gray-900 text-white" align="center">
@@ -39,7 +38,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="p : ${listaProductosEnviadosSede}">
+                                <tr class="bg-white" align="center" th:each="p : ${listaProductosEnviadosSede}">
                                     <td th:text="${p.getCodigogenerado()}"></td>
                                     <td th:text="${p.getCantidad()}"></td>
                                     <td th:text="${p.getColor()}"></td>
@@ -52,11 +51,40 @@
                                             <i class="far fa-list-alt text-greenM"></i>
                                         </a>
                                     </td>
+
                                     <td align="center">
-                                        <a th:href="@{'/sede/DevolverProductoSinConfirmar?id='+${p.getIdenviosede()}}">
-                                            <i class="far fa-trash-alt text-redM" style="margin-left: 5px"></i>
-                                        </a>
+                                        <a style="margin-left: 10px" class="far fa-trash-alt text-redM"
+                                           href="#"
+                                           data-toggle="modal" data-target="#modalborrar"
+                                           th:attrappend="data-target=${p.getIdenviosede()}"></a>
                                     </td>
+
+                                    <div class="modal fade" id="modalborrar" tabindex="-1" role="dialog"
+                                         th:attrappend="id=${p.getIdenviosede()}" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header text-center">
+                                                    <h4 class="modal-title w-100 font-weight-bold">Devolver producto al almacen principal</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h6 th:text="'¿Está seguro que desea devolver ' + ${p.getCantidad() + ' '+ p.getCodigogenerado() + ' ' + p.getColor() +'(s)'} + '?'"></h6>
+                                                    <a th:href="@{'/sede/DevolverProductoSinConfirmar?id='+${p.getIdenviosede()}}"
+                                                       class="btn btn-danger btn-block">Devolver</a>
+                                                    <button type="button" class="btn btn-searchTop btn-block"
+                                                            data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">Cancelar</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
                                 </tr>
                                 </tbody>
                             </table>

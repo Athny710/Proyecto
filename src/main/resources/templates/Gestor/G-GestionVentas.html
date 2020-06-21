@@ -18,9 +18,8 @@
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
                             <h5 class="m-0 font-weight-bold text-redM">Lista de Ventas</h5>
-                            <div class="col-lg-4">
-                                <a class="btn btn-gray-900 btn-user btn-block" th:href="@{/gestor/nuevaVenta}">Añadir
-                                    Venta</a>
+                            <div class="col-lg-2">
+                                <a class="btn btn-orange btn-user btn-block" th:href="@{/gestor/nuevaVenta}">Añadir Venta</a>
                             </div>
                         </div>
                     </div>
@@ -41,7 +40,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="venta, info : ${listaVentas}">
+                                <tr class="bg-white" align="center" th:each="venta, info : ${listaVentas}">
                                     <td th:text="${venta.nombrecliente}"></td>
                                     <td th:text="${venta.numerodocumentoidentidad}"></td>
                                     <td th:text="${venta.numerodocumentoventa}"></td>

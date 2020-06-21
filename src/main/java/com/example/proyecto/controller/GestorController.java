@@ -6,6 +6,10 @@ import com.example.proyecto.entity.*;
 import com.example.proyecto.repository.*;
 import com.example.proyecto.services.VentasService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import java.io.IOException;
 import java.util.*;
 
 import java.net.InetAddress;
@@ -92,6 +97,7 @@ public class GestorController {
         model.addAttribute("listasedes",sedeRepository.findAll());
         model.addAttribute("listacomunidades",comunidadRepository.findAll());
         model.addAttribute("listaarticulos",denominacionRepository.findAll());
+        model.addAttribute("listaAnhos",ventaRepository.obtenerAñosDeVenta());
         return "Gestor/G-GenReporte";
     }
 
@@ -172,8 +178,39 @@ public class GestorController {
                                      Model model,
                                      RedirectAttributes attr, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
-            return "Gestor/G-EditUsuarioSede";
+            if(usuarios.getIdusuarios() != 0){
+                Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
+                if (usuariosID.isPresent()) {// todo mostrar errores
+                    usuarios = usuariosID.get();
+                    model.addAttribute("usuarios", usuarios);
+                    model.addAttribute("listasedes", sedeRepository.findAll());
+                    return "/Gestor/G-EditUsuarioSede";
+                } else {//todo mostrar errores
+                    model.addAttribute("listasedes", sedeRepository.findAll());
+                    return "/Gestor/G-RegistroUsuarioSede";
+                }
+            }else{
+                model.addAttribute("listasedes", sedeRepository.findAll());
+                return "Gestor/G-RegistroUsuarioSede";
+            }
+
         } else {
+            if(!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[a-z0-9\\._-]+\\.[A-Za-z0-9]+$")){// validacion tipo correo
+                if(usuarios.getIdusuarios() != 0){
+                    Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
+                    if (usuariosID.isPresent()) {// todo mostrar errores
+                        usuarios = usuariosID.get();
+                        model.addAttribute("usuarios", usuarios);
+                        model.addAttribute("listasedes", sedeRepository.findAll());
+                        return "gestor/G-EditUsuarioSede";
+                    } else {//todo mostrar errores
+                        model.addAttribute("listasedes", sedeRepository.findAll());
+                        return "/Gestor/G-RegistroUsuarioSede";
+                    }
+                }else{
+                    return "redirect:/gestor/gestorRegistroUsuarioSede";
+                }
+            }
             if (usuarios.getIdusuarios() == 0 && usuarioRepository.findByCorreo(usuarios.getCorreo()) == null) {
                 usuarios.setPassword(getAlphaNumericString(12));
                 usuarios.setTipo("sede");
@@ -493,6 +530,79 @@ public class GestorController {
 
     }
 
+    @GetMapping("gestorRegInventario")
+    public String añadirEnInventario(@ModelAttribute("historial") Historial historial ,Model model){
+        model.addAttribute("litaProductos",productoRepository.findAll());
+        return  "Gestor/G-AñadirEnInventario";
+    }
+
+    @PostMapping("guardarProductoEnInventario")
+    public String guardarEnInventario(@ModelAttribute("historial") @Valid Historial historial, BindingResult bindingResult,
+                                      RedirectAttributes attr, @RequestParam("archivo") MultipartFile file, Model model){
+        if (bindingResult.hasErrors()){
+            return  "Gestor/G-AñadirEnInventario";
+        }else{
+            if(file.isEmpty()){
+                model.addAttribute("msg", "Debe subir un archivo");
+                return  "Gestor/G-AñadirEnInventario";
+            }
+
+            String fileName = file.getOriginalFilename();
+
+            if(fileName.contains("..")){
+                model.addAttribute("msg", "No se permiten '..' en el archivo ");
+                return  "Gestor/G-AñadirEnInventario";
+            }
+
+            try {
+                historial.getInventario().setFoto(file.getBytes());
+                historial.getInventario().setFotonombre(fileName);
+                historial.getInventario().setFotocontenttype(file.getContentType());
+                Optional<Producto> producto = productoRepository.findById(historial.getInventario().getProducto().getIdProducto());
+                if(producto.isPresent()){
+                    Producto producto1 = producto.get();
+                    historial.getInventario().setProducto(producto1);
+                    historial.getInventario().setStock(historial.getCantidad());
+                    inventarioRepository.save(historial.getInventario());
+                    List<Inventario> inventarios = inventarioRepository.findAll();
+                    historial.setInventario(inventarios.get(inventarios.size()-1));
+                    historialRepository.save(historial);
+                    attr.addFlashAttribute("msg", "Agregado Exitosamente");
+                    return "redirect:/gestor/gestorPrincipal";
+
+                }else {
+                    model.addAttribute("msg", "El producto seleccionado no existe");
+                    return  "Gestor/G-AñadirEnInventario";
+                }
+
+
+
+            }catch (IOException e){
+                e.printStackTrace();
+                model.addAttribute("msg", "Ocurrió un error al subir el archivo ");
+                return  "Gestor/G-AñadirEnInventario";
+            }
+
+        }
+
+    }
+
+    @GetMapping("/image/{id}")
+    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id){
+        Optional<Inventario> inventario = inventarioRepository.findById(id);
+        if (inventario.isPresent()){
+            Inventario i = inventario.get();
+
+            byte[] imagenComoBytes = i.getFoto();
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setContentType(MediaType.parseMediaType(i.getFotocontenttype()));
+            return new ResponseEntity<>(imagenComoBytes,httpHeaders, HttpStatus.OK);
+
+        }else {
+            return null;
+        }
+    }
+
     // ----------------------- FIN CRUD INVENTARIO ---------------------------------
 
 // ----------------------- INICIO CRUD COMUNIDAD ---------------------------------
@@ -736,7 +846,7 @@ public class GestorController {
                         !(artesano.getCodigo().equalsIgnoreCase(aux1) || artesano.getCodigo().equalsIgnoreCase(aux2))) {
                     model.addAttribute("listaComunidad", comunidadRepository.findAll());
                     model.addAttribute("msgError", "Recuerde que el codigo debe ser las iniciales del artesano");
-                    return "Gestor/G-EditArtesano";
+                    return "Gestor/G-RegistroArtesano";
                 } else {
                     System.out.println("ARTESANO NULL ----------- 1");
                     Optional<Comunidad> comunidad = comunidadRepository.findById(artesano.getComunidad().getIdComunidad());
@@ -876,7 +986,6 @@ public class GestorController {
 
         } else {
 
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + estadoenviosede.getIdenviosede());
             int invkey = estadoenviosede.getInventariosede().getInventario().getIdInventario();
             int sedkey = estadoenviosede.getInventariosede().getSede().getIdsede();
             if (sedeRepository.findById(sedkey).isPresent() && inventarioRepository.findById(invkey).isPresent()) {
@@ -932,6 +1041,7 @@ public class GestorController {
                 return "redirect:/gestor/gestorProductosEnviados";
             }
             // aqui solo se entra si alguien edita el HTML con F12
+            model.addAttribute("msg", "Por favor no editar el HTML :)");
             List<Sede> listaSede = sedeRepository.findAll();
             model.addAttribute("listaSede", listaSede);
             List<Inventario> listaInventario = inventarioRepository.findAll();
