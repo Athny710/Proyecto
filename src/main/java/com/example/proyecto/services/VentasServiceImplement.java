@@ -109,6 +109,8 @@ public class VentasServiceImplement implements VentasService {
             mesEspanish = "noviembre";
         }else if (mesEnEnglish.equals("December")){
             mesEspanish = "diciembre";
+        }else{
+            mesEspanish = mesEnEnglish;
         }
         return mesEspanish;
     }
