@@ -625,16 +625,20 @@ public class GestorController {
 
                                    Model model,
                                    RedirectAttributes attr) {
-        List<Comunidad> listaComunidad = comunidadRepository.buscarPorNombre(comunidad.getNombre(), comunidad.getCodigo());
+      //  List<Comunidad> listaComunidad = comunidadRepository.buscarPorNombre(comunidad.getNombre(), comunidad.getCodigo());
+        List<Comunidad> listaComunidad = comunidadRepository.buscarComunidad(comunidad.getNombre(), comunidad.getCodigo());
         if (bindingResult.hasErrors()) {
+            model.addAttribute(comunidad);
             return "Gestor/G-RegistroComunidad";
         } else {
 
-            if ((comunidad.getIdComunidad() == 0) && (listaComunidad.size() == 0)) {
+           // if ((comunidad.getIdComunidad() == 0) && (listaComunidad.size() == 0)) {
+            if (comunidad.getIdComunidad() == 0 && listaComunidad.size() == 0) {
                 comunidadRepository.save(comunidad);
                 attr.addFlashAttribute("msg", "Comunidad creada exitosamente");
                 return "redirect:/gestor/gestorListaComunidad";
-            } else if (comunidad.getIdComunidad() != 0) {
+           // } else if (comunidad.getIdComunidad() != 0) {
+            } else if (comunidad.getIdComunidad() != 0 && listaComunidad.size() == 1 ) {
                 comunidadRepository.save(comunidad);
                 attr.addFlashAttribute("msg", "Comunidad actualizada exitosamente");
                 return "redirect:/gestor/gestorListaComunidad";
@@ -649,7 +653,8 @@ public class GestorController {
     public String buscarComunidad(@RequestParam("searchField") String searchField,
                                   Model model) {
 
-        List<Comunidad> listaComunidad = comunidadRepository.buscarPorNombre(searchField, searchField);
+      //  List<Comunidad> listaComunidad = comunidadRepository.buscarPorNombre(searchField, searchField);
+        List<Comunidad> listaComunidad = comunidadRepository.buscarComunidad(searchField, searchField);
         model.addAttribute("listaComunidad", listaComunidad);
         return "Gestor/G-ListaComunidad";
     }
@@ -676,8 +681,14 @@ public class GestorController {
                                   RedirectAttributes attr) {
         Optional<Comunidad> optComunidad = comunidadRepository.findById(idcomunidad);
         if (optComunidad.isPresent()) {
-            comunidadRepository.deleteById(idcomunidad);
-            attr.addFlashAttribute("msg", "Comunidad borrada exitosamente");
+           // comunidadRepository.deleteById(idcomunidad);
+           // attr.addFlashAttribute("msg", "Comunidad borrada exitosamente");
+            try {
+                comunidadRepository.deleteById(idcomunidad);
+                attr.addFlashAttribute("msg", "Comunidad Eliminada");
+            } catch (Exception e) {
+                attr.addFlashAttribute("msg", "No se pudo eliminar la comunidad");
+            }
         }
         return "redirect:/gestor/gestorListaComunidad";
     }

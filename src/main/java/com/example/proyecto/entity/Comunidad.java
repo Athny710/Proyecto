@@ -17,7 +17,8 @@ public class Comunidad {
     @Column(nullable = false)
     @NotBlank(message = "Este campo no puede estar vacío")
     @Size(max = 30, message = "No puede tener más de 30 caracteres")
-    @Pattern(regexp = "^[a-zA-Z\\\\s]*$",message = "solo se debe ingresar letras")
+   // @Pattern(regexp = "^[a-zA-Z\\\\s]*$",message = "solo se debe ingresar letras")
+    @Pattern(regexp = "^[a-zA-Z\\s]*$",message = "solo se debe ingresar letras")
     private String nombre;
     @Column(nullable = false)
     @NotBlank(message = "Este campo no puede estar vacío")

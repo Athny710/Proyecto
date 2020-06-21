@@ -14,7 +14,8 @@ public interface ComunidadRepository extends JpaRepository<Comunidad, Integer> {
 
     @Query(value = "select * from comunidad where nombre = ?1 or codigo =?2",
             nativeQuery = true)
-    List<Comunidad> buscarPorNombre (String nombre, String codigo);
+   // List<Comunidad> buscarPorNombre (String nombre, String codigo);
+    List<Comunidad> buscarComunidad (String nombre, String codigo);
 
     List<Comunidad> findByNombre(String name);
 
