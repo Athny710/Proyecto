@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -174,6 +175,9 @@ public class GestorController {
                                      Model model,
                                      RedirectAttributes attr, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
+            if(!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[a-z0-9\\._-]+\\.[A-Za-z0-9]+$")){
+                model.addAttribute("msgError", "El correo ingresado no es un correo");
+            }
             if(usuarios.getIdusuarios() != 0){
                 Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
                 if (usuariosID.isPresent()) {// todo mostrar errores
@@ -234,7 +238,7 @@ public class GestorController {
                 return "redirect:/gestor/gestorListaUsuarioSede";
             } else { //ya existe el correo, mostrar errores
                 if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null) {
-                    model.addAttribute("msgError", "Ya hay un usuario con ese correo");
+                    model.addAttribute("msgError", "Este no es un correo");
                 }
                 model.addAttribute("listasedes", sedeRepository.findAll());
                 model.addAttribute(usuarios);
