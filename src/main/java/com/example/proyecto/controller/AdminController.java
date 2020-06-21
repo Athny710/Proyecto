@@ -141,9 +141,8 @@ public class AdminController {
                         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
                         usuarios.setPassword(bCryptPasswordEncoder.encode(usuarios.getPassword()));
                         usuarioRepository.save(usuarios);
-                        //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
-                        //Email email = new Email();
-                        //email.emailEnviarPrimeraContraseña(usuarios.getCorreo(), passwordSinEncriptar, usuarios.getCorreo());
+                        Email email = new Email();
+                        email.emailEnviarPrimeraContraseña(usuarios.getCorreo(), passwordSinEncriptar, usuarios.getCorreo());
                         attr.addFlashAttribute("msg", "Gestor creado exitosamente");
                         return "redirect:/admin/listaGestores";
                     }else {
