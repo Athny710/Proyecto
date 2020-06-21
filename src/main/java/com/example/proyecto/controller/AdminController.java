@@ -6,6 +6,10 @@ import com.example.proyecto.entity.Usuarios;
 import com.example.proyecto.repository.InventarioRepository;
 import com.example.proyecto.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +41,23 @@ public class AdminController {
         model.addAttribute("inventario", inventarioRepository.findAll());
         return "Administrador/A-PagPrincipal";
     }
+
+    @GetMapping("/image/{id}")
+    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id){
+        Optional<Inventario> inventario = inventarioRepository.findById(id);
+        if (inventario.isPresent()){
+            Inventario i = inventario.get();
+
+            byte[] imagenComoBytes = i.getFoto();
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setContentType(MediaType.parseMediaType(i.getFotocontenttype()));
+            return new ResponseEntity<>(imagenComoBytes,httpHeaders, HttpStatus.OK);
+
+        }else {
+            return null;
+        }
+    }
+
     @GetMapping("detalles")
     public String detalleInventario(@RequestParam("id") int id, Model model){
         Optional<Inventario> opt = inventarioRepository.findById(id);
