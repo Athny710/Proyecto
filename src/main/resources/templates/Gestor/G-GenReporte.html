@@ -19,14 +19,24 @@
                             <h4 class="m-0 font-weight-bold text-gray-900">Reporte de Ventas</h4>
                         </div>
                         <div class="card-body">
-                            <h6 class="m-0 font-weight-bold text-gray-900">Reporte por nombre del cliente</h6><br>
-                            <form method="post" th:action="@{/gestor/crearExcelPorCliente}">
+                            <h5 class="m-0 font-weight-bold text-gray-900">Reporte avanzado</h5><br>
+                            <form method="post" th:action="@{/gestor/crearExcelPorCliente}" id="form1">
                                 <div class="row">
-                                    <div class="form-group col-md-6">
-                                        <label for="cliente">Nombre del cliente:</label>
-                                        <select class="form-control" type="item" id="cliente" name="cliente">
-                                            <option th:each=" l : ${listaClientes}" th:value="${l.nombrecliente}"
-                                                    th:text="${l.nombrecliente}" >Samuel Ayala</option>
+                                    <div class="form-group col-md-3">
+                                        <label for="cliente" id="nombreVariable">Filtrar por:</label>
+                                        <select class="form-control" type="item" id="client" name="filtrado" onchange="lista(this.value)">
+                                            <option th:value="0">------</option>
+                                            <option th:value="1">Cliente</option>
+                                            <option th:value="2">Sede</option>
+                                            <option th:value="3">Producto</option>
+                                            <option th:value="4">Comunidad</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="ddlCategoria">Nombre</label>
+                                        <select class="form-control" type="item" id="ddlCategoria" name="estandar">
+                                            <option th:value="nada"
+                                                    th:text="------" >Samuel Ayala</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-2">
@@ -34,18 +44,8 @@
                                         <select class="form-control" type="item" id="mes" name="mes">
                                             <option th:value="todo">todos los meses</option>
                                             <option th:value="trimestre">trimestral</option>
-                                            <option th:value="1">enero</option>
-                                            <option th:value="2">febrero</option>
-                                            <option th:value="3">marzo</option>
-                                            <option th:value="4">abril</option>
-                                            <option th:value="5">mayo</option>
-                                            <option th:value="6">junio</option>
-                                            <option th:value="7">julio</option>
-                                            <option th:value="8">agosto</option>
-                                            <option th:value="9">setiembre</option>
-                                            <option th:value="10">octubre</option>
-                                            <option th:value="11">noviembre</option>
-                                            <option th:value="12">diciembre</option>
+                                            <option th:each="lista1 : ${listaMeses}" th:value="${lista1.fecha}"
+                                                    th:text="${lista1.fechaname}" >Samuel Ayala</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-2">
@@ -57,140 +57,30 @@
                                     </div>
                                     <div class="form-group col-md-2">
                                         <p>Generar reporte:</p>
-                                        <button type="submit"><img th:src="@{/img/excel-xls-icon.png}" style="width:40px;"></button>
+                                        <button type="submit" class="mybtn"><img th:src="@{/img/excel-xls-icon.png}" style="width:40px;"></button>
                                     </div>
                                 </div>
                             </form>
-                                <hr style="width: 75%; height: 10px">
-                            <h6 class="m-0 font-weight-bold text-gray-900">Reporte por sede</h6><br>
-                            <form method="post" th:action="@{/gestor/crearExcelPorSede}">
-                                <div class="row">
-                                    <div class="form-group col-md-6">
-                                        <label for="idsede">Sede:</label>
-                                        <select class="form-control" type="item" id="idsede" name="idsede">
-                                            <option th:each="lista1 : ${listasedes}" th:value="${lista1.nombre}"
-                                                    th:text="${lista1.nombre}" >Biofluming</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <label for="mes1">Mes:</label>
-                                        <select class="form-control" type="item" id="mes1" name="mes1">
-                                            <option th:value="todo">todos los meses</option>
-                                            <option th:value="trimestre">trimestral</option>
-                                            <option th:value="1">enero</option>
-                                            <option th:value="2">febrero</option>
-                                            <option th:value="3">marzo</option>
-                                            <option th:value="4">abril</option>
-                                            <option th:value="5">mayo</option>
-                                            <option th:value="6">junio</option>
-                                            <option th:value="7">julio</option>
-                                            <option th:value="8">agosto</option>
-                                            <option th:value="9">setiembre</option>
-                                            <option th:value="10">octubre</option>
-                                            <option th:value="11">noviembre</option>
-                                            <option th:value="12">diciembre</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <label for="año1">Año:</label>
-                                        <select class="form-control" type="item" id="año1" name="año1">
-                                            <option th:each="lista1 : ${listaAnhos}" th:value="${lista1.fecha}"
-                                                    th:text="${lista1.fecha}" >Samuel Ayala</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <p>Generar reporte:</p>
-                                        <button type="submit"><img th:src="@{/img/excel-xls-icon.png}" style="width:40px;"></button>
-                                    </div>
-                                </div>
-                            </form>
-                                <hr style="width: 75%; height: 10px">
-                            <h6 class="m-0 font-weight-bold text-gray-900">Reporte por nombre de artículo</h6><br>
-                            <form method="post" th:action="@{/gestor/crearExcelPorArticulo}">
-                                <div class="row">
-                                    <div class="form-group col-md-6">
-                                        <label for="articulo">Artículo:</label>
-                                        <select class="form-control" type="item" id="articulo" name="articulo">
-                                            <option th:each=" li : ${listaarticulos}" th:value="${li.nombre}"
-                                                    th:text="${li.nombre}" >Biofluming</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <label for="mes2">Mes:</label>
-                                        <select class="form-control" type="item" id="mes2" name="mes2">
-                                            <option th:value="todo">todos los meses</option>
-                                            <option th:value="trimestre">trimestral</option>
-                                            <option th:value="1">enero</option>
-                                            <option th:value="2">febrero</option>
-                                            <option th:value="3">marzo</option>
-                                            <option th:value="4">abril</option>
-                                            <option th:value="5">mayo</option>
-                                            <option th:value="6">junio</option>
-                                            <option th:value="7">julio</option>
-                                            <option th:value="8">agosto</option>
-                                            <option th:value="9">setiembre</option>
-                                            <option th:value="10">octubre</option>
-                                            <option th:value="11">noviembre</option>
-                                            <option th:value="12">diciembre</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <label for="año2">Año:</label>
-                                        <select class="form-control" type="item" id="año2" name="año2">
-                                            <option th:each="lista1 : ${listaAnhos}" th:value="${lista1.fecha}"
-                                                    th:text="${lista1.fecha}" >Samuel Ayala</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <p>Generar reporte:</p>
-                                        <button type="submit"><img th:src="@{/img/excel-xls-icon.png}" style="width:40px;"></button>
-                                    </div>
-                                </div>
 
-                            </form>
-                                <hr style="width: 75%; height: 10px">
-                            <h6 class="m-0 font-weight-bold text-gray-900">Reporte por nombre de comunidad</h6><br>
-                            <form method="post" th:action="@{/gestor/crearExcelPorComunidad}">
-                                <div class="row">
-                                    <div class="form-group col-md-6">
-                                        <label for="comunidad">Nombre de la comunidad:</label>
-                                        <select class="form-control" type="item" id="comunidad" name="comunidad">
-                                            <option th:each=" lis : ${listacomunidades}" th:value="${lis.nombre}"
-                                                    th:text="${lis.nombre}" >Biofluming</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <label for="mes3">Mes:</label>
-                                        <select class="form-control" type="item" id="mes3" name="mes3">
-                                            <option th:value="todo">todos los meses</option>
-                                            <option th:value="trimestre">trimestral</option>
-                                            <option th:value="1">enero</option>
-                                            <option th:value="2">febrero</option>
-                                            <option th:value="3">marzo</option>
-                                            <option th:value="4">abril</option>
-                                            <option th:value="5">mayo</option>
-                                            <option th:value="6">junio</option>
-                                            <option th:value="7">julio</option>
-                                            <option th:value="8">agosto</option>
-                                            <option th:value="9">setiembre</option>
-                                            <option th:value="10">octubre</option>
-                                            <option th:value="11">noviembre</option>
-                                            <option th:value="12">diciembre</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <label for="año3">Año:</label>
-                                        <select class="form-control" type="item" id="año3" name="año3">
-                                            <option th:each="lista1 : ${listaAnhos}" th:value="${lista1.fecha}"
-                                                    th:text="${lista1.fecha}" >Samuel Ayala</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <p>Generar reporte:</p>
-                                        <button type="submit"><img th:src="@{/img/excel-xls-icon.png}" style="width:40px;"></button>
-                                    </div>
-                                </div>
-                            </form>
+                            <div style="display: none">
+                                <select class="form-control" type="item" id="idsede" name="estandar">
+                                    <option th:each="lista1 : ${listasedes}" th:value="${lista1.nombre}"
+                                            th:text="${lista1.nombre}" >Biofluming</option>
+                                </select>
+                                <select class="form-control" type="item" id="cliente" name="estandar">
+                                    <option th:each="listam : ${listaClientes}" th:value="${listam.nombrecliente}"
+                                            th:text="${listam.nombrecliente}" >Biofluming</option>
+                                </select>
+                                <select class="form-control" type="item" id="articulo" name="estandar">
+                                    <option th:each=" li : ${listaProductosVendidos}" th:value="${li.nombre}"
+                                            th:text="${li.nombre}" >Biofluming</option>
+                                </select>
+                                <select class="form-control" type="item" id="comunidad" name="estandar">
+                                    <option th:each=" lis : ${listaComunidades}" th:value="${lis.comunidad}"
+                                            th:text="${lis.comunidad}" >Biofluming</option>
+                                </select>
+                            </div>
+
                             <hr style="width: 75%; height: 10px">
                             <h5 class="m-0 font-weight-bold text-gray-900">Reporte total</h5><br>
                             <form method="post" th:action="@{/gestor/crearExcelTotal}">
@@ -200,18 +90,8 @@
                                         <select class="form-control" type="item" id="mes4" name="mes4">
                                             <option th:value="todo">todos los meses</option>
                                             <option th:value="trimestre">trimestral</option>
-                                            <option th:value="1">enero</option>
-                                            <option th:value="2">febrero</option>
-                                            <option th:value="3">marzo</option>
-                                            <option th:value="4">abril</option>
-                                            <option th:value="5">mayo</option>
-                                            <option th:value="6">junio</option>
-                                            <option th:value="7">julio</option>
-                                            <option th:value="8">agosto</option>
-                                            <option th:value="9">setiembre</option>
-                                            <option th:value="10">octubre</option>
-                                            <option th:value="11">noviembre</option>
-                                            <option th:value="12">diciembre</option>
+                                            <option th:each="lista1 : ${listaMeses}" th:value="${lista1.fecha}"
+                                                    th:text="${lista1.fechaname}" >Samuel Ayala</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-2">
@@ -227,6 +107,42 @@
                                     </div>
                                 </div>
                             </form>
+
+                            <script>
+                                function lista(tipo) {
+                                    $('#ddlCategoria option').remove();
+
+                                    if (tipo == 1) {
+                                        $("#cliente option").each(function() {
+                                            $('#ddlCategoria').append('\'<option value="'+$(this).text()+'">'+$(this).text()+'</option>\'');
+                                            var cambioAction = $('#form1');
+                                            cambioAction.attr("action", "/proyecto/gestor/crearExcelPorCliente");
+                                        })
+                                    }
+                                    if (tipo == 2) {
+                                        $("#idsede option").each(function() {
+                                            $('#ddlCategoria').append('\'<option value="'+$(this).text()+'">'+$(this).text()+'</option>\'');
+                                            var cambioAction = $('#form1');
+                                            cambioAction.attr("action", "/proyecto/gestor/crearExcelPorSede");
+                                        })
+                                    }
+                                    if (tipo == 3) {
+                                        $("#articulo option").each(function() {
+                                            $('#ddlCategoria').append('\'<option value="'+$(this).text()+'">'+$(this).text()+'</option>\'');
+                                            var cambioAction = $('#form1');
+                                            cambioAction.attr("action", "/proyecto/gestor/crearExcelPorArticulo");
+                                        })
+                                    }
+                                    if (tipo == 4) {
+                                        $("#comunidad option").each(function() {
+                                            $('#ddlCategoria').append('\'<option value="'+$(this).text()+'">'+$(this).text()+'</option>\'');
+                                            var cambioAction = $('#form1');
+                                            cambioAction.attr("action", "/proyecto/gestor/crearExcelPorComunidad");
+                                        })
+                                    }
+                                }
+                            </script>
+
                         </div>
                     </div>
                 </div>
