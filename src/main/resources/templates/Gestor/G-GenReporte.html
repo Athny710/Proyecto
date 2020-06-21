@@ -21,20 +21,21 @@
                         <div class="card-body">
                             <h5 class="m-0 font-weight-bold text-gray-900">Reporte avanzado</h5><br>
                             <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
+                            <a th:href="@{/gestor/nuevaVenta}"><div th:if="${msg1 != null}" th:text="${msg1}" class="alert alert-danger" role="alert"></div></a>
                             <form method="post" th:action="@{/gestor/crearExcelPorCliente}" id="form1">
                                 <div class="row">
                                     <div class="form-group col-md-3">
                                         <label for="cliente" id="nombreVariable">Filtrar por:</label>
                                         <select class="form-control" type="item" id="client" name="filtrado" onchange="lista(this.value)">
                                             <option th:value="0">------</option>
-                                            <option th:value="1">Cliente</option>
-                                            <option th:value="2">Sede</option>
+                                            <option th:if="${listaClientes != null}" th:value="1">Cliente</option>
+                                            <option th:if="${listasedes != null}" th:value="2">Sede</option>
                                             <option th:value="3">Producto</option>
                                             <option th:value="4">Comunidad</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label for="ddlCategoria">Nombre</label>
+                                        <label for="ddlCategoria">Nombre:</label>
                                         <select class="form-control" type="item" id="ddlCategoria" name="estandar">
                                             <option th:value="nada"
                                                     th:text="------" >Samuel Ayala</option>
@@ -65,8 +66,8 @@
 
                             <div style="display: none">
                                 <select class="form-control" type="item" id="idsede" name="estandar">
-                                    <option th:each="lista1 : ${listasedes}" th:value="${lista1.nombre}"
-                                            th:text="${lista1.nombre}" >Biofluming</option>
+                                    <option th:each="lista1 : ${listasedes}" th:value="${lista1.nombresede}"
+                                            th:text="${lista1.nombresede}" >Biofluming</option>
                                 </select>
                                 <select class="form-control" type="item" id="cliente" name="estandar">
                                     <option th:each="listam : ${listaClientes}" th:value="${listam.nombrecliente}"

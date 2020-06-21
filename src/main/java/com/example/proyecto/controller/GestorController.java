@@ -1,7 +1,6 @@
 package com.example.proyecto.controller;
 
-import com.example.proyecto.dto.ReporteConCamposOriginales;
-import com.example.proyecto.dto.VentaPorCodigo;
+import com.example.proyecto.dto.*;
 import com.example.proyecto.entity.*;
 import com.example.proyecto.repository.*;
 import com.example.proyecto.services.VentasService;
@@ -92,15 +91,46 @@ public class GestorController {
 
 
     @GetMapping("gestorReporteVentas")
-    public String reporteVentas1(Model model) {
-        model.addAttribute("listaClientes",ventaRepository.findAll());
-        model.addAttribute("listasedes",sedeRepository.findAll());
-        model.addAttribute("listaAnhos",ventaRepository.obtenerAñosDeVenta());
-        model.addAttribute("listaMeses", ventaRepository.obtenerMesesDeVenta());
-        model.addAttribute("listaProductosVendidos", ventaRepository.obtenerProductosVendidos());
-        model.addAttribute("listaComunidades",ventaRepository.obtenerPComunidad());
+    public String reporteVentas1(Model model, RedirectAttributes attr) {
+        List<Venta> listaClientes = ventaRepository.findAll();
+        List<ListaSedesQueVendieron> listasedes = ventaRepository.obtenerSedes();
+        List<FechaVenta> listaAnhos = ventaRepository.obtenerAñosDeVenta();
+        List<FechaMesVenta> listaMeses = ventaRepository.obtenerMesesDeVenta();
+        List<ProductosQueSeVendieron> listaProductosVendidos = ventaRepository.obtenerProductosVendidos();
+        List<ProdComunidades> listaComunidades = ventaRepository.obtenerPComunidad();
+
+        if (listaClientes == null && listasedes == null && listaAnhos == null && listaMeses == null && listaProductosVendidos == null && listaComunidades == null){
+            attr.addFlashAttribute("msg1", "Aún no se han realizado ventas.Pulse sobre este mensaje para registrar la primera venta");
+            return "redirect:/gestor/gestorReporteVentasError";
+        }
+
+        model.addAttribute("listaClientes",listaClientes);
+        model.addAttribute("listasedes",listasedes);
+        model.addAttribute("listaAnhos",listaAnhos);
+        model.addAttribute("listaMeses", listaMeses);
+        model.addAttribute("listaProductosVendidos", listaProductosVendidos);
+        model.addAttribute("listaComunidades",listaComunidades);
         return "Gestor/G-GenReporte";
     }
+
+    @GetMapping("gestorReporteVentasError")
+    public String reporteVentas2(Model model) {
+        List<Venta> listaClientes = ventaRepository.findAll();
+        List<ListaSedesQueVendieron> listasedes = ventaRepository.obtenerSedes();
+        List<FechaVenta> listaAnhos = ventaRepository.obtenerAñosDeVenta();
+        List<FechaMesVenta> listaMeses = ventaRepository.obtenerMesesDeVenta();
+        List<ProductosQueSeVendieron> listaProductosVendidos = ventaRepository.obtenerProductosVendidos();
+        List<ProdComunidades> listaComunidades = ventaRepository.obtenerPComunidad();
+
+        model.addAttribute("listaClientes1",listaClientes);
+        model.addAttribute("listasedes1",listasedes);
+        model.addAttribute("listaAnhos1",listaAnhos);
+        model.addAttribute("listaMeses1", listaMeses);
+        model.addAttribute("listaProductosVendidos1", listaProductosVendidos);
+        model.addAttribute("listaComunidades1",listaComunidades);
+        return "Gestor/G-GenReporte";
+    }
+
 
     //------------------------Perfil-------------------------------------------
     @GetMapping("editarInfo")
@@ -1188,7 +1218,7 @@ public class GestorController {
 
     @PostMapping("crearExcelPorCliente")
     public String crearExcelCliente(@RequestParam("filtrado") int val,@RequestParam("estandar") String cliente, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response, RedirectAttributes attr) {
-        if (val == 0){
+        if (val != 1){
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         }else {
@@ -1223,7 +1253,7 @@ public class GestorController {
 
     @PostMapping("crearExcelPorSede")
     public String crearExcelPorSede(@RequestParam("filtrado") int val,@RequestParam("estandar") String idsede, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response, RedirectAttributes attr) {
-        if (val == 0){
+        if (val != 2){
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         }else {
@@ -1258,7 +1288,7 @@ public class GestorController {
 
     @PostMapping("crearExcelPorArticulo")
     public String crearExcelPorArticulo(@RequestParam("filtrado") int val,@RequestParam("estandar") String articulo, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response, RedirectAttributes attr) {
-        if (val == 0){
+        if (val != 3){
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         }else {
@@ -1293,7 +1323,7 @@ public class GestorController {
 
     @PostMapping("crearExcelPorComunidad")
     public String crearExcelPorComunidad(@RequestParam("filtrado") int val,@RequestParam("estandar") String comunidad, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response, RedirectAttributes attr) {
-        if (val == 0){
+        if (val != 4){
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         }else {

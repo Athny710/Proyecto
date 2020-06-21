@@ -69,8 +69,8 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion\n" +
-            "inner join usuarios u on v.idUsuarios = u.idUsuarios\n" +
-            "inner join sede s on u.idSede = s.idSede and month(v.fecha) = ?1 and year(v.fecha) = ?2 and s.nombre = ?3\n" +
+            "inner join tienda t on v.idTienda = t.idTienda\n" +
+            "inner join sede s on t.idSede = s.idSede and month(v.fecha) = ?1 and year(v.fecha) = ?2 and s.nombre = ?3\n" +
             "order by v.fecha", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteMensualSede(String mes, String año, String idsede);
 
@@ -78,8 +78,8 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion\n" +
-            "inner join usuarios u on v.idUsuarios = u.idUsuarios\n" +
-            "inner join sede s on u.idSede = s.idSede and year(v.fecha) = ?1 and s.nombre = ?2\n" +
+            "inner join tienda t on v.idTienda = t.idTienda\n" +
+            "inner join sede s on t.idSede = s.idSede and year(v.fecha) = ?1 and s.nombre = ?2\n" +
             "order by v.fecha", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteAnualSede(String año, String idsede);
 
@@ -93,8 +93,8 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion\n" +
-            "inner join usuarios u on v.idUsuarios = u.idUsuarios\n" +
-            "inner join sede s on u.idSede = s.idSede and year(v.fecha) = ?1 and s.nombre = ?2\n" +
+            "inner join tienda t on v.idTienda = t.idTienda\n" +
+            "inner join sede s on t.idSede = s.idSede and year(v.fecha) = ?1 and s.nombre = ?2\n" +
             "order by v.fecha", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteTrimestralSede(String año, String idsede);
 
@@ -216,5 +216,11 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "inner join comunidad c on c.idComunidad = p.idComunidad\n" +
             "order by v.fecha",nativeQuery = true)
     List<ProdComunidades> obtenerPComunidad();
+
+    @Query(value = "select distinct(s.nombre) as nombresede from venta v\n" +
+            "inner join tienda t on v.idTienda = t.idTienda\n" +
+            "inner join sede s on t.idSede = s.idSede\n" +
+            "order by v.fecha", nativeQuery = true)
+    List<ListaSedesQueVendieron> obtenerSedes();
 
 }
