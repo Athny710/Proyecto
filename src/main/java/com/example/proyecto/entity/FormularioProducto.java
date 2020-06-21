@@ -1,7 +1,11 @@
 package com.example.proyecto.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 public class FormularioProducto {
     private int crearActualizar;
@@ -25,6 +29,12 @@ public class FormularioProducto {
     private String nombreLinea;
     private String nombreTama;
     private String nombreComun;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "por favor ingrese una fecha")
+    private LocalDate fechafin;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "por favor ingrese una fecha")
+    private LocalDate fechainicio;
 
     public String getNombreProducto() {
         return nombreProducto;
@@ -96,5 +106,21 @@ public class FormularioProducto {
 
     public void setCrearActualizar(int crearActualizar) {
         this.crearActualizar = crearActualizar;
+    }
+
+    public LocalDate getFechafin() {
+        return fechafin;
+    }
+
+    public void setFechafin(LocalDate fechafin) {
+        this.fechafin = fechafin;
+    }
+
+    public LocalDate getFechainicio() {
+        return fechainicio;
+    }
+
+    public void setFechainicio(LocalDate fechainicio) {
+        this.fechainicio = fechainicio;
     }
 }

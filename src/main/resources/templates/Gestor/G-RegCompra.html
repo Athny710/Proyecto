@@ -23,6 +23,31 @@
                         <div class="card-body">
                             <form method="post" th:action="@{/gestor/guardarProducto}"  th:object="${formulario}">
                                 <input  th:value="*{crearActualizar}" name="crearActualizar" type="hidden"/>
+                                <div class="form-group col-md-6">
+                                    <label>Modalidad</label>
+                                    <select style="border-radius: 10rem" class="form-control"
+                                            id="miselect" name="modalidad">
+                                        <option th:value="compra"> Compra</option>
+                                        <option th:value="consignacion">Consignación</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6" id="verConsignacion">
+                                    <label>Fecha Fin de la Consignación</label>
+                                    <input style="border-radius: 10rem" type="date" class="form-control"
+                                           th:field="*{inventario.producto.adquisicion.fechaFin}">
+                                    <div class="text-danger"
+                                         th:if="${#fields.hasErrors('inventario.producto.adquisicion.fechaFin')}"
+                                         th:errors="*{inventario.producto.adquisicion.fechaFin}"></div>
+                                </div>
+                                <div class="form-group col-md-6" id="verConsignacion2">
+                                    <label>Artesano </label>
+                                    <select style="border-radius: 10rem" class="form-control"
+                                            th:field="*{inventario.producto.adquisicion.artesano.idArtesano}">
+                                        <option th:each="artesanos : ${listaArtesanos}" th:value="${artesanos.idArtesano}"
+                                                th:text="${artesanos.nombre}">uno
+                                        </option>
+                                    </select>
+                                </div>
                                 <div  class="form-group col-md-6" >
                                     <label >Nombre del Producto</label>
                                     <input style="border-radius: 10rem" type="text" class="form-control" th:field="*{nombreProducto}">
@@ -97,5 +122,34 @@
     </a>
 
     <div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
+
+    <script>
+
+        var modalidad = document.getElementById("inventario.producto.adquisicion.modalidad");
+        var text = modalidad.options[modalidad.selectedIndex].text;
+
+        if (text == 'Compra') {
+            document.getElementById("verConsignacion").style.display = "none";
+            document.getElementById("verConsignacion2").style.display = "none";
+        }
+
+        $("#miselect").change(function () {
+                console.log("si funciono");
+                var mitexto = $("#miselect option:selected").text();
+                console.log(mitexto);
+                $(document).ready(function () {
+                    if (mitexto.length == "6") {
+                        $("#verConsignacion2").hide();
+                        $("#verConsignacion").hide();
+                    } else {
+                        $("#verConsignacion").show();
+                        $("#verConsignacion2").show();
+                    }
+                });
+            }
+        );
+    </script>
+
+
 </body>
 </html>

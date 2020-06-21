@@ -533,6 +533,7 @@ public class GestorController {
     @GetMapping("gestorRegInventario")
     public String añadirEnInventario(@ModelAttribute("historial") Historial historial ,Model model){
         model.addAttribute("litaProductos",productoRepository.findAll());
+        model.addAttribute("listaArtesanos",artesanoRepository.findAll());
         return  "Gestor/G-AñadirEnInventario";
     }
 
