@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -15,10 +16,12 @@ public class Categoria {
     @Column(nullable = false)
     @NotBlank(message = "Este Campo no puede ser vacío")
     @Size(max = 45, message = "No puede tener mas de 45 caracter")
+    @Pattern(regexp = "^[a-zA-Z\\\\s]*$",message = "solo se debe ingresar letras")
     private String nombre;
     @Column(nullable = false)
     @NotBlank(message = "Este Campo no puede ser vacío")
     @Size(max = 1, message = "No puede tener mas de 1 caracter")
+    @Pattern(regexp = "^[a-zA-Z\\\\s]*$",message = "solo se debe ingresar letras")
     private String codigo;
 
 

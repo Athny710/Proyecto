@@ -1,5 +1,6 @@
 package com.example.proyecto.dto;
 
-public interface AñosVenta {
+public interface FechaMesVenta {
     String getFecha();
+    String getFechaname();
 }
