@@ -79,6 +79,60 @@ public class GestorController {
 
 
     // ----------------------- ENLACES ---------------------------------
+
+    @GetMapping("AnadirCompra")
+    public String AnadirCompra(@ModelAttribute("historial") Historial historial, Model model, @RequestParam("id") int id) {
+        Optional<Inventario> OPinventario = inventarioRepository.findById(id);
+        if(OPinventario.isPresent()){
+            Inventario inventario = OPinventario.get();
+            historial.setInventario(inventario);
+            return "Gestor/G-AnadirHistorial";
+        }else {
+            return "redirect:/gestor/";
+        }
+
+    }
+    @PostMapping("gestorGuardarCompra")
+    public String gestorGuardarCompra(@ModelAttribute("historial") @Valid Historial historial, BindingResult bindingResult,
+                              Model model,
+                              RedirectAttributes attr) {
+        if (bindingResult.hasErrors()) {
+            if(inventarioRepository.findById(historial.getInventario().getIdInventario()).isPresent()){
+                historial.setInventario(inventarioRepository.findById(historial.getInventario().getIdInventario()).get());
+                model.addAttribute("historial", historial);
+                return "Gestor/G-AnadirHistorial" ;
+            }else{
+                return "redirect:/gestor/";
+            }
+        } else {
+            System.out.println("---------------- no binding result error");
+            System.out.println("ID INVENTARIO ENCONTRADO: " + historial.getInventario().getIdInventario());
+            Optional<Inventario> OPinventario = inventarioRepository.findById(historial.getInventario().getIdInventario());
+
+            if (OPinventario.isPresent()) {
+                System.out.println("--------------- inventario presnete id: " + OPinventario.get().getIdInventario());
+                historial.setIdhistorial(0);
+                Inventario inventario = OPinventario.get();
+                inventario.setStock(inventario.getStock() + historial.getCantidad());
+                historialRepository.save(historial);
+                inventarioRepository.save(inventario);
+                attr.addFlashAttribute("msg", "Compra realizada exitosamente");
+                return "redirect:/gestor/gestorPrincipal";
+            }else{ // error en id inventario. hackerman?
+                System.out.println("error id inventario!");
+                attr.addFlashAttribute("msg", "Error en la compra");
+                return "redirect:/gestor/gestorPrincipal";
+            }
+        }
+    }
+
+
+
+
+
+
+
+
     @GetMapping("perfil")
     public String perfil() {
         return "Gestor/G-Perfil";

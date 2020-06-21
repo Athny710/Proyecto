@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -15,18 +16,27 @@ public class Historial {
     @JoinColumn(name = "idhistorial")
     private
     int idhistorial;
+
     @Size(max = 45,message = "No puede sobrepasar los 45 caracteres")
     private String facilitador;
+
     @Digits(integer = 5,fraction = 2,message = "Solo puede tener 4 enteros y 2 decimales")
     @Positive(message = "no puede ser negativo")
+    @NotNull(message = "por favor ingrese el costo pagado al tejedor")
     private Double costotejedor;
+
     @Positive(message = "No puede ser negativo")
+    @NotNull(message = "por favor ingrese un numero de pedido")
     private Integer numeropedido;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "por favor ingrese una fecha")
     private LocalDate fecha;
+
     @Positive(message = "No puede ser negativo")
+    @NotNull(message = "por favor ingrese la cantidad comprada")
     private Integer cantidad;
+
     @ManyToOne
     @JoinColumn(name = "idinventario")
     private Inventario inventario;
