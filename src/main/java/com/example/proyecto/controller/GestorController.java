@@ -303,6 +303,14 @@ public class GestorController {
         if (bindingResult.hasErrors()) {
             return "Gestor/G-RegistroSede";
         } else {
+            //
+            Sede sedeTemp = sedeRepository.findByNombre(sede.getNombre());
+            if (sedeTemp != null) {
+                model.addAttribute(sede);
+                model.addAttribute("msgError", "Los datos ingresados ya existen, por favor modificarlo");
+                return "Gestor/G-RegistroSede";
+            }
+            //
             if (sede.getIdsede() == null) {
                 sedeRepository.save(sede);
                 attr.addFlashAttribute("msg", "Sede creada exitosamente");
@@ -326,8 +334,14 @@ public class GestorController {
 
         Optional<Sede> optionalSede = sedeRepository.findById(idsede);
         if (optionalSede.isPresent()) {
-            sedeRepository.deleteById(idsede);
-            attr.addFlashAttribute("msg", "Sede Eliminada");
+           // sedeRepository.deleteById(idsede);
+           // attr.addFlashAttribute("msg", "Sede Eliminada");
+            try {
+                sedeRepository.deleteById(idsede);
+                attr.addFlashAttribute("msg", "Sede Eliminada");
+            } catch (Exception e) {
+                attr.addFlashAttribute("msg", "No se pudo eliminar la sede");
+            }
         }
         return "redirect:/gestor/gestorListaSedes";
     }
