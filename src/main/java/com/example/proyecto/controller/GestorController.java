@@ -1011,12 +1011,12 @@ public class GestorController {
             //validacion codigo de  artesano (INICIALES)
             String aux1 = null;
             String aux2 = null;
-            if (!artesano.getApellidoMaterno().isEmpty()) { // codigos con apellido materno
-                aux1 = artesano.getNombre().substring(0, 1) + artesano.getApellidoPaterno().substring(0, 1) + artesano.getApellidoMaterno().substring(0, 1);
-                aux2 = artesano.getNombre().substring(0, 2) + artesano.getApellidoPaterno().substring(0, 1) + artesano.getApellidoMaterno().substring(0, 1);
+            if (!artesano.getApellidomaterno().isEmpty()) { // codigos con apellido materno
+                aux1 = artesano.getNombre().substring(0, 1) + artesano.getApellidopaterno().substring(0, 1) + artesano.getApellidomaterno().substring(0, 1);
+                aux2 = artesano.getNombre().substring(0, 2) + artesano.getApellidopaterno().substring(0, 1) + artesano.getApellidomaterno().substring(0, 1);
             } else {// codigos sin apellido materno
-                aux1 = artesano.getNombre().substring(0, 1) + artesano.getApellidoPaterno().substring(0, 1);
-                aux2 = artesano.getNombre().substring(0, 2) + artesano.getApellidoPaterno().substring(0, 1);
+                aux1 = artesano.getNombre().substring(0, 1) + artesano.getApellidopaterno().substring(0, 1);
+                aux2 = artesano.getNombre().substring(0, 2) + artesano.getApellidopaterno().substring(0, 1);
             }
             //fin validacion codigo de artesano
 

@@ -32,12 +32,12 @@
                                             <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <input th:field="*{apellidoPaterno}" type="text" class="form-control form-control-user" id="apellidoPaterno" placeholder="Apellido Paterno">
-                                            <div class="text-danger" th:if="${#fields.hasErrors('apellidoPaterno')}" th:errors="*{apellidoPaterno}"></div>
+                                            <input th:field="*{apellidopaterno}" type="text" class="form-control form-control-user" id="apellidoPaterno" placeholder="Apellido Paterno">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('apellidopaterno')}" th:errors="*{apellidopaterno}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <input th:field="*{apellidoMaterno}" type="text" class="form-control form-control-user" id="apellidoMaterno" placeholder="Apellido Materno">
-                                            <div class="text-danger" th:if="${#fields.hasErrors('apellidoMaterno')}" th:errors="*{apellidoMaterno}"></div>
+                                            <input th:field="*{apellidomaterno}" type="text" class="form-control form-control-user" id="apellidoMaterno" placeholder="Apellido Materno">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('apellidomaterno')}" th:errors="*{apellidomaterno}"></div>
                                         </div>
                                         <div class="form-group">
                                             <select th:field="*{comunidad.idComunidad}" class="form-control" id="comunidad" style="border-radius:10rem">
