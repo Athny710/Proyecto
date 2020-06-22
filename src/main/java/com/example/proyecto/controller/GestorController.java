@@ -1,7 +1,6 @@
 package com.example.proyecto.controller;
 
-import com.example.proyecto.dto.ReporteConCamposOriginales;
-import com.example.proyecto.dto.VentaPorCodigo;
+import com.example.proyecto.dto.*;
 import com.example.proyecto.entity.*;
 import com.example.proyecto.repository.*;
 import com.example.proyecto.services.VentasService;
@@ -14,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -78,6 +78,60 @@ public class GestorController {
 
 
     // ----------------------- ENLACES ---------------------------------
+
+    @GetMapping("AnadirCompra")
+    public String AnadirCompra(@ModelAttribute("historial") Historial historial, Model model, @RequestParam("id") int id) {
+        Optional<Inventario> OPinventario = inventarioRepository.findById(id);
+        if(OPinventario.isPresent()){
+            Inventario inventario = OPinventario.get();
+            historial.setInventario(inventario);
+            return "Gestor/G-AnadirHistorial";
+        }else {
+            return "redirect:/gestor/";
+        }
+
+    }
+    @PostMapping("gestorGuardarCompra")
+    public String gestorGuardarCompra(@ModelAttribute("historial") @Valid Historial historial, BindingResult bindingResult,
+                              Model model,
+                              RedirectAttributes attr) {
+        if (bindingResult.hasErrors()) {
+            if(inventarioRepository.findById(historial.getInventario().getIdInventario()).isPresent()){
+                historial.setInventario(inventarioRepository.findById(historial.getInventario().getIdInventario()).get());
+                model.addAttribute("historial", historial);
+                return "Gestor/G-AnadirHistorial" ;
+            }else{
+                return "redirect:/gestor/";
+            }
+        } else {
+            System.out.println("---------------- no binding result error");
+            System.out.println("ID INVENTARIO ENCONTRADO: " + historial.getInventario().getIdInventario());
+            Optional<Inventario> OPinventario = inventarioRepository.findById(historial.getInventario().getIdInventario());
+
+            if (OPinventario.isPresent()) {
+                System.out.println("--------------- inventario presnete id: " + OPinventario.get().getIdInventario());
+                historial.setIdhistorial(0);
+                Inventario inventario = OPinventario.get();
+                inventario.setStock(inventario.getStock() + historial.getCantidad());
+                historialRepository.save(historial);
+                inventarioRepository.save(inventario);
+                attr.addFlashAttribute("msg", "Compra realizada exitosamente");
+                return "redirect:/gestor/gestorPrincipal";
+            }else{ // error en id inventario. hackerman?
+                System.out.println("error id inventario!");
+                attr.addFlashAttribute("msg", "Error en la compra");
+                return "redirect:/gestor/gestorPrincipal";
+            }
+        }
+    }
+
+
+
+
+
+
+
+
     @GetMapping("perfil")
     public String perfil() {
         return "Gestor/G-Perfil";
@@ -92,15 +146,46 @@ public class GestorController {
 
 
     @GetMapping("gestorReporteVentas")
-    public String reporteVentas1(Model model) {
-        model.addAttribute("listaClientes",ventaRepository.findAll());
-        model.addAttribute("listasedes",sedeRepository.findAll());
-        model.addAttribute("listaAnhos",ventaRepository.obtenerAñosDeVenta());
-        model.addAttribute("listaMeses", ventaRepository.obtenerMesesDeVenta());
-        model.addAttribute("listaProductosVendidos", ventaRepository.obtenerProductosVendidos());
-        model.addAttribute("listaComunidades",ventaRepository.obtenerPComunidad());
+    public String reporteVentas1(Model model, RedirectAttributes attr) {
+        List<Venta> listaClientes = ventaRepository.findAll();
+        List<ListaSedesQueVendieron> listasedes = ventaRepository.obtenerSedes();
+        List<FechaVenta> listaAnhos = ventaRepository.obtenerAñosDeVenta();
+        List<FechaMesVenta> listaMeses = ventaRepository.obtenerMesesDeVenta();
+        List<ProductosQueSeVendieron> listaProductosVendidos = ventaRepository.obtenerProductosVendidos();
+        List<ProdComunidades> listaComunidades = ventaRepository.obtenerPComunidad();
+
+        if (listaClientes == null && listasedes == null && listaAnhos == null && listaMeses == null && listaProductosVendidos == null && listaComunidades == null){
+            attr.addFlashAttribute("msg1", "Aún no se han realizado ventas.Pulse sobre este mensaje para registrar la primera venta");
+            return "redirect:/gestor/gestorReporteVentasError";
+        }
+
+        model.addAttribute("listaClientes",listaClientes);
+        model.addAttribute("listasedes",listasedes);
+        model.addAttribute("listaAnhos",listaAnhos);
+        model.addAttribute("listaMeses", listaMeses);
+        model.addAttribute("listaProductosVendidos", listaProductosVendidos);
+        model.addAttribute("listaComunidades",listaComunidades);
         return "Gestor/G-GenReporte";
     }
+
+    @GetMapping("gestorReporteVentasError")
+    public String reporteVentas2(Model model) {
+        List<Venta> listaClientes = ventaRepository.findAll();
+        List<ListaSedesQueVendieron> listasedes = ventaRepository.obtenerSedes();
+        List<FechaVenta> listaAnhos = ventaRepository.obtenerAñosDeVenta();
+        List<FechaMesVenta> listaMeses = ventaRepository.obtenerMesesDeVenta();
+        List<ProductosQueSeVendieron> listaProductosVendidos = ventaRepository.obtenerProductosVendidos();
+        List<ProdComunidades> listaComunidades = ventaRepository.obtenerPComunidad();
+
+        model.addAttribute("listaClientes1",listaClientes);
+        model.addAttribute("listasedes1",listasedes);
+        model.addAttribute("listaAnhos1",listaAnhos);
+        model.addAttribute("listaMeses1", listaMeses);
+        model.addAttribute("listaProductosVendidos1", listaProductosVendidos);
+        model.addAttribute("listaComunidades1",listaComunidades);
+        return "Gestor/G-GenReporte";
+    }
+
 
     //------------------------Perfil-------------------------------------------
     @GetMapping("editarInfo")
@@ -179,6 +264,9 @@ public class GestorController {
                                      Model model,
                                      RedirectAttributes attr, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
+            if(!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[a-z0-9\\._-]+\\.[A-Za-z0-9]+$")){
+                model.addAttribute("msgError", "El correo ingresado no es un correo");
+            }
             if(usuarios.getIdusuarios() != 0){
                 Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
                 if (usuariosID.isPresent()) {// todo mostrar errores
@@ -239,7 +327,7 @@ public class GestorController {
                 return "redirect:/gestor/gestorListaUsuarioSede";
             } else { //ya existe el correo, mostrar errores
                 if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null) {
-                    model.addAttribute("msgError", "Ya hay un usuario con ese correo");
+                    model.addAttribute("msgError", "Este no es un correo");
                 }
                 model.addAttribute("listasedes", sedeRepository.findAll());
                 model.addAttribute(usuarios);
@@ -303,6 +391,14 @@ public class GestorController {
         if (bindingResult.hasErrors()) {
             return "Gestor/G-RegistroSede";
         } else {
+            //
+            Sede sedeTemp = sedeRepository.findByNombre(sede.getNombre());
+            if (sedeTemp != null) {
+                model.addAttribute(sede);
+                model.addAttribute("msgError", "Los datos ingresados ya existen, por favor modificarlo");
+                return "Gestor/G-RegistroSede";
+            }
+            //
             if (sede.getIdsede() == null) {
                 sedeRepository.save(sede);
                 attr.addFlashAttribute("msg", "Sede creada exitosamente");
@@ -326,8 +422,14 @@ public class GestorController {
 
         Optional<Sede> optionalSede = sedeRepository.findById(idsede);
         if (optionalSede.isPresent()) {
-            sedeRepository.deleteById(idsede);
-            attr.addFlashAttribute("msg", "Sede Eliminada");
+           // sedeRepository.deleteById(idsede);
+           // attr.addFlashAttribute("msg", "Sede Eliminada");
+            try {
+                sedeRepository.deleteById(idsede);
+                attr.addFlashAttribute("msg", "Sede Eliminada");
+            } catch (Exception e) {
+                attr.addFlashAttribute("msg", "No se pudo eliminar la sede");
+            }
         }
         return "redirect:/gestor/gestorListaSedes";
     }
@@ -395,6 +497,7 @@ public class GestorController {
             model.addAttribute("listaCategorias", categoriaRepository.findAll());
             model.addAttribute("listaTama", tamañoRepository.findAll());
             model.addAttribute("listaLinea", lineaRepository.findAll());
+            model.addAttribute("listaArtesanos",artesanoRepository.findAll());
             formulario.setDescripcion(productooooo.getDenominacion().getDescripcion());
             formulario.setNombreCategoria(productooooo.getCategoria().getNombre());
             formulario.setNombreComun(productooooo.getComunidad().getNombre());
@@ -418,6 +521,7 @@ public class GestorController {
         model.addAttribute("listaCategorias", categoriaRepository.findAll());
         model.addAttribute("listaTama", tamañoRepository.findAll());
         model.addAttribute("listaLinea", lineaRepository.findAll());
+        model.addAttribute("listaArtesanos",artesanoRepository.findAll());
         formulario.setCrearActualizar(0);
         return "Gestor/G-RegCompra";
     }
@@ -425,24 +529,38 @@ public class GestorController {
 
     @PostMapping("guardarProducto")
     public String guardarProducto(@ModelAttribute("formulario") @Valid FormularioProducto formulario,
-                                  BindingResult bindingResult, RedirectAttributes attr, Model model) {
+                                  BindingResult bindingResult, RedirectAttributes attr, Model model,@RequestParam("modalidad") String modalidad) {
 
         if (bindingResult.hasErrors() ){
-            System.out.println("Tiene errores");
-            model.addAttribute("listaComunidades", comunidadRepository.findAll());
-            model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
-            model.addAttribute("listaCategorias", categoriaRepository.findAll());
-            model.addAttribute("listaTama", tamañoRepository.findAll());
-            model.addAttribute("listaLinea", lineaRepository.findAll());
-            return "Gestor/G-RegCompra";
+            if(formulario.getCrearActualizar() == 0){
+                System.out.println("Tiene errores");
+                model.addAttribute("listaComunidades", comunidadRepository.findAll());
+                model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
+                model.addAttribute("listaCategorias", categoriaRepository.findAll());
+                model.addAttribute("listaTama", tamañoRepository.findAll());
+                model.addAttribute("listaLinea", lineaRepository.findAll());
+                model.addAttribute("listaArtesanos",artesanoRepository.findAll());
+                return "Gestor/G-RegCompra";
+            }else if (formulario.getCrearActualizar() > 0){
+                System.out.println("Tiene errores");
+                model.addAttribute("listaComunidades", comunidadRepository.findAll());
+                model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
+                model.addAttribute("listaCategorias", categoriaRepository.findAll());
+                model.addAttribute("listaTama", tamañoRepository.findAll());
+                model.addAttribute("listaLinea", lineaRepository.findAll());
+                model.addAttribute("listaArtesanos",artesanoRepository.findAll());
+                return "Gestor/G-EditProdCompra";
+            }else {
+                return "redirect:/gestor/productos";
+            }
+
         }else {
             System.out.println("NO Tiene errores");
             List<Categoria> categoria1 = categoriaRepository.findByNombre(formulario.getNombreCategoria());
             List<Linea> linea1 = lineaRepository.findByNombre(formulario.getNombreLinea());
             List<Comunidad> comu = comunidadRepository.findByNombre(formulario.getNombreComun());
             List<Tamaño> tamaños = tamañoRepository.findByNombre(formulario.getNombreTama());
-            List<Denominacion> denomi1 = denominacionRepository.buscarRepetido(formulario.getNombreProducto(), formulario.getCodigoProducto(),
-                    formulario.getDescripcion(), formulario.getCodDescripcion());
+            List<Denominacion> denomi1 = denominacionRepository.buscarRepetido(formulario.getNombreProducto(), formulario.getCodigoProducto(), formulario.getCodDescripcion());
 
             if (formulario.getCrearActualizar() == 0) {
                 System.out.println("Voy a crear");
@@ -453,16 +571,17 @@ public class GestorController {
                     model.addAttribute("listaCategorias", categoriaRepository.findAll());
                     model.addAttribute("listaTama", tamañoRepository.findAll());
                     model.addAttribute("listaLinea", lineaRepository.findAll());
+                    model.addAttribute("listaArtesanos",artesanoRepository.findAll());
                     return "Gestor/G-RegCompra";
                 } else {
                         if (!categoria1.isEmpty() && !linea1.isEmpty() && !comu.isEmpty() && !tamaños.isEmpty()) {
                             Producto producto = new Producto();
+
                             Denominacion denominacion = new Denominacion();
                             denominacion.setCodigodescripcion(formulario.getCodDescripcion());
                             denominacion.setCodigonombre(formulario.getCodigoProducto());
                             denominacion.setNombre(formulario.getNombreProducto());
                             denominacion.setDescripcion(formulario.getDescripcion());
-                            producto.setAdquisicion(adquisicionRepository.findById(1).get());
                             producto.setCategoria(categoria1.get(0));
                             producto.setComunidad(comu.get(0));
                             producto.setTamanho(tamaños.get(0));
@@ -470,12 +589,55 @@ public class GestorController {
                             denominacionRepository.save(denominacion);
                             List<Denominacion> denomi2 = denominacionRepository.findByNombre(denominacion.getNombre());
                             producto.setDenominacion(denomi2.get(0));
-                            String codigo = denomi2.get(0).getLinea().getCodigo() + categoria1.get(0).getCodigo() + denomi2.get(0).getCodigonombre() +
-                                    denomi2.get(0).getCodigodescripcion() + tamaños.get(0).getCodigo() + comu.get(0).getCodigo();
-                            producto.setCodigoGenerado(codigo);
-                            productoRepository.save(producto);
-                            attr.addFlashAttribute("msg1", "Guardado Exitósamente");
-                            return "redirect:/gestor/productos";
+                            if(modalidad.equalsIgnoreCase("compra")){
+                                formulario.setModa(modalidad);
+                                String codigo = denomi2.get(0).getLinea().getCodigo() + categoria1.get(0).getCodigo() + denomi2.get(0).getCodigonombre() +
+                                        denomi2.get(0).getCodigodescripcion() + tamaños.get(0).getCodigo() + comu.get(0).getCodigo();
+                                producto.setCodigoGenerado(codigo);
+                                producto.setAdquisicion(adquisicionRepository.findById(1).get());
+                                productoRepository.save(producto);
+                                attr.addFlashAttribute("msg1", "Guardado Exitósamente");
+                                return "redirect:/gestor/productos";
+                            }else if (modalidad.equalsIgnoreCase("consignacion")){
+                                formulario.setModa(modalidad);
+                                Adquisicion adqui = new Adquisicion();
+                                Optional<Artesano> artesa = artesanoRepository.findById(formulario.getCodigoArtesano());
+                                if (!artesa.isPresent()){
+                                    model.addAttribute("msg", "El artesano no existe");
+                                    model.addAttribute("listaComunidades", comunidadRepository.findAll());
+                                    model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
+                                    model.addAttribute("listaCategorias", categoriaRepository.findAll());
+                                    model.addAttribute("listaTama", tamañoRepository.findAll());
+                                    model.addAttribute("listaLinea", lineaRepository.findAll());
+                                    model.addAttribute("listaArtesanos",artesanoRepository.findAll());
+                                    return "Gestor/G-RegCompra";
+                                }
+                                adqui.setFecha(formulario.getFechainicio());
+                                adqui.setFechafin(formulario.getFechafin());
+                                adqui.setArtesano(artesa.get());
+                                adqui.setModalidad("consignado");
+                                adquisicionRepository.save(adqui);
+                                List<Adquisicion> listaAdqui = adquisicionRepository.findAll();
+                                producto.setAdquisicion(listaAdqui.get(listaAdqui.size()-1));
+                                String año = String.valueOf(formulario.getFechainicio().getYear()).substring(2);
+
+                                String codigo = denomi2.get(0).getLinea().getCodigo() + categoria1.get(0).getCodigo() + denomi2.get(0).getCodigonombre() +
+                                        denomi2.get(0).getCodigodescripcion() + tamaños.get(0).getCodigo() + comu.get(0).getCodigo()+ año + String.valueOf(formulario.getFechainicio().getMonth()).substring(0,3) ;
+                                producto.setCodigoGenerado(codigo);
+                                productoRepository.save(producto);
+                                attr.addFlashAttribute("msg1", "Guardado Exitosamente");
+                                return "redirect:/gestor/productos";
+                            }else {
+                                model.addAttribute("msg", "Valor inválido. Solo se permite consignación o compra");
+                                model.addAttribute("listaComunidades", comunidadRepository.findAll());
+                                model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
+                                model.addAttribute("listaCategorias", categoriaRepository.findAll());
+                                model.addAttribute("listaTama", tamañoRepository.findAll());
+                                model.addAttribute("listaLinea", lineaRepository.findAll());
+                                model.addAttribute("listaArtesanos",artesanoRepository.findAll());
+                                return "Gestor/G-RegCompra";
+
+                            }
                         } else {
                             model.addAttribute("msg", "Valor seleccionado nó válido");
                             model.addAttribute("listaComunidades", comunidadRepository.findAll());
@@ -483,6 +645,7 @@ public class GestorController {
                             model.addAttribute("listaCategorias", categoriaRepository.findAll());
                             model.addAttribute("listaTama", tamañoRepository.findAll());
                             model.addAttribute("listaLinea", lineaRepository.findAll());
+                            model.addAttribute("listaArtesanos",artesanoRepository.findAll());
                             return "Gestor/G-RegCompra";
                         }
                 }
@@ -541,10 +704,13 @@ public class GestorController {
     public String guardarEnInventario(@ModelAttribute("historial") @Valid Historial historial, BindingResult bindingResult,
                                       RedirectAttributes attr, @RequestParam("archivo") MultipartFile file, Model model){
         if (bindingResult.hasErrors()){
+            System.out.println("Tengo errores");
+            model.addAttribute("litaProductos",productoRepository.findAll());
             return  "Gestor/G-AñadirEnInventario";
         }else{
             if(file.isEmpty()){
                 model.addAttribute("msg", "Debe subir un archivo");
+                model.addAttribute("litaProductos",productoRepository.findAll());
                 return  "Gestor/G-AñadirEnInventario";
             }
 
@@ -552,6 +718,7 @@ public class GestorController {
 
             if(fileName.contains("..")){
                 model.addAttribute("msg", "No se permiten '..' en el archivo ");
+                model.addAttribute("litaProductos",productoRepository.findAll());
                 return  "Gestor/G-AñadirEnInventario";
             }
 
@@ -573,6 +740,7 @@ public class GestorController {
 
                 }else {
                     model.addAttribute("msg", "El producto seleccionado no existe");
+                    model.addAttribute("litaProductos",productoRepository.findAll());
                     return  "Gestor/G-AñadirEnInventario";
                 }
 
@@ -581,6 +749,7 @@ public class GestorController {
             }catch (IOException e){
                 e.printStackTrace();
                 model.addAttribute("msg", "Ocurrió un error al subir el archivo ");
+                model.addAttribute("litaProductos",productoRepository.findAll());
                 return  "Gestor/G-AñadirEnInventario";
             }
 
@@ -1174,7 +1343,7 @@ public class GestorController {
 
     @PostMapping("crearExcelPorCliente")
     public String crearExcelCliente(@RequestParam("filtrado") int val,@RequestParam("estandar") String cliente, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response, RedirectAttributes attr) {
-        if (val == 0){
+        if (val != 1){
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         }else {
@@ -1209,7 +1378,7 @@ public class GestorController {
 
     @PostMapping("crearExcelPorSede")
     public String crearExcelPorSede(@RequestParam("filtrado") int val,@RequestParam("estandar") String idsede, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response, RedirectAttributes attr) {
-        if (val == 0){
+        if (val != 2){
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         }else {
@@ -1244,7 +1413,7 @@ public class GestorController {
 
     @PostMapping("crearExcelPorArticulo")
     public String crearExcelPorArticulo(@RequestParam("filtrado") int val,@RequestParam("estandar") String articulo, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response, RedirectAttributes attr) {
-        if (val == 0){
+        if (val != 3){
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         }else {
@@ -1279,7 +1448,7 @@ public class GestorController {
 
     @PostMapping("crearExcelPorComunidad")
     public String crearExcelPorComunidad(@RequestParam("filtrado") int val,@RequestParam("estandar") String comunidad, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response, RedirectAttributes attr) {
-        if (val == 0){
+        if (val != 4){
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         }else {

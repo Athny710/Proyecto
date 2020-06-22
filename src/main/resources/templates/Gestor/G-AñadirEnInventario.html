@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+
 <head th:replace="Fragmentos/FragmentosGestor.html::cabecera(titulo='Registrar Compra')">
+
 </head>
 
 <body id="page-top">
@@ -19,63 +21,69 @@
                     </div>
                     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
                     <div class="card-body">
-                        <form method="post" th:action="@{/gestor/guardarProductoEnInventario}"  th:object="${historial}" enctype="multipart/form-data" >
-                            <input  th:value="*{idhistorial}" name="idhistorial" type="hidden"/>
-
-                            <div  class="form-group col-md-6">
-                                <label >Modalidad</label>
-                                <select style="border-radius: 10rem" class="form-control" th:field="*{inventario.producto.adquisicion.modalidad}">
-                                    <option  th:value="compra" > Compra</option>
-                                    <option  th:value="consignacion" >Consignación</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group col-md-6" >
-                                <label >Facilidator </label>
-                                <input style="border-radius: 10rem" type="text" class="form-control" th:field="*{facilitador}">
-                                <div class="text-danger" th:if="${#fields.hasErrors('facilitador')}" th:errors="*{facilitador}" ></div>
-                            </div>
-
+                        <form method="post" th:action="@{/gestor/guardarProductoEnInventario}" th:object="${historial}"
+                              enctype="multipart/form-data">
+                            <input th:value="*{idhistorial}" name="idhistorial" type="hidden"/>
                             <div class="form-group col-md-6">
-                                <label >Costo Tejedor</label>
-                                <input style="border-radius: 10rem" type="text" class="form-control" th:field="*{costotejedor}">
-                                <div class="text-danger" th:if="${#fields.hasErrors('costotejedor')}" th:errors="*{costotejedor}" ></div>
+                                <label>Facilidator </label>
+                                <input style="border-radius: 10rem" type="text" class="form-control"
+                                       th:field="*{facilitador}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('facilitador')}"
+                                     th:errors="*{facilitador}"></div>
                             </div>
-                            <div  class="form-group col-md-6">
-                                <label >Fecha de Ingreso al Inventario</label>
-                                <input style="border-radius: 10rem"  type="date" class="form-control" th:field="*{fecha}">
-                                <div class="text-danger" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}" ></div>
+                            <div class="form-group col-md-6">
+                                <label>Costo Tejedor</label>
+                                <input style="border-radius: 10rem" type="text" class="form-control"
+                                       th:field="*{costotejedor}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('costotejedor')}"
+                                     th:errors="*{costotejedor}"></div>
                             </div>
-
-                            <div  class="form-group col-md-6">
-                                <label >Producto </label>
-                                <select style="border-radius: 10rem" class="form-control" th:field="*{inventario.producto.idProducto}">
+                            <div class="form-group col-md-6">
+                                <label>Fecha de Ingreso al Inventario</label>
+                                <input style="border-radius: 10rem" type="date" class="form-control"
+                                       th:field="*{fecha}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('fecha')}"
+                                     th:errors="*{fecha}"></div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Producto </label>
+                                <select style="border-radius: 10rem" class="form-control"
+                                        th:field="*{inventario.producto.idProducto}">
                                     <option th:each="productos : ${litaProductos}" th:value="${productos.idProducto}"
-                                            th:text="${productos.codigoGenerado}">uno</option>
+                                            th:text="${productos.codigoGenerado}">uno
+                                    </option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-6" >
-                                <label >Cantidad </label>
-                                <input style="border-radius: 10rem" type="text" class="form-control" th:field="*{cantidad}">
-                                <div class="text-danger" th:if="${#fields.hasErrors('cantidad')}" th:errors="*{cantidad}" ></div>
+                            <div class="form-group col-md-6">
+                                <label>Cantidad </label>
+                                <input style="border-radius: 10rem" type="text" class="form-control"
+                                       th:field="*{cantidad}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('cantidad')}"
+                                     th:errors="*{cantidad}"></div>
                             </div>
-                            <div class="form-group col-md-6" >
-                                <label >Comentario </label>
-                                <input style="border-radius: 10rem" type="text" class="form-control" th:field="*{inventario.comentario}">
-                                <div class="text-danger" th:if="${#fields.hasErrors('inventario.comentario')}" th:errors="*{inventario.comentario}" ></div>
+                            <div class="form-group col-md-6">
+                                <label>Comentario </label>
+                                <input style="border-radius: 10rem" type="text" class="form-control"
+                                       th:field="*{inventario.comentario}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('inventario.comentario')}"
+                                     th:errors="*{inventario.comentario}"></div>
                             </div>
-                            <div class="form-group col-md-6" >
-                                <label >Precio Moscoy </label>
-                                <input style="border-radius: 10rem" type="text" class="form-control" th:field="*{inventario.preciomosqoy}">
-                                <div class="text-danger" th:if="${#fields.hasErrors('inventario.preciomosqoy')}" th:errors="*{inventario.preciomosqoy}" ></div>
+                            <div class="form-group col-md-6">
+                                <label>Precio Moscoy </label>
+                                <input style="border-radius: 10rem" type="text" class="form-control"
+                                       th:field="*{inventario.preciomosqoy}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('inventario.preciomosqoy')}"
+                                     th:errors="*{inventario.preciomosqoy}"></div>
                             </div>
-                            <div class="form-group col-md-6" >
-                                <label >Color </label>
-                                <input style="border-radius: 10rem" type="text" class="form-control" th:field="*{inventario.color}">
-                                <div class="text-danger" th:if="${#fields.hasErrors('inventario.color')}" th:errors="*{inventario.color}" ></div>
+                            <div class="form-group col-md-6">
+                                <label>Color </label>
+                                <input style="border-radius: 10rem" type="text" class="form-control"
+                                       th:field="*{inventario.color}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('inventario.color')}"
+                                     th:errors="*{inventario.color}"></div>
                             </div>
-                            <div class="form-group col-md-6" >
-                                <label >Foto </label>
+                            <div class="form-group col-md-6">
+                                <label>Foto </label>
                                 <input style="border-radius: 10rem" type="file" class="form-control" name="archivo">
                             </div>
 
@@ -83,7 +91,7 @@
                                 <div class="form-group col-md-8">
                                     <a th:href="@{/gestor/gestorPrincipal}" class="btn btn-danger">Cancelar</a>
                                 </div>
-                                <div class="form-group col-md-2"  >
+                                <div class="form-group col-md-2">
                                     <button type="submit" class="btn btn-searchTop">Guardar</button>
                                 </div>
                             </div>
@@ -101,5 +109,7 @@
 </a>
 
 <div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
+
+
 </body>
 </html>

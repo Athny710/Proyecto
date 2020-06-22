@@ -23,7 +23,7 @@
                                         <a class="btn btn-orange btn-user btn-block" th:href="@{/gestor/gestorListarSinStock}">Productos sin Stock</a>
                                     </div>
                                     <div style="width: 150px; margin-left: 15px; margin-right: 8px">
-                                        <a class="btn btn-orange btn-user btn-block" th:href="@{/gestor/gestorRegInventario}">Añadir Producto</a>
+                                        <a class="btn btn-orange btn-user btn-block" th:href="@{/gestor/gestorRegInventario}">Agregar Producto al inventario</a>
                                     </div>
                                 </div>
                             </div>
@@ -58,8 +58,8 @@
                                                 </a>
                                             </td>
                                             <td align="center">
-                                                <a th:href="@{'/gestor/gestorEditProdCompra?id='+${productos.idInventario}}">
-                                                    <i class="far fa-edit text-orangeM" style="margin-right: 5px"></i>
+                                                <a th:href="@{'/gestor/AnadirCompra?id='+${productos.idInventario}}">
+                                                    <i class="fa fa-plus-circle" style="color: #5d21c7;margin-right: 5px"></i>
                                                 </a>
                                                 <a th:href="@{'/gestor/borrarProducto?id='+${productos.idInventario}}">
                                                     <i class="far fa-trash-alt text-redM" style="margin-left: 5px"></i>
