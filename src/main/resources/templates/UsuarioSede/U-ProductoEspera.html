@@ -48,12 +48,11 @@
                                     <td th:text="${p.getComentario()}"></td>
                                     <td align="center">
                                         <a th:href="@{'/sede/AceptarProducto?id='+${p.getIdenviosede()}}">
-                                            <i class="far fa-list-alt text-greenM"></i>
+                                            <i class="far fa-check-circle fa-2x text-greenM" style="font-size:1.3rem"></i>
                                         </a>
                                     </td>
-
                                     <td align="center">
-                                        <a style="margin-left: 10px" class="far fa-trash-alt text-redM"
+                                        <a style="margin-left: 10px; font-size:1.3rem" class="far fa-2x fa-times-circle text-redM"
                                            href="#"
                                            data-toggle="modal" data-target="#modalborrar"
                                            th:attrappend="data-target=${p.getIdenviosede()}"></a>

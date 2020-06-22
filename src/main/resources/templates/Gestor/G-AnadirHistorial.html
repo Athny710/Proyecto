@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="Fragmentos/FragmentosAdmin.html::cabecera(titulo='Nuevo Envio')">
+</head>
+
+<body id="page-top">
+
+<div id="wrapper">
+    <div th:insert="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column bg-white">
+        <!-- Main Content -->
+        <div id="content">
+            <div th:insert="Fragmentos/FragmentosGestor.html:: TopBar"></div>
+            <div th:insert="Fragmentos/FragmentosGestor.html:: LogOut"></div>
+            <!-- Page Heading -->
+            <div class="container-fluid">
+                <div class="card shadowA mb-4">
+                    <div class="card-header2 py-3">
+                        <div class="d-flex justify-content-between centrado">
+                            <h5 class="m-0 font-weight-bold text-redM">
+                                Registro de nueva compra
+                            </h5>
+                        </div>
+                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
+                    </div>
+                    <div class="card-body bg-gray-100">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <form method="post" th:action="@{/gestor/gestorGuardarCompra}"
+                                          th:object="${historial}">
+                                        <input th:field="*{inventario.idInventario}" type="hidden">
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <label>Fecha de compra:</label>
+                                                <input th:field="*{fecha}" type="date" class="form-control"
+                                                       placeholder="fecha" style="border-radius:10rem">
+                                                <div class="text-danger" th:if="${#fields.hasErrors('fecha')}"
+                                                     th:errors="*{fecha}"></div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label>Cantidad comprada:</label>
+                                                <input th:field="*{cantidad}" type="number"
+                                                       class="form-control form-control-user" placeholder="cantidad"
+                                                       style="border-radius:10rem">
+                                                <div class="text-danger" th:if="${#fields.hasErrors('cantidad')}"
+                                                     th:errors="*{cantidad}"></div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Costo pagado al tejedor: (soles)</label>
+                                            <input th:field="*{costotejedor}" type="number" step='0.01'
+                                                   class="form-control form-control-user" placeholder="costotejedor"
+                                                   style="border-radius:10rem">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('costotejedor')}"
+                                                 th:errors="*{costotejedor}"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Numero de pedido:</label>
+                                            <input th:field="*{numeropedido}" type="number"
+                                                   class="form-control form-control-user" placeholder="numeropedido"
+                                                   style="border-radius:10rem">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('numeropedido')}"
+                                                 th:errors="*{numeropedido}"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Facilitador:</label>
+                                            <input th:field="*{facilitador}" type="text"
+                                                   class="form-control form-control-user" placeholder="facilitador"
+                                                   style="border-radius:10rem">
+                                            <div class="text-danger" th:if="${#fields.hasErrors('facilitador')}"
+                                                 th:errors="*{facilitador}"></div>
+                                        </div>
+
+
+
+
+                                        <div class="row">
+                                            <button type="submit" class="btn btn-searchTop btn-block" style="border-radius:10rem">
+                                                Confirmar Compra
+                                            </button>
+                                        </div>
+                                        <div class="row">
+                                            <a class="btn btn-danger btn-block" style="border-radius:10rem;margin-top: 8px;"
+                                               th:href="@{/gestor/gestorPrincipal}">Cancelar</a>
+                                        </div>
+                                    </form>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-4">
+                                <br>
+                                <br>
+                                <div class="card shadowA mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        Esta compra anadira stock al inventario y quedara registrada
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+<div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
+
+</body>
+
+</html>
