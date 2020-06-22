@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -77,6 +78,60 @@ public class GestorController {
 
 
     // ----------------------- ENLACES ---------------------------------
+
+    @GetMapping("AnadirCompra")
+    public String AnadirCompra(@ModelAttribute("historial") Historial historial, Model model, @RequestParam("id") int id) {
+        Optional<Inventario> OPinventario = inventarioRepository.findById(id);
+        if(OPinventario.isPresent()){
+            Inventario inventario = OPinventario.get();
+            historial.setInventario(inventario);
+            return "Gestor/G-AnadirHistorial";
+        }else {
+            return "redirect:/gestor/";
+        }
+
+    }
+    @PostMapping("gestorGuardarCompra")
+    public String gestorGuardarCompra(@ModelAttribute("historial") @Valid Historial historial, BindingResult bindingResult,
+                              Model model,
+                              RedirectAttributes attr) {
+        if (bindingResult.hasErrors()) {
+            if(inventarioRepository.findById(historial.getInventario().getIdInventario()).isPresent()){
+                historial.setInventario(inventarioRepository.findById(historial.getInventario().getIdInventario()).get());
+                model.addAttribute("historial", historial);
+                return "Gestor/G-AnadirHistorial" ;
+            }else{
+                return "redirect:/gestor/";
+            }
+        } else {
+            System.out.println("---------------- no binding result error");
+            System.out.println("ID INVENTARIO ENCONTRADO: " + historial.getInventario().getIdInventario());
+            Optional<Inventario> OPinventario = inventarioRepository.findById(historial.getInventario().getIdInventario());
+
+            if (OPinventario.isPresent()) {
+                System.out.println("--------------- inventario presnete id: " + OPinventario.get().getIdInventario());
+                historial.setIdhistorial(0);
+                Inventario inventario = OPinventario.get();
+                inventario.setStock(inventario.getStock() + historial.getCantidad());
+                historialRepository.save(historial);
+                inventarioRepository.save(inventario);
+                attr.addFlashAttribute("msg", "Compra realizada exitosamente");
+                return "redirect:/gestor/gestorPrincipal";
+            }else{ // error en id inventario. hackerman?
+                System.out.println("error id inventario!");
+                attr.addFlashAttribute("msg", "Error en la compra");
+                return "redirect:/gestor/gestorPrincipal";
+            }
+        }
+    }
+
+
+
+
+
+
+
+
     @GetMapping("perfil")
     public String perfil() {
         return "Gestor/G-Perfil";
@@ -209,6 +264,9 @@ public class GestorController {
                                      Model model,
                                      RedirectAttributes attr, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
+            if(!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[a-z0-9\\._-]+\\.[A-Za-z0-9]+$")){
+                model.addAttribute("msgError", "El correo ingresado no es un correo");
+            }
             if(usuarios.getIdusuarios() != 0){
                 Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
                 if (usuariosID.isPresent()) {// todo mostrar errores
@@ -269,7 +327,7 @@ public class GestorController {
                 return "redirect:/gestor/gestorListaUsuarioSede";
             } else { //ya existe el correo, mostrar errores
                 if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null) {
-                    model.addAttribute("msgError", "Ya hay un usuario con ese correo");
+                    model.addAttribute("msgError", "Este no es un correo");
                 }
                 model.addAttribute("listasedes", sedeRepository.findAll());
                 model.addAttribute(usuarios);
