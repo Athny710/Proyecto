@@ -532,14 +532,28 @@ public class GestorController {
                                   BindingResult bindingResult, RedirectAttributes attr, Model model,@RequestParam("modalidad") String modalidad) {
 
         if (bindingResult.hasErrors() ){
-            System.out.println("Tiene errores");
-            model.addAttribute("listaComunidades", comunidadRepository.findAll());
-            model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
-            model.addAttribute("listaCategorias", categoriaRepository.findAll());
-            model.addAttribute("listaTama", tamañoRepository.findAll());
-            model.addAttribute("listaLinea", lineaRepository.findAll());
-            model.addAttribute("listaArtesanos",artesanoRepository.findAll());
-            return "Gestor/G-RegCompra";
+            if(formulario.getCrearActualizar() == 0){
+                System.out.println("Tiene errores");
+                model.addAttribute("listaComunidades", comunidadRepository.findAll());
+                model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
+                model.addAttribute("listaCategorias", categoriaRepository.findAll());
+                model.addAttribute("listaTama", tamañoRepository.findAll());
+                model.addAttribute("listaLinea", lineaRepository.findAll());
+                model.addAttribute("listaArtesanos",artesanoRepository.findAll());
+                return "Gestor/G-RegCompra";
+            }else if (formulario.getCrearActualizar() > 0){
+                System.out.println("Tiene errores");
+                model.addAttribute("listaComunidades", comunidadRepository.findAll());
+                model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
+                model.addAttribute("listaCategorias", categoriaRepository.findAll());
+                model.addAttribute("listaTama", tamañoRepository.findAll());
+                model.addAttribute("listaLinea", lineaRepository.findAll());
+                model.addAttribute("listaArtesanos",artesanoRepository.findAll());
+                return "Gestor/G-EditProdCompra";
+            }else {
+                return "redirect:/gestor/productos";
+            }
+
         }else {
             System.out.println("NO Tiene errores");
             List<Categoria> categoria1 = categoriaRepository.findByNombre(formulario.getNombreCategoria());
@@ -562,7 +576,7 @@ public class GestorController {
                 } else {
                         if (!categoria1.isEmpty() && !linea1.isEmpty() && !comu.isEmpty() && !tamaños.isEmpty()) {
                             Producto producto = new Producto();
-                            formulario.setModa(modalidad);
+
                             Denominacion denominacion = new Denominacion();
                             denominacion.setCodigodescripcion(formulario.getCodDescripcion());
                             denominacion.setCodigonombre(formulario.getCodigoProducto());
@@ -576,6 +590,7 @@ public class GestorController {
                             List<Denominacion> denomi2 = denominacionRepository.findByNombre(denominacion.getNombre());
                             producto.setDenominacion(denomi2.get(0));
                             if(modalidad.equalsIgnoreCase("compra")){
+                                formulario.setModa(modalidad);
                                 String codigo = denomi2.get(0).getLinea().getCodigo() + categoria1.get(0).getCodigo() + denomi2.get(0).getCodigonombre() +
                                         denomi2.get(0).getCodigodescripcion() + tamaños.get(0).getCodigo() + comu.get(0).getCodigo();
                                 producto.setCodigoGenerado(codigo);
@@ -584,6 +599,7 @@ public class GestorController {
                                 attr.addFlashAttribute("msg1", "Guardado Exitósamente");
                                 return "redirect:/gestor/productos";
                             }else if (modalidad.equalsIgnoreCase("consignacion")){
+                                formulario.setModa(modalidad);
                                 Adquisicion adqui = new Adquisicion();
                                 Optional<Artesano> artesa = artesanoRepository.findById(formulario.getCodigoArtesano());
                                 if (!artesa.isPresent()){
@@ -681,7 +697,6 @@ public class GestorController {
     @GetMapping("gestorRegInventario")
     public String añadirEnInventario(@ModelAttribute("historial") Historial historial ,Model model){
         model.addAttribute("litaProductos",productoRepository.findAll());
-        model.addAttribute("listaArtesanos",artesanoRepository.findAll());
         return  "Gestor/G-AñadirEnInventario";
     }
 
@@ -689,10 +704,13 @@ public class GestorController {
     public String guardarEnInventario(@ModelAttribute("historial") @Valid Historial historial, BindingResult bindingResult,
                                       RedirectAttributes attr, @RequestParam("archivo") MultipartFile file, Model model){
         if (bindingResult.hasErrors()){
+            System.out.println("Tengo errores");
+            model.addAttribute("litaProductos",productoRepository.findAll());
             return  "Gestor/G-AñadirEnInventario";
         }else{
             if(file.isEmpty()){
                 model.addAttribute("msg", "Debe subir un archivo");
+                model.addAttribute("litaProductos",productoRepository.findAll());
                 return  "Gestor/G-AñadirEnInventario";
             }
 
@@ -700,6 +718,7 @@ public class GestorController {
 
             if(fileName.contains("..")){
                 model.addAttribute("msg", "No se permiten '..' en el archivo ");
+                model.addAttribute("litaProductos",productoRepository.findAll());
                 return  "Gestor/G-AñadirEnInventario";
             }
 
@@ -721,6 +740,7 @@ public class GestorController {
 
                 }else {
                     model.addAttribute("msg", "El producto seleccionado no existe");
+                    model.addAttribute("litaProductos",productoRepository.findAll());
                     return  "Gestor/G-AñadirEnInventario";
                 }
 
@@ -729,6 +749,7 @@ public class GestorController {
             }catch (IOException e){
                 e.printStackTrace();
                 model.addAttribute("msg", "Ocurrió un error al subir el archivo ");
+                model.addAttribute("litaProductos",productoRepository.findAll());
                 return  "Gestor/G-AñadirEnInventario";
             }
 

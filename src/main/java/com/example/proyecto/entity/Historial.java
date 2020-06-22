@@ -25,8 +25,8 @@ public class Historial {
     @NotNull(message = "por favor ingrese el costo pagado al tejedor")
     private Double costotejedor;
 
-    @Positive(message = "No puede ser negativo")
-    @NotNull(message = "por favor ingrese un numero de pedido")
+    //@Positive(message = "No puede ser negativo")
+    //@NotNull(message = "por favor ingrese un numero de pedido")
     private Integer numeropedido;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
