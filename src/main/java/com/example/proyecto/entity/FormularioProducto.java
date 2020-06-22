@@ -35,6 +35,8 @@ public class FormularioProducto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "por favor ingrese una fecha")
     private LocalDate fechainicio;
+    private int codigoArtesano;
+    private String moda;
 
     public String getNombreProducto() {
         return nombreProducto;
@@ -122,5 +124,22 @@ public class FormularioProducto {
 
     public void setFechainicio(LocalDate fechainicio) {
         this.fechainicio = fechainicio;
+    }
+
+
+    public int getCodigoArtesano() {
+        return codigoArtesano;
+    }
+
+    public void setCodigoArtesano(int codigoArtesano) {
+        this.codigoArtesano = codigoArtesano;
+    }
+
+    public String getModa() {
+        return moda;
+    }
+
+    public void setModa(String moda) {
+        this.moda = moda;
     }
 }

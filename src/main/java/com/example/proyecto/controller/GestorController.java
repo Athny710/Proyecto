@@ -439,6 +439,7 @@ public class GestorController {
             model.addAttribute("listaCategorias", categoriaRepository.findAll());
             model.addAttribute("listaTama", tamañoRepository.findAll());
             model.addAttribute("listaLinea", lineaRepository.findAll());
+            model.addAttribute("listaArtesanos",artesanoRepository.findAll());
             formulario.setDescripcion(productooooo.getDenominacion().getDescripcion());
             formulario.setNombreCategoria(productooooo.getCategoria().getNombre());
             formulario.setNombreComun(productooooo.getComunidad().getNombre());
@@ -462,6 +463,7 @@ public class GestorController {
         model.addAttribute("listaCategorias", categoriaRepository.findAll());
         model.addAttribute("listaTama", tamañoRepository.findAll());
         model.addAttribute("listaLinea", lineaRepository.findAll());
+        model.addAttribute("listaArtesanos",artesanoRepository.findAll());
         formulario.setCrearActualizar(0);
         return "Gestor/G-RegCompra";
     }
@@ -469,7 +471,7 @@ public class GestorController {
 
     @PostMapping("guardarProducto")
     public String guardarProducto(@ModelAttribute("formulario") @Valid FormularioProducto formulario,
-                                  BindingResult bindingResult, RedirectAttributes attr, Model model) {
+                                  BindingResult bindingResult, RedirectAttributes attr, Model model,@RequestParam("modalidad") String modalidad) {
 
         if (bindingResult.hasErrors() ){
             System.out.println("Tiene errores");
@@ -478,6 +480,7 @@ public class GestorController {
             model.addAttribute("listaCategorias", categoriaRepository.findAll());
             model.addAttribute("listaTama", tamañoRepository.findAll());
             model.addAttribute("listaLinea", lineaRepository.findAll());
+            model.addAttribute("listaArtesanos",artesanoRepository.findAll());
             return "Gestor/G-RegCompra";
         }else {
             System.out.println("NO Tiene errores");
@@ -485,8 +488,7 @@ public class GestorController {
             List<Linea> linea1 = lineaRepository.findByNombre(formulario.getNombreLinea());
             List<Comunidad> comu = comunidadRepository.findByNombre(formulario.getNombreComun());
             List<Tamaño> tamaños = tamañoRepository.findByNombre(formulario.getNombreTama());
-            List<Denominacion> denomi1 = denominacionRepository.buscarRepetido(formulario.getNombreProducto(), formulario.getCodigoProducto(),
-                    formulario.getDescripcion(), formulario.getCodDescripcion());
+            List<Denominacion> denomi1 = denominacionRepository.buscarRepetido(formulario.getNombreProducto(), formulario.getCodigoProducto(), formulario.getCodDescripcion());
 
             if (formulario.getCrearActualizar() == 0) {
                 System.out.println("Voy a crear");
@@ -497,16 +499,17 @@ public class GestorController {
                     model.addAttribute("listaCategorias", categoriaRepository.findAll());
                     model.addAttribute("listaTama", tamañoRepository.findAll());
                     model.addAttribute("listaLinea", lineaRepository.findAll());
+                    model.addAttribute("listaArtesanos",artesanoRepository.findAll());
                     return "Gestor/G-RegCompra";
                 } else {
                         if (!categoria1.isEmpty() && !linea1.isEmpty() && !comu.isEmpty() && !tamaños.isEmpty()) {
                             Producto producto = new Producto();
+                            formulario.setModa(modalidad);
                             Denominacion denominacion = new Denominacion();
                             denominacion.setCodigodescripcion(formulario.getCodDescripcion());
                             denominacion.setCodigonombre(formulario.getCodigoProducto());
                             denominacion.setNombre(formulario.getNombreProducto());
                             denominacion.setDescripcion(formulario.getDescripcion());
-                            producto.setAdquisicion(adquisicionRepository.findById(1).get());
                             producto.setCategoria(categoria1.get(0));
                             producto.setComunidad(comu.get(0));
                             producto.setTamanho(tamaños.get(0));
@@ -514,12 +517,53 @@ public class GestorController {
                             denominacionRepository.save(denominacion);
                             List<Denominacion> denomi2 = denominacionRepository.findByNombre(denominacion.getNombre());
                             producto.setDenominacion(denomi2.get(0));
-                            String codigo = denomi2.get(0).getLinea().getCodigo() + categoria1.get(0).getCodigo() + denomi2.get(0).getCodigonombre() +
-                                    denomi2.get(0).getCodigodescripcion() + tamaños.get(0).getCodigo() + comu.get(0).getCodigo();
-                            producto.setCodigoGenerado(codigo);
-                            productoRepository.save(producto);
-                            attr.addFlashAttribute("msg1", "Guardado Exitósamente");
-                            return "redirect:/gestor/productos";
+                            if(modalidad.equalsIgnoreCase("compra")){
+                                String codigo = denomi2.get(0).getLinea().getCodigo() + categoria1.get(0).getCodigo() + denomi2.get(0).getCodigonombre() +
+                                        denomi2.get(0).getCodigodescripcion() + tamaños.get(0).getCodigo() + comu.get(0).getCodigo();
+                                producto.setCodigoGenerado(codigo);
+                                producto.setAdquisicion(adquisicionRepository.findById(1).get());
+                                productoRepository.save(producto);
+                                attr.addFlashAttribute("msg1", "Guardado Exitósamente");
+                                return "redirect:/gestor/productos";
+                            }else if (modalidad.equalsIgnoreCase("consignacion")){
+                                Adquisicion adqui = new Adquisicion();
+                                Optional<Artesano> artesa = artesanoRepository.findById(formulario.getCodigoArtesano());
+                                if (!artesa.isPresent()){
+                                    model.addAttribute("msg", "El artesano no existe");
+                                    model.addAttribute("listaComunidades", comunidadRepository.findAll());
+                                    model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
+                                    model.addAttribute("listaCategorias", categoriaRepository.findAll());
+                                    model.addAttribute("listaTama", tamañoRepository.findAll());
+                                    model.addAttribute("listaLinea", lineaRepository.findAll());
+                                    model.addAttribute("listaArtesanos",artesanoRepository.findAll());
+                                    return "Gestor/G-RegCompra";
+                                }
+                                adqui.setFecha(formulario.getFechainicio());
+                                adqui.setFechafin(formulario.getFechafin());
+                                adqui.setArtesano(artesa.get());
+                                adqui.setModalidad("consignado");
+                                adquisicionRepository.save(adqui);
+                                List<Adquisicion> listaAdqui = adquisicionRepository.findAll();
+                                producto.setAdquisicion(listaAdqui.get(listaAdqui.size()-1));
+                                String año = String.valueOf(formulario.getFechainicio().getYear()).substring(2);
+
+                                String codigo = denomi2.get(0).getLinea().getCodigo() + categoria1.get(0).getCodigo() + denomi2.get(0).getCodigonombre() +
+                                        denomi2.get(0).getCodigodescripcion() + tamaños.get(0).getCodigo() + comu.get(0).getCodigo()+ año + String.valueOf(formulario.getFechainicio().getMonth()).substring(0,3) ;
+                                producto.setCodigoGenerado(codigo);
+                                productoRepository.save(producto);
+                                attr.addFlashAttribute("msg1", "Guardado Exitosamente");
+                                return "redirect:/gestor/productos";
+                            }else {
+                                model.addAttribute("msg", "Valor inválido. Solo se permite consignación o compra");
+                                model.addAttribute("listaComunidades", comunidadRepository.findAll());
+                                model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
+                                model.addAttribute("listaCategorias", categoriaRepository.findAll());
+                                model.addAttribute("listaTama", tamañoRepository.findAll());
+                                model.addAttribute("listaLinea", lineaRepository.findAll());
+                                model.addAttribute("listaArtesanos",artesanoRepository.findAll());
+                                return "Gestor/G-RegCompra";
+
+                            }
                         } else {
                             model.addAttribute("msg", "Valor seleccionado nó válido");
                             model.addAttribute("listaComunidades", comunidadRepository.findAll());
@@ -527,6 +571,7 @@ public class GestorController {
                             model.addAttribute("listaCategorias", categoriaRepository.findAll());
                             model.addAttribute("listaTama", tamañoRepository.findAll());
                             model.addAttribute("listaLinea", lineaRepository.findAll());
+                            model.addAttribute("listaArtesanos",artesanoRepository.findAll());
                             return "Gestor/G-RegCompra";
                         }
                 }
