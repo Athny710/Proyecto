@@ -34,9 +34,9 @@
                                     <hr>
                                     <div class="d-flex">
                                         <div style="width: 28px"></div>
-                                        <a th:if="${session.user.tipo.equals('admin')}" style="border-radius: 10rem; text-align: center; margin-right: 5px; width: 94px" class="btn btn-gray-900" th:href="@{/admin/editarInfo}">Regresar</a>
-                                        <a th:if="${session.user.tipo.equals('gestor')}" style="border-radius: 10rem; text-align: center; margin-right: 5px; width: 94px" class="btn btn-gray-900" th:href="@{/gestor/editarInfo}">Regresar</a>
-                                        <a th:if="${session.user.tipo.equals('sede')}" style="border-radius: 10rem; text-align: center; margin-right: 5px; width: 94px" class="btn btn-gray-900" th:href="@{/sede/editarInfo}">Regresar</a>
+                                        <a th:if="${session.user.tipo=='administrador'}" style="border-radius: 10rem; text-align: center; margin-right: 5px; width: 94px" class="btn btn-gray-900" th:href="@{/admin/editarInfo}">Regresar</a>
+                                        <a th:if="${session.user.tipo=='gestor'}" style="border-radius: 10rem; text-align: center; margin-right: 5px; width: 94px" class="btn btn-gray-900" th:href="@{/gestor/editarInfo}">Regresar</a>
+                                        <a th:if="${session.user.tipo=='sede'}" style="border-radius: 10rem; text-align: center; margin-right: 5px; width: 94px" class="btn btn-gray-900" th:href="@{/sede/editarInfo}">Regresar</a>
                                         <button type="submit" class="btn btn-log" style="border-radius: 10rem; text-align: center">Confirmar</button>
                                     </div>
                                 </form>
