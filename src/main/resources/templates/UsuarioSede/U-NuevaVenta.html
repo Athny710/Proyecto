@@ -28,7 +28,8 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="p-5">
-                                    <form method="post" class="user" th:action="@{'/sede/guardarVenta'}" th:object="${venta}">
+                                    <form method="post" class="user" th:action="@{'/sede/guardarVenta'}"
+                                          th:object="${venta}">
                                         <input th:field="*{idventa}" type="hidden"/>
                                         <div class="form-group">
                                             <Label>Nombre del Cliente</Label>
@@ -40,13 +41,13 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <Label>Tipo de documento de identidad</Label>
-                                            <input type="text" class="form-control form-control-user"
-                                                   th:field="*{tipodocumentoidentidad}"/>
-                                            <div class="text-danger"
-                                                 th:if="${#fields.hasErrors('tipodocumentoidentidad')}"
-                                                 th:errors="*{tipodocumentoidentidad}">Error
-                                            </div>
+                                            <label>Tipo de documento de identidad </label>
+                                            <select style="border-radius: 10rem" class="form-control"
+                                                    th:field="*{tipodocumentoidentidad}"
+                                                    type="item">
+                                                <option th:text="DNI" value="DNI">DNI</option>
+                                                <option th:text="Pasaporte"  value="Pasaporte">Pasaporte</option>
+                                            </select>
                                         </div>
                                         <div class="form-group">
                                             <Label>Número de documento de identidad</Label>
@@ -57,13 +58,18 @@
                                                  th:errors="*{numerodocumentoidentidad}">Error
                                             </div>
                                         </div>
+
                                         <div class="form-group">
-                                            <Label>Tipo de documento de venta</Label>
-                                            <input type="text" class="form-control form-control-user"
-                                                   th:field="*{tipodocumentoventa}"/>
-                                            <div class="text-danger" th:if="${#fields.hasErrors('tipodocumentoventa')}"
-                                                 th:errors="*{tipodocumentoventa}">Error
-                                            </div>
+                                            <label>Tipo de documento de venta </label>
+                                            <select style="border-radius: 10rem" class="form-control"
+                                                    th:field="*{tipodocumentoventa}"
+                                                    type="item">
+                                                <option th:text="Boleta" value="Boleta">Boleta</option>
+                                                <option th:text="Factura"  value="Factura">Factura</option>
+                                                <option th:text="Transaccion"  value="Transaccion">Transaccion</option>
+                                                <option th:text="Otro"  value="Otro">Otro</option>
+
+                                            </select>
                                         </div>
                                         <div class="form-group">
                                             <Label>Número de documento de venta</Label>
@@ -75,10 +81,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="tienda">Tienda:</label>
-                                            <select th:field="*{tienda.idtienda}"
-                                                    class="form-control" id="tienda"
-                                                    placeholder="tienda">
+                                            <label>Tienda:</label>
+                                            <select style="border-radius: 10rem" class="form-control"
+                                                    th:field="*{tienda.idtienda}" type="item">
                                                 <option th:each="tienda : ${listaTiendas}"
                                                         th:value="${tienda.getIdtienda()}" th:text="${
                                                         tienda.getNombre()}"></option>
@@ -89,7 +94,8 @@
                                         </div>
                                         <div class="form-group">
                                             <Label>Lugar de venta</Label>
-                                            <input type="text" class="form-control form-control-user" th:field="*{lugardeventa}"/>
+                                            <input type="text" class="form-control form-control-user"
+                                                   th:field="*{lugardeventa}"/>
                                             <div class="text-danger" th:if="${#fields.hasErrors('lugardeventa')}"
                                                  th:errors="*{lugardeventa}">Error
                                             </div>
@@ -103,10 +109,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inventariosede">Producto Vendido:</label>
-                                            <select th:field="*{inventario.idInventario}"
-                                                    class="form-control" id="inventariosede"
-                                                    placeholder="producto">
+                                            <label>Producto Vendido:</label>
+                                            <select style="border-radius: 10rem" class="form-control"
+                                                    th:field="*{inventario.idInventario}" type="item">
                                                 <option th:each="inventariosede : ${listaInventarioSede}"
                                                         th:value="${inventariosede.inventario.getIdInventario()}"
                                                         th:text="${
@@ -120,14 +125,16 @@
                                         </div>
                                         <div class="form-group">
                                             <Label>Cantidad Vendida</Label>
-                                            <input type="text" class="form-control form-control-user" th:field="*{cantidad}" placeholder="Cantidad vendida"/>
+                                            <input type="text" class="form-control form-control-user"
+                                                   th:field="*{cantidad}" placeholder="Cantidad vendida"/>
                                             <div class="text-danger" th:if="${#fields.hasErrors('cantidad')}"
                                                  th:errors="*{cantidad}">Error
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <Label>Fecha de Venta</Label>
-                                            <input type="date" class="form-control form-control-user" th:field="*{fecha}"/>
+                                            <input type="date" class="form-control form-control-user"
+                                                   th:field="*{fecha}"/>
 
                                             <div class="text-danger" th:if="${#fields.hasErrors('fecha')}"
                                                  th:errors="*{fecha}">Error
