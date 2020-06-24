@@ -16,7 +16,8 @@ public class Artesano implements Serializable {
     @Column(nullable = false)
     @NotBlank(message = "Este Campo no puede ser vacío")
     @Size(max = 45, message = "No puede tener más de 45 caracteres")
-    @Pattern(regexp = "^[a-zA-Z\\\\s]*$",message = "solo se debe ingresar letras")
+   // @Pattern(regexp = "^[a-zA-Z\\\\s]*$",message = "solo se debe ingresar letras")
+    @Pattern(regexp = "^[a-zA-Z\\s]*$",message = "solo se debe ingresar letras")
     private String nombre;
     @Column(nullable = false)
     @NotBlank(message = "Este Campo no puede ser vacío")
@@ -63,16 +64,16 @@ public class Artesano implements Serializable {
         return apellidopaterno;
     }
 
-    public void setApellidoPaterno(String apellidoPaterno) {
-        this.apellidopaterno = apellidoPaterno;
+    public void setApellidopaterno(String apellidopaterno) {
+        this.apellidopaterno = apellidopaterno;
     }
 
     public String getApellidomaterno() {
         return apellidomaterno;
     }
 
-    public void setApellidoMaterno(String apellidoMaterno) {
-        this.apellidomaterno = apellidoMaterno;
+    public void setApellidomaterno(String apellidomaterno) {
+        this.apellidomaterno = apellidomaterno;
     }
 
     public String getCodigo() { return codigo; }

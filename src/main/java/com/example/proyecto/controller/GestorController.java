@@ -240,7 +240,7 @@ public class GestorController {
 
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede(Model model) {
-        List<Usuarios> listausuariosedes = usuarioRepository.findByTipo("sede");
+        List<Usuarios> listausuariosedes = usuarioRepository.findByTipoAndActivo("sede", 1);
         model.addAttribute("listausuariosedes", listausuariosedes);
         return "Gestor/G-ListaUsuarioSede";
     }
@@ -854,7 +854,7 @@ public class GestorController {
            // attr.addFlashAttribute("msg", "Comunidad borrada exitosamente");
             try {
                 comunidadRepository.deleteById(idcomunidad);
-                attr.addFlashAttribute("msg", "Comunidad Eliminada");
+                attr.addFlashAttribute("msgg", "Comunidad Eliminada");
             } catch (Exception e) {
                 attr.addFlashAttribute("msg", "No se pudo eliminar la comunidad");
             }
@@ -941,7 +941,7 @@ public class GestorController {
         Optional<Categoria> optCategoria = categoriaRepository.findById(id);
         if (optCategoria.isPresent()) {
             categoriaRepository.deleteById(id);
-            attr.addFlashAttribute("msg", "Categoría Eliminada");
+            attr.addFlashAttribute("msgg", "Categoría Eliminada");
         }
         return "redirect:/gestor/gestorListaCategoria";
     }
@@ -992,7 +992,7 @@ public class GestorController {
         Optional<Artesano> obtenerArtesano = artesanoRepository.findById(idartesano);
         if (obtenerArtesano.isPresent()) {
             artesanoRepository.deleteById(idartesano);
-            attr.addFlashAttribute("msg", "Empleado borrado exitosamente");
+            attr.addFlashAttribute("msgg", "Artesano Eliminado");
         }
         return "redirect:/gestor/gestorListaArtesano";
     }

@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface UsuarioRepository extends JpaRepository<Usuarios,Integer> {
 
     public Usuarios findByCorreo(String email);
-    public List<Usuarios> findByTipo(String tipo);
+    public List<Usuarios> findByTipoAndActivo(String tipo, int act);
     public Usuarios findByTelefono(String telefono);
     public Usuarios findByNombreAndApellido(String nombre, String apellido);
 
