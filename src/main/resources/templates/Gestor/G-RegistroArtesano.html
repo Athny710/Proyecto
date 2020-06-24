@@ -28,15 +28,16 @@
                                     <form method="post" class="user" th:action="@{/gestor/gestorGuardarArtesano}" th:object="${artesano}">
                                         <input th:field="*{idArtesano}" name="idArtesano" type="hidden" />
                                         <div class="form-group">
+                                            <!-- Agregado  -->
                                             <input th:field="*{nombre}" type="text" class="form-control form-control-user" id="nombre" placeholder="Nombre">
                                             <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <input th:field="*{apellidopaterno}" type="text" class="form-control form-control-user" id="apellidoPaterno" placeholder="Apellido Paterno">
+                                            <input th:field="*{apellidopaterno}" type="text" class="form-control form-control-user" id="apellidopaterno" placeholder="Apellido Paterno">
                                             <div class="text-danger" th:if="${#fields.hasErrors('apellidopaterno')}" th:errors="*{apellidopaterno}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <input th:field="*{apellidomaterno}" type="text" class="form-control form-control-user" id="apellidoMaterno" placeholder="Apellido Materno">
+                                            <input th:field="*{apellidomaterno}" type="text" class="form-control form-control-user" id="apellidomaterno" placeholder="Apellido Materno">
                                             <div class="text-danger" th:if="${#fields.hasErrors('apellidomaterno')}" th:errors="*{apellidomaterno}"></div>
                                         </div>
                                         <div class="form-group">
