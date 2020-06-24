@@ -115,7 +115,7 @@ public class AdminController {
     //--------------------------Gestores
     @GetMapping("listaGestores")
     public String listaGestores(Model model){
-        model.addAttribute("listaGestores", usuarioRepository.findByTipo("gestor"));
+        model.addAttribute("listaGestores", usuarioRepository.findByTipoAndActivo("gestor", 1));
         return "Administrador/A-ListaGestores";
     }
     @GetMapping("nuevoGestor")
@@ -164,8 +164,11 @@ public class AdminController {
     public String borrarGestor(@RequestParam("id") int id,
                                RedirectAttributes attr){
         Optional<Usuarios> opt =usuarioRepository.findById(id);
+        Usuarios u = new Usuarios();
         if (opt.isPresent()){
-            usuarioRepository.deleteById(id);
+            u = opt.get();
+            u.setActivo(0);
+            usuarioRepository.save(u);
             attr.addFlashAttribute("msg", "Gestor eliminado correctamete");
         }
         return "redirect:/admin/listaGestores";
@@ -174,7 +177,7 @@ public class AdminController {
     //--------------------------Usuarios Sede
     @GetMapping("listaUsuarios")
     public String listaUsuarios(Model model){
-        model.addAttribute("listUsuariosSede", usuarioRepository.findByTipo("sede"));
+        model.addAttribute("listUsuariosSede", usuarioRepository.findByTipoAndActivo("sede", 1));
         return "Administrador/A-ListaUsuariosSede";
     }
 

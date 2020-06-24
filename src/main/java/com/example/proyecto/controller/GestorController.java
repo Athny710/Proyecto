@@ -240,7 +240,7 @@ public class GestorController {
 
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede(Model model) {
-        List<Usuarios> listausuariosedes = usuarioRepository.findByTipo("sede");
+        List<Usuarios> listausuariosedes = usuarioRepository.findByTipoAndActivo("sede", 1);
         model.addAttribute("listausuariosedes", listausuariosedes);
         return "Gestor/G-ListaUsuarioSede";
     }
