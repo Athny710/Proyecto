@@ -992,7 +992,7 @@ public class GestorController {
         Optional<Artesano> obtenerArtesano = artesanoRepository.findById(idartesano);
         if (obtenerArtesano.isPresent()) {
             artesanoRepository.deleteById(idartesano);
-            attr.addFlashAttribute("msg", "Empleado borrado exitosamente");
+            attr.addFlashAttribute("msgg", "Artesano Eliminado");
         }
         return "redirect:/gestor/gestorListaArtesano";
     }
