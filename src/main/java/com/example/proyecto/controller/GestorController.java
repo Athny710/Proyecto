@@ -854,7 +854,7 @@ public class GestorController {
            // attr.addFlashAttribute("msg", "Comunidad borrada exitosamente");
             try {
                 comunidadRepository.deleteById(idcomunidad);
-                attr.addFlashAttribute("msg", "Comunidad Eliminada");
+                attr.addFlashAttribute("msgg", "Comunidad Eliminada");
             } catch (Exception e) {
                 attr.addFlashAttribute("msg", "No se pudo eliminar la comunidad");
             }
@@ -941,7 +941,7 @@ public class GestorController {
         Optional<Categoria> optCategoria = categoriaRepository.findById(id);
         if (optCategoria.isPresent()) {
             categoriaRepository.deleteById(id);
-            attr.addFlashAttribute("msg", "Categoría Eliminada");
+            attr.addFlashAttribute("msgg", "Categoría Eliminada");
         }
         return "redirect:/gestor/gestorListaCategoria";
     }
