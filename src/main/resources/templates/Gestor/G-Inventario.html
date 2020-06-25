@@ -36,8 +36,8 @@
                                         <tr class="bg-gray-900 text-white" align="center">
                                             <th>Linea</th>
                                             <th>Categoría</th>
-                                            <th>Nombre</th>
-                                            <th>Comunidad</th>
+                                            <th>Codigo del Producto</th>
+                                            <th>Color</th>
                                             <th>Tipo</th>
                                             <th>Stock total</th>
                                             <th>Detalles</th>
@@ -48,8 +48,8 @@
                                         <tr class="bg-white" align="center" th:each="productos, info: ${inventario}">
                                             <td th:text="${productos.producto.denominacion.linea.nombre}"></td>
                                             <td th:text="${productos.producto.categoria.nombre}"></td>
-                                            <td th:text="${productos.producto.denominacion.nombre}"></td>
-                                            <td th:text="${productos.producto.comunidad.nombre }"></td>
+                                            <td th:text="${productos.producto.codigoGenerado}"></td>
+                                            <td th:text="${productos.color }"></td>
                                             <td th:text="${productos.producto.adquisicion.modalidad}"></td>
                                             <td th:text="${productos.stock}"></td>
                                             <td align="center">
