@@ -940,8 +940,14 @@ public class GestorController {
 
         Optional<Categoria> optCategoria = categoriaRepository.findById(id);
         if (optCategoria.isPresent()) {
-            categoriaRepository.deleteById(id);
-            attr.addFlashAttribute("msg", "Categoría Eliminada");
+           // categoriaRepository.deleteById(id);
+          //  attr.addFlashAttribute("msg", "Categoría Eliminada");
+            try {
+                categoriaRepository.deleteById(id);
+                attr.addFlashAttribute("msg", "Categoría Eliminada");
+            } catch (Exception e) {
+                attr.addFlashAttribute("msg", "Categoría en inventario, no puede ser borrada");
+            }
         }
         return "redirect:/gestor/gestorListaCategoria";
     }
