@@ -147,7 +147,7 @@ public class GestorController {
 
     @GetMapping("gestorReporteVentas")
     public String reporteVentas1(Model model, RedirectAttributes attr) {
-        List<Venta> listaClientes = ventaRepository.findAll();
+        List<ClientesQueCompraron> listaClientes = ventaRepository.obtenerClientes();
         List<ListaSedesQueVendieron> listasedes = ventaRepository.obtenerSedes();
         List<FechaVenta> listaAnhos = ventaRepository.obtenerAñosDeVenta();
         List<FechaMesVenta> listaMeses = ventaRepository.obtenerMesesDeVenta();
@@ -159,7 +159,7 @@ public class GestorController {
             return "redirect:/gestor/gestorReporteVentasError";
         }
 
-        model.addAttribute("listaClientes",listaClientes);
+        model.addAttribute("listaClients",listaClientes);
         model.addAttribute("listasedes",listasedes);
         model.addAttribute("listaAnhos",listaAnhos);
         model.addAttribute("listaMeses", listaMeses);
@@ -170,7 +170,7 @@ public class GestorController {
 
     @GetMapping("gestorReporteVentasError")
     public String reporteVentas2(Model model) {
-        List<Venta> listaClientes = ventaRepository.findAll();
+        List<ClientesQueCompraron> listaClientes = ventaRepository.obtenerClientes();
         List<ListaSedesQueVendieron> listasedes = ventaRepository.obtenerSedes();
         List<FechaVenta> listaAnhos = ventaRepository.obtenerAñosDeVenta();
         List<FechaMesVenta> listaMeses = ventaRepository.obtenerMesesDeVenta();
