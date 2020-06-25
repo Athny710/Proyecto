@@ -29,21 +29,25 @@
                                     <div class="p-5">
                                         <form class="user" method="post" th:action="@{'/admin/guardarGestor'}"  th:object="${usu}">
                                             <div class="form-group">
-                                                <input type="text" class="form-control form-control-user" placeholder="Nombre" th:field="*{nombre}">
+                                                <label>Nombre</label>
+                                                <input type="text" class="form-control form-control-user" th:field="*{nombre}">
                                                 <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</div>
                                                 <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${msgNA!=null}" th:text="${msgNA}"></div>
                                             </div>
                                             <div class="form-group">
-                                                <input type="text" class="form-control form-control-user" placeholder="Apellidos" th:field="*{apellido}">
+                                                <label>Apellidos</label>
+                                                <input type="text" class="form-control form-control-user" th:field="*{apellido}">
                                                 <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}">Error</div>
                                             </div>
                                             <div class="form-group">
-                                                <input type="email" class="form-control form-control-user" placeholder="Correo" th:field="*{correo}">
+                                                <label>Correo</label>
+                                                <input type="email" class="form-control form-control-user" th:field="*{correo}">
                                                 <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}">Error</div>
                                                 <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${msgC!=null}" th:text="${msgC}"></div>
                                             </div>
                                             <div class="form-group">
-                                                <input type="tel" class="form-control form-control-user" placeholder="Teléfono" th:field="*{telefono}">
+                                                <label>Telefono</label>
+                                                <input type="tel" class="form-control form-control-user" th:field="*{telefono}">
                                                 <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">Error</div>
                                                 <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${msgT!=null}" th:text="${msgT}"></div>
                                             </div>
