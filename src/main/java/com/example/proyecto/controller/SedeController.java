@@ -1,6 +1,7 @@
 package com.example.proyecto.controller;
 
 
+import com.example.proyecto.dto.CamposReporteSede;
 import com.example.proyecto.entity.*;
 
 import com.example.proyecto.entity.Artesano;
@@ -305,8 +306,9 @@ public class SedeController {
 
     //PDF !!
     @GetMapping("createpdf")
-    public void crearPDFdeLista(HttpServletRequest request, HttpServletResponse response) {
-        List<Venta> venta = ventasService.getVentas();
+    public void crearPDFdeLista(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+        Usuarios u = (Usuarios) session.getAttribute("user");
+        List<CamposReporteSede> venta = ventasService.getVentas(u.getSede().getIdsede());
         boolean isFlag = ventasService.createPDF(venta, context, request, response);
         if (isFlag) {
             String fullPath = request.getServletContext().getRealPath("/resources/reports/" + "ventas" + ".pdf");
@@ -316,8 +318,9 @@ public class SedeController {
 
     //EXCEL !!
     @GetMapping("createexcel")
-    public void crearExcel(HttpServletRequest request, HttpServletResponse response) {
-        List<Venta> venta = ventasService.getVentas();
+    public void crearExcel(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+        Usuarios u = (Usuarios) session.getAttribute("user");
+        List<CamposReporteSede> venta = ventasService.getVentas(u.getSede().getIdsede());
         boolean isFlag = ventasService.createExcel(venta, context, request, response);
         if (isFlag) {
             String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas" + ".xls");
