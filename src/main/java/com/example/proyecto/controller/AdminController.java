@@ -131,6 +131,7 @@ public class AdminController {
         if(bindingResult.hasErrors()){
             return "Administrador/A-NuevoGestor";
         }else{
+            usuarios.setCorreo(usuarios.getCorreo().toLowerCase());
             if (usuarioRepository.findByCorreo(usuarios.getCorreo()) == null) {
                 if(usuarioRepository.findByTelefono(usuarios.getTelefono())==null){
                     if(usuarioRepository.findByNombreAndApellido(usuarios.getNombre(), usuarios.getApellido())==null){

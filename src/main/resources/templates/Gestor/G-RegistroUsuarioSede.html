@@ -30,6 +30,7 @@
                                           th:object="${usuarios}">
                                         <input th:field="*{idusuarios}" name="idUsuarios" type="hidden"/>
                                         <div class="form-group">
+                                            <label>Nombre</label>
                                             <input th:field="*{nombre}" type="text"
                                                    class="form-control form-control-user" id="nombre"
                                                    placeholder="Nombre">
@@ -37,6 +38,7 @@
                                                  th:errors="*{nombre}"></div>
                                         </div>
                                         <div class="form-group">
+                                            <label>Apellido</label>
                                             <input th:field="*{apellido}" type="text"
                                                    class="form-control form-control-user" id="apellido"
                                                    placeholder="Apellidos">
@@ -44,20 +46,23 @@
                                                  th:errors="*{apellido}"></div>
                                         </div>
                                         <div class="form-group">
+                                            <label>Correo</label>
                                             <input th:field="*{correo}" type="email"
                                                    class="form-control form-control-user" id="correo"
-                                                   placeholder="Correo">
+                                                   placeholder="E.jem_plo@mail.net">
                                             <div class="text-danger" th:if="${#fields.hasErrors('correo')}"
                                                  th:errors="*{correo}"></div>
                                         </div>
                                         <div class="form-group">
+                                            <label>Telefono</label>
                                             <input th:field="*{telefono}" type="text"
                                                    class="form-control form-control-user" id="telefono"
-                                                   placeholder="Telefono">
+                                                   placeholder="011235813">
                                             <div class="text-danger" th:if="${#fields.hasErrors('telefono')}"
                                                  th:errors="*{telefono}"></div>
                                         </div>
                                         <div class="form-group">
+                                            <label>Sede</label>
                                             <select th:field="*{sede.idsede}" class="form-control" id="sede"
                                                     style="border-radius:10rem">
                                                 <option th:each="sede : ${listasedes}" th:value="${sede.idsede}"

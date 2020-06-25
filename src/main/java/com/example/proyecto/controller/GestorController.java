@@ -264,9 +264,10 @@ public class GestorController {
                                      Model model,
                                      RedirectAttributes attr, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
-            if(!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[a-z0-9\\._-]+\\.[A-Za-z0-9]+$")){
+            if(!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[A-Za-z0-9\\._-]+\\.[A-Za-z0-9]+$")){
                 model.addAttribute("msgError", "El correo ingresado no es un correo");
             }
+            usuarios.setCorreo(usuarios.getCorreo().toLowerCase());
             if(usuarios.getIdusuarios() != 0){
                 Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
                 if (usuariosID.isPresent()) {// todo mostrar errores
@@ -284,7 +285,8 @@ public class GestorController {
             }
 
         } else {
-            if(!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[a-z0-9\\._-]+\\.[A-Za-z0-9]+$")){// validacion tipo correo
+            if(!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[A-Za-z0-9\\._-]+\\.[A-Za-z0-9]+$")){// validacion tipo correo
+                usuarios.setCorreo(usuarios.getCorreo().toLowerCase());
                 if(usuarios.getIdusuarios() != 0){
                     Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
                     if (usuariosID.isPresent()) {// todo mostrar errores
@@ -297,7 +299,14 @@ public class GestorController {
                         return "/Gestor/G-RegistroUsuarioSede";
                     }
                 }else{
-                    return "redirect:/gestor/gestorRegistroUsuarioSede";
+
+                        System.out.println("ENTRO EN ESTO NO ES U CORREO");
+                        model.addAttribute("msgError", "Este correo no es valido");
+
+                    model.addAttribute("listasedes", sedeRepository.findAll());
+                    model.addAttribute(usuarios);
+
+                    return "Gestor/G-RegistroUsuarioSede";
                 }
             }
             if (usuarios.getIdusuarios() == 0 && usuarioRepository.findByCorreo(usuarios.getCorreo()) == null) {
@@ -308,12 +317,20 @@ public class GestorController {
                 BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
                 usuarios.setPassword(bCryptPasswordEncoder.encode(usuarios.getPassword()));
                 System.out.println(usuarios.getPassword());
+                if(!sedeRepository.findById(usuarios.getSede().getIdsede()).isPresent()){
+                    System.out.println("hackerman cambio el id sede");
+                    model.addAttribute("msgError", "Esta sede no existe");
+                    model.addAttribute("listasedes", sedeRepository.findAll());
+                    model.addAttribute(usuarios);
+
+                    return "Gestor/G-RegistroUsuarioSede";
+                }
                 usuarioRepository.save(usuarios);
                 //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
                 Email email = new Email();
                 email.emailEnviarPrimeraContraseña(usuarios.getCorreo(), passwordSinEncriptar, usuarios.getCorreo());
 
-                attr.addFlashAttribute("msg", "Usuario sede creado exitosamente");
+                attr.addFlashAttribute("msgSucc", "Usuario sede creado exitosamente");
                 return "redirect:/gestor/gestorListaUsuarioSede";
             } else if (usuarios.getIdusuarios() != 0) {
                 usuarios.setTipo("sede");
@@ -323,10 +340,11 @@ public class GestorController {
 
 
                 usuarioRepository.save(usuarios);
-                attr.addFlashAttribute("msg", "Usuario sede actualizado exitosamente");
+                attr.addFlashAttribute("msgSucc", "Usuario sede actualizado exitosamente");
                 return "redirect:/gestor/gestorListaUsuarioSede";
             } else { //ya existe el correo, mostrar errores
                 if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null) {
+                    System.out.println("ENTRO EN ESTO NO ES U CORREO");
                     model.addAttribute("msgError", "Este no es un correo");
                 }
                 model.addAttribute("listasedes", sedeRepository.findAll());
@@ -344,9 +362,9 @@ public class GestorController {
         Optional<Usuarios> optionalUsuarios = usuarioRepository.findById(idusuarios);
         if (optionalUsuarios.isPresent()) {
             usuarioRepository.deleteById(idusuarios);
-            attr.addFlashAttribute("msg", "Usuario Sede Eliminado");
+            attr.addFlashAttribute("msgSucc", "Usuario Sede Eliminado");
         } else {
-            attr.addFlashAttribute("msg", "Este usuario no existe");
+            attr.addFlashAttribute("msgFail", "Este usuario no existe");
         }
         return "redirect:/gestor/gestorListaUsuarioSede";
     }
