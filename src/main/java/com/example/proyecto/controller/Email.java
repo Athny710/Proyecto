@@ -25,6 +25,7 @@ public class Email {
         Properties properties = new Properties();
         properties.put("mail.smtp.auth","true");
         properties.put("mail.smtp.starttls.enable","true");
+        properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         properties.put("mail.smtp.host",host);
         properties.put("mail.smtp.port","587");
 
@@ -66,6 +67,7 @@ public class Email {
         Properties properties1 = new Properties();
         properties1.put("mail.smtp.auth","true");
         properties1.put("mail.smtp.starttls.enable","true");
+        properties1.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         properties1.put("mail.smtp.host",host);
         properties1.put("mail.smtp.port","587");
 
@@ -107,6 +109,7 @@ public class Email {
         Properties properties2 = new Properties();
         properties2.put("mail.smtp.auth","true");
         properties2.put("mail.smtp.starttls.enable","true");
+        properties2.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         properties2.put("mail.smtp.host",host);
         properties2.put("mail.smtp.port","587");
 
