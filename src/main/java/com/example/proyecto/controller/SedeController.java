@@ -75,10 +75,16 @@ public class SedeController {
     @GetMapping(value = {"", "principal"})
     public String principal( Model model, HttpSession session) {
         Usuarios usuario = (Usuarios) session.getAttribute("user");
+        List<Inventariosede> listafinal = new ArrayList<>();
         List<Inventariosede> lista = inventariosedeRepository.findBySede(usuario.getSede());
+        for (Inventariosede inventariosede : lista){
+            if(inventariosede.getStock() != 0){
+            listafinal.add(inventariosede);
+            }
+        }
         Integer cantidad = 0;
         model.addAttribute("cantidad", cantidad);
-        model.addAttribute("listaProductos", lista);
+        model.addAttribute("listaProductos", listafinal);
         return "UsuarioSede/U-Principal";
     }
 
