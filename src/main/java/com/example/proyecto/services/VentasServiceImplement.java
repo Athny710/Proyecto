@@ -1,6 +1,7 @@
 package com.example.proyecto.services;
 
 
+import com.example.proyecto.dto.CamposReporteSede;
 import com.example.proyecto.dto.ReporteConCamposOriginales;
 import com.example.proyecto.dto.VentaPorCodigo;
 import com.example.proyecto.entity.Venta;
@@ -30,8 +31,8 @@ public class VentasServiceImplement implements VentasService {
     VentaRepository ventaRepository;
 
     @Override
-    public List<Venta> getVentas() {
-        return (List<Venta>) ventaRepository.findAll();
+    public List<CamposReporteSede> getVentas(int id) {
+        return (List<CamposReporteSede>) ventaRepository.obtenerDatosParaReporteSede(id);
     }
 
     @Override
@@ -116,7 +117,7 @@ public class VentasServiceImplement implements VentasService {
     }
 
     @Override
-    public boolean createPDF(List<Venta> venta, ServletContext context, HttpServletRequest request, HttpServletResponse response) {
+    public boolean createPDF(List<CamposReporteSede> venta, ServletContext context, HttpServletRequest request, HttpServletResponse response) {
         Document document = new Document(PageSize.A4,15,15,45,30);
         try {
             String filepath = context.getRealPath("/resources/reports");
@@ -136,7 +137,7 @@ public class VentasServiceImplement implements VentasService {
             paragraph.setSpacingAfter(10);
             document.add(paragraph);
 
-            PdfPTable table = new PdfPTable(4);
+            PdfPTable table = new PdfPTable(6);
             table.setWidthPercentage(100);
             table.setSpacingBefore(10f);
             table.setSpacingAfter(10);
@@ -144,9 +145,19 @@ public class VentasServiceImplement implements VentasService {
             Font tableheader = FontFactory.getFont("Arial",10,BaseColor.BLACK);
             Font tablebody = FontFactory.getFont("Arial",9,BaseColor.BLACK);
 
-            float[] columnWidths = {2f,2f,2f,2f};
+            float[] columnWidths = {2f,2f,2f,2f,2f,2f};
             table.setWidths(columnWidths);
-            PdfPCell firstname = new PdfPCell(new Paragraph("Nombre del cliente",tableheader));
+
+            PdfPCell nombretienda = new PdfPCell(new Paragraph("Tienda",tableheader));
+            nombretienda.setBorderColor(BaseColor.BLACK);
+            nombretienda.setPaddingLeft(10);
+            nombretienda.setHorizontalAlignment(Element.ALIGN_CENTER);
+            nombretienda.setVerticalAlignment(Element.ALIGN_CENTER);
+            nombretienda.setBackgroundColor(BaseColor.GRAY);
+            nombretienda.setExtraParagraphSpace(5f);
+            table.addCell(nombretienda);
+
+            PdfPCell firstname = new PdfPCell(new Paragraph("Cliente",tableheader));
             firstname.setBorderColor(BaseColor.BLACK);
             firstname.setPaddingLeft(10);
             firstname.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -155,7 +166,7 @@ public class VentasServiceImplement implements VentasService {
             firstname.setExtraParagraphSpace(5f);
             table.addCell(firstname);
 
-            PdfPCell dni = new PdfPCell(new Paragraph("Número de DNI",tableheader));
+            PdfPCell dni = new PdfPCell(new Paragraph("Documento de venta",tableheader));
             dni.setBorderColor(BaseColor.BLACK);
             dni.setPaddingLeft(10);
             dni.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -164,7 +175,7 @@ public class VentasServiceImplement implements VentasService {
             dni.setExtraParagraphSpace(5f);
             table.addCell(dni);
 
-            PdfPCell precio = new PdfPCell(new Paragraph("Precio de venta",tableheader));
+            PdfPCell precio = new PdfPCell(new Paragraph("Precio de unitario de venta",tableheader));
             precio.setBorderColor(BaseColor.BLACK);
             precio.setPaddingLeft(10);
             precio.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -182,8 +193,27 @@ public class VentasServiceImplement implements VentasService {
             cantidad.setExtraParagraphSpace(5f);
             table.addCell(cantidad);
 
-            for (Venta venta1 : venta){
-                PdfPCell firstnamevalue = new PdfPCell(new Paragraph(venta1.getNombrecliente(),tablebody));
+            PdfPCell prectot = new PdfPCell(new Paragraph("Precio total por producto",tableheader));
+            prectot.setBorderColor(BaseColor.BLACK);
+            prectot.setPaddingLeft(10);
+            prectot.setHorizontalAlignment(Element.ALIGN_CENTER);
+            prectot.setVerticalAlignment(Element.ALIGN_CENTER);
+            prectot.setBackgroundColor(BaseColor.GRAY);
+            prectot.setExtraParagraphSpace(5f);
+            table.addCell(prectot);
+
+            for (CamposReporteSede venta1 : venta){
+
+                PdfPCell tiendanamevalue = new PdfPCell(new Paragraph(venta1.getNombretienda(),tablebody));
+                tiendanamevalue.setBorderColor(BaseColor.BLACK);
+                tiendanamevalue.setPaddingLeft(10);
+                tiendanamevalue.setHorizontalAlignment(Element.ALIGN_CENTER);
+                tiendanamevalue.setVerticalAlignment(Element.ALIGN_CENTER);
+                tiendanamevalue.setBackgroundColor(BaseColor.WHITE);
+                tiendanamevalue.setExtraParagraphSpace(5f);
+                table.addCell(tiendanamevalue);
+
+                PdfPCell firstnamevalue = new PdfPCell(new Paragraph(venta1.getCliente(),tablebody));
                 firstnamevalue.setBorderColor(BaseColor.BLACK);
                 firstnamevalue.setPaddingLeft(10);
                 firstnamevalue.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -192,16 +222,16 @@ public class VentasServiceImplement implements VentasService {
                 firstnamevalue.setExtraParagraphSpace(5f);
                 table.addCell(firstnamevalue);
 
-                PdfPCell dnivalue = new PdfPCell(new Paragraph(venta1.getNumerodocumentoidentidad(),tablebody));
-                dnivalue.setBorderColor(BaseColor.BLACK);
-                dnivalue.setPaddingLeft(10);
-                dnivalue.setHorizontalAlignment(Element.ALIGN_CENTER);
-                dnivalue.setVerticalAlignment(Element.ALIGN_CENTER);
-                dnivalue.setBackgroundColor(BaseColor.WHITE);
-                dnivalue.setExtraParagraphSpace(5f);
-                table.addCell(dnivalue);
+                PdfPCell docvalue = new PdfPCell(new Paragraph(venta1.getDoc(),tablebody));
+                docvalue.setBorderColor(BaseColor.BLACK);
+                docvalue.setPaddingLeft(10);
+                docvalue.setHorizontalAlignment(Element.ALIGN_CENTER);
+                docvalue.setVerticalAlignment(Element.ALIGN_CENTER);
+                docvalue.setBackgroundColor(BaseColor.WHITE);
+                docvalue.setExtraParagraphSpace(5f);
+                table.addCell(docvalue);
 
-                String prec = venta1.getPreciounitarioventa() + "";
+                String prec = venta1.getPreciounit() + "";
                 PdfPCell preciovalue = new PdfPCell(new Paragraph(prec,tablebody));
                 preciovalue.setBorderColor(BaseColor.BLACK);
                 preciovalue.setPaddingLeft(10);
@@ -220,6 +250,16 @@ public class VentasServiceImplement implements VentasService {
                 cantidadvalue.setBackgroundColor(BaseColor.WHITE);
                 cantidadvalue.setExtraParagraphSpace(5f);
                 table.addCell(cantidadvalue);
+
+                String preciotot = venta1.getPreciotot() + "";
+                PdfPCell preciototvalue = new PdfPCell(new Paragraph(preciotot,tablebody));
+                preciototvalue.setBorderColor(BaseColor.BLACK);
+                preciototvalue.setPaddingLeft(10);
+                preciototvalue.setHorizontalAlignment(Element.ALIGN_CENTER);
+                preciototvalue.setVerticalAlignment(Element.ALIGN_CENTER);
+                preciototvalue.setBackgroundColor(BaseColor.WHITE);
+                preciototvalue.setExtraParagraphSpace(5f);
+                table.addCell(preciototvalue);
             }
             document.add(table);
             document.close();
@@ -231,7 +271,7 @@ public class VentasServiceImplement implements VentasService {
     }
 
     @Override
-    public boolean createExcel(List<Venta> venta, ServletContext context, HttpServletRequest request, HttpServletResponse response) {
+    public boolean createExcel(List<CamposReporteSede> venta, ServletContext context, HttpServletRequest request, HttpServletResponse response) {
 
         String filepath = context.getRealPath("/resources/reports");
         File file = new File(filepath);
@@ -250,46 +290,82 @@ public class VentasServiceImplement implements VentasService {
 
             HSSFRow headerRow = workSheet.createRow(0);
 
-            HSSFCell firstname = headerRow.createCell(0);
+            HSSFCell nombretienda = headerRow.createCell(0);
+            nombretienda.setCellValue("Nombre de la tienda");
+            nombretienda.setCellStyle(headerCellStyle);
+
+            HSSFCell firstname = headerRow.createCell(1);
             firstname.setCellValue("Nombre del cliente");
             firstname.setCellStyle(headerCellStyle);
 
-            HSSFCell dni = headerRow.createCell(1);
-            dni.setCellValue("Número de DNI");
-            dni.setCellStyle(headerCellStyle);
+            HSSFCell docventa = headerRow.createCell(2);
+            docventa.setCellValue("Documento de venta");
+            docventa.setCellStyle(headerCellStyle);
 
-            HSSFCell precio = headerRow.createCell(2);
+            HSSFCell precio = headerRow.createCell(3);
             precio.setCellValue("Precio unitario");
             precio.setCellStyle(headerCellStyle);
 
-            HSSFCell cantid = headerRow.createCell(3);
+            HSSFCell cantid = headerRow.createCell(4);
             cantid.setCellValue("Cantidad");
             cantid.setCellStyle(headerCellStyle);
 
+            HSSFCell pretot = headerRow.createCell(5);
+            pretot.setCellValue("Precio total");
+            pretot.setCellStyle(headerCellStyle);
+
             int i = 1;
-            for (Venta venta1 : venta){
+            float totalTotal = 0;
+            for (CamposReporteSede ventaIter : venta){
                 HSSFRow bodyROW = workSheet.createRow(i);
                 HSSFCellStyle bodyCellStyle = workbook.createCellStyle();
                 bodyCellStyle.setFillForegroundColor(HSSFColor.WHITE.index);
 
-                HSSFCell firstnamevalue = bodyROW.createCell(0);
-                firstnamevalue.setCellValue(venta1.getNombrecliente());
+                HSSFCell nombretiendavalue = bodyROW.createCell(0);
+                nombretiendavalue.setCellValue(ventaIter.getNombretienda());
+                nombretiendavalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell firstnamevalue = bodyROW.createCell(1);
+                firstnamevalue.setCellValue(ventaIter.getCliente());
                 firstnamevalue.setCellStyle(bodyCellStyle);
 
-                HSSFCell dnivalue = bodyROW.createCell(1);
-                dnivalue.setCellValue(venta1.getNumerodocumentoidentidad());
-                dnivalue.setCellStyle(bodyCellStyle);
+                HSSFCell docventavalue = bodyROW.createCell(2);
+                docventavalue.setCellValue(ventaIter.getDoc());
+                docventavalue.setCellStyle(bodyCellStyle);
 
-                HSSFCell precvalue = bodyROW.createCell(2);
-                precvalue.setCellValue(venta1.getPreciounitarioventa());
+                HSSFCell precvalue = bodyROW.createCell(3);
+                precvalue.setCellValue(ventaIter.getPreciounit());
                 precvalue.setCellStyle(bodyCellStyle);
 
-                HSSFCell cantvalue = bodyROW.createCell(3);
-                cantvalue.setCellValue(venta1.getCantidad());
+                HSSFCell cantvalue = bodyROW.createCell(4);
+                cantvalue.setCellValue(ventaIter.getCantidad());
                 cantvalue.setCellStyle(bodyCellStyle);
 
+                HSSFCell pretotvalue = bodyROW.createCell(5);
+                pretotvalue.setCellValue(ventaIter.getPreciotot());
+                pretotvalue.setCellStyle(bodyCellStyle);
+
+                totalTotal += ventaIter.getPreciotot();
                 i++;
+
             }
+
+            HSSFRow bodyROW = workSheet.createRow(i);
+            HSSFCellStyle bodyCellStyle = workbook.createCellStyle();
+            bodyCellStyle.setFillForegroundColor(HSSFColor.WHITE.index);
+            //bodyCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+            bodyCellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+            bodyCellStyle.setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
+            bodyCellStyle.setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
+            bodyCellStyle.setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
+
+            HSSFCell totalxtotal = bodyROW.createCell(4);
+            totalxtotal.setCellValue("Total");
+            totalxtotal.setCellStyle(bodyCellStyle);
+
+            HSSFCell totalxtotalvalue = bodyROW.createCell(5);
+            totalxtotalvalue.setCellValue(totalTotal);
+            totalxtotalvalue.setCellStyle(bodyCellStyle);
             workbook.write(outputStream);
             outputStream.flush();
             outputStream.close();

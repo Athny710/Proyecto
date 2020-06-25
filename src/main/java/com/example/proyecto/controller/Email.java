@@ -13,9 +13,11 @@ public class Email {
 
     private final String host= "smtp.gmail.com";
     private String user="sorware.grupo1@gmail.com";
-    private String pass= "grupo1.sorware";
+    private String pass= "ngzesxyehvjymfia";
     private String to;
     private InternetAddress[] address;
+    //Contra aplicacion otros: geoartqzovotonsk
+    //Contra aplicacion correo: ngzesxyehvjymfia
 
 
     void emailRecuperarCuenta(String emailTo, String hasheado, String ipAdd, int localPort, String context) throws MessagingException {

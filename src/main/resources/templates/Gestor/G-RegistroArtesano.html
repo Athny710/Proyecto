@@ -14,13 +14,14 @@
             <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
             <!-- Page Heading -->
             <div class="container-fluid">
-                <div class="card shadowA mb-4">
-                    <div class="card-header2 py-3">
-                        <div class="d-flex justify-content-between centrado">
-                            <h5 class="m-0 font-weight-bold text-gray-900" type="text">Registrar nuevo Artesano</h5>
-                            <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                      <!--  <div class="d-flex justify-content-between centrado">  -->
+                            <h4 class="m-0 font-weight-bold text-redM" type="text">Registrar nuevo Artesano</h4>
+                       <!--   <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>  -->
                         </div>
-                    </div>
+                    <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
+                  <!--  </div>  -->
                     <div class="card-body bg-gray-100">
                         <div class="row">
                             <div class="col-lg-6">
@@ -28,24 +29,30 @@
                                     <form method="post" class="user" th:action="@{/gestor/gestorGuardarArtesano}" th:object="${artesano}">
                                         <input th:field="*{idArtesano}" name="idArtesano" type="hidden" />
                                         <div class="form-group">
-                                            <input th:field="*{nombre}" type="text" class="form-control form-control-user" id="nombre" placeholder="Nombre">
+                                            <!-- Agregado  -->
+                                            <label for="nombre">Nombre:</label>
+                                            <input th:field="*{nombre}" type="text" class="form-control form-control" id="nombre"style="border-radius: 10rem"  >
                                             <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <input th:field="*{apellidoPaterno}" type="text" class="form-control form-control-user" id="apellidoPaterno" placeholder="Apellido Paterno">
-                                            <div class="text-danger" th:if="${#fields.hasErrors('apellidoPaterno')}" th:errors="*{apellidoPaterno}"></div>
+                                            <label for="apellidopaterno">Apellido Paterno:</label>
+                                            <input th:field="*{apellidopaterno}" type="text" class="form-control form-control" id="apellidopaterno" style="border-radius: 10rem" >
+                                            <div class="text-danger" th:if="${#fields.hasErrors('apellidopaterno')}" th:errors="*{apellidopaterno}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <input th:field="*{apellidoMaterno}" type="text" class="form-control form-control-user" id="apellidoMaterno" placeholder="Apellido Materno">
-                                            <div class="text-danger" th:if="${#fields.hasErrors('apellidoMaterno')}" th:errors="*{apellidoMaterno}"></div>
+                                            <label for="apellidomaterno">Apellido Materno:</label>
+                                            <input th:field="*{apellidomaterno}" type="text" class="form-control form-control" id="apellidomaterno" style="border-radius: 10rem" >
+                                            <div class="text-danger" th:if="${#fields.hasErrors('apellidomaterno')}" th:errors="*{apellidomaterno}"></div>
                                         </div>
                                         <div class="form-group">
+                                            <label >Comunidad:</label>
                                             <select th:field="*{comunidad.idComunidad}" class="form-control" id="comunidad" style="border-radius:10rem">
                                                 <option th:each="comunidad : ${listaComunidad}" th:value="${comunidad.idComunidad}" th:text="${comunidad.nombre}"></option>
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <input th:field="*{codigo}" type="text" class="form-control form-control-user" id="codigo" placeholder="Codigo de artesano (Iniciales)">
+                                            <label for="codigo">Codigo de artesano (Iniciales):</label>
+                                            <input th:field="*{codigo}" type="text" class="form-control form-control" id="codigo" style="border-radius: 10rem">
                                             <div class="text-danger" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></div>
                                         </div>
                                         <button type="submit" class="btn btn-searchTop btn-user btn-block">

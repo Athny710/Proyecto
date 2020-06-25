@@ -15,6 +15,8 @@
                 <!-- Page Heading -->
                 <div class="container-fluid">
                     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                    <!-- AGREGADO
+                    <div th:if="${msgg != null}" th:text="${msgg}" class="alert alert-danger" role="alert" align="center"></div> -->
                     <div class="card shadowA mb-4">
                         <div class="card-header2" style="padding-top: 0.6rem; padding-bottom: 0.6rem">
                             <div class="d-flex justify-content-between centrado">
@@ -41,11 +43,21 @@
                                     <tbody>
                                     <tr class="bg-white" align="center" th:each="artesano, info: ${listaArtesanos}">
                                         <td th:text="${artesano.nombre}"></td>
-                                        <td th:text="${artesano.apellidoPaterno}"></td>
-                                        <td th:text="${artesano.apellidoMaterno}"></td>
+                                        <td th:text="${artesano.apellidopaterno}"></td>
+                                        <td th:text="${artesano.apellidomaterno}"></td>
                                         <td th:text="${artesano.comunidad.nombre}"></td>
                                         <td th:text="${artesano.codigo}"></td>
                                         <td align="center">
+                                            <a style="margin-left: 10px"
+                                               th:href="@{'/gestor/gestorEditArtesano' + '?idartesano=' + ${artesano.idArtesano}}"
+                                               class="far fa-edit text-orangeM">
+                                            </a>
+                                            <a style="margin-left: 10px"
+                                               th:href="@{'/gestor/gestorBorrarArtesano' + '?idartesano=' + ${artesano.idArtesano}}"
+                                               class="far fa-trash-alt text-redM">
+                                            </a>
+                                        </td>
+                                    <!--    <td align="center">
                                             <a th:href="@{'/gestor/gestorEditArtesano' + '?idartesano=' + ${artesano.idArtesano}}" class="far fa-edit text-orangeM"></a>
                                             <a style="margin-left: 10px" class="far fa-trash-alt text-redM" th:href="@{'/gestor/gestorBorrarArtesano' + '?idartesano=' + ${artesano.idArtesano}}"
                                                data-toggle="modal" data-target="#modalborrar" th:attrappend="data-target=${artesano.idArtesano}"></a>
@@ -67,7 +79,7 @@
                                                 </div>
                                             </div>
 
-                                        </td>
+                                        </td>  -->
                                     </tr>
                                     </tbody>
                                 </table>
