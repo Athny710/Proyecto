@@ -395,8 +395,8 @@ public class GestorController {
             Sede sedeTemp = sedeRepository.findByNombre(sede.getNombre());
             if (sedeTemp != null) {
                 model.addAttribute(sede);
-                model.addAttribute("msgError", "Los datos ingresados ya existen, por favor modificarlo");
-                return "Gestor/G-RegistroSede";
+                model.addAttribute("msgError", "Los datos ingresados ya existen");
+                return "Gestor/G-EditSede";
             }
             //
             if (sede.getIdsede() == null) {
@@ -428,7 +428,7 @@ public class GestorController {
                 sedeRepository.deleteById(idsede);
                 attr.addFlashAttribute("msg", "Sede Eliminada");
             } catch (Exception e) {
-                attr.addFlashAttribute("msg", "No se pudo eliminar la sede");
+                attr.addFlashAttribute("msg", "Sede en inventario, no puede ser borrada");
             }
         }
         return "redirect:/gestor/gestorListaSedes";
@@ -854,9 +854,9 @@ public class GestorController {
            // attr.addFlashAttribute("msg", "Comunidad borrada exitosamente");
             try {
                 comunidadRepository.deleteById(idcomunidad);
-                attr.addFlashAttribute("msgg", "Comunidad Eliminada");
+                attr.addFlashAttribute("msg", "Comunidad Eliminada");
             } catch (Exception e) {
-                attr.addFlashAttribute("msg", "No se pudo eliminar la comunidad");
+                attr.addFlashAttribute("msg", "Comunidad en inventario, no puede ser borrado");
             }
         }
         return "redirect:/gestor/gestorListaComunidad";
@@ -909,7 +909,7 @@ public class GestorController {
                 return "redirect:/gestor/gestorListaCategoria";
             } else {
                 model.addAttribute(categoria);
-                model.addAttribute("msgError", "Los datos ingresados ya existen, por favor modificarlo");
+                model.addAttribute("msgError", "Los datos ingresados ya existen");
                 return "Gestor/G-EditCategoria";
             }
 
@@ -941,7 +941,7 @@ public class GestorController {
         Optional<Categoria> optCategoria = categoriaRepository.findById(id);
         if (optCategoria.isPresent()) {
             categoriaRepository.deleteById(id);
-            attr.addFlashAttribute("msgg", "Categoría Eliminada");
+            attr.addFlashAttribute("msg", "Categoría Eliminada");
         }
         return "redirect:/gestor/gestorListaCategoria";
     }
@@ -992,7 +992,7 @@ public class GestorController {
         Optional<Artesano> obtenerArtesano = artesanoRepository.findById(idartesano);
         if (obtenerArtesano.isPresent()) {
             artesanoRepository.deleteById(idartesano);
-            attr.addFlashAttribute("msgg", "Artesano Eliminado");
+            attr.addFlashAttribute("msg", "Artesano Eliminado");
         }
         return "redirect:/gestor/gestorListaArtesano";
     }
