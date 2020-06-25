@@ -97,6 +97,22 @@
     <hr class="sidebar-divider my-0 bg-gray-100">
 
     <div class="nav-item">
+        <a style="padding-top: 0.5rem; padding-bottom: 0.5rem" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseConsign" aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fab fa-fw fa-buffer text-gray-100"></i>
+            <span>Gestionar Consignación</span>
+        </a>
+        <div id="collapseConsign" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Listas:</h6>
+                <li class="nav-item"><a class="collapse-item text-gray-900" th:href="@{/gestor/consignacionesProxVencer}">-Próximas a vencer</a></li>
+                <li class="nav-item"><a class="collapse-item text-gray-900" th:href="@{/gestor/consignacionesVencidas}">-Vencidas</a></li>
+            </div>
+        </div>
+    </div>
+
+    <hr class="sidebar-divider my-0 bg-gray-100">
+
+    <div class="nav-item">
         <a style="padding-top: 0.5rem; padding-bottom: 0.5rem" class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVentas" aria-expanded="true" aria-controls="collapseVentas">
             <i class="fab fa-fw fa-buffer text-gray-100"></i>
             <span>Gestionar Ventas</span>

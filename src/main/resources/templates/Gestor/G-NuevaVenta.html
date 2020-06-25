@@ -36,14 +36,15 @@
                                                  th:errors="*{nombrecliente}">Error
                                             </div>
                                         </div>
+
                                         <div class="form-group">
-                                            <Label>Tipo de documento de identidad</Label>
-                                            <input type="text" class="form-control form-control-user"
-                                                   th:field="*{tipodocumentoidentidad}"/>
-                                            <div class="text-danger"
-                                                 th:if="${#fields.hasErrors('tipodocumentoidentidad')}"
-                                                 th:errors="*{tipodocumentoidentidad}">Error
-                                            </div>
+                                            <label>Tipo de documento de identidad </label>
+                                            <select style="border-radius: 10rem" class="form-control"
+                                                    th:field="*{tipodocumentoidentidad}"
+                                                    type="item">
+                                                <option th:text="DNI" value="DNI">DNI</option>
+                                                <option th:text="Pasaporte"  value="Pasaporte">Pasaporte</option>
+                                            </select>
                                         </div>
                                         <div class="form-group">
                                             <Label>Número de documento de identidad</Label>
@@ -54,14 +55,21 @@
                                                  th:errors="*{numerodocumentoidentidad}">Error
                                             </div>
                                         </div>
+
+
                                         <div class="form-group">
-                                            <Label>Tipo de documento de venta</Label>
-                                            <input type="text" class="form-control form-control-user"
-                                                   th:field="*{tipodocumentoventa}"/>
-                                            <div class="text-danger" th:if="${#fields.hasErrors('tipodocumentoventa')}"
-                                                 th:errors="*{tipodocumentoventa}">Error
-                                            </div>
+                                            <label>Tipo de documento de venta </label>
+                                            <select style="border-radius: 10rem" class="form-control"
+                                                    th:field="*{tipodocumentoventa}"
+                                                    type="item">
+                                                <option th:text="Boleta" value="Boleta">Boleta</option>
+                                                <option th:text="Factura"  value="Factura">Factura</option>
+                                                <option th:text="Transaccion"  value="Transaccion">Transaccion</option>
+                                                <option th:text="Otro"  value="Otro">Otro</option>
+
+                                            </select>
                                         </div>
+
                                         <div class="form-group">
                                             <Label>Número de documento de venta</Label>
                                             <input type="text" class="form-control form-control-user"
@@ -88,10 +96,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inventario">Producto Vendido:</label>
-                                            <select th:field="*{inventario.idInventario}"
-                                                    class="form-control" id="inventario"
-                                                    placeholder="producto">
+                                            <label>Producto Vendido:</label>
+                                            <select style="border-radius: 10rem" class="form-control"
+                                                    th:field="*{inventario.idInventario}"  type="item">
                                                 <option th:each="inventario : ${listaInventario}"
                                                         th:value="${inventario.idInventario}" th:text="${
                                                         inventario.producto.getCodigoGenerado()  + ' ' +

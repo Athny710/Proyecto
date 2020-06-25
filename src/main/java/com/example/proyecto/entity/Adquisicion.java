@@ -1,7 +1,11 @@
 package com.example.proyecto.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "adquisicion")
@@ -11,10 +15,10 @@ public class Adquisicion {
     private int idadquisicion;
     @Column(nullable = false)
     private String modalidad;
-    @Column(nullable = false)
-    @NotBlank(message = "Este campo no puede ser vacío")
-    private String fecha;
-    private String fechafin;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fecha;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fechafin;
     @ManyToOne
     @JoinColumn(name = "idartesano")
     private Artesano artesano;
@@ -36,21 +40,7 @@ public class Adquisicion {
         this.modalidad = modalidad;
     }
 
-    public String getFecha() {
-        return fecha;
-    }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
-
-    public String getFechaFin() {
-        return fechafin;
-    }
-
-    public void setFechaFin(String fechaFin) {
-        this.fechafin = fechaFin;
-    }
 
     public Artesano getArtesano() {
         return artesano;
@@ -58,5 +48,21 @@ public class Adquisicion {
 
     public void setArtesano(Artesano artesano) {
         this.artesano = artesano;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    public LocalDate getFechafin() {
+        return fechafin;
+    }
+
+    public void setFechafin(LocalDate fechafin) {
+        this.fechafin = fechafin;
     }
 }

@@ -2,24 +2,33 @@ package com.example.proyecto.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "artesano")
-public class Artesano {
+public class Artesano implements Serializable {
     @Id
     @Column(name = "idartesano")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idartesano;
     @Column(nullable = false)
     @NotBlank(message = "Este Campo no puede ser vacío")
+    @Size(max = 45, message = "No puede tener más de 45 caracteres")
+   // @Pattern(regexp = "^[a-zA-Z\\\\s]*$",message = "solo se debe ingresar letras")
+    @Pattern(regexp = "^[a-zA-Z\\s]*$",message = "solo se debe ingresar letras")
     private String nombre;
     @Column(nullable = false)
     @NotBlank(message = "Este Campo no puede ser vacío")
+    @Size(max = 45, message = "No puede tener más de 45 caracteres")
+    @Pattern(regexp = "^[a-zA-Z\\s]*$",message = "solo se debe ingresar letras")
     private String apellidopaterno;
-    @NotBlank(message = "Este Campo no puede ser vacío")
+    //@NotBlank(message = "Este Campo no puede ser vacío")
     private String apellidomaterno;
     @Column(nullable = false, name = "codigo")
     @NotBlank(message = "Este Campo no puede ser vacío")
+    @Pattern(regexp = "^[a-zA-Z\\\\s]*$",message = "solo se debe ingresar letras")
     private String codigo;
 
     @ManyToOne
@@ -51,20 +60,20 @@ public class Artesano {
         this.nombre = nombre;
     }
 
-    public String getApellidoPaterno() {
+    public String getApellidopaterno() {
         return apellidopaterno;
     }
 
-    public void setApellidoPaterno(String apellidoPaterno) {
-        this.apellidopaterno = apellidoPaterno;
+    public void setApellidopaterno(String apellidopaterno) {
+        this.apellidopaterno = apellidopaterno;
     }
 
-    public String getApellidoMaterno() {
+    public String getApellidomaterno() {
         return apellidomaterno;
     }
 
-    public void setApellidoMaterno(String apellidoMaterno) {
-        this.apellidomaterno = apellidoMaterno;
+    public void setApellidomaterno(String apellidomaterno) {
+        this.apellidomaterno = apellidomaterno;
     }
 
     public String getCodigo() { return codigo; }
