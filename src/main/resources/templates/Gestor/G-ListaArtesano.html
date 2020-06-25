@@ -48,6 +48,16 @@
                                         <td th:text="${artesano.comunidad.nombre}"></td>
                                         <td th:text="${artesano.codigo}"></td>
                                         <td align="center">
+                                            <a style="margin-left: 10px"
+                                               th:href="@{'/gestor/gestorEditArtesano' + '?idartesano=' + ${artesano.idArtesano}}"
+                                               class="far fa-edit text-orangeM">
+                                            </a>
+                                            <a style="margin-left: 10px"
+                                               th:href="@{'/gestor/gestorBorrarArtesano' + '?idartesano=' + ${artesano.idArtesano}}"
+                                               class="far fa-trash-alt text-redM">
+                                            </a>
+                                        </td>
+                                    <!--    <td align="center">
                                             <a th:href="@{'/gestor/gestorEditArtesano' + '?idartesano=' + ${artesano.idArtesano}}" class="far fa-edit text-orangeM"></a>
                                             <a style="margin-left: 10px" class="far fa-trash-alt text-redM" th:href="@{'/gestor/gestorBorrarArtesano' + '?idartesano=' + ${artesano.idArtesano}}"
                                                data-toggle="modal" data-target="#modalborrar" th:attrappend="data-target=${artesano.idArtesano}"></a>
@@ -69,7 +79,7 @@
                                                 </div>
                                             </div>
 
-                                        </td>
+                                        </td>  -->
                                     </tr>
                                     </tbody>
                                 </table>
