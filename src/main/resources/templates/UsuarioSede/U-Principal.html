@@ -16,21 +16,15 @@
             <div th:insert="Fragmentos/FragmentosSede.html::TopBar"></div>
             <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
             <div class="container-fluid">
-                <div th:if="${msgsuccess != null}" th:text="${msgsuccess}" class="alert alert-success"
-                     role="alert"></div>
+                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                 <div class="card shadowA mb-4">
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
                             <h5 class="m-0 font-weight-bold text-redM">Inventario</h5>
-                            <div style="width: 170px">
-                                <a class="btn btn-orange btn-user btn-block" th:href="@{/sede/nuevaVenta}">Añadir
-                                    Venta</a>
-                            </div>
                         </div>
 
                     </div>
                     <div class="card-body bg-gray-100">
-                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
                         <div class="table-responsive bg-gray-100">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
