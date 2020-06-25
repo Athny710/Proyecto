@@ -188,7 +188,7 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
     @Query(value = "SELECT DISTINCT(year(v.fecha)) as fecha FROM venta v", nativeQuery = true)
     List<FechaVenta> obtenerAñosDeVenta();
 
-    @Query(value = "SELECT month(v.fecha) as fecha, CASE WHEN MONTH(v.fecha) = 1 THEN \"enero\"\n" +
+    @Query(value = "SELECT distinct(month(v.fecha)) as fecha, CASE WHEN MONTH(v.fecha) = 1 THEN \"enero\"\n" +
             "WHEN MONTH(v.fecha) = 2 THEN \"febrero\"\n" +
             "WHEN MONTH(v.fecha) = 3 THEN \"marzo\"\n" +
             "WHEN MONTH(v.fecha) = 4 THEN \"abril\"\n" +
@@ -222,5 +222,33 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "inner join sede s on t.idSede = s.idSede\n" +
             "order by v.fecha", nativeQuery = true)
     List<ListaSedesQueVendieron> obtenerSedes();
+
+    @Query(value = "SELECT distinct(v.nombreCliente) as nombre FROM venta v", nativeQuery = true)
+    List<ClientesQueCompraron> obtenerClientes();
+
+    @Query(value = "SELECT distinct(year(v.fecha)) as anio FROM venta v where v.nombreCliente = ?1", nativeQuery = true)
+    List<AñoDeCompraXCliente> obtenerAñosXCliente(String cliente);
+
+    @Query(value = "SELECT distinct(month(v.fecha)) as fecha, \n" +
+            "CASE \n" +
+            "\tWHEN MONTH(v.fecha) = 1 THEN \"enero\" \n" +
+            "    WHEN MONTH(v.fecha) = 2 THEN \"febrero\"\n" +
+            "\tWHEN MONTH(v.fecha) = 3 THEN \"marzo\" \n" +
+            "\tWHEN MONTH(v.fecha) = 4 THEN \"abril\" \n" +
+            "\tWHEN MONTH(v.fecha) = 5 THEN \"mayo\" \n" +
+            "\tWHEN MONTH(v.fecha) = 6 THEN \"junio\" \n" +
+            "\tWHEN MONTH(v.fecha) = 7 THEN \"julio\" \n" +
+            "\tWHEN MONTH(v.fecha) = 8 THEN \"agosto\" \n" +
+            "\tWHEN MONTH(v.fecha) = 9 THEN \"septiembre\" \n" +
+            "\tWHEN MONTH(v.fecha) = 10 THEN \"octubre\" \n" +
+            "\tWHEN MONTH(v.fecha) = 11 THEN \"noviembre\" \n" +
+            "\tWHEN MONTH(v.fecha) = 12 THEN \"diciembre\" END AS fechaname FROM venta v where v.nombreCliente = ?1 and year(v.fecha) = ?2\n" +
+            "\tgroup by fecha", nativeQuery = true)
+    List<FechaMesVenta> obtenerPeriodoXAño(String cliente, String año);
+
+    @Query(value = "SELECT t.nombre as nombretienda, v.nombreCliente as cliente, v.tipoDocumentoVenta as doc, v.precioUnitarioVenta as preciounit, v.Cantidad as cantidad, v.precioUnitarioVenta*v.Cantidad as preciotot FROM venta v\n" +
+            "inner join tienda t on t.idTienda = v.idTienda\n" +
+            "inner join sede s on s.idSede = t.idSede and s.idSede = ?1", nativeQuery = true)
+    List<CamposReporteSede> obtenerDatosParaReporteSede(int id);
 
 }

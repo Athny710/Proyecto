@@ -70,8 +70,8 @@
                                             th:text="${lista1.nombresede}" >Biofluming</option>
                                 </select>
                                 <select class="form-control" type="item" id="cliente" name="estandar">
-                                    <option th:each="listam : ${listaClientes}" th:value="${listam.nombrecliente}"
-                                            th:text="${listam.nombrecliente}" >Biofluming</option>
+                                    <option th:each="listam : ${listaClients}" th:value="${listam.nombre}"
+                                            th:text="${listam.nombre}" >Biofluming</option>
                                 </select>
                                 <select class="form-control" type="item" id="articulo" name="estandar">
                                     <option th:each=" li : ${listaProductosVendidos}" th:value="${li.nombre}"
