@@ -446,7 +446,7 @@ public class GestorController {
                 sedeRepository.deleteById(idsede);
                 attr.addFlashAttribute("msg", "Sede Eliminada");
             } catch (Exception e) {
-                attr.addFlashAttribute("msg", "Sede en inventario, no puede ser borrada");
+                attr.addFlashAttribute("msg", "Sede ,en usuario sede, no puede ser borrada");
             }
         }
         return "redirect:/gestor/gestorListaSedes";
