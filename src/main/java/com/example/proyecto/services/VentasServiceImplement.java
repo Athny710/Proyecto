@@ -447,7 +447,7 @@ public class VentasServiceImplement implements VentasService {
     }
 
     @Override
-    public boolean createExcelXCliente(List<ReporteConCamposOriginales> ventaXCliente, String cliente, ServletContext context, HttpServletRequest request, HttpServletResponse response) {
+    public boolean createExcelXCliente(List<ReporteConCamposOriginales> ventaXCliente, String cliente, String periodo, ServletContext context, HttpServletRequest request, HttpServletResponse response) {
         String filepath = context.getRealPath("/resources/reports");
         File file = new File(filepath);
         boolean exists = new File(filepath).exists();
@@ -474,33 +474,59 @@ public class VentasServiceImplement implements VentasService {
             HSSFFont cellFont = workbook.createFont();
             cellFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
             headerCellStyle1.setFont(cellFont);
-            workSheet.addMergedRegion(new CellRangeAddress(0,0,0,5));
+            workSheet.addMergedRegion(new CellRangeAddress(0,0,0,10));
 
             HSSFRow headerRow = workSheet.createRow(1);
 
-            HSSFCell codigo = headerRow.createCell(0);
-            codigo.setCellValue("Código del producto");
-            codigo.setCellStyle(headerCellStyle);
+            HSSFCell fechaventa = headerRow.createCell(0);
+            fechaventa.setCellValue("Fecha de venta");
+            fechaventa.setCellStyle(headerCellStyle);
 
-            HSSFCell nombreProducto = headerRow.createCell(1);
-            nombreProducto.setCellValue("Nombre del producto");
-            nombreProducto.setCellStyle(headerCellStyle);
+            HSSFCell tipodocumento = headerRow.createCell(1);
+            tipodocumento.setCellValue("Tipo de documento (factura/boleta)");
+            tipodocumento.setCellStyle(headerCellStyle);
 
-            HSSFCell cantidad = headerRow.createCell(2);
+            HSSFCell numdocventa = headerRow.createCell(2);
+            numdocventa.setCellValue("N° de documento de venta");
+            numdocventa.setCellStyle(headerCellStyle);
+
+            HSSFCell rucdni = headerRow.createCell(3);
+            rucdni.setCellValue("RUC/DNI del Cliente");
+            rucdni.setCellStyle(headerCellStyle);
+
+            HSSFCell nombreclient = headerRow.createCell(4);
+            nombreclient.setCellValue("Nombre del Cliente");
+            nombreclient.setCellStyle(headerCellStyle);
+
+            HSSFCell cantidad = headerRow.createCell(5);
             cantidad.setCellValue("Cantidad");
             cantidad.setCellStyle(headerCellStyle);
 
-            HSSFCell precioUnit = headerRow.createCell(3);
+            HSSFCell codigo = headerRow.createCell(6);
+            codigo.setCellValue("Código del producto");
+            codigo.setCellStyle(headerCellStyle);
+
+            HSSFCell nombreProducto = headerRow.createCell(7);
+            nombreProducto.setCellValue("Nombre del producto");
+            nombreProducto.setCellStyle(headerCellStyle);
+
+            HSSFCell color = headerRow.createCell(8);
+            color.setCellValue("Color del producto");
+            color.setCellStyle(headerCellStyle);
+
+            HSSFCell precioUnit = headerRow.createCell(9);
             precioUnit.setCellValue("Precio unitario");
             precioUnit.setCellStyle(headerCellStyle);
 
-            HSSFCell fecha = headerRow.createCell(4);
-            fecha.setCellValue("Fecha");
-            fecha.setCellStyle(headerCellStyle);
-
-            HSSFCell totalxProducto = headerRow.createCell(5);
+            HSSFCell totalxProducto = headerRow.createCell(10);
             totalxProducto.setCellValue("Precio total por producto");
             totalxProducto.setCellStyle(headerCellStyle);
+
+            if (periodo.equals("trimestre")){
+                HSSFCell period = headerRow.createCell(11);
+                period.setCellValue("Trimestre");
+                period.setCellStyle(headerCellStyle);
+            }
 
             HSSFRow tituRow1 = workSheet.createRow(0);
             HSSFCell titulo = tituRow1.createCell(0);
@@ -519,29 +545,55 @@ public class VentasServiceImplement implements VentasService {
                 bodyCellStyle.setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
                 bodyCellStyle.setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
 
-                HSSFCell codigovalue = bodyROW.createCell(0);
-                codigovalue.setCellValue(venta1.getCodgen());
-                codigovalue.setCellStyle(bodyCellStyle);
+                HSSFCell fechaventavalue = bodyROW.createCell(0);
+                fechaventavalue.setCellValue(venta1.getFecha());
+                fechaventavalue.setCellStyle(bodyCellStyle);
 
-                HSSFCell nombreProductvalue = bodyROW.createCell(1);
-                nombreProductvalue.setCellValue(venta1.getNombreproduct());
-                nombreProductvalue.setCellStyle(bodyCellStyle);
+                HSSFCell tipodocumentovalue = bodyROW.createCell(1);
+                tipodocumentovalue.setCellValue(venta1.getTipodocventa());
+                tipodocumentovalue.setCellStyle(bodyCellStyle);
 
-                HSSFCell cantidadValue = bodyROW.createCell(2);
+                HSSFCell numdocventavalue = bodyROW.createCell(2);
+                numdocventavalue.setCellValue(venta1.getNumerodocventa());
+                numdocventavalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell rucdnivalue = bodyROW.createCell(3);
+                rucdnivalue.setCellValue(venta1.getNumerodocid());
+                rucdnivalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell nombreclientvalue = bodyROW.createCell(4);
+                nombreclientvalue.setCellValue(venta1.getNombrecliente());
+                nombreclientvalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell cantidadValue = bodyROW.createCell(5);
                 cantidadValue.setCellValue(venta1.getCantidad());
                 cantidadValue.setCellStyle(bodyCellStyle);
 
-                HSSFCell precioUnitvalue = bodyROW.createCell(3);
+                HSSFCell codigovalue = bodyROW.createCell(6);
+                codigovalue.setCellValue(venta1.getCodprod());
+                codigovalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell nombreProductvalue = bodyROW.createCell(7);
+                nombreProductvalue.setCellValue(venta1.getNombreproduct());
+                nombreProductvalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell colorvalue = bodyROW.createCell(8);
+                colorvalue.setCellValue(venta1.getColorprod());
+                colorvalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell precioUnitvalue = bodyROW.createCell(9);
                 precioUnitvalue.setCellValue(venta1.getPreciounit());
                 precioUnitvalue.setCellStyle(bodyCellStyle);
 
-                HSSFCell fechavalue = bodyROW.createCell(4);
-                fechavalue.setCellValue(traductorDeMeses(venta1.getFech()));
-                fechavalue.setCellStyle(bodyCellStyle);
-
-                HSSFCell totalxProductovalue = bodyROW.createCell(5);
+                HSSFCell totalxProductovalue = bodyROW.createCell(10);
                 totalxProductovalue.setCellValue(venta1.getTotalxproduct());
                 totalxProductovalue.setCellStyle(bodyCellStyle);
+
+                if (periodo.equals("trimestre")){
+                    HSSFCell fechavalue = bodyROW.createCell(11);
+                    fechavalue.setCellValue(traductorDeMeses(venta1.getFech()));
+                    fechavalue.setCellStyle(bodyCellStyle);
+                }
 
                 totalTotal += venta1.getTotalxproduct();
                 i++;
@@ -556,11 +608,11 @@ public class VentasServiceImplement implements VentasService {
             bodyCellStyle.setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
             bodyCellStyle.setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
 
-            HSSFCell totalxtotal = bodyROW.createCell(4);
+            HSSFCell totalxtotal = bodyROW.createCell(9);
             totalxtotal.setCellValue("Total");
             totalxtotal.setCellStyle(bodyCellStyle);
 
-            HSSFCell totalxtotalvalue = bodyROW.createCell(5);
+            HSSFCell totalxtotalvalue = bodyROW.createCell(10);
             totalxtotalvalue.setCellValue(totalTotal);
             totalxtotalvalue.setCellStyle(bodyCellStyle);
 

@@ -1374,7 +1374,7 @@ public class GestorController {
             if (mes.equals("todo")) {
                 List<ReporteConCamposOriginales> ventaXClienteAnual = ventasService.getVentasPorClienteAnual(año, cliente);
                 String titulo = "Ventas anuales realizadas al cliente " + cliente;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXClienteAnual, titulo, context, request, response);
+                boolean isFlag = ventasService.createExcelXCliente(ventaXClienteAnual, titulo,mes, context, request, response);
                 if (isFlag) {
                     String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
                     filedownload(fullpath, response, "ventas_clientes_anual.xls");
@@ -1382,7 +1382,7 @@ public class GestorController {
             } else if (mes.equals("trimestre")) {
                 List<ReporteConCamposOriginales> ventaXClienteTrimestral = ventasService.getVentasPorClienteTrimestral(año, cliente);
                 String titulo = "Ventas trimestrales realizadas al cliente " + cliente;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXClienteTrimestral, titulo, context, request, response);
+                boolean isFlag = ventasService.createExcelXCliente(ventaXClienteTrimestral, titulo,mes, context, request, response);
                 if (isFlag) {
                     String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
                     filedownload(fullpath, response, "ventas_clientes_trimestral.xls");
@@ -1390,7 +1390,7 @@ public class GestorController {
             } else {
                 List<ReporteConCamposOriginales> ventaXClienteMensual = ventasService.getVentasPorCliente(mes, año, cliente);
                 String titulo = "Ventas mensuales realizadas al cliente " + cliente;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXClienteMensual, titulo, context, request, response);
+                boolean isFlag = ventasService.createExcelXCliente(ventaXClienteMensual, titulo,mes, context, request, response);
                 if (isFlag) {
                     String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
                     filedownload(fullpath, response, "ventas_clientes_mensual.xls");
@@ -1409,7 +1409,7 @@ public class GestorController {
             if (mes.equals("todo")) {
                 List<ReporteConCamposOriginales> ventaXSedeAnual = ventasService.getVentasPorSedeAnual(año, idsede);
                 String titulo = "Ventas anuales realizadas por la sede " + idsede;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXSedeAnual, titulo, context, request, response);
+                boolean isFlag = ventasService.createExcelXCliente(ventaXSedeAnual, titulo,mes, context, request, response);
                 if (isFlag) {
                     String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
                     filedownload(fullpath, response, "ventas_sedes_anual.xls");
@@ -1417,7 +1417,7 @@ public class GestorController {
             } else if (mes.equals("trimestre")) {
                 List<ReporteConCamposOriginales> ventaXSedeTrimestral = ventasService.getVentasPorSedeTrimestral(año, idsede);
                 String titulo = "Ventas trimestrales realizadas al cliente " + idsede;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXSedeTrimestral, titulo, context, request, response);
+                boolean isFlag = ventasService.createExcelXCliente(ventaXSedeTrimestral, titulo,mes, context, request, response);
                 if (isFlag) {
                     String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
                     filedownload(fullpath, response, "ventas_sedes_trimestral.xls");
@@ -1425,7 +1425,7 @@ public class GestorController {
             } else {
                 List<ReporteConCamposOriginales> ventaXSedeMensual = ventasService.getVentasPorSede(mes, año, idsede);
                 String titulo = "Ventas mensuales realizadas al cliente " + idsede;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXSedeMensual, titulo, context, request, response);
+                boolean isFlag = ventasService.createExcelXCliente(ventaXSedeMensual, titulo,mes, context, request, response);
                 if (isFlag) {
                     String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
                     filedownload(fullpath, response, "ventas_sedes_mensual.xls");
@@ -1444,7 +1444,7 @@ public class GestorController {
             if (mes.equals("todo")) {
                 List<ReporteConCamposOriginales> ventaXArticuloAnual = ventasService.getVentasPorArticuloAnual(año, articulo);
                 String titulo = "Ventas anuales del artículo " + articulo;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloAnual, titulo, context, request, response);
+                boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloAnual, titulo,mes, context, request, response);
                 if (isFlag) {
                     String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
                     filedownload(fullpath, response, "ventas_articulo_anual.xls");
@@ -1452,7 +1452,7 @@ public class GestorController {
             } else if (mes.equals("trimestre")) {
                 List<ReporteConCamposOriginales> ventaXArticuloTrimestral = ventasService.getVentasPorArticuloTrimestral(año, articulo);
                 String titulo = "Ventas trimestrales del artículo " + articulo;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloTrimestral, titulo, context, request, response);
+                boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloTrimestral, titulo, mes, context, request, response);
                 if (isFlag) {
                     String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
                     filedownload(fullpath, response, "ventas_articulo_trimestral.xls");
@@ -1460,7 +1460,7 @@ public class GestorController {
             } else {
                 List<ReporteConCamposOriginales> ventaXArticuloMensual = ventasService.getVentasPorArticuloMensual(mes, año, articulo);
                 String titulo = "Ventas mensuales del artículo " + articulo;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloMensual, titulo, context, request, response);
+                boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloMensual, titulo, mes, context, request, response);
                 if (isFlag) {
                     String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
                     filedownload(fullpath, response, "ventas_articulo_mensual.xls");
@@ -1479,7 +1479,7 @@ public class GestorController {
             if (mes.equals("todo")) {
                 List<ReporteConCamposOriginales> ventaXComunidadAnual = ventasService.getVentasPorComunidadAnual(año, comunidad);
                 String titulo = "Ventas anuales de los productos de la comunidad " + comunidad;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadAnual, titulo, context, request, response);
+                boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadAnual, titulo,mes, context, request, response);
                 if (isFlag) {
                     String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
                     filedownload(fullpath, response, "ventas_comunidad_anual.xls");
@@ -1487,7 +1487,7 @@ public class GestorController {
             } else if (mes.equals("trimestre")) {
                 List<ReporteConCamposOriginales> ventaXComunidadTrimestral = ventasService.getVentasPorComunidadTrimestral(año, comunidad);
                 String titulo = "Ventas trimestrales de los productos de la comunidad " + comunidad;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadTrimestral, titulo, context, request, response);
+                boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadTrimestral, titulo,mes, context, request, response);
                 if (isFlag) {
                     String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
                     filedownload(fullpath, response, "ventas_comunidad_trimestral.xls");
@@ -1495,7 +1495,7 @@ public class GestorController {
             } else {
                 List<ReporteConCamposOriginales> ventaXComunidadMensual = ventasService.getVentasPorComunidadMensual(mes, año, comunidad);
                 String titulo = "Ventas mensuales de los productos de la comunidad " + comunidad;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadMensual, titulo, context, request, response);
+                boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadMensual, titulo,mes, context, request, response);
                 if (isFlag) {
                     String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
                     filedownload(fullpath, response, "ventas_comunidad_mensual.xls");
@@ -1510,7 +1510,7 @@ public class GestorController {
         if (mes.equals("todo")){
             List<ReporteConCamposOriginales> ventaXAnual = ventasService.getVentaAnual(año);
             String titulo = "Ventas totales de Mosqoy del año " + año ;
-            boolean isFlag = ventasService.createExcelXCliente(ventaXAnual, titulo, context, request, response);
+            boolean isFlag = ventasService.createExcelXCliente(ventaXAnual, titulo,mes, context, request, response);
             if (isFlag) {
                 String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
                 filedownload(fullpath, response, "ventas_total_anual.xls");
@@ -1518,7 +1518,7 @@ public class GestorController {
         }else if (mes.equals("trimestre")){
             List<ReporteConCamposOriginales> ventaXTrimestral = ventasService.getVentaTrimestral(año);
             String titulo = "Ventas trimestrales de Mosqoy del año " + año ;
-            boolean isFlag = ventasService.createExcelXCliente(ventaXTrimestral, titulo, context, request, response);
+            boolean isFlag = ventasService.createExcelXCliente(ventaXTrimestral, titulo,mes, context, request, response);
             if (isFlag) {
                 String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
                 filedownload(fullpath, response, "ventas_total_trimestral.xls");
@@ -1526,7 +1526,7 @@ public class GestorController {
         }else {
             List<ReporteConCamposOriginales> ventaXMensual = ventasService.getVentaMensual(mes,año);
             String titulo = "Ventas Mosqoy de " + mes + " del año " + año ;
-            boolean isFlag = ventasService.createExcelXCliente(ventaXMensual, titulo, context, request, response);
+            boolean isFlag = ventasService.createExcelXCliente(ventaXMensual, titulo,mes, context, request, response);
             if (isFlag) {
                 String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
                 filedownload(fullpath, response, "ventas_total_mensual.xls");

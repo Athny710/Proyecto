@@ -28,7 +28,7 @@
                                         <label for="cliente" id="nombreVariable">Filtrar por:</label>
                                         <select class="form-control" type="item" id="client" name="filtrado" onchange="lista(this.value)">
                                             <option th:value="0">------</option>
-                                            <option th:if="${listaClientes != null}" th:value="1">Cliente</option>
+                                            <option th:if="${listaClients != null}" th:value="1">Cliente</option>
                                             <option th:if="${listasedes != null}" th:value="2">Sede</option>
                                             <option th:value="3">Producto</option>
                                             <option th:value="4">Comunidad</option>
