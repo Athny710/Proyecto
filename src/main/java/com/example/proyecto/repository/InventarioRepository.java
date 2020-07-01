@@ -12,4 +12,5 @@ public interface InventarioRepository extends JpaRepository<Inventario, Integer>
 
     List<Inventario> findByStock(int stock);
     List<Inventario> findByProducto(Producto producto);
+    List<Inventario> findByEstado(String estado);
 }
