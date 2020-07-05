@@ -3,8 +3,7 @@ package com.example.proyecto.controller;
 import com.example.proyecto.entity.Inventario;
 import com.example.proyecto.entity.Perfil;
 import com.example.proyecto.entity.Usuarios;
-import com.example.proyecto.repository.InventarioRepository;
-import com.example.proyecto.repository.UsuarioRepository;
+import com.example.proyecto.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,13 +31,20 @@ public class AdminController {
     UsuarioRepository usuarioRepository;
     @Autowired
     InventarioRepository inventarioRepository;
-
-
+    @Autowired
+    ComunidadRepository comunidadRepository;
+    @Autowired
+    ArtesanoRepository artesanoRepository;
+    @Autowired
+    CategoriaRepository categoriaRepository;
 
     //--------------------------Inventario
     @GetMapping(value = {"","principal"})
     public String principalAdmin(Model model){
         model.addAttribute("inventario", inventarioRepository.findAll());
+        model.addAttribute("listaComunidades",comunidadRepository.findAll());
+        model.addAttribute("listaArtesanos",comunidadRepository.findAll());
+        model.addAttribute("listaCategoria",comunidadRepository.findAll());
         return "Administrador/A-PagPrincipal";
     }
 
