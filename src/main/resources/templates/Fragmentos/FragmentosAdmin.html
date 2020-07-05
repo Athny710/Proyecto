@@ -46,7 +46,7 @@
     </a>
     <!-- Divider-->
     <div style="height: 120px"></div>
-
+    <div style="position: sticky; top: 0.5rem">
     <li class="nav-item">
         <a style="padding-left: 1rem; padding-top: 0.5rem; padding-bottom: 0.5rem" class="nav-link text-gray-100" th:href="@{/admin/principal}">
             <i class="fas fa-fw fa-folder-open text-gray-100"></i>
@@ -70,7 +70,7 @@
         </a>
     </li>
     <hr class="sidebar-divider my-0 bg-gray-100">
-
+    </div>
 </ul>
 <!-- End of Sidebar -->
 
@@ -205,7 +205,7 @@
             </div>
             <div class="modal-body">Click en "Aceptar" si está seguro de que quiere cerrar sesión.</div>
             <form class="modal-footer" th:action="@{/cerrar}" method="post" >
-                <button class="btn btn-log" type="button" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
                 <button class="btn btn-orange" type="submit">Aceptar</button>
             </form>
         </div>

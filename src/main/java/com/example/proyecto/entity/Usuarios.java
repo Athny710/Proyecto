@@ -20,7 +20,7 @@ public class Usuarios  implements Serializable {
     private String correo;
     private String password;
     @NotBlank(message = "Este campo no puede ser vacío")
-    @Size(max = 9, message = "Este campo no puede tener mas de 9 dígitos")
+    @Size(max = 25, message = "Este campo no puede tener mas de 9 dígitos")
     private String telefono;
     @Column(nullable = false)
     private int activo;

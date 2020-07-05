@@ -74,7 +74,7 @@ public class AdminController {
     public String editarInfo(@ModelAttribute("perfil") Perfil perfil, HttpSession session){
         Usuarios u = (Usuarios) session.getAttribute("user");
         perfil.setCorreo(u.getCorreo());
-        perfil.setTelefono(Integer.parseInt(u.getTelefono()));
+        perfil.setTelefono(u.getTelefono());
         return "Administrador/A-Perfil";
     }
     @PostMapping("guardarPerfil")
@@ -90,22 +90,23 @@ public class AdminController {
             if(perfil.getCorreo().equals(usuarioLog.getCorreo())){
                 attr.addFlashAttribute("msg", "Información personal editada con éxito");
                 usuarioLog.setCorreo(perfil.getCorreo());
-                usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
+                usuarioLog.setTelefono(perfil.getTelefono());
                 usuarioRepository.save(usuarioLog);
                 session.setAttribute("user", usuarioLog);
-                return "redirect:/admin";
+                return "redirect:/admin/editarInfo";
             }else{
-                if(usuarioRepository.findByCorreo(perfil.getCorreo())!=null){
+                Usuarios us = usuarioRepository.findByCorreo(perfil.getCorreo());
+                if(us!=null && us.getActivo()==1){
                     System.out.println(usuarioLog.getCorreo());
-                    model.addAttribute("msg", "Este correo ya está registrado");
+                    model.addAttribute("msgC", "Este correo ya está registrado");
                     return "Administrador/A-Perfil";
                 }else{
                     attr.addFlashAttribute("msg", "Información personal editada con éxito");
                     usuarioLog.setCorreo(perfil.getCorreo());
-                    usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
+                    usuarioLog.setTelefono(perfil.getTelefono());
                     usuarioRepository.save(usuarioLog);
                     session.setAttribute("user", usuarioLog);
-                    return "redirect:/admin";
+                    return "redirect:/admin/editarInfo";
                 }
             }
         }

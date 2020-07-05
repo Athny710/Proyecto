@@ -7,7 +7,7 @@
 <body id="page-top">
 
     <div id="wrapper">
-        <div th:insert="Fragmentos/FragmentosAdmin.html::SideBarAdmin"></div>
+        <div th:replace="Fragmentos/FragmentosAdmin.html::SideBarAdmin"></div>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column bg-white">
             <!-- Main Content -->
@@ -17,7 +17,7 @@
                 <!-- Page Heading -->
                 <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" style="margin-right: 25px; margin-left: 25px" role="alert"></div>
                 <div class="container-fluid">
-                    <div class="card shadowA mb-4">
+                    <div class="card shadowA mb-4" >
                         <div class="card-header2" style="padding-top: 0.6rem; padding-bottom: 0.6rem">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Gestores</h5>

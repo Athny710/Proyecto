@@ -14,9 +14,11 @@
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <div class="card shadow mb-4">
+                    <div class="card shadowA mb-4" >
                         <div class="card-header py-3">
-                            <h4 class="m-0 font-weight-bold text-gray-900">Registro de Categoría</h4>
+                            <div class="d-flex justify-content-between centrado">
+                                <h5 class="m-0 font-weight-bold text-gray-900">Registro de Categoría</h5>
+                            </div>
                         </div>
                         <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
                         <div class="card-body">

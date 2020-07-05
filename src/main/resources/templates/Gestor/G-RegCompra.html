@@ -16,7 +16,7 @@
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <div class="card shadow mb-4">
+                    <div class="card shadowA mb-4" >
                         <div class="card-header py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Añadir Producto</h5>
@@ -24,102 +24,104 @@
                         </div>
                         <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
                         <div class="card-body">
-                            <form method="post" th:action="@{/gestor/guardarProducto}"  th:object="${formulario}">
-                                <input  th:value="*{crearActualizar}" name="crearActualizar" type="hidden"/>
-                                <div class="form-group col-md-6">
-                                    <label>Modalidad</label>
-                                    <select style="border-radius: 10rem" class="form-control"
-                                            id="miselect" name="modalidad">
-                                        <option id="compra" th:value="compra" > Compra</option>
-                                        <option id="consignacion" th:value="consignacion" >Consignación</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6" id="verConsignacion3">
-                                    <label>Fecha Inicio de la Consignación</label>
-                                    <input style="border-radius: 10rem" type="date" class="form-control"
-                                           th:field="*{fechainicio}">
-                                    <div class="text-danger"
-                                         th:if="${#fields.hasErrors('fechainicio')}"
-                                         th:errors="*{fechainicio}"></div>
-                                </div>
-                                <div class="form-group col-md-6" id="verConsignacion">
-                                    <label>Fecha Fin de la Consignación</label>
-                                    <input style="border-radius: 10rem" type="date" class="form-control"
-                                           th:field="*{fechafin}">
-                                    <div class="text-danger"
-                                         th:if="${#fields.hasErrors('fechafin')}"
-                                         th:errors="*{fechafin}"></div>
-                                </div>
-                                <div class="form-group col-md-6" id="verConsignacion2">
-                                    <label>Artesano </label>
-                                    <select style="border-radius: 10rem" class="form-control"
-                                            th:field="*{codigoArtesano}">
-                                        <option th:each="artesanos : ${listaArtesanos}" th:value="${artesanos.idArtesano}"
-                                                th:text="${artesanos.nombre}">uno
-                                        </option>
-                                    </select>
-                                </div>
-                                <div  class="form-group col-md-6" >
-                                    <label >Nombre del Producto</label>
-                                    <input style="border-radius: 10rem" type="text" class="form-control" th:field="*{nombreProducto}">
-                                    <div class="text-danger" th:if="${#fields.hasErrors('nombreProducto')}" th:errors="*{nombreProducto}" ></div>
-                                </div>
-                                <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6" >
-                                    <label >Código del Nombre del Producto</label>
-                                    <input style="border-radius: 10rem" type="text" class="form-control" id="codigoProducto" name="codigoProducto"
-                                           th:value="*{codigoProducto}">
-                                    <div class="text-danger" th:if="${#fields.hasErrors('codigoProducto')}" th:errors="*{codigoProducto}" ></div>
-                                </div>
+                            <div class="row">
+                                <div style="width: 62px"></div>
+                                <div class="col-lg-5">
+                                    <div class="p-5">
+                                        <form class="user" method="post" th:action="@{/gestor/guardarProducto}"  th:object="${formulario}">
+                                            <input  th:value="*{crearActualizar}" name="crearActualizar" type="hidden"/>
+                                            <div class="form-group">
+                                                <label>Modalidad</label>
+                                                <select style="border-radius: 10rem" class="form-control"
+                                                        id="miselect" name="modalidad">
+                                                    <option id="compra" th:value="compra" > Compra</option>
+                                                    <option id="consignacion" th:value="consignacion" >Consignación</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group" id="verConsignacion3">
+                                                <label>Fecha Inicio de la Consignación:</label>
+                                                <input style="border-radius: 10rem" type="date" class="form-control"
+                                                       th:field="*{fechainicio}">
+                                                <div class="text-danger"
+                                                     th:if="${#fields.hasErrors('fechainicio')}"
+                                                     th:errors="*{fechainicio}"></div>
+                                            </div>
+                                            <div class="form-group" id="verConsignacion">
+                                                <label>Fecha Fin de la Consignación:</label>
+                                                <input style="border-radius: 10rem" type="date" class="form-control"
+                                                       th:field="*{fechafin}">
+                                                <div class="text-danger"
+                                                     th:if="${#fields.hasErrors('fechafin')}"
+                                                     th:errors="*{fechafin}"></div>
+                                            </div>
+                                            <div class="form-group" id="verConsignacion2">
+                                                <label>Artesano: </label>
+                                                <select style="border-radius: 10rem" class="form-control"
+                                                        th:field="*{codigoArtesano}">
+                                                    <option th:each="artesanos : ${listaArtesanos}" th:value="${artesanos.idArtesano}"
+                                                            th:text="${artesanos.nombre}">uno
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div  class="form-group" >
+                                                <label >Nombre del Producto:</label>
+                                                <input type="text" class="form-control form-control-user2" th:field="*{nombreProducto}">
+                                                <div class="text-danger" th:if="${#fields.hasErrors('nombreProducto')}" th:errors="*{nombreProducto}" ></div>
+                                            </div>
+                                            <div th:if="${formulario.crearActualizar == 0}" class="form-group" >
+                                                <label >Código del Nombre del Producto:</label>
+                                                <input type="text" class="form-control form-control-user2" id="codigoProducto" name="codigoProducto"
+                                                       th:value="*{codigoProducto}">
+                                                <div class="text-danger" th:if="${#fields.hasErrors('codigoProducto')}" th:errors="*{codigoProducto}" ></div>
+                                            </div>
 
-                                <div class="form-group col-md-6">
-                                    <label >Descripción</label>
-                                    <input style="border-radius: 10rem" type="text" class="form-control" id="descripcion" name="descripcion"
-                                           th:value="*{descripcion}">
-                                    <div class="text-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" ></div>
+                                            <div class="form-group">
+                                                <label >Descripción:</label>
+                                                <input type="text" class="form-control form-control-user2" id="descripcion" name="descripcion"
+                                                       th:value="*{descripcion}">
+                                                <div class="text-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" ></div>
+                                            </div>
+                                            <div th:if="${formulario.crearActualizar == 0}" class="form-group">
+                                                <label >Código de la Descripción:</label>
+                                                <input  type="text" class="form-control form-control-user2" id="codDescripcion" name="codDescripcion"
+                                                       th:value="*{codDescripcion}">
+                                                <div class="text-danger" th:if="${#fields.hasErrors('codDescripcion')}" th:errors="*{codDescripcion}" ></div>
+                                            </div>
+                                            <div th:if="${formulario.crearActualizar == 0}" class="form-group">
+                                                <label >Categoría:</label>
+                                                <select style="border-radius: 10rem" class="form-control" name="nombreCategoria" id="nombreCategoria">
+                                                    <option th:each="cat: ${listaCategorias}" th:value="${cat.nombre}"
+                                                            th:text="${cat.nombre}" th:selected="${cat.nombre.equals(formulario.nombreCategoria)}">uno</option>
+                                                </select>
+                                            </div>
+                                            <div th:if="${formulario.crearActualizar == 0}" class="form-group">
+                                                <label >Línea:</label>
+                                                <select style="border-radius: 10rem" class="form-control" name="nombreLinea" id="nombreLinea">
+                                                    <option th:each="lin: ${listaLinea }" th:value="${lin.nombre}"
+                                                            th:text="${lin.nombre}" th:selected="${lin.nombre.equals(formulario.nombreLinea)}">uno</option>
+                                                </select>
+                                            </div>
+                                            <div th:if="${formulario.crearActualizar == 0}" class="form-group">
+                                                <label >Tamaño:</label>
+                                                <select style="border-radius: 10rem" class="form-control" name="nombreTama" id="nombreTama}">
+                                                    <option th:each=" tam : ${listaTama}" th:value="${tam.nombre}"
+                                                            th:text="${tam.nombre}" th:selected="${tam.nombre.equals(formulario.nombreTama)}" >uno</option>
+                                                </select>
+                                            </div>
+                                            <div th:if="${formulario.crearActualizar == 0}" class="form-group">
+                                                <label >Comunidad a la que pertenece:</label>
+                                                <select style="border-radius: 10rem" class="form-control" name="nombreComun" id="nombreComun">
+                                                    <option th:each="comu : ${listaComunidades}" th:value="${comu.nombre}"
+                                                            th:text="${comu.nombre}" th:selected="${comu.nombre.equals(formulario.nombreComun)}" >uno</option>
+                                                </select>
+                                            </div>
+                                            <hr style="margin: 1.5rem 0">
+                                            <button type="submit" class="btn btn-orange btn-block" style="border-radius: 10rem">Guardar</button>
+                                            <a th:href="@{/gestor/productos}" class="btn btn-danger btn-block" style="border-radius: 10rem">Cancelar</a>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
-                                    <label >Código de la Descripción</label>
-                                    <input style="border-radius: 10rem" type="text" class="form-control" id="codDescripcion" name="codDescripcion"
-                                           th:value="*{codDescripcion}">
-                                    <div class="text-danger" th:if="${#fields.hasErrors('codDescripcion')}" th:errors="*{codDescripcion}" ></div>
-                                </div>
-                                <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
-                                    <label >Categoría</label>
-                                    <select style="border-radius: 10rem" class="form-control" name="nombreCategoria" id="nombreCategoria">
-                                        <option th:each="cat: ${listaCategorias}" th:value="${cat.nombre}"
-                                                th:text="${cat.nombre}" th:selected="${cat.nombre.equals(formulario.nombreCategoria)}">uno</option>
-                                    </select>
-                                </div>
-                                <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
-                                    <label >Línea</label>
-                                    <select style="border-radius: 10rem" class="form-control" name="nombreLinea" id="nombreLinea">
-                                        <option th:each="lin: ${listaLinea }" th:value="${lin.nombre}"
-                                                th:text="${lin.nombre}" th:selected="${lin.nombre.equals(formulario.nombreLinea)}">uno</option>
-                                    </select>
-                                </div>
-                                <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
-                                    <label >Tamaño</label>
-                                    <select style="border-radius: 10rem" class="form-control" name="nombreTama" id="nombreTama}">
-                                        <option th:each=" tam : ${listaTama}" th:value="${tam.nombre}"
-                                                th:text="${tam.nombre}" th:selected="${tam.nombre.equals(formulario.nombreTama)}" >uno</option>
-                                    </select>
-                                </div>
-                                <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
-                                    <label >Comunidad a la que pertenece</label>
-                                    <select style="border-radius: 10rem" class="form-control" name="nombreComun" id="nombreComun">
-                                        <option th:each="comu : ${listaComunidades}" th:value="${comu.nombre}"
-                                                th:text="${comu.nombre}" th:selected="${comu.nombre.equals(formulario.nombreComun)}" >uno</option>
-                                    </select>
-                                </div>
-                                <div class="form-row col-md-2">
-                                <div class="form-group col-md-8">
-                                    <a th:href="@{/gestor/productos}" class="btn btn-danger">Cancelar</a>
-                                </div>
-                                <div class="form-group col-md-2"  >
-                                    <button type="submit" class="btn btn-searchTop">Guardar</button>
-                                </div>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>

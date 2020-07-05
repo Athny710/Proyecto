@@ -6,118 +6,112 @@
 
 <body id="page-top">
 
-<div id="wrapper">
-    <div th:insert="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column bg-white">
-        <!-- Main Content -->
-        <div id="content">
-            <div th:insert="Fragmentos/FragmentosGestor.html:: TopBar"></div>
-            <div th:insert="Fragmentos/FragmentosGestor.html:: LogOut"></div>
-            <!-- Page Heading -->
-            <div class="container-fluid">
-                <div class="card shadowA mb-4">
-                    <div class="card-header2 py-3">
-                        <div class="d-flex justify-content-between centrado">
-                            <h5 class="m-0 font-weight-bold text-redM"
-                                th:text="${estadoenviosede.idenviosede == 0? 'Registro de nuevo envio' : 'Edición del pedido'}">
-                                Registro de nuevo envio</h5>
+    <div id="wrapper">
+        <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column bg-white">
+            <!-- Main Content -->
+            <div id="content">
+                <div th:insert="Fragmentos/FragmentosGestor.html:: TopBar"></div>
+                <div th:insert="Fragmentos/FragmentosGestor.html:: LogOut"></div>
+                <!-- Page Heading -->
+                <div class="container-fluid">
+                    <div class="card shadowA mb-4" >
+                        <div class="card-header2 py-3">
+                            <div class="d-flex justify-content-between centrado">
+                                <h5 class="m-0 font-weight-bold text-redM"
+                                    th:text="${estadoenviosede.idenviosede == 0? 'Registro de nuevo envio' : 'Edición del pedido'}">
+                                    Registro de nuevo envio</h5>
+                            </div>
+                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
                         </div>
-                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
-                    </div>
-                    <div class="card-body bg-gray-100">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="p-5">
-                                    <form method="post" th:action="@{/gestor/gestorGuardarEnvio}"
-                                          th:object="${estadoenviosede}">
-                                        <input th:field="*{idenviosede}" type="hidden">
-                                        <div class="form-group row">
-                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                        <div class="card-body bg-gray-100">
+                            <div class="row">
+                                <div style="width: 62px"></div>
+                                <div class="col-lg-5">
+                                    <div class="p-5">
+                                        <form method="post" th:action="@{/gestor/gestorGuardarEnvio}" class="user"
+                                              th:object="${estadoenviosede}">
+                                            <input th:field="*{idenviosede}" type="hidden">
+                                            <div class="form-group">
                                                 <label>Fecha de envio:</label>
                                                 <input th:field="*{fecha}" type="date" class="form-control"
                                                        placeholder="fecha" style="border-radius:10rem">
                                                 <div class="text-danger" th:if="${#fields.hasErrors('fecha')}"
                                                      th:errors="*{fecha}"></div>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="form-group">
                                                 <label>Cantidad enviada:</label>
                                                 <input th:field="*{cantidad}" type="number"
-                                                       class="form-control form-control-user" placeholder="cantidad"
+                                                       class="form-control form-control-user2" placeholder="cantidad"
                                                        style="border-radius:10rem">
                                                 <div class="text-danger" th:if="${#fields.hasErrors('cantidad')}"
                                                      th:errors="*{cantidad}"></div>
-
                                             </div>
-                                        </div>
 
-                                        <div class="form-group">
-                                            <label>Comentarios de envio:</label>
-                                            <input th:field="*{comentario}" type="text"
-                                                   class="form-control form-control-user" placeholder="comentario"
-                                                   style="border-radius:10rem">
-                                            <div class="text-danger" th:if="${#fields.hasErrors('comentario')}"
-                                                 th:errors="*{comentario}"></div>
-                                        </div>
+                                            <div class="form-group">
+                                                <label>Comentarios de envio:</label>
+                                                <input th:field="*{comentario}" type="text"
+                                                       class="form-control form-control-user2"
+                                                       style="border-radius:10rem">
+                                                <div class="text-danger" th:if="${#fields.hasErrors('comentario')}"
+                                                     th:errors="*{comentario}"></div>
+                                            </div>
 
-                                        <div class="form-group">
-                                            <label for="inventariosede">Producto a enviar:</label>
-                                            <select th:field="*{inventariosede.inventario.idInventario}"
-                                                    class="form-control form-control-user" id="inventariosede"
-                                                    placeholder="producto" style="border-radius:10rem">
-                                                <option th:each="inventario : ${listaInventario}"
-                                                        th:value="${inventario.idInventario}" th:text="${
-                                                        inventario.producto.getCodigoGenerado()  + ' ' +
-                                                        inventario.color
-                                                        + ' quedan: ' + inventario.stock }"></option>
-                                            </select>
-                                            <div class="text-danger"
-                                                 th:if="${#fields.hasErrors('inventariosede.inventario.idInventario')}"
-                                                 th:errors="*{inventariosede.inventario.idInventario}"></div>
-                                        </div>
+                                            <div class="form-group">
+                                                <label for="inventariosede">Producto a enviar:</label>
+                                                <select th:field="*{inventariosede.inventario.idInventario}"
+                                                        class="form-control form-control-user2" id="inventariosede"
+                                                        placeholder="producto" style="border-radius:10rem">
+                                                    <option th:each="inventario : ${listaInventario}"
+                                                            th:value="${inventario.idInventario}" th:text="${
+                                                            inventario.producto.getCodigoGenerado()  + ' ' +
+                                                            inventario.color
+                                                            + ' quedan: ' + inventario.stock }"></option>
+                                                </select>
+                                                <div class="text-danger"
+                                                     th:if="${#fields.hasErrors('inventariosede.inventario.idInventario')}"
+                                                     th:errors="*{inventariosede.inventario.idInventario}"></div>
+                                            </div>
 
-                                        <div class="form-group">
-                                            <label for="listaSede">Sede destino:</label>
-                                            <select th:field="*{inventariosede.sede.idsede}"
-                                                    class="form-control form-control-user" id="listaSede"
-                                                    placeholder="Sede" style="border-radius:10rem">
-                                                <option th:each="sede : ${listaSede}" th:value="${sede.idsede}"
-                                                        th:text="${sede.nombre}"></option>
-                                            </select>
-                                            <div class="text-danger"
-                                                 th:if="${#fields.hasErrors('inventariosede.sede.idsede')}"
-                                                 th:errors="*{inventariosede.sede.idsede}"></div>
-                                        </div>
-                                        <div class="row">
-                                            <button type="submit" class="btn btn-searchTop btn-block" style="border-radius:10rem"
-                                                    th:text="${estadoenviosede.idenviosede == 0? 'Enviar' : 'Reenviar'}">
-                                                Reenviar o enviar
-                                            </button>
-                                        </div>
-                                        <div class="row" th:if="${estadoenviosede.idenviosede == 0}">
-                                            <a class="btn btn-danger btn-block" style="border-radius:10rem;margin-top: 8px;"
-                                               th:href="@{/gestor/gestorProductosEnviados}">Cancelar</a>
-                                        </div>
-                                        <div class="row" th:if="${estadoenviosede.idenviosede != 0}">
-                                            <a class="btn btn-danger btn-block" style="border-radius:10rem;margin-top: 8px;"
-                                               th:href="@{/gestor/gestorProductosRechazados}">Cancelar</a>
-                                        </div>
+                                            <div class="form-group">
+                                                <label for="listaSede">Sede destino:</label>
+                                                <select th:field="*{inventariosede.sede.idsede}"
+                                                        class="form-control form-control-user2" id="listaSede"
+                                                        placeholder="Sede" style="border-radius:10rem">
+                                                    <option th:each="sede : ${listaSede}" th:value="${sede.idsede}"
+                                                            th:text="${sede.nombre}"></option>
+                                                </select>
+                                                <div class="text-danger"
+                                                     th:if="${#fields.hasErrors('inventariosede.sede.idsede')}"
+                                                     th:errors="*{inventariosede.sede.idsede}"></div>
+                                            </div>
+                                            <hr style="margin: 1.5rem 0">
+                                                <button type="submit" class="btn btn-orange btn-block" style="border-radius:10rem"
+                                                        th:text="${estadoenviosede.idenviosede == 0? 'Enviar' : 'Reenviar'}">
+                                                    Reenviar o enviar
+                                                </button>
 
-
-                                    </form>
-                                    <hr>
-                                </div>
-                            </div>
-                            <div class="col-lg-1"></div>
-                            <div class="col-lg-4">
-                                <br>
-                                <br>
-                                <div class="card shadowA mb-4">
-                                    <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
+                                            <div class="row" th:if="${estadoenviosede.idenviosede == 0}">
+                                                <a class="btn btn-danger btn-block" style="border-radius:10rem;margin-top: 8px;"
+                                                   th:href="@{/gestor/gestorProductosEnviados}">Cancelar</a>
+                                            </div>
+                                            <div class="row" th:if="${estadoenviosede.idenviosede != 0}">
+                                                <a class="btn btn-danger btn-block" style="border-radius:10rem;margin-top: 8px;"
+                                                   th:href="@{/gestor/gestorProductosRechazados}">Cancelar</a>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="card-body">
-                                        Este envio debera ser aceptado por las sedes.
+                                </div>
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-4" >
+                                    <div class="card shadowA mb-4" style="margin-top: 4.9rem">
+                                        <div class="card-header py-3 bg-white">
+                                            <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
+                                        </div>
+                                        <div class="card-body bg-white" style="text-align: center">
+                                            Este envio debera ser aceptado por las sedes.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -127,7 +121,6 @@
             </div>
         </div>
     </div>
-</div>
 
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">

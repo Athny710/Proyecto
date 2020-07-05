@@ -2496,14 +2496,14 @@ fieldset:disabled a.btn {
 
 .btn-danger {
   color: #fff;
-  background-color: #e74a3b;
-  border-color: #e74a3b;
+  background-color: #CF4236;
+  border-color: #CF4236;
 }
 
 .btn-danger:hover {
-  color: #fff;
-  background-color: #e02d1b;
-  border-color: #d52a1a;
+  color: #858796;
+  background-color: #CF4236;
+  border-color: #CF4236;
 }
 
 .btn-danger:focus, .btn-danger.focus {
@@ -2893,7 +2893,7 @@ fieldset:disabled a.btn {
 }
 
 .btn-block + .btn-block {
-  margin-top: 0.5rem;
+  margin-top: 0.8rem;
 }
 
 input[type="submit"].btn-block,
@@ -10712,6 +10712,11 @@ a:focus {
 
 form.user .custom-checkbox.small label {
   line-height: 1.5rem;
+}
+form.user .form-control-user2 {
+  font-size: 0.8rem;
+  border-radius: 10rem;
+  padding: 1.2rem 1rem;
 }
 form.user .form-control-user2 {
   font-size: 0.8rem;
