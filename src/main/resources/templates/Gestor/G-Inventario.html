@@ -41,7 +41,7 @@
                                             <th>Tipo</th>
                                             <th>Stock total</th>
                                             <th>Detalles</th>
-                                            <th>Agregar/borrar</th>
+                                            <th>Agregar/Ver Historial</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -61,8 +61,9 @@
                                                 <a th:href="@{'/gestor/AnadirCompra?id='+${productos.idInventario}}">
                                                     <i class="fa fa-plus-circle" style="color: #5d21c7;margin-right: 5px"></i>
                                                 </a>
-                                                <a th:href="@{'/gestor/borrarProducto?id='+${productos.idInventario}}">
-                                                    <i class="far fa-trash-alt text-redM" style="margin-left: 5px"></i>
+
+                                                <a th:href="@{'/gestor/verHistorial?id='+${productos.idInventario}}">
+                                                    <i class="fas fa-book" style="color: #000000;margin-right: 5px"></i>
                                                 </a>
                                             </td>
                                         </tr>

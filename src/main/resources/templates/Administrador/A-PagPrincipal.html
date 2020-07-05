@@ -25,12 +25,12 @@
                             <div class="card2" id="busquedaAvanzada">
 
 
-                                        <form action="" class="user">
+                                        <form  method="post" th:action="@{/admin/bucador}" class="user">
                                             <div class="row">
                                                 <div class="col-lg-6ba">
                                                     <div class="row" style="margin: 1rem">
                                                         <div class="col-ba-1">
-                                                            <input id="artesanocb" type="checkbox" style="margin: 0.75rem">
+                                                            <input id="artesanocb" name="artesanocb" value="activo" type="checkbox" style="margin: 0.75rem">
                                                         </div>
                                                         <div class="col-ba-2">
                                                             <label for="artesano" style="margin-top: 0.25rem">Artesano:</label>
@@ -45,7 +45,7 @@
                                                     </div>
                                                     <div class="row" style="margin: 1rem">
                                                         <div class="col-ba-1">
-                                                            <input id="comunidadcb" type="checkbox" style="margin: 0.75rem">
+                                                            <input id="comunidadcb" name="comunidadcb" type="checkbox" value="activo" style="margin: 0.75rem">
                                                         </div>
                                                         <div class="col-ba-2">
                                                             <label for="comunidad" style="margin-top: 0.25rem">Comunidad:</label>
@@ -60,7 +60,7 @@
                                                     </div>
                                                     <div class="row" style="margin: 1rem">
                                                         <div class="col-ba-1">
-                                                            <input id="categoriacb" type="checkbox" style="margin: 0.75rem">
+                                                            <input id="categoriacb" name="categoriacb" type="checkbox" value="activo" style="margin: 0.75rem">
                                                         </div>
                                                         <div class="col-ba-2">
                                                             <label for="categoria" style="margin-top: 0.25rem">Categoría:</label>
@@ -89,7 +89,7 @@
                                                         </div>
                                                     </div>
                                                     <div style="text-align: right">
-                                                        <button typye="submit" class="btn btn-orange" style="margin-top: 4.25rem">Buscar</button>
+                                                        <button type="submit" class="btn btn-orange" style="margin-top: 4.25rem">Buscar</button>
                                                     </div>
 
                                                 </div>

@@ -49,7 +49,13 @@ public class AdminController {
     }
 
     @GetMapping("/bucador")
-    public String buscadorAvanzado(Model model){
+    public String buscadorAvanzado(Model model,@RequestParam("comunidad") int idComu,
+                                   @RequestParam("artesano") int idArt,@RequestParam("categoria") int idCate,
+                                   @RequestParam("comunidadcb") String v1,
+                                   @RequestParam("artesanocb") String v2,@RequestParam("categoriacb") String v3){
+
+
+
 
         return "Administrador/A-PagPrincipal";
     }
