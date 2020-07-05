@@ -465,12 +465,14 @@ public class GestorController {
     public String HistorialDeInventario(Model model, @RequestParam("id") int id) {
         Optional<Inventario> inventario1 = inventarioRepository.findById(id);
         if(inventario1.isPresent()){
-            List<Historial> historiales = historialRepository.listarHistorialDeUnPro(id);
-            model.addAttribute("Historiales", historiales);
+            List<Historial> historiales = historialRepository.listarHistorialDeUnPro(inventario1.get().getIdInventario());
+            model.addAttribute("historiales", historiales);
+            model.addAttribute("inventario", inventario1.get());
+            return "Gestor/G-ListaDeHistorial";
         }else {
-
+            return "redirect:/gestorPrincipal";
         }
-        return "Gestor/G-Inventario";
+
     }
 
     @GetMapping("productos")

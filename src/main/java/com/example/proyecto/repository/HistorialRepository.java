@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface HistorialRepository extends JpaRepository<Historial,Integer> {
 
-    @Query(value = "SELECT * FROM sw2_proyecto.historial where idInventario = ?1;",
+    @Query(value = "SELECT * FROM sw2_proyecto.historial where idInventario =?1",
             nativeQuery = true)
     List<Historial> listarHistorialDeUnPro(int idPro);
 }
