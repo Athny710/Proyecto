@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
+import java.util.Date;
 
 @Entity
 @Table(name = "inventario")
@@ -24,7 +25,24 @@ public class Inventario {
     @ManyToOne
     @JoinColumn(name = "idproducto")
     private Producto producto;
+    private String estado;
+    private Date fechadevolucion;
 
+    public Date getFechadevolucion() {
+        return fechadevolucion;
+    }
+
+    public void setFechadevolucion(Date fechadevolucion) {
+        this.fechadevolucion = fechadevolucion;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 
     public int getIdInventario() {
         return idinventario;

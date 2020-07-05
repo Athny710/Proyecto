@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "linea")
@@ -12,7 +13,9 @@ public class Linea {
     @Id
     private int idlinea;
     @Column(nullable = false)
+    @NotBlank(message = "Este Campo no puede ser vacío")
     private String nombre;
+    @NotBlank(message = "Este Campo no puede ser vacío")
     @Column(nullable = false)
     private String codigo;
 

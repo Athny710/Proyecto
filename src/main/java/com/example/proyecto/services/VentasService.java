@@ -31,7 +31,7 @@ public interface VentasService {
     boolean createPDF(List<CamposReporteSede> venta, ServletContext context, HttpServletRequest request, HttpServletResponse response);
     boolean createExcel(List<CamposReporteSede> venta, ServletContext context, HttpServletRequest request, HttpServletResponse response);
     boolean createExcelXCodigo(List<VentaPorCodigo> venta, ServletContext context, HttpServletRequest request, HttpServletResponse response);
-    boolean createExcelXCliente(List<ReporteConCamposOriginales> ventaXCliente,String cliente, ServletContext context, HttpServletRequest request, HttpServletResponse response);
+    boolean createExcelXCliente(List<ReporteConCamposOriginales> ventaXCliente,String cliente, String periodo, ServletContext context, HttpServletRequest request, HttpServletResponse response);
     boolean createExcelXSede(List<ReporteConCamposOriginales> ventaXSedeAnual, ServletContext context, HttpServletRequest request, HttpServletResponse response);
 
 

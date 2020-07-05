@@ -15,7 +15,8 @@ public class Sede implements Serializable    {
     private Integer idsede;
     @NotBlank(message = "* Debe ingresar el nombre de la sede que desea registrar")
     @Size(max = 30, message = "No puede tener más de 30 caracteres")
-    @Pattern(regexp = "^[a-zA-Z\\\\s]*$",message = "solo se debe ingresar letras")
+   // @Pattern(regexp = "^[a-zA-Z\\\\s]*$",message = "solo se debe ingresar letras")
+    @Pattern(regexp = "^[a-zA-Z\\s]*$",message = "solo se debe ingresar letras")
     private String nombre;
 
     public Integer getIdsede() {
