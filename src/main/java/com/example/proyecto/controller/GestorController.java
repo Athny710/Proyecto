@@ -454,10 +454,22 @@ public class GestorController {
 
     @GetMapping(value = {"", "gestorPrincipal"})
     public String inventarioGestor(Model model) {
-        List<Inventario> inventario = inventarioRepository.findAll();
+        List<Inventario> inventario = inventarioRepository.listarStockMayor0();
         //todo mostrar  mensaje de stock bajo
 
         model.addAttribute("inventario", inventario);
+        return "Gestor/G-Inventario";
+    }
+
+    @GetMapping("/verHistorial")
+    public String HistorialDeInventario(Model model, @RequestParam("id") int id) {
+        Optional<Inventario> inventario1 = inventarioRepository.findById(id);
+        if(inventario1.isPresent()){
+            List<Historial> historiales = historialRepository.listarHistorialDeUnPro(id);
+            model.addAttribute("Historiales", historiales);
+        }else {
+
+        }
         return "Gestor/G-Inventario";
     }
 

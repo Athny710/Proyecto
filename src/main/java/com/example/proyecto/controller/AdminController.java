@@ -3,8 +3,7 @@ package com.example.proyecto.controller;
 import com.example.proyecto.entity.Inventario;
 import com.example.proyecto.entity.Perfil;
 import com.example.proyecto.entity.Usuarios;
-import com.example.proyecto.repository.InventarioRepository;
-import com.example.proyecto.repository.UsuarioRepository;
+import com.example.proyecto.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,13 +31,32 @@ public class AdminController {
     UsuarioRepository usuarioRepository;
     @Autowired
     InventarioRepository inventarioRepository;
-
-
+    @Autowired
+    ComunidadRepository comunidadRepository;
+    @Autowired
+    ArtesanoRepository artesanoRepository;
+    @Autowired
+    CategoriaRepository categoriaRepository;
 
     //--------------------------Inventario
     @GetMapping(value = {"","principal"})
     public String principalAdmin(Model model){
         model.addAttribute("inventario", inventarioRepository.findAll());
+        model.addAttribute("listaComunidades",comunidadRepository.findAll());
+        model.addAttribute("listaArtesanos",artesanoRepository.findAll());
+        model.addAttribute("listaCategoria",categoriaRepository.findAll());
+        return "Administrador/A-PagPrincipal";
+    }
+
+    @GetMapping("/bucador")
+    public String buscadorAvanzado(Model model,@RequestParam("comunidad") int idComu,
+                                   @RequestParam("artesano") int idArt,@RequestParam("categoria") int idCate,
+                                   @RequestParam("comunidadcb") String v1,
+                                   @RequestParam("artesanocb") String v2,@RequestParam("categoriacb") String v3){
+
+
+
+
         return "Administrador/A-PagPrincipal";
     }
 
