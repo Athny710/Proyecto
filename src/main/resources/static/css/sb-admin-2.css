@@ -1106,6 +1106,17 @@ pre code {
     width: auto;
     max-width: 100%;
   }
+
+  .col-ba-1{
+    flex: 0 0 8.33333%;
+    max-width: 7%;
+  }
+
+  .col-ba-2{
+    flex: 0 0 22%;
+    max-width: 22%;
+  }
+
   .col-lg-1 {
     flex: 0 0 8.33333%;
     max-width: 8.33333%;
@@ -1122,9 +1133,17 @@ pre code {
     flex: 0 0 33.33333%;
     max-width: 33.33333%;
   }
+  .col-lg-5ba {
+    flex: 0 0 36%;
+    max-width: 36%;
+  }
   .col-lg-5 {
     flex: 0 0 41.66667%;
     max-width: 41.66667%;
+  }
+  .col-lg-6ba {
+    flex: 0 0 48%;
+    max-width: 48%;
   }
   .col-lg-6 {
     flex: 0 0 50%;
@@ -1890,6 +1909,9 @@ textarea.form-control {
   height: auto;
 }
 
+.form-group2 {
+  margin: 1rem 1rem 0 1rem;
+}
 .form-group {
   margin-bottom: 1rem;
 }
@@ -4384,6 +4406,19 @@ input[type="button"].btn-block {
 
 .navbar-dark .navbar-text a:hover, .navbar-dark .navbar-text a:focus {
   color: #fff;
+}
+
+.card2 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border: 1px solid #e3e6f0;
+  border-radius: 0.35rem;
+  background-color: #ffffff;
+  margin: 0 0 1rem 0;
 }
 
 .card {
@@ -10066,6 +10101,13 @@ a:focus {
 .topbar .navbar-search input {
   font-size: 0.85rem;
   height: auto;
+}
+
+.divisor-ba{
+  width: 0.5rem;
+  border-right: 1px solid #e3e6f0;
+  height: 10rem;
+  margin: 1rem 0;
 }
 
 .topbar .topbar-divider {
