@@ -43,8 +43,14 @@ public class AdminController {
     public String principalAdmin(Model model){
         model.addAttribute("inventario", inventarioRepository.findAll());
         model.addAttribute("listaComunidades",comunidadRepository.findAll());
-        model.addAttribute("listaArtesanos",comunidadRepository.findAll());
-        model.addAttribute("listaCategoria",comunidadRepository.findAll());
+        model.addAttribute("listaArtesanos",artesanoRepository.findAll());
+        model.addAttribute("listaCategoria",categoriaRepository.findAll());
+        return "Administrador/A-PagPrincipal";
+    }
+
+    @GetMapping("/bucador")
+    public String buscadorAvanzado(Model model){
+
         return "Administrador/A-PagPrincipal";
     }
 
