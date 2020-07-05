@@ -41,7 +41,7 @@
 
                                         <div class="form-group" id="verConsignacion3">
                                             <label>Fecha Inicio de la Consignación</label>
-                                            <input type="date" class="form-control"
+                                            <input type="date" class="form-control" style="border-radius: 10rem"
                                                    th:field="*{fechainicio}">
                                             <div class="text-danger"
                                                  th:if="${#fields.hasErrors('fechainicio')}"
@@ -49,7 +49,7 @@
                                         </div>
                                         <div class="form-group" id="verConsignacion">
                                             <label>Fecha Fin de la Consignación</label>
-                                            <input type="date" class="form-control"
+                                            <input type="date" class="form-control" style="border-radius: 10rem"
                                                    th:field="*{fechafin}">
                                             <div class="text-danger"
                                                  th:if="${#fields.hasErrors('fechafin')}"
@@ -57,7 +57,7 @@
                                         </div>
                                         <div class="form-group" id="verConsignacion2">
                                             <label>Artesano </label>
-                                            <select  class="form-control form-control-user2"
+                                            <select style="border-radius: 10rem" class="form-control"
                                                     th:field="*{codigoArtesano}">
                                                 <option th:each="artesanos : ${listaArtesanos}" th:value="${artesanos.idArtesano}"
                                                         th:text="${artesanos.nombre}">uno
@@ -98,7 +98,7 @@
                                         </div>
                                         <div th:if="${formulario.crearActualizar == 0}" class="form-group">
                                             <label>Categoría</label>
-                                            <select class="form-control form-control-user2" name="nombreCategoria"
+                                            <select style="border-radius: 10rem" class="form-control" name="nombreCategoria"
                                                     id="nombreCategoria">
                                                 <option th:each="cat: ${listaCategorias}" th:value="${cat.nombre}"
                                                         th:text="${cat.nombre}"
@@ -108,7 +108,7 @@
                                         </div>
                                         <div th:if="${formulario.crearActualizar == 0}" class="form-group">
                                             <label>Línea</label>
-                                            <select class="form-control form-control-user2" name="nombreLinea"
+                                            <select style="border-radius: 10rem" class="form-control" name="nombreLinea"
                                                     id="nombreLinea">
                                                 <option th:each="lin: ${listaLinea }" th:value="${lin.nombre}"
                                                         th:text="${lin.nombre}"
@@ -118,7 +118,7 @@
                                         </div>
                                         <div th:if="${formulario.crearActualizar == 0}" class="form-group">
                                             <label>Tamaño</label>
-                                            <select class="form-control form-control-user2" name="nombreTama"
+                                            <select style="border-radius: 10rem" class="form-control" name="nombreTama"
                                                     id="nombreTama}">
                                                 <option th:each=" tam : ${listaTama}" th:value="${tam.nombre}"
                                                         th:text="${tam.nombre}"
@@ -128,7 +128,7 @@
                                         </div>
                                         <div th:if="${formulario.crearActualizar == 0}" class="form-group">
                                             <label>Comunidad a la que pertenece</label>
-                                            <select class="form-control form-control-user2" name="nombreComun"
+                                            <select style="border-radius: 10rem" class="form-control" name="nombreComun"
                                                     id="nombreComun">
                                                 <option th:each="comu : ${listaComunidades}" th:value="${comu.nombre}"
                                                         th:text="${comu.nombre}"
