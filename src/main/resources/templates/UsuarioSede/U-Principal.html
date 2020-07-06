@@ -81,19 +81,23 @@
 
 
                                                         <div class="form-group">
+
                                                             <label>Cantidad a devolver: (Quedan <span
-                                                                    th:text="${x.stock}"></span>)</label>
-                                                            <input  name="cantidad" type="number" min="0"
-                                                                   class="form-control form-control-user"
-                                                                   placeholder="cantidad" th:value="${cantidad}"
-                                                                   style="border-radius:10rem">
+                                                                    th:text="${x.stock}"></span>)
+                                                                <input  name="cantidad" type="number" min="0"
+                                                                       class="form-control form-control-user"
+                                                                       placeholder="cantidad" th:value="${cantidad}"
+                                                                       style="border-radius:10rem">
+                                                            </label>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label>Detalles de envio: (Con quien se envia el producto y como)</label>
-                                                            <input  name="detalles" type="text"
-                                                                    class="form-control form-control-user"
-                                                                    placeholder="Lo lleva juan, espero que llegue el 23 de febrero" th:value="${detalles}" required="required"
-                                                                    style="border-radius:10rem">
+
+                                                            <label>Detalles de envio: (Con quien se envia el producto y como)
+                                                                <textarea  name="detalles" type="text"
+                                                                        class="form-control form-control-user"
+                                                                        placeholder="Lo lleva juan por bus, espero que llegue el 23 de febrero"  required="required"
+                                                                        style="border-radius: 10rem; resize:none"></textarea>
+                                                            </label>
                                                         </div>
                                                         <div class="form-group">
                                                             <button type="submit" class="btn btn-searchTop btn-block"
