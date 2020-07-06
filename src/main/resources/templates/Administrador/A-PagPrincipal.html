@@ -72,8 +72,9 @@
                                                     <label for="categoria" style="margin-top: 0.25rem">Categoría:</label>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <option value="0">Todos</option>
+
                                                     <select class="form-control" name="categoria" id="categoria" style="border-radius: 10rem" >
+                                                        <option value="0">Todos</option>
                                                         <option th:each=" categoria : ${listaCategoria}"
                                                                 th:value="${categoria.idCategoria}"
                                                                 th:text="${categoria.nombre}">Todo</option>
@@ -85,13 +86,13 @@
                                         <div class="col-lg-6">
                                             <div class="row" style="margin: 1rem">
                                                 <div class="col-lg-5ba">
-                                                    <label for="categoria" style="margin-top: 0.25rem">Tipo Adquisición:</label>
+                                                    <label for="adqui" style="margin-top: 0.25rem">Tipo Adquisición:</label>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <select class="form-control" style="border-radius: 10rem">
+                                                    <select class="form-control" name="adqui" id="adqui" style="border-radius: 10rem">
                                                         <option value="todo">Todo</option>
                                                         <option value="compra">Compra</option>
-                                                        <option value="consignacion">Consignación</option>
+                                                        <option value="consignado">Consignación</option>
                                                     </select>
                                                 </div>
                                             </div>
