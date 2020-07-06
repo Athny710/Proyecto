@@ -14,12 +14,12 @@
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <div class="card shadowA mb-4">
+                    <div class="card shadowA mb-4" >
                         <div class="card-header2 py-3">
                             <h5 class="m-0 font-weight-bold text-redM">Reporte de Ventas</h5>
                         </div>
                         <div class="card-body">
-                            <h5 class="m-0 font-weight-bold text-gray-900">Reporte avanzado</h5><br>
+                            <h5 class="m-0 text-gray-900" style="font-weight: 600">Reporte avanzado</h5><br>
                             <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
                             <a th:href="@{/gestor/nuevaVenta}"><div th:if="${msg1 != null}" th:text="${msg1}" class="alert alert-danger" role="alert"></div></a>
                             <form method="post" th:action="@{/gestor/crearExcelPorCliente}" id="form1">
@@ -84,7 +84,7 @@
                             </div>
 
                             <hr style="width: 75%; height: 10px">
-                            <h5 class="m-0 font-weight-bold text-gray-900">Reporte total</h5><br>
+                            <h5 class="m-0 text-gray-900" style="font-weight: 600">Reporte total</h5><br>
                             <form method="post" th:action="@{/gestor/crearExcelTotal}">
                                 <div class="row">
                                     <div class="form-group col-md-2">

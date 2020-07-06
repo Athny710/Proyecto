@@ -3,8 +3,7 @@ package com.example.proyecto.controller;
 import com.example.proyecto.entity.Inventario;
 import com.example.proyecto.entity.Perfil;
 import com.example.proyecto.entity.Usuarios;
-import com.example.proyecto.repository.InventarioRepository;
-import com.example.proyecto.repository.UsuarioRepository;
+import com.example.proyecto.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,13 +31,32 @@ public class AdminController {
     UsuarioRepository usuarioRepository;
     @Autowired
     InventarioRepository inventarioRepository;
-
-
+    @Autowired
+    ComunidadRepository comunidadRepository;
+    @Autowired
+    ArtesanoRepository artesanoRepository;
+    @Autowired
+    CategoriaRepository categoriaRepository;
 
     //--------------------------Inventario
     @GetMapping(value = {"","principal"})
     public String principalAdmin(Model model){
         model.addAttribute("inventario", inventarioRepository.findAll());
+        model.addAttribute("listaComunidades",comunidadRepository.findAll());
+        model.addAttribute("listaArtesanos",artesanoRepository.findAll());
+        model.addAttribute("listaCategoria",categoriaRepository.findAll());
+        return "Administrador/A-PagPrincipal";
+    }
+
+    @GetMapping("/bucador")
+    public String buscadorAvanzado(Model model,@RequestParam("comunidad") int idComu,
+                                   @RequestParam("artesano") int idArt,@RequestParam("categoria") int idCate,
+                                   @RequestParam("comunidadcb") String v1,
+                                   @RequestParam("artesanocb") String v2,@RequestParam("categoriacb") String v3){
+
+
+
+
         return "Administrador/A-PagPrincipal";
     }
 
@@ -74,7 +92,7 @@ public class AdminController {
     public String editarInfo(@ModelAttribute("perfil") Perfil perfil, HttpSession session){
         Usuarios u = (Usuarios) session.getAttribute("user");
         perfil.setCorreo(u.getCorreo());
-        perfil.setTelefono(Integer.parseInt(u.getTelefono()));
+        perfil.setTelefono(u.getTelefono());
         return "Administrador/A-Perfil";
     }
     @PostMapping("guardarPerfil")
@@ -90,22 +108,23 @@ public class AdminController {
             if(perfil.getCorreo().equals(usuarioLog.getCorreo())){
                 attr.addFlashAttribute("msg", "Información personal editada con éxito");
                 usuarioLog.setCorreo(perfil.getCorreo());
-                usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
+                usuarioLog.setTelefono(perfil.getTelefono());
                 usuarioRepository.save(usuarioLog);
                 session.setAttribute("user", usuarioLog);
-                return "redirect:/admin";
+                return "redirect:/admin/editarInfo";
             }else{
-                if(usuarioRepository.findByCorreo(perfil.getCorreo())!=null){
+                Usuarios us = usuarioRepository.findByCorreo(perfil.getCorreo());
+                if(us!=null && us.getActivo()==1){
                     System.out.println(usuarioLog.getCorreo());
-                    model.addAttribute("msg", "Este correo ya está registrado");
+                    model.addAttribute("msgC", "Este correo ya está registrado");
                     return "Administrador/A-Perfil";
                 }else{
                     attr.addFlashAttribute("msg", "Información personal editada con éxito");
                     usuarioLog.setCorreo(perfil.getCorreo());
-                    usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
+                    usuarioLog.setTelefono(perfil.getTelefono());
                     usuarioRepository.save(usuarioLog);
                     session.setAttribute("user", usuarioLog);
-                    return "redirect:/admin";
+                    return "redirect:/admin/editarInfo";
                 }
             }
         }

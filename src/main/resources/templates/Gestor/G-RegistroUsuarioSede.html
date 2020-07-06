@@ -14,50 +14,47 @@
             <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
             <!-- Page Heading -->
             <div class="container-fluid">
-                <div class="card shadowA mb-4">
+                <div class="card shadowA mb-4" >
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
-                            <h5 class="m-0 font-weight-bold text-gray-900" type="text">Registro nuevo Usuario Sede</h5>
+                            <h5 class="m-0 font-weight-bold text-redM" type="text">Nuevo Usuario Sede</h5>
                         </div>
                     </div>
                     <div class="card-body bg-gray-100">
                         <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger"
                              role="alert"></div>
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div style="width: 62px"></div>
+                            <div class="col-lg-5">
                                 <div class="p-5">
                                     <form method="post" class="user" th:action="@{/gestor/guardarUsuarioSede}"
                                           th:object="${usuarios}">
                                         <input th:field="*{idusuarios}" name="idUsuarios" type="hidden"/>
                                         <div class="form-group">
-                                            <label>Nombre</label>
+                                            <label>Nombre:</label>
                                             <input th:field="*{nombre}" type="text"
-                                                   class="form-control form-control-user" id="nombre"
-                                                   placeholder="Nombre">
+                                                   class="form-control form-control-user2" id="nombre">
                                             <div class="text-danger" th:if="${#fields.hasErrors('nombre')}"
                                                  th:errors="*{nombre}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label>Apellido</label>
+                                            <label>Apellidos:</label>
                                             <input th:field="*{apellido}" type="text"
-                                                   class="form-control form-control-user" id="apellido"
-                                                   placeholder="Apellidos">
+                                                   class="form-control form-control-user2" id="apellido">
                                             <div class="text-danger" th:if="${#fields.hasErrors('apellido')}"
                                                  th:errors="*{apellido}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label>Correo</label>
+                                            <label>Correo:</label>
                                             <input th:field="*{correo}" type="email"
-                                                   class="form-control form-control-user" id="correo"
-                                                   placeholder="E.jem_plo@mail.net">
+                                                   class="form-control form-control-user2" id="correo">
                                             <div class="text-danger" th:if="${#fields.hasErrors('correo')}"
                                                  th:errors="*{correo}"></div>
                                         </div>
                                         <div class="form-group">
                                             <label>Telefono</label>
                                             <input th:field="*{telefono}" type="text"
-                                                   class="form-control form-control-user" id="telefono"
-                                                   placeholder="011235813">
+                                                   class="form-control form-control-user2" id="telefono">
                                             <div class="text-danger" th:if="${#fields.hasErrors('telefono')}"
                                                  th:errors="*{telefono}"></div>
                                         </div>
@@ -69,24 +66,22 @@
                                                         th:text="${sede.nombre}"></option>
                                             </select>
                                         </div>
-                                        <button type="submit" class="btn btn-searchTop btn-user btn-block">
+                                        <hr style="margin: 1.5rem 0">
+                                        <button type="submit" class="btn btn-orange btn-block" style="border-radius:10rem">
                                             Guardar
                                         </button>
-                                        <a class="btn btn-searchTop btn-danger btn-block" style="border-radius:10rem"
+                                        <a class="btn btn-danger btn-block" style="border-radius:10rem"
                                            th:href="@{'/gestor/gestorListaUsuarioSede'}"> Cancelar</a>
                                     </form>
-                                    <hr>
                                 </div>
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
-                                <br>
-                                <br>
-                                <div class="card shadowA mb-4">
-                                    <div class="card-header py-3">
+                                <div class="card shadowA mb-4" style="margin-top: 4.9rem">
+                                    <div class="card-header py-3 bg-white">
                                         <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body bg-white" style="text-align: center">
                                         Aquí solo se podrá agregar a nuevos usuarios sedes colaboradores en Mosqoy.
                                     </div>
                                 </div>

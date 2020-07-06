@@ -14,31 +14,31 @@
             <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
             <!-- Page Heading -->
             <div class="container-fluid">
-                <div class="card shadowA mb-4">
+                <div class="card shadowA mb-4" >
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
-                            <h5 class="m-0 font-weight-bold text-gray-900" type="text">Registro de nueva Venta</h5>
+                            <h5 class="m-0 font-weight-bold text-redM" type="text">Registro de nueva Venta</h5>
                         </div>
                     </div>
                     <div class="card-body bg-gray-100">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div style="width: 62px"></div>
+                            <div class="col-lg-5">
                                 <div class="p-5">
                                     <form method="post" class="user" th:action="@{'/gestor/guardarVenta'}"
                                           th:object="${venta}">
                                         <input th:field="*{idventa}" type="hidden"/>
                                         <div class="form-group">
-                                            <Label>Nombre del Cliente</Label>
-                                            <input type="text" class="form-control form-control-user"
+                                            <Label>Nombre del Cliente:</Label>
+                                            <input type="text" class="form-control form-control-user2"
                                                    th:field="*{nombrecliente}"/>
                                             <div class="text-danger"
                                                  th:if="${#fields.hasErrors('nombrecliente')}"
                                                  th:errors="*{nombrecliente}">Error
                                             </div>
                                         </div>
-
                                         <div class="form-group">
-                                            <label>Tipo de documento de identidad </label>
+                                            <label>Tipo de documento de identidad: </label>
                                             <select style="border-radius: 10rem" class="form-control"
                                                     th:field="*{tipodocumentoidentidad}"
                                                     type="item">
@@ -47,8 +47,8 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <Label>Número de documento de identidad</Label>
-                                            <input type="text" class="form-control form-control-user"
+                                            <Label>Número de documento de identidad:</Label>
+                                            <input type="text" class="form-control form-control-user2"
                                                    th:field="*{numerodocumentoidentidad}"/>
                                             <div class="text-danger"
                                                  th:if="${#fields.hasErrors('numerodocumentoidentidad')}"
@@ -58,7 +58,7 @@
 
 
                                         <div class="form-group">
-                                            <label>Tipo de documento de venta </label>
+                                            <label>Tipo de documento de venta: </label>
                                             <select style="border-radius: 10rem" class="form-control"
                                                     th:field="*{tipodocumentoventa}"
                                                     type="item">
@@ -71,8 +71,8 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <Label>Número de documento de venta</Label>
-                                            <input type="text" class="form-control form-control-user"
+                                            <Label>Número de documento de venta:</Label>
+                                            <input type="text" class="form-control form-control-user2"
                                                    th:field="*{numerodocumentoventa}"/>
                                             <div class="text-danger"
                                                  th:if="${#fields.hasErrors('numerodocumentoventa')}"
@@ -80,16 +80,16 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <Label>Lugar de venta</Label>
-                                            <input type="text" class="form-control form-control-user"
+                                            <Label>Lugar de venta:</Label>
+                                            <input type="text" class="form-control form-control-user2"
                                                    th:field="*{lugardeventa}"/>
                                             <div class="text-danger" th:if="${#fields.hasErrors('lugardeventa')}"
                                                  th:errors="*{lugardeventa}">Error
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <Label>Precio Unitario del producto</Label>
-                                            <input type="text" class="form-control form-control-user"
+                                            <Label>Precio Unitario del producto:</Label>
+                                            <input type="text" class="form-control form-control-user2"
                                                    th:field="*{preciounitarioventa}"/>
                                             <div class="text-danger" th:if="${#fields.hasErrors('preciounitarioventa')}"
                                                  th:errors="*{preciounitarioventa}">Error
@@ -110,40 +110,38 @@
                                                  th:errors="*{inventario.idInventario}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <Label>Cantidad Vendida</Label>
-                                            <input type="text" class="form-control form-control-user"
-                                                   th:field="*{cantidad}" placeholder="Cantidad vendida"/>
+                                            <Label>Cantidad Vendida:</Label>
+                                            <input type="text" class="form-control form-control-user2"
+                                                   th:field="*{cantidad}"/>
                                             <div class="text-danger" th:if="${#fields.hasErrors('cantidad')}"
                                                  th:errors="*{cantidad}">Error
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <Label>Fecha de Venta</Label>
-                                            <input type="date" class="form-control form-control-user"
-                                                   th:field="*{fecha}"/>
+                                            <Label>Fecha de Venta:</Label>
+                                            <input type="date" class="form-control"
+                                                   th:field="*{fecha}" style="border-radius: 10rem"/>
 
                                             <div class="text-danger" th:if="${#fields.hasErrors('fecha')}"
                                                  th:errors="*{fecha}">Error
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-searchTop btn-user btn-block">
+                                        <hr style="margin: 1.5rem 0">
+                                        <button type="submit" class="btn btn-orange btn-block" style="border-radius:10rem">
                                             Guardar
                                         </button>
-                                        <a class="btn btn-searchTop btn-danger btn-block" style="border-radius:10rem"
+                                        <a class="btn btn-danger btn-block" style="border-radius:10rem"
                                            th:href="@{'/gestor/gestionVentas'}"> Cancelar</a>
                                     </form>
-                                    <hr>
                                 </div>
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
-                                <br>
-                                <br>
-                                <div class="card shadowA mb-4">
-                                    <div class="card-header py-3">
+                                <div class="card shadowA mb-4" style="margin-top: 4.9rem">
+                                    <div class="card-header py-3 bg-white">
                                         <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body bg-white" style="text-align: center;">
                                         Por favor asegurarse de guardar los datos correctos, luego no se podrán editar.
                                     </div>
                                 </div>

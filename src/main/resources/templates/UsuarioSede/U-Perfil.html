@@ -16,6 +16,7 @@
             <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
             <div class="container-fluid">
                 <!-- Page Heading -->
+                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                 <div class="card shadowA mb-4">
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
@@ -38,7 +39,7 @@
                                                 <div>
                                                     <input type="email" class="form-control form-control-user2" th:field="*{correo}" th:placeholder="${perfil.correo}">
                                                     <div class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}" style="font-size: 0.7rem">Error</div>
-                                                    <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${msg!=null}" th:text="${msg}"></div>
+                                                    <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${msgC!=null}" th:text="${msgC}"></div>
                                                 </div>
                                                 <div class="col-lg-2"></div>
                                             </div>

@@ -19,33 +19,33 @@
                         </div>
                     </div>
                     <div class="card-body bg-gray-100">
-                        <div class="row centrado">
-                            <div class="col-lg-6">
-                                <div class="p-5">
-                                    <form method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}">
-                                        <div class="form-group">
-                                            <label>Nombre de la tienda :</label>
-                                            <input th:field="*{idtienda}" name="idtienda" type="hidden" />
-                                            <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
-                                            <br>
-                                            <input th:field="*{nombre}" type="text" class="form-control form-control-user">
-                                            <div class="text-danger text-center" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</div><br>
-                                            <input name="sede.idsede" th:value="${session.user.sede.getIdsede()}" type="hidden" class="form-control form-control-user">
-                                        </div>
-                                        <button type="submit" class="btn btn-user btn-searchTop btn-block" th:text="${tienda.idtienda == 0? 'Registrar' : 'Actualizar'}"></button>
-                                        <a th:href="@{/sede/registroTiendas}" class="btn btn-danger btn-user btn-block">Cancelar</a>
-                                    </form>
+                        <div class="row">
+                                <div style="width: 62px"></div>
+                                <div class="col-lg-5">
+                                    <div class="p-5">
+                                        <form method="post" class="user" th:action="@{/sede/guardarTienda}" th:object="${tienda}">
+                                            <div class="form-group">
+                                                <label>Nombre de la tienda:</label>
+                                                <input th:field="*{idtienda}" name="idtienda" type="hidden" />
+                                                <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
+                                                <br>
+                                                <input th:field="*{nombre}" type="text" class="form-control form-control-user2">
+                                                <div class="text-danger text-center" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</div>
+                                                <input name="sede.idsede" th:value="${session.user.sede.getIdsede()}" type="hidden" class="form-control form-control-user">
+                                            </div>
+                                            <hr style="margin: 1.5rem 0">
+                                            <button type="submit" class="btn btn-orange btn-block" th:text="${tienda.idtienda == 0? 'Registrar' : 'Actualizar'}" style="border-radius: 10rem"></button>
+                                            <a th:href="@{/sede/registroTiendas}" class="btn btn-danger btn-block" style="border-radius: 10rem">Cancelar</a>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
-                                <br>
-                                <br>
-                                <div class="card shadowA mb-4">
-                                    <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-greenM">Recordar !</h6>
+                                <div class="card shadowA mb-4" style="margin-top: 4.9rem">
+                                    <div class="card-header py-3 bg-white">
+                                        <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body bg-white" style="text-align: center">
                                         Antes de ingresar una nueva tienda, verifica si ya se encuentra registrada con la ayuda del buscador situado en la lista.
                                     </div>
                                 </div>

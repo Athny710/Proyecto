@@ -181,7 +181,7 @@ public class SedeController {
     public String editarInfo(@ModelAttribute("perfil") Perfil perfil, HttpSession session) {
         Usuarios u = (Usuarios) session.getAttribute("user");
         perfil.setCorreo(u.getCorreo());
-        perfil.setTelefono(Integer.parseInt(u.getTelefono()));
+        perfil.setTelefono(u.getTelefono());
         return "UsuarioSede/U-Perfil";
     }
 
@@ -198,22 +198,22 @@ public class SedeController {
             if (perfil.getCorreo().equals(usuarioLog.getCorreo())) {
                 attr.addFlashAttribute("msg", "Información personal editada con éxito");
                 usuarioLog.setCorreo(perfil.getCorreo());
-                usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
+                usuarioLog.setTelefono(perfil.getTelefono());
                 usuarioRepository.save(usuarioLog);
                 session.setAttribute("user", usuarioLog);
-                return "redirect:/sede";
+                return "redirect:/sede/editarInfo";
             } else {
-
-                if (usuarioRepository.findByCorreo(usuarioLog.getCorreo()) != null) {
-                    model.addAttribute("msg", "Este correo ya está registrado");
+                Usuarios us = usuarioRepository.findByCorreo(perfil.getCorreo());
+                if (us != null && us.getActivo()==1) {
+                    model.addAttribute("msgC", "Este correo ya está registrado");
                     return "UsuarioSede/U-Perfil";
                 } else {
                     attr.addFlashAttribute("msg", "Información personal editada con éxito");
                     usuarioLog.setCorreo(perfil.getCorreo());
-                    usuarioLog.setTelefono(String.valueOf(perfil.getTelefono()));
+                    usuarioLog.setTelefono(perfil.getTelefono());
                     usuarioRepository.save(usuarioLog);
                     session.setAttribute("user", usuarioLog);
-                    return "redirect:/sede";
+                    return "redirect:/sede/editarInfo";
                 }
             }
         }

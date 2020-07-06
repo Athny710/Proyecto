@@ -7,7 +7,7 @@
 <body id="page-top">
 
     <div id="wrapper">
-        <div th:insert="Fragmentos/FragmentosAdmin.html::SideBarAdmin"></div>
+        <div th:replace="Fragmentos/FragmentosAdmin.html::SideBarAdmin"></div>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column bg-white">
             <!-- Main Content -->
@@ -16,7 +16,7 @@
                 <div th:insert="Fragmentos/FragmentosAdmin.html::LogOut"></div>
                 <!-- Page Heading -->
                 <div class="container-fluid">
-                    <div class="card shadowA mb-4">
+                    <div class="card shadowA mb-4" >
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Nuevo Gestor</h5>
@@ -29,45 +29,43 @@
                                     <div class="p-5">
                                         <form class="user" method="post" th:action="@{'/admin/guardarGestor'}"  th:object="${usu}">
                                             <div class="form-group">
-                                                <label>Nombre</label>
-                                                <input type="text" class="form-control form-control-user" th:field="*{nombre}">
+                                                <label>Nombre:</label>
+                                                <input type="text" class="form-control form-control-user2" th:field="*{nombre}">
                                                 <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</div>
                                                 <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${msgNA!=null}" th:text="${msgNA}"></div>
                                             </div>
                                             <div class="form-group">
-                                                <label>Apellidos</label>
-                                                <input type="text" class="form-control form-control-user" th:field="*{apellido}">
+                                                <label>Apellidos:</label>
+                                                <input type="text" class="form-control form-control-user2" th:field="*{apellido}">
                                                 <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}">Error</div>
                                             </div>
                                             <div class="form-group">
-                                                <label>Correo</label>
-                                                <input type="email" class="form-control form-control-user" th:field="*{correo}">
+                                                <label>Correo:</label>
+                                                <input type="email" class="form-control form-control-user2" th:field="*{correo}">
                                                 <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}">Error</div>
                                                 <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${msgC!=null}" th:text="${msgC}"></div>
                                             </div>
                                             <div class="form-group">
-                                                <label>Telefono</label>
-                                                <input type="tel" class="form-control form-control-user" th:field="*{telefono}">
+                                                <label>Teléfono:</label>
+                                                <input type="tel" class="form-control form-control-user2" th:field="*{telefono}">
                                                 <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">Error</div>
                                                 <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${msgT!=null}" th:text="${msgT}"></div>
                                             </div>
-                                            <hr>
-                                            <button type="submit" class="btn btn-searchTop btn-user btn-block">
+                                            <hr style="margin: 1.5rem 0">
+                                            <button type="submit" class="btn btn-orange btn-block" style="border-radius: 10rem">
                                                 Registrar
                                             </button>
-                                            <a th:href="@{/admin/listaGestores}" class="btn btn-searchTop btn-danger btn-block" style="border-radius:10rem">Cancelar</a>
+                                            <a th:href="@{/admin/listaGestores}" class="btn btn-danger btn-block" style="border-radius:10rem">Cancelar</a>
                                         </form>
                                     </div>
                                 </div>
                                 <div class="col-lg-1"></div>
                                 <div class="col-lg-4">
-                                    <br>
-                                    <br>
-                                    <div class="card shadowA mb-4">
+                                    <div class="card shadowA mb-4" style="margin-top: 4.9rem">
                                         <div class="card-header py-3 bg-white">
                                             <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
                                         </div>
-                                        <div class="card-body bg-white">
+                                        <div class="card-body bg-white" style="text-align: center" >
                                             El Gestor tiene el control total sobre todo el inventario. Así mismo, puede crear, editar y mantener sedes.
                                         </div>
                                     </div>

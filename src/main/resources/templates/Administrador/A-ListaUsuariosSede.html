@@ -7,7 +7,7 @@
 <body id="page-top">
 
     <div id="wrapper">
-        <div th:insert="Fragmentos/FragmentosAdmin.html::SideBarAdmin"></div>
+        <div th:replace="Fragmentos/FragmentosAdmin.html::SideBarAdmin"></div>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column bg-white">
             <!-- Main Content -->
@@ -16,7 +16,7 @@
                 <div th:insert="Fragmentos/FragmentosAdmin.html::LogOut"></div>
                 <!-- Page Heading -->
                 <div class="container-fluid">
-                    <div class="card shadowA mb-4">
+                    <div class="card shadowA mb-4" >
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Usuarios Sede</h5>

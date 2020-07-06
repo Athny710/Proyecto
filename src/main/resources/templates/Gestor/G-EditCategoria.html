@@ -8,29 +8,26 @@
 
     <div id="wrapper">
         <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column bg-white">
-            <!-- Main Content -->
             <div id="content">
                 <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <!-- Page Heading -->
                 <div class="container-fluid">
-                  <!--  <div class="card shadowA mb-4">
-                        <div class="card-header2 py-3"> -->
-                    <div class="card shadow mb-4">
+                    <div class="card shadowA mb-4" >
                         <div class="card-header py-3">
                        <!--     <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM" th:text="${categoria.idCategoria==0?'Registro de nueva categoría':'Editar Categoría'}"></h5>
                             </div>  -->
-                            <h4 class="m-0 font-weight-bold text-redM" th:text="${categoria.idCategoria==0?'Registro de nueva categoría':'Editar Categoría'}"></h4>
+                            <div class="d-flex justify-content-between centrado">
+                                <h5 class="m-0 font-weight-bold text-redM" th:text="${categoria.idCategoria==0?'Registro de nueva categoría':'Editar Categoría'}"></h5>
+                            </div>
                         </div>
                         <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
                         <div class="card-body bg-gray-100">
                             <div class="row">
-                                <div class="col-lg-1"></div>
+                                <div style="width: 62px"></div>
                                 <div class="col-lg-5">
-
                                     <div class="p-5">
                                       <!--  <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>  -->
                                         <form method="post" class="user" th:action="@{/gestor/gestorGuardarCategoria}" th:object="${categoria}">
@@ -52,7 +49,7 @@
                                             </div>   -->
                                             <div class="form-group ">
                                                 <label for="nombre">Nombre:</label>
-                                                <input th:field="*{nombre}"  type="text" class="form-control form-control-user">
+                                                <input th:field="*{nombre}"  type="text" class="form-control form-control-user2">
                                                 <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
                                             </div>
 
@@ -72,7 +69,7 @@
                                             <div class="form-group ">
                                                 <!-- <div th:if="${comunidad.idComunidad  == 0}" class="form-group ">  -->
                                                 <label for="codigo">Código:</label>
-                                                <input th:field="*{codigo}"  type="text" class="form-control form-control-user">
+                                                <input th:field="*{codigo}"  type="text" class="form-control form-control-user2">
                                                 <div class="text-danger" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></div>
                                             </div>
 
@@ -88,30 +85,20 @@
                                                     </div>
                                                 </div>
                                             </div>  -->
-                                            <div class="form-group col-md-14"  >
-                                                <button type="submit" class="btn btn-searchTop btn-user btn-block" th:text="${categoria.idCategoria==0?'Guardar':'Actualizar'}">Registrar</button>
-                                            </div>
-                                            <div class="form-group col-md-14">
-                                                <a th:href="@{/gestor/gestorListaCategoria}" class="btn btn-danger btn-user btn-block">Cancelar</a>
-                                            </div>
-
+                                            <hr style="margin: 1.5rem 0">
+                                            <button type="submit" style="border-radius: 10rem" class="btn btn-orange btn-block" th:text="${categoria.idCategoria==0?'Guardar':'Actualizar'}">Registrar</button>
+                                            <a th:href="@{/gestor/gestorListaCategoria}" class="btn btn-danger btn-block" style="border-radius: 10rem">Cancelar</a>
                                         </form>
-                                      <!--  <hr>  -->
-
                                     </div>
-
                                 </div>
-                              <!--  <div class="col-lg-2"></div>  -->
                                 <div class="col-lg-1"></div>
                                 <div class="col-lg-4">
-                                    <br>
-                                    <br>
-                                    <div class="card shadowA mb-4">
-                                        <div class="card-header py-3">
+                                    <div class="card shadowA mb-4" style="margin-top: 4.9rem">
+                                        <div class="card-header py-3 bg-white">
                                             <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
                                         </div>
-                                        <div class="card-body">
-                                            El Gestor tiene el control total sobre todo el inventario.Tomar en cuenta ,que el código se registra con un sólo caracter.
+                                        <div class="card-body bg-white" style="text-align: center">
+                                            El Gestor tiene el control total sobre todo el inventario. Tomar en cuenta que el código se registra con un sólo caracter.
                                         </div>
                                     </div>
                                 </div>
