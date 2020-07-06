@@ -120,7 +120,7 @@ public class GestorController {
                 return "redirect:/gestor/gestorPrincipal";
             } else { // error en id inventario. hackerman?
                 System.out.println("error id inventario!");
-                attr.addFlashAttribute("msg", "Error en la compra");
+                attr.addFlashAttribute("msgError", "Error en la compra");
                 return "redirect:/gestor/gestorPrincipal";
             }
         }
@@ -296,7 +296,7 @@ public class GestorController {
                     }
                 } else {
 
-                    System.out.println("ENTRO EN ESTO NO ES U CORREO");
+                    System.out.println("ENTRO EN ESTO NO ES UN CORREO");
                     model.addAttribute("msgError", "Este correo no es valido");
 
                     model.addAttribute("listasedes", sedeRepository.findAll());
@@ -442,7 +442,7 @@ public class GestorController {
                 sedeRepository.deleteById(idsede);
                 attr.addFlashAttribute("msg", "Sede Eliminada");
             } catch (Exception e) {
-                attr.addFlashAttribute("msg", "Sede ,en usuario sede, no puede ser borrada");
+                attr.addFlashAttribute("msgE", "Ocurrió un error, no puede ser borrada");
             }
         }
         return "redirect:/gestor/gestorListaSedes";
@@ -583,7 +583,7 @@ public class GestorController {
             }
 
         } else {
-            System.out.println("NO Tiene errores");
+            System.out.println("No Tiene errores");
             List<Categoria> categoria1 = categoriaRepository.findByNombre(formulario.getNombreCategoria());
             List<Linea> linea1 = lineaRepository.findByNombre(formulario.getNombreLinea());
             List<Comunidad> comu = comunidadRepository.findByNombre(formulario.getNombreComun());
@@ -593,7 +593,7 @@ public class GestorController {
             if (formulario.getCrearActualizar() == 0) {
                 System.out.println("Voy a crear");
                 if (!denomi1.isEmpty()) {
-                    model.addAttribute("msg", "Los datos ingresados ya existen");
+                    model.addAttribute("msgE", "Los datos ingresados ya existen");
                     model.addAttribute("listaComunidades", comunidadRepository.findAll());
                     model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
                     model.addAttribute("listaCategorias", categoriaRepository.findAll());
@@ -631,7 +631,7 @@ public class GestorController {
                             Adquisicion adqui = new Adquisicion();
                             Optional<Artesano> artesa = artesanoRepository.findById(formulario.getCodigoArtesano());
                             if (!artesa.isPresent()) {
-                                model.addAttribute("msg", "El artesano no existe");
+                                model.addAttribute("msgE", "El artesano no existe");
                                 model.addAttribute("listaComunidades", comunidadRepository.findAll());
                                 model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
                                 model.addAttribute("listaCategorias", categoriaRepository.findAll());
@@ -656,7 +656,7 @@ public class GestorController {
                             attr.addFlashAttribute("msg1", "Guardado Exitosamente");
                             return "redirect:/gestor/productos";
                         } else {
-                            model.addAttribute("msg", "Valor inválido. Solo se permite consignación o compra");
+                            model.addAttribute("msgE", "Valor inválido. Solo se permite consignación o compra");
                             model.addAttribute("listaComunidades", comunidadRepository.findAll());
                             model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
                             model.addAttribute("listaCategorias", categoriaRepository.findAll());
@@ -667,7 +667,7 @@ public class GestorController {
 
                         }
                     } else {
-                        model.addAttribute("msg", "Valor seleccionado nó válido");
+                        model.addAttribute("msgE", "Valor seleccionado nó válido");
                         model.addAttribute("listaComunidades", comunidadRepository.findAll());
                         model.addAttribute("listaDenominaciones", denominacionRepository.findAll());
                         model.addAttribute("listaCategorias", categoriaRepository.findAll());
@@ -883,7 +883,7 @@ public class GestorController {
                 comunidadRepository.deleteById(idcomunidad);
                 attr.addFlashAttribute("msg", "Comunidad Eliminada");
             } catch (Exception e) {
-                attr.addFlashAttribute("msg", "Comunidad en inventario, no puede ser borrado");
+                attr.addFlashAttribute("msgE", "Comunidad en inventario, no puede ser borrado");
             }
         }
         return "redirect:/gestor/gestorListaComunidad";
@@ -973,7 +973,7 @@ public class GestorController {
                 categoriaRepository.deleteById(id);
                 attr.addFlashAttribute("msg", "Categoría Eliminada");
             } catch (Exception e) {
-                attr.addFlashAttribute("msg", "Categoría en inventario, no puede ser borrada");
+                attr.addFlashAttribute("msgE", "Categoría en inventario, no puede ser borrada");
             }
         }
         return "redirect:/gestor/gestorListaCategoria";
@@ -1075,7 +1075,7 @@ public class GestorController {
                     artesanoRepository.save(artesano);
                     attr.addFlashAttribute("msg", "Artesano actualizado exitosamente");
                 } else { // EL ID NO ESTA BIEN
-                    attr.addFlashAttribute("msg", "error en el ID del artesano");
+                    attr.addFlashAttribute("msgE", "error en el ID del artesano");
                 }
                 return "redirect:/gestor/gestorListaArtesano";
 

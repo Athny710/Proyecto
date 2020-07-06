@@ -14,7 +14,8 @@
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <!-- Page Heading -->
                 <div class="container-fluid">
-                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                    <div th:if="${msg!= null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                    <div th:if="${msgE!= null}" th:text="${msgE}" class="alert alert-danger" role="alert"></div>
                     <!-- AGREGADO
                     <div th:if="${msgg != null}" th:text="${msgg}" class="alert alert-danger" role="alert" align="center"></div> -->
                     <div class="card shadowA mb-4" >
