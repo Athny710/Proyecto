@@ -47,7 +47,7 @@
                                         <div class="form-group">
                                             <label>Correo:</label>
                                             <input th:field="*{correo}" type="email"
-                                                   class="form-control form-control-user2" id="correo">
+                                                   class="form-control form-control-user2" id="correo" pattern="^[A-Za-z0-9\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\.[Oo][Rr][Gg]$">
                                             <div class="text-danger" th:if="${#fields.hasErrors('correo')}"
                                                  th:errors="*{correo}"></div>
                                         </div>

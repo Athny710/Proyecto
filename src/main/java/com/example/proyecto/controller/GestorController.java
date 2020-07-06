@@ -260,7 +260,7 @@ public class GestorController {
                                      Model model,
                                      RedirectAttributes attr, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
-            if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[A-Za-z0-9\\._-]+\\.[A-Za-z0-9]+$")) {
+            if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {
                 model.addAttribute("msgError", "El correo ingresado no es un correo");
             }
             usuarios.setCorreo(usuarios.getCorreo().toLowerCase());
@@ -281,7 +281,7 @@ public class GestorController {
             }
 
         } else {
-            if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[A-Za-z0-9\\._-]+\\.[A-Za-z0-9]+$")) {// validacion tipo correo
+            if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {// validacion tipo correo
                 usuarios.setCorreo(usuarios.getCorreo().toLowerCase());
                 if (usuarios.getIdusuarios() != 0) {
                     Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
@@ -341,7 +341,7 @@ public class GestorController {
             } else { //ya existe el correo, mostrar errores
                 if (usuarioRepository.findByCorreo(usuarios.getCorreo()) != null) {
                     System.out.println("ENTRO EN ESTO NO ES U CORREO");
-                    model.addAttribute("msgError", "Este no es un correo");
+                    model.addAttribute("msgError", "Este no es un correo valido");
                 }
                 model.addAttribute("listasedes", sedeRepository.findAll());
                 model.addAttribute(usuarios);
@@ -1621,6 +1621,14 @@ public class GestorController {
         } else {
             return "redirect:/gestor/ConsignacionesVencidas";
         }
+
+    }
+
+    @ExceptionHandler(Exception.class)
+    public String ExceptionHandlerGestor(Exception e,RedirectAttributes attr ){
+        attr.addFlashAttribute("msgError", "Ocurrio un error, no se completo el proceso");
+        System.out.println("!!!!! \n \n OCURRIO EL SIGUIENTE ERROR: \n  " + e.getMessage() + " \n \n !!!!!!!");
+        return "redirect:/gestor/gestorPrincipal";
 
     }
 }

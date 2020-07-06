@@ -14,6 +14,8 @@
                 <div th:insert="Fragmentos/FragmentosAdmin.html::TopBar"></div>
                 <div th:insert="Fragmentos/FragmentosAdmin.html::LogOut"></div>
                 <div class="container-fluid">
+                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                    <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
                     <!-- Page Heading -->
                     <div class="card shadowA mb-4">
                         <div class="card-header2 py-3">

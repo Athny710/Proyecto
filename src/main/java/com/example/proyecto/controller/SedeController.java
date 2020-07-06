@@ -145,30 +145,43 @@ public class SedeController {
     }
 
     @PostMapping("DevolverProducto")
-    public String devolverProducto(@RequestParam("id") int id,@RequestParam("cantidad") int cantidad, RedirectAttributes attr, HttpSession session, Model model) {
+    public String devolverProducto(@RequestParam("id") int id,@RequestParam("cantidad") int cantidad, @RequestParam("detalles") String detalles, RedirectAttributes attr, HttpSession session, Model model) {
         Optional<Inventariosede> inventariosede = inventariosedeRepository.findById(id);
         if (inventariosede.isPresent()) {// existe el inventariosede con esa id
-            if (inventariosede.get().getSede().getIdsede().equals(((Usuarios) session.getAttribute("user")).getSede().getIdsede())) {// no es hackerman
-                if (inventariosede.get().getStock() >= cantidad) {// se le resta a algo que no es 0
+            if(cantidad > 0) {
+                System.out.println(detalles);
+                if(!detalles.equalsIgnoreCase("" )&& !detalles.isEmpty()){
 
-                    Inventario inventario = inventarioRepository.findById(inventariosede.get().getInventario().getIdInventario()).get();
-                    inventario.setStock( inventario.getStock() + cantidad );
-                    inventarioRepository.save(inventario);
-                    inventariosede.get().setStock(inventariosede.get().getStock() - cantidad);
-                    inventariosedeRepository.save(inventariosede.get());
-                    attr.addFlashAttribute("msg", "Un "+ inventario.getProducto().getDenominacion().getNombre()+" "+ inventario.getColor() + " devuelto exitosamente");
-                    return "redirect:/sede";
-                } else {// se le esta restando a 0
-                    attr.addFlashAttribute("msg", "Ya no queda stock de "+
-                            inventariosede.get().getInventario().getProducto().getCodigoGenerado() + " " + inventariosede.get().getInventario().getColor()   +" en esta sede");
+                if (inventariosede.get().getSede().getIdsede().equals(((Usuarios) session.getAttribute("user")).getSede().getIdsede())) {// no es hackerman
+                    if (inventariosede.get().getStock() >= cantidad) {// se le resta a algo que no es 0
+
+                        Inventario inventario = inventarioRepository.findById(inventariosede.get().getInventario().getIdInventario()).get();
+                        inventario.setStock(inventario.getStock() + cantidad);
+                        inventarioRepository.save(inventario);
+                        inventariosede.get().setStock(inventariosede.get().getStock() - cantidad);
+                        inventariosedeRepository.save(inventariosede.get());
+                        attr.addFlashAttribute("msg", "Un " + inventario.getProducto().getDenominacion().getNombre() + " " + inventario.getColor() + " devuelto exitosamente");
+                        return "redirect:/sede";
+                    } else {// se le esta restando mas de lo que se tiene
+                        attr.addFlashAttribute("msgError", "No tiene suficiente stock de " +
+                                inventariosede.get().getInventario().getProducto().getCodigoGenerado() + " " + inventariosede.get().getInventario().getColor() + " en esta sede");
+                        return "redirect:/sede";
+                    }
+                } else {//hackerman detente por favor
+                    attr.addFlashAttribute("msgError", "hackerman detente por favor, esa sede no es tuya");
                     return "redirect:/sede";
                 }
-            } else {//hackerman detente por favor
-                attr.addFlashAttribute("msg", "hackerman detente por favor, esa sede no es tuya");
+            }else{
+                    attr.addFlashAttribute("msgError", "Por favor ingrese los detalles de devolucion");
+                    return "redirect:/sede";
+                }
+            }
+            else{
+                attr.addFlashAttribute("msgError", "No se puede devolver una cantidad negativa o igual a 0");
                 return "redirect:/sede";
             }
         } else {
-            attr.addFlashAttribute("msg", "No existe ese producto en esta sede");
+            attr.addFlashAttribute("msgError", "No existe ese producto en esta sede");
             return "redirect:/sede";
         }
     }
@@ -483,6 +496,13 @@ public class SedeController {
         }
     }
 
+
+    @ExceptionHandler(Exception.class)
+    public String ExceptionHandlerSede(Exception e,RedirectAttributes attr ){
+        attr.addFlashAttribute("msgError", "Ocurrio un error, no se completo el proceso");
+        System.out.println("!!!!! \n \n OCURRIO EL SIGUIENTE ERROR: \n  " + e.getMessage() + " \n \n !!!!!!!");
+        return "redirect:/sede/principal";
+    }
 }
 
 
