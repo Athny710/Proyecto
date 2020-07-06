@@ -42,7 +42,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Cantidad enviada:</label>
-                                                <input th:field="*{cantidad}" type="number"
+                                                <input th:field="*{cantidad}" type="number" min="0"
                                                        class="form-control form-control-user2" placeholder="cantidad"
                                                        style="border-radius:10rem">
                                                 <div class="text-danger" th:if="${#fields.hasErrors('cantidad')}"
@@ -62,7 +62,7 @@
                                                 <label for="inventariosede">Producto a enviar:</label>
                                                 <select th:field="*{inventariosede.inventario.idInventario}"
                                                         class="form-control" id="inventariosede" style="border-radius: 10rem"
-                                                        placeholder="producto" style="border-radius:10rem">
+                                                        placeholder="producto" >
                                                     <option th:each="inventario : ${listaInventario}"
                                                             th:value="${inventario.idInventario}" th:text="${
                                                             inventario.producto.getCodigoGenerado()  + ' ' +
@@ -78,7 +78,7 @@
                                                 <label for="listaSede">Sede destino:</label>
                                                 <select th:field="*{inventariosede.sede.idsede}"
                                                         class="form-control" id="listaSede" style="border-radius: 10rem"
-                                                        placeholder="Sede" style="border-radius:10rem">
+                                                        placeholder="Sede" >
                                                     <option th:each="sede : ${listaSede}" th:value="${sede.idsede}"
                                                             th:text="${sede.nombre}"></option>
                                                 </select>

@@ -20,13 +20,14 @@ public class Rest{
     @Autowired
     VentaRepository ventaRepository;
 
+    //localhost:8080/proyecto/reporte/(cliente)
     @GetMapping(value = "/reporte/{cliente}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity obtenerAño(@PathVariable("cliente") String client) {
 
         HashMap<String, Object> responseMap = new HashMap<>();
 
             List<AñoDeCompraXCliente> listaAños = ventaRepository.obtenerAñosXCliente(client);
-            if (listaAños != null) {
+            if (listaAños.size() >= 1) {
                 responseMap.put("estado", "ok");
                 responseMap.put("anho", listaAños);
                 return new ResponseEntity(responseMap, HttpStatus.OK);
@@ -37,6 +38,7 @@ public class Rest{
             }
     }
 
+    //localhost:8080/proyecto/reporte/(año)/(cliente)
     @GetMapping(value = "/reporte/{anho}/{cliente}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity obtenerAño(@PathVariable("anho") String anho, @PathVariable("cliente") String cliente) {
 

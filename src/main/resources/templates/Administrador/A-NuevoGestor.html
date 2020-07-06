@@ -42,7 +42,7 @@
                                             <div class="form-group">
                                                 <label>Correo:</label>
                                                 <input type="email" class="form-control form-control-user2" th:field="*{correo}">
-                                                <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}">Error</div>
+                                                <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}" required="required" pattern="^[A-Za-z0-9\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\.[Oo][Rr][Gg]$">Error</div>
                                                 <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${msgC!=null}" th:text="${msgC}"></div>
                                             </div>
                                             <div class="form-group">

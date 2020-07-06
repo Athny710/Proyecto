@@ -17,6 +17,7 @@
             <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
             <div class="container-fluid">
                 <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
                 <div class="card shadowA mb-4">
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
@@ -82,10 +83,17 @@
                                                         <div class="form-group">
                                                             <label>Cantidad a devolver: (Quedan <span
                                                                     th:text="${x.stock}"></span>)</label>
-                                                            <input  name="cantidad" type="number"
+                                                            <input  name="cantidad" type="number" min="0"
                                                                    class="form-control form-control-user"
                                                                    placeholder="cantidad" th:value="${cantidad}"
                                                                    style="border-radius:10rem">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Detalles de envio: (Con quien se envia el producto y como)</label>
+                                                            <input  name="detalles" type="text"
+                                                                    class="form-control form-control-user"
+                                                                    placeholder="Lo lleva juan, espero que llegue el 23 de febrero" th:value="${detalles}" required="required"
+                                                                    style="border-radius:10rem">
                                                         </div>
                                                         <div class="form-group">
                                                             <button type="submit" class="btn btn-searchTop btn-block"
