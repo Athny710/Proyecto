@@ -32,13 +32,14 @@
                                         <div class="col-lg-6ba">
                                             <div class="row" style="margin: 1rem">
                                                 <div class="col-ba-1">
-                                                    <input id="artesanocb" name="artesanocb" value="activo" type="checkbox" style="margin: 0.75rem">
+
                                                 </div>
                                                 <div class="col-ba-2">
                                                     <label for="artesano" style="margin-top: 0.25rem">Artesano:</label>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <select class="form-control" name="artesano" id="artesano" style="border-radius: 10rem" >
+                                                        <option value="0">Todos</option>
                                                         <option th:each=" artesano : ${listaArtesanos}"
                                                                 th:value="${artesano.idArtesano}"
                                                                 th:text="${artesano.nombre +  ' ' + artesano.apellidopaterno+ ' ' + artesano.apellidomaterno}">Todo</option>
@@ -47,13 +48,14 @@
                                             </div>
                                             <div class="row" style="margin: 1rem">
                                                 <div class="col-ba-1">
-                                                    <input id="comunidadcb" name="comunidadcb" type="checkbox" value="activo" style="margin: 0.75rem">
+
                                                 </div>
                                                 <div class="col-ba-2">
                                                     <label for="comunidad" style="margin-top: 0.25rem">Comunidad:</label>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <select class="form-control" name="comunidad" id="comunidad" style="border-radius: 10rem" >
+                                                        <option value="0">Todos</option>
                                                         <option th:each=" comunidad : ${listaComunidades}"
                                                                 th:value="${comunidad.idComunidad}"
                                                                 th:text="${comunidad.nombre}">Todo</option>
@@ -62,12 +64,13 @@
                                             </div>
                                             <div class="row" style="margin: 1rem">
                                                 <div class="col-ba-1">
-                                                    <input id="categoriacb" name="categoriacb" type="checkbox" value="activo" style="margin: 0.75rem">
+
                                                 </div>
                                                 <div class="col-ba-2">
                                                     <label for="categoria" style="margin-top: 0.25rem">Categoría:</label>
                                                 </div>
                                                 <div class="col-lg-6">
+                                                    <option value="0">Todos</option>
                                                     <select class="form-control" name="categoria" id="categoria" style="border-radius: 10rem" >
                                                         <option th:each=" categoria : ${listaCategoria}"
                                                                 th:value="${categoria.idCategoria}"
