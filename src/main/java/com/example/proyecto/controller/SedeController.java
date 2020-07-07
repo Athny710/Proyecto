@@ -139,7 +139,7 @@ public class SedeController {
                 return "redirect:/principal";
             }
         } else {
-            attr.addFlashAttribute("msg", "Producto no encontrado");
+            attr.addFlashAttribute("msgError", "Producto no encontrado");
             return "redirect:/principal";
         }
     }

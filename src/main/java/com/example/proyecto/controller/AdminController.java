@@ -41,21 +41,56 @@ public class AdminController {
     //--------------------------Inventario
     @GetMapping(value = {"", "principal"})
     public String principalAdmin(Model model) {
-        model.addAttribute("inventario", inventarioRepository.findAll());
+        model.addAttribute("inventario", inventarioRepository.listarStockMayor0());
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
         model.addAttribute("listaArtesanos", artesanoRepository.findAll());
         model.addAttribute("listaCategoria", categoriaRepository.findAll());
         return "Administrador/A-PagPrincipal";
     }
 
-    @GetMapping("/bucador")
-    public String buscadorAvanzado(Model model, @RequestParam("comunidad") int idComu,
-                                   @RequestParam("artesano") int idArt, @RequestParam("categoria") int idCate,
-                                   @RequestParam("comunidadcb") String v1,
-                                   @RequestParam("artesanocb") String v2, @RequestParam("categoriacb") String v3) {
+    @PostMapping("/bucador")
+    public String buscadorAvanzado(Model model,@RequestParam("comunidad") int idComu, @RequestParam("adqui") String tipo,
+                                   @RequestParam("artesano") int idArt,@RequestParam("categoria") int idCate) {
 
+        if (idComu != 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0) {
+            List<Inventario> Lista1 = inventarioRepository.listarPorComunidad(idComu);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista1);
+            return "Administrador/A-PagPrincipal";
+        } else if (idComu == 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0) {
+            List<Inventario> Lista2 = inventarioRepository.listarPorCategoria(idCate);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista2);
+            return "Administrador/A-PagPrincipal";
+        } else if (idComu == 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0) {
+            List<Inventario> Lista3 = inventarioRepository.listarPorAdquisicion(tipo);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista3);
+            return "Administrador/A-PagPrincipal";
+        } else if (idComu == 0 && !tipo.equalsIgnoreCase("todo") && idArt != 0 && idCate == 0) {
+            List<Inventario> Lista4 = inventarioRepository.listarPorArtesanoConConsigna(tipo, idArt);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista4);
+            return "Administrador/A-PagPrincipal";
+        }else if (idComu != 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
+            List<Inventario> Lista5 = inventarioRepository.listarPorCategoriaYComunidad(idCate, idComu);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista5);
+            return "Administrador/A-PagPrincipal";
+        }else{
+            return "redirect:/admin";
+        }
 
-        return "Administrador/A-PagPrincipal";
     }
 
     @GetMapping("/image/{id}")
