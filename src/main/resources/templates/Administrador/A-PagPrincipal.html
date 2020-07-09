@@ -29,25 +29,8 @@
                         </div>
                         <div class="card-body bg-gray-100">
                             <div class="card2" id="busquedaAv">
-                                <form  method="post" th:action="@{/admin/bucador}" class="user">
                                     <div class="row">
                                         <div class="col-lg-6ba">
-                                            <div class="row" style="margin: 1rem">
-                                                <div class="col-ba-1">
-
-                                                </div>
-                                                <div class="col-ba-2">
-                                                    <label for="artesano" style="margin-top: 0.25rem">Artesano:</label>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <select class="form-control" name="artesano" id="artesano" style="border-radius: 10rem" >
-                                                        <option value="0">Todos</option>
-                                                        <option th:each=" artesano : ${listaArtesanos}"
-                                                                th:value="${artesano.idArtesano}"
-                                                                th:text="${artesano.nombre +  ' ' + artesano.apellidopaterno+ ' ' + artesano.apellidomaterno}">Todo</option>
-                                                    </select>
-                                                </div>
-                                            </div>
                                             <div class="row" style="margin: 1rem">
                                                 <div class="col-ba-1">
 
@@ -81,6 +64,20 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div class="row" style="margin: 1rem" id="artesanoDiv">
+                                                <div class="col-ba-1"></div>
+                                                <div class="col-ba-2">
+                                                    <label for="artesano" style="margin-top: 0.25rem">Artesano:</label>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <select class="form-control" name="artesano" id="artesano" style="border-radius: 10rem" >
+                                                        <option value="0">Todos</option>
+                                                        <option th:each=" artesano : ${listaArtesanos}"
+                                                                th:value="${artesano.idArtesano}"
+                                                                th:text="${artesano.nombre +  ' ' + artesano.apellidopaterno+ ' ' + artesano.apellidomaterno}">Todo</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="divisor-ba"></div>
                                         <div class="col-lg-6">
@@ -97,12 +94,11 @@
                                                 </div>
                                             </div>
                                             <div style="text-align: right">
-                                                <button type="submit" class="btn btn-orange" style="margin-top: 4.25rem">Buscar</button>
+                                                <a id="obtenerLista" type="button" class="btn btn-orange" style="margin-top: 4.25rem; color: white">Buscar</a>
                                             </div>
 
                                         </div>
                                     </div>
-                                </form>
                             </div>
                             <div class="table-responsive bg-gray-100">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -143,6 +139,24 @@
     </a>
     <div th:replace="Fragmentos/FragmentosAdmin.html::Script"></div>
     <script type="text/javascript">
+        $("#artesanoDiv").hide();
+        $("#adqui").on('change',function () {
+            var tipo = $(this).val();
+            console.log(tipo);
+            if(tipo === "consignado"){
+                $("#artesanoDiv").show();
+            }else{
+                $("#artesanoDiv").hide();
+            }
+        });
+        $("#obtenerLista").click(function(){
+            var valor1 = $("#artesano").val();
+            var valor2 = $("#comunidad").val();
+            var valor3 = $("#categoria").val();
+            var valor4 = $("#adqui").val();
+            $("#obtenerLista").attr('href', '/proyecto/admin/buscar?artesano='+valor1+'?comunidad='+valor2+'?categoria='+valor3+'?tipo='+valor4);
+        });
+
         $("#busquedaAv").hide();
         var s = true;
 
