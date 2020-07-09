@@ -50,10 +50,10 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label>Comentarios de envio:</label>
-                                                <input th:field="*{comentario}" type="text"
+                                                <label>Detalles de envio:</label>
+                                                <textarea th:field="*{comentario}" type="text"
                                                        class="form-control form-control-user2"
-                                                       style="border-radius:10rem">
+                                                          style="border-radius: 10rem;resize:none;padding: 0.5rem;"></textarea>
                                                 <div class="text-danger" th:if="${#fields.hasErrors('comentario')}"
                                                      th:errors="*{comentario}"></div>
                                             </div>
@@ -110,7 +110,10 @@
                                             <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
                                         </div>
                                         <div class="card-body bg-white" style="text-align: center">
-                                            Este envio debera ser aceptado por las sedes.
+                                            Este envio debera ser aceptado por las sedes. <br />
+                                            Recuerde poner en descripcionlo siguiente <br />
+                                            -Quien lleva el producto <br />
+                                            -Como lo va a llevar
                                         </div>
                                     </div>
                                 </div>
