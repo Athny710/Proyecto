@@ -41,7 +41,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="bg-white" align="center" th:each="productos, info: ${lista}">
+                                <tr class="bg-white" align="center" th:each="productos , info: ${lista}">
                                     <td th:text="${productos.producto.denominacion.linea.nombre}"></td>
                                     <td th:text="${productos.producto.categoria.nombre}"></td>
                                     <td th:text="${productos.producto.codigoGenerado}"></td>

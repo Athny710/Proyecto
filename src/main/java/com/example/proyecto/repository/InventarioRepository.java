@@ -52,4 +52,36 @@ public interface InventarioRepository extends JpaRepository<Inventario, Integer>
             nativeQuery = true)
     List<Inventario> listarPorCategoriaYComunidad(int idCate, int idComu);
 
+    @Query(value = "SELECT inventario.* FROM sw2_proyecto.inventario, producto, adquisicion\n" +
+            "where inventario.idProducto = producto.idProducto\n" +
+            "and producto.idAdquisicion = adquisicion.idAdquisicion\n" +
+            "and producto.idComunidad =?1 and adquisicion.modalidad = ?2\n" +
+            "and inventario.stock > 0",
+            nativeQuery = true)
+    List<Inventario> listarPorComunidadYModalidad( int idComu, String tipo);
+
+    @Query(value = "SELECT inventario.* FROM sw2_proyecto.inventario, producto, adquisicion\n" +
+            "where inventario.idProducto = producto.idProducto\n" +
+            "and producto.idAdquisicion = adquisicion.idAdquisicion\n" +
+            "and producto.idComunidad =?1 and adquisicion.modalidad = 'consignado' and adquisicion.idArtesano = ?2 \n" +
+            "and inventario.stock > 0",
+            nativeQuery = true)
+    List<Inventario> listarPorComunidadConsignadoYArtesano( int idComu, int idArt);
+
+    @Query(value = "SELECT inventario.* FROM sw2_proyecto.inventario, producto, adquisicion\n" +
+            "where inventario.idProducto = producto.idProducto\n" +
+            "and producto.idAdquisicion = adquisicion.idAdquisicion\n" +
+            "and producto.idCategoria =1 and adquisicion.modalidad = 'consignado' and adquisicion.idArtesano = 9 \n" +
+            "and inventario.stock > 0",
+            nativeQuery = true)
+    List<Inventario> listarPorCategoriaConsignadoYArtesano( int idCat, int idArt);
+
+    @Query(value = "SELECT inventario.* FROM sw2_proyecto.inventario, producto, adquisicion\n" +
+            "where inventario.idProducto = producto.idProducto\n" +
+            "and producto.idAdquisicion = adquisicion.idAdquisicion\n" +
+            "and producto.idCategoria =?1 and adquisicion.modalidad = ?2 \n" +
+            "and inventario.stock > 0",
+            nativeQuery = true)
+    List<Inventario> listarPorCategoriaYModalidad( int idCate, String tipo);
+
 }

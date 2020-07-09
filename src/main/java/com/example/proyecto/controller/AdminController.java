@@ -73,7 +73,7 @@ public class AdminController {
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista3);
             return "Administrador/A-PagPrincipal";
-        } else if (idComu == 0 && !tipo.equalsIgnoreCase("todo") && idArt != 0 && idCate == 0) {
+        } else if (idComu == 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate == 0) {
             List<Inventario> Lista4 = inventarioRepository.listarPorArtesanoConConsigna(tipo, idArt);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
@@ -86,6 +86,34 @@ public class AdminController {
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista5);
+            return "Administrador/A-PagPrincipal";
+        } else if (idComu != 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0){
+            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadYModalidad( idComu, tipo);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista6);
+            return "Administrador/A-PagPrincipal";
+        }else if (idComu != 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate == 0){
+            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadConsignadoYArtesano( idComu, idArt);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista6);
+            return "Administrador/A-PagPrincipal";
+        }else if (idComu == 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate != 0){
+            List<Inventario> Lista7 = inventarioRepository.listarPorCategoriaConsignadoYArtesano( idCate, idArt);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista7);
+            return "Administrador/A-PagPrincipal";
+        } else if (idComu == 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
+            List<Inventario> Lista8 = inventarioRepository.listarPorCategoriaYModalidad( idCate, tipo);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista8);
             return "Administrador/A-PagPrincipal";
         }else{
             return "redirect:/admin";
