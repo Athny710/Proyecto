@@ -1026,6 +1026,8 @@ public class GestorController {
         if (obtenerArtesano.isPresent()) {
             artesanoRepository.deleteById(idartesano);
             attr.addFlashAttribute("msg", "Artesano Eliminado");
+        } else {
+            attr.addFlashAttribute("msge", "Artesano no ha podido eliminarse");
         }
         return "redirect:/gestor/gestorListaArtesano";
     }

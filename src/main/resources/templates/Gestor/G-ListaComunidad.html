@@ -36,7 +36,7 @@
                                     <tr class="bg-gray-900 text-white" align="center">
                                         <th>Nombre</th>
                                         <th>Codigo</th>
-                                        <th>Editar/Borrar</th>
+                                        <th>Borrar</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -49,11 +49,34 @@
                                                class="far fa-edit text-orangeM"> -->
                                                <!-- <i class="far fa-list-alt text-orangeM"></i> -->
                                           <!--  </a>  -->
-                                            <a style="margin-left: 10px"
-                                               th:href="@{'/gestor/gestorBorarComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}"
-                                               class="far fa-trash-alt text-redM">
-                                               <!-- <i class="far fa-trash-alt text-redM"></i> -->
-                                            </a>
+                                            <a style="margin-left: 10px" href="#" class="far fa-trash-alt text-redM"
+                                               data-toggle="modal" data-target="#modalborrar"
+                                               th:attrappend="data-target=${comunidad.getIdComunidad()}"></a>
+
+                                            <div class="modal fade" id="modalborrar" tabindex="-1" role="dialog"
+                                                 th:attrappend="id=${comunidad.getIdComunidad()}"
+                                                 aria-labelledby="myModalLabel">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header text-center">
+                                                            <h4 class="modal-title w-100 font-weight-bold">Eliminar comunidad</h4>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h6 th:text="'¿Está seguro que desea eliminar a ' + ${comunidad.nombre} + ' del registro?'"></h6>
+                                                            <a th:href="@{'/gestor/gestorBorarComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}"
+                                                               class="btn btn-danger btn-block">Eliminar</a>
+                                                            <button type="button" class="btn btn-searchTop btn-block"
+                                                                    data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">Cancelar</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     </tbody>
