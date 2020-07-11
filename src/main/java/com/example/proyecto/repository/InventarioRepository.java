@@ -52,4 +52,5 @@ public interface InventarioRepository extends JpaRepository<Inventario, Integer>
             nativeQuery = true)
     List<Inventario> listarPorCategoriaYComunidad(int idCate, int idComu);
 
+
 }

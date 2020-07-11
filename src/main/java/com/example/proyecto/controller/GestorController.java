@@ -470,7 +470,7 @@ public class GestorController {
             model.addAttribute("inventario", inventario1.get());
             return "Gestor/G-ListaDeHistorial";
         }else {
-            return "redirect:/gestorPrincipal";
+            return "redirect:/gestor/gestorPrincipal";
         }
 
     }
