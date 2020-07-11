@@ -808,10 +808,14 @@ public class GestorController {
         Optional<Inventario> inventario = inventarioRepository.findById(id);
         if (inventario.isPresent()) {
             Inventario i = inventario.get();
+
+            // para mandar un error si es que no se encuentra la imagen en la bd.
+            // En el HTML automaticamente se muestra una imagen por defecto
             if(i.getFotocontenttype() == null || i.getFotocontenttype().isEmpty() || i.getFoto().length == 0 || i.getFoto() == null){
                 HttpHeaders httpHeaders = new HttpHeaders();
                 return new ResponseEntity<>(null, httpHeaders, HttpStatus.NOT_FOUND);
-            }
+            } // fin IF
+
             byte[] imagenComoBytes = i.getFoto();
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setContentType(MediaType.parseMediaType(i.getFotocontenttype()));
