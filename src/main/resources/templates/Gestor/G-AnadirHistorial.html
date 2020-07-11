@@ -43,7 +43,7 @@
                                             <div class="col-sm-6">
                                                 <label>Cantidad comprada:</label>
                                                 <input th:field="*{cantidad}" type="number"
-                                                       class="form-control form-control-user" placeholder="cantidad"
+                                                       class="form-control form-control-user" placeholder="cantidad" min="0"
                                                        style="border-radius:10rem">
                                                 <div class="text-danger" th:if="${#fields.hasErrors('cantidad')}"
                                                      th:errors="*{cantidad}"></div>
