@@ -503,12 +503,31 @@ public class GestorController {
                     break;
                 }
             }
+
+            // no queria crear un DTO asi que ahora en idSede le guardare el Stock de la sede
+            List<Inventariosede> listaInvSede = inventariosedeRepository.findByInventario(inventario2);
+            if(!listaInvSede.isEmpty()) {
+                ArrayList<Sede> StockSede = new ArrayList<Sede>();
+                for (Inventariosede IS : listaInvSede) {
+                    if(IS.getStock() > 0) {
+                    Sede temp = new Sede();
+                    temp.setIdsede(IS.getStock());
+                    temp.setNombre(IS.getSede().getNombre());
+
+                        StockSede.add(temp);
+                    }
+                }
+                if(!StockSede.isEmpty()){
+                    model.addAttribute("StockSede", StockSede);
+                }
+            }
+
             model.addAttribute("historial", historial);
             model.addAttribute("producto", inventario2);
 
             return "Gestor/G-DetallesProdcuto";
         } else {
-            return "redirect:/gestorPrincipal";
+            return "redirect:/gestor/gestorPrincipal";
         }
     }
 
@@ -789,7 +808,10 @@ public class GestorController {
         Optional<Inventario> inventario = inventarioRepository.findById(id);
         if (inventario.isPresent()) {
             Inventario i = inventario.get();
-
+            if(i.getFotocontenttype() == null || i.getFotocontenttype().isEmpty() || i.getFoto().length == 0 || i.getFoto() == null){
+                HttpHeaders httpHeaders = new HttpHeaders();
+                return new ResponseEntity<>(null, httpHeaders, HttpStatus.NOT_FOUND);
+            }
             byte[] imagenComoBytes = i.getFoto();
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setContentType(MediaType.parseMediaType(i.getFotocontenttype()));
@@ -1626,11 +1648,14 @@ public class GestorController {
 
     }
 
+    /*
     @ExceptionHandler(Exception.class)
     public String ExceptionHandlerGestor(Exception e,RedirectAttributes attr ){
         attr.addFlashAttribute("msgError", "Ocurrio un error, no se completo el proceso");
         System.out.println("!!!!! \n \n OCURRIO EL SIGUIENTE ERROR: \n  " + e.getMessage() + " \n \n !!!!!!!");
+        System.out.println("!!!!! \n \n OCURRIO EL SIGUIENTE ERROR: \n  " + e.getCause().getMessage() + " \n \n !!!!!!!");
         return "redirect:/gestor/gestorPrincipal";
 
-    }
+    }*/
+
 }

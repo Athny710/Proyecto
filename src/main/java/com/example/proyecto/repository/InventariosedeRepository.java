@@ -15,10 +15,12 @@ public interface InventariosedeRepository extends JpaRepository<Inventariosede, 
 
     @Query(value="SELECT * FROM sw2_proyecto.inventariosede" +
             " where inventariosede.idSede = ?1;", nativeQuery= true)
-    List<Inventariosede> obtenerInventarioSede(int idSede);
+    List<Inventariosede> obtenerInventarioSede(Integer idSede);
 
     List<Inventariosede> findByInventarioAndSede(Inventario xd, Sede xd1);
 
     List<Inventariosede> findBySede(Sede sede);
+
+    List<Inventariosede> findByInventario(Inventario inventario);
 
 }

@@ -5,150 +5,191 @@
 </head>
 
 <body id="page-top">
-    <div id="wrapper">
-        <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
-        <div id="content-wrapper" class="d-flex flex-column bg-white">
-            <div id="content">
-                <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
-                <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
+<div id="wrapper">
+    <div th:replace="Fragmentos/FragmentosGestor.html:: SideBarGestor"></div>
+    <div id="content-wrapper" class="d-flex flex-column bg-white">
+        <div id="content">
+            <div th:replace="Fragmentos/FragmentosGestor.html:: TopBar"></div>
+            <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <div class="card shadowA mb-4" >
-                        <div class="card-header2 py-3">
-                            <div class="d-flex justify-content-between centrado">
-                                <h5 class="m-0 font-weight-bold text-redM">Detalles Producto</h5>
-                            </div>
+                <!-- Page Heading -->
+                <div class="card shadowA mb-4">
+                    <div class="card-header2 py-3">
+                        <div class="d-flex justify-content-between centrado">
+                            <h5 class="m-0 font-weight-bold text-redM">Detalles Producto</h5>
                         </div>
-                        <div class="card-body bg-gray-100">
-                            <div class="table-responsive bg-gray-100 d-flex">
-                                <div class="col-lg-6 ">
-                                    <br>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Nombre del Producto:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${producto.producto.denominacion.nombre}"></p></div>
+                    </div>
+                    <div class="card-body bg-gray-100">
+
+                        <div class="table-responsive bg-gray-100 d-flex">
+                            <div class="col-lg-6 ">
+                                <br>
+                                <div class="d-flex">
+                                    <div class="col-lg-5 centrado">
+                                        <p>Nombre del Producto:</p>
                                     </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Código del Producto:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${producto.producto.codigoGenerado}"></p></div>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Número de Pedido:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${historial.numeropedido}"></p></div>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Línea:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${producto.producto.denominacion.linea.nombre}"></p></div>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Categoría:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${producto.producto.categoria.nombre}"></p></div>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Comunidad:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${producto.producto.comunidad.nombre}"></p></div>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex" th:if="${producto.producto.adquisicion.modalidad.equalsIgnoreCase('consignado')}">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Artesano:</p>
-                                        </div>
-                                        <div  class="col-lg-6" ><p th:text="${producto.producto.adquisicion.artesano.nombre}"></p></div>
-                                    </div>
-                                    <hr th:if="${producto.producto.adquisicion.modalidad.equalsIgnoreCase('consignado')}">
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Stock:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${producto.stock}"></p></div>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Tamaño:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${producto.producto.tamanho.nombre}"></p></div>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Color:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${producto.color}"></p></div>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Fecha:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${historial.fecha}">09/04/19</p></div>
+                                    <div class="col-lg-6"><p th:text="${producto.producto.denominacion.nombre}"></p>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 ">
-                                    <br>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Tipo de Adquisicion:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${producto.producto.adquisicion.modalidad}"></p></div>
+                                <hr>
+                                <div class="d-flex">
+                                    <div class="col-lg-5 centrado">
+                                        <p>Código del Producto:</p>
                                     </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Costo Tejedor(S/.):</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${historial.costotejedor}"></p></div>
+                                    <div class="col-lg-6"><p th:text="${producto.producto.codigoGenerado}"></p></div>
+                                </div>
+                                <hr>
+                                <div class="d-flex">
+                                    <div class="col-lg-5 centrado">
+                                        <p>Número de Pedido:</p>
                                     </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Costo Mosqoy(S/.):</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${producto.preciomosqoy}"></p></div>
+                                    <div class="col-lg-6"><p th:text="${historial.numeropedido}"></p></div>
+                                </div>
+                                <hr>
+                                <div class="d-flex">
+                                    <div class="col-lg-5 centrado">
+                                        <p>Línea:</p>
                                     </div>
-                                    <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Descripción:</p>
-                                        </div>
-                                        <div class="col-lg-6"><p th:text="${producto.comentario.equalsIgnoreCase('') ? 'No tiene Descripción' : producto.comentario }"></p></div>
+                                    <div class="col-lg-6"><p
+                                            th:text="${producto.producto.denominacion.linea.nombre}"></p></div>
+                                </div>
+                                <hr>
+                                <div class="d-flex">
+                                    <div class="col-lg-5 centrado">
+                                        <p>Categoría:</p>
                                     </div>
-                                    <hr>
-                                    <br>
-                                    <br>
-                                    <div class="d-flex">
-                                        <div class="col-lg-2"></div>
-                                        <div class="col-xl-7 col-md-6 mb-4">
-                                            <div class="card border-left-warning shadow h-100 py-2">
-                                                <div class="card-body">
-                                                    <img th:src="@{|/gestor/image/${producto.idInventario}|}" width="210px" height="250">
-                                                </div>
+                                    <div class="col-lg-6"><p th:text="${producto.producto.categoria.nombre}"></p></div>
+                                </div>
+                                <hr>
+                                <div class="d-flex">
+                                    <div class="col-lg-5 centrado">
+                                        <p>Comunidad:</p>
+                                    </div>
+                                    <div class="col-lg-6"><p th:text="${producto.producto.comunidad.nombre}"></p></div>
+                                </div>
+                                <hr>
+                                <div class="d-flex"
+                                     th:if="${producto.producto.adquisicion.modalidad.equalsIgnoreCase('consignado')}">
+                                    <div class="col-lg-5 centrado">
+                                        <p>Artesano:</p>
+                                    </div>
+                                    <div class="col-lg-6"><p
+                                            th:text="${producto.producto.adquisicion.artesano.nombre}"></p></div>
+                                </div>
+                                <hr th:if="${producto.producto.adquisicion.modalidad.equalsIgnoreCase('consignado')}">
+                                <div class="d-flex">
+                                    <div class="col-lg-5 centrado">
+                                        <p>Stock:</p>
+                                    </div>
+                                    <div class="col-lg-6"><p th:text="${producto.stock}"></p></div>
+                                </div>
+                                <hr>
+                                <div class="d-flex">
+                                    <div class="col-lg-5 centrado">
+                                        <p>Tamaño:</p>
+                                    </div>
+                                    <div class="col-lg-6"><p th:text="${producto.producto.tamanho.nombre}"></p></div>
+                                </div>
+                                <hr>
+                                <div class="d-flex">
+                                    <div class="col-lg-5 centrado">
+                                        <p>Color:</p>
+                                    </div>
+                                    <div class="col-lg-6"><p th:text="${producto.color}"></p></div>
+                                </div>
+                                <hr>
+                                <div class="d-flex">
+                                    <div class="col-lg-5 centrado">
+                                        <p>Fecha:</p>
+                                    </div>
+                                    <div class="col-lg-6"><p th:text="${historial.fecha}">09/04/19</p></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 ">
+                                <br>
+                                <div class="d-flex">
+                                    <div class="col-lg-5 centrado">
+                                        <p>Tipo de Adquisicion:</p>
+                                    </div>
+                                    <div class="col-lg-6"><p th:text="${producto.producto.adquisicion.modalidad}"></p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="d-flex">
+                                    <div class="col-lg-5 centrado">
+                                        <p>Costo Tejedor(S/.):</p>
+                                    </div>
+                                    <div class="col-lg-6"><p th:text="${historial.costotejedor}"></p></div>
+                                </div>
+                                <hr>
+                                <div class="d-flex">
+                                    <div class="col-lg-5 centrado">
+                                        <p>Costo Mosqoy(S/.):</p>
+                                    </div>
+                                    <div class="col-lg-6"><p th:text="${producto.preciomosqoy}"></p></div>
+                                </div>
+                                <hr>
+                                <div class="d-flex">
+                                    <div class="col-lg-5 centrado">
+                                        <p>Descripción:</p>
+                                    </div>
+                                    <div class="col-lg-6"><p
+                                            th:text="${producto.comentario.equalsIgnoreCase('') ? 'No tiene Descripción' : producto.comentario }"></p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <br>
+                                <br>
+                                <div class="d-flex">
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-xl-7 col-md-6 mb-4">
+                                        <div class="card border-left-warning shadow h-100 py-2">
+                                            <div class="card-body" style="max-width: 100%;max-height: 250px;padding-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
+                                                <img th:src="@{|/gestor/image/${producto.idInventario}|}" style="max-width: 100%;max-height: 250px"
+                                                     onerror="this.onerror=null;
+                                                     this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Imagen_no_disponible.svg/1200px-Imagen_no_disponible.svg.png'" >
                                             </div>
                                         </div>
                                     </div>
-                                    <br>
                                 </div>
+                                <br>
                             </div>
                         </div>
+
+
+                        <div class="card-body bg-gray-100" th:unless="${StockSede == null}">
+                            <div class="table-responsive">
+
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr class="bg-gray-900 text-white" align="center">
+                                        <th>Sede</th>
+                                        <th>Cantidad</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="bg-white" align="center" th:each="cantSede: ${StockSede}">
+                                        <td th:text="${cantSede.nombre}"></td>
+                                        <td th:text="${cantSede.idsede}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <div class="card-body bg-gray-100" th:if="${StockSede == null}">
+                            <p>No hay stock fuera de el almacen principal.</p>
+                        </div>
+
+
+
+
+
                     </div>
+                </div>
             </div>
         </div>
     </div>
@@ -159,6 +200,6 @@
     </a>
 
     <div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
-    </div>
+</div>
 </body>
 </html>
