@@ -210,7 +210,7 @@ public class GestorController {
                 return "redirect:/gestor/editarInfo";
             } else {
                 Usuarios us = usuarioRepository.findByCorreo(perfil.getCorreo());
-                if (us != null && us.getActivo()==1) {
+                if (us != null && us.getActivo() == 1) {
                     model.addAttribute("msgC", "Este correo ya está registrado");
                     return "Gestor/G-Perfil";
                 } else {
@@ -457,6 +457,15 @@ public class GestorController {
     @GetMapping(value = {"", "gestorPrincipal"})
     public String inventarioGestor(Model model) {
         List<Inventario> inventario = inventarioRepository.listarStockMayor0();
+        // para listar el stock total en vez del stock en almacen principal
+        /*
+        for (Inventario inv: inventario) {
+            Integer stockTotal = 0;
+            stockTotal = inventariosedeRepository.obtenerStockTotal(inv.getIdInventario());
+            if(stockTotal != null){
+                inv.setStock(stockTotal);
+            }
+        }*/
         //todo mostrar  mensaje de stock bajo
 
         model.addAttribute("inventario", inventario);
@@ -466,13 +475,13 @@ public class GestorController {
     @GetMapping("/verHistorial")
     public String HistorialDeInventario(Model model, @RequestParam("id") int id) {
         Optional<Inventario> inventario1 = inventarioRepository.findById(id);
-        if(inventario1.isPresent()){
+        if (inventario1.isPresent()) {
             List<Historial> historiales = historialRepository.listarHistorialDeUnPro(inventario1.get().getIdInventario());
             model.addAttribute("historiales", historiales);
             model.addAttribute("inventario", inventario1.get());
             return "Gestor/G-ListaDeHistorial";
-        }else {
-            return "redirect:/gestorPrincipal";
+        } else {
+            return "redirect:/gestor/gestorPrincipal";
         }
 
     }
@@ -505,12 +514,31 @@ public class GestorController {
                     break;
                 }
             }
+
+            // no queria crear un DTO asi que ahora en idSede le guardare el Stock de la sede
+            List<Inventariosede> listaInvSede = inventariosedeRepository.findByInventario(inventario2);
+            if (!listaInvSede.isEmpty()) {
+                ArrayList<Sede> StockSede = new ArrayList<Sede>();
+                for (Inventariosede IS : listaInvSede) {
+                    if (IS.getStock() > 0) {
+                        Sede temp = new Sede();
+                        temp.setIdsede(IS.getStock());
+                        temp.setNombre(IS.getSede().getNombre());
+
+                        StockSede.add(temp);
+                    }
+                }
+                if (!StockSede.isEmpty()) {
+                    model.addAttribute("StockSede", StockSede);
+                }
+            }
+
             model.addAttribute("historial", historial);
             model.addAttribute("producto", inventario2);
 
             return "Gestor/G-DetallesProdcuto";
         } else {
-            return "redirect:/gestorPrincipal";
+            return "redirect:/gestor/gestorPrincipal";
         }
     }
 
@@ -791,6 +819,13 @@ public class GestorController {
         Optional<Inventario> inventario = inventarioRepository.findById(id);
         if (inventario.isPresent()) {
             Inventario i = inventario.get();
+
+            // para mandar un error si es que no se encuentra la imagen en la bd.
+            // En el HTML automaticamente se muestra una imagen por defecto
+            if (i.getFotocontenttype() == null || i.getFotocontenttype().isEmpty() || i.getFoto().length == 0 || i.getFoto() == null) {
+                HttpHeaders httpHeaders = new HttpHeaders();
+                return new ResponseEntity<>(null, httpHeaders, HttpStatus.NOT_FOUND);
+            } // fin IF
 
             byte[] imagenComoBytes = i.getFoto();
             HttpHeaders httpHeaders = new HttpHeaders();
@@ -1628,11 +1663,14 @@ public class GestorController {
 
     }
 
+    /*
     @ExceptionHandler(Exception.class)
     public String ExceptionHandlerGestor(Exception e,RedirectAttributes attr ){
         attr.addFlashAttribute("msgError", "Ocurrio un error, no se completo el proceso");
         System.out.println("!!!!! \n \n OCURRIO EL SIGUIENTE ERROR: \n  " + e.getMessage() + " \n \n !!!!!!!");
+        System.out.println("!!!!! \n \n OCURRIO EL SIGUIENTE ERROR: \n  " + e.getCause().getMessage() + " \n \n !!!!!!!");
         return "redirect:/gestor/gestorPrincipal";
 
-    }
+    }*/
+
 }
