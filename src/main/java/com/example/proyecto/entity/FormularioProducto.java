@@ -14,7 +14,8 @@ public class FormularioProducto {
     private
     String nombreProducto;
     @NotBlank(message = "Este campo no puede estar vacío")
-    @Size(min = 3 ,max = 3, message = "Solo 3 caracteres")
+   // @Size(min = 3 ,max = 3, message = "Solo 3 caracteres")
+    @Size(min = 3 ,max = 4, message = "Se puede ingresar 3 o 4 caracteres")
     private
     String codigoProducto;
     @NotBlank(message = "Este campo no puede estar vacío")

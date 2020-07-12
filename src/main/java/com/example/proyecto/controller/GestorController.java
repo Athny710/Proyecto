@@ -1082,9 +1082,11 @@ public class GestorController {
             //validacion codigo de  artesano (INICIALES)
             String aux1 = null;
             String aux2 = null;
+            String aux3 = null;
             if (!artesano.getApellidomaterno().isEmpty()) { // codigos con apellido materno
                 aux1 = artesano.getNombre().substring(0, 1) + artesano.getApellidopaterno().substring(0, 1) + artesano.getApellidomaterno().substring(0, 1);
                 aux2 = artesano.getNombre().substring(0, 2) + artesano.getApellidopaterno().substring(0, 1) + artesano.getApellidomaterno().substring(0, 1);
+                aux3 = artesano.getNombre().substring(0, 1) + artesano.getApellidopaterno().substring(0, 1) + artesano.getApellidomaterno().substring(0, 2);
             } else {// codigos sin apellido materno
                 aux1 = artesano.getNombre().substring(0, 1) + artesano.getApellidopaterno().substring(0, 1);
                 aux2 = artesano.getNombre().substring(0, 2) + artesano.getApellidopaterno().substring(0, 1);
@@ -1094,7 +1096,7 @@ public class GestorController {
 
             if (artesano.getIdArtesano() == null) {
                 if (artesanoRepository.findByCodigo(artesano.getCodigo()).size() >= 1 ||  // en caso el codigo se repita o no tenga un codigo esperado
-                        !(artesano.getCodigo().equalsIgnoreCase(aux1) || artesano.getCodigo().equalsIgnoreCase(aux2))) {
+                        !(artesano.getCodigo().equalsIgnoreCase(aux1) || artesano.getCodigo().equalsIgnoreCase(aux2) || artesano.getCodigo().equalsIgnoreCase(aux3))) {
                     model.addAttribute("listaComunidad", comunidadRepository.findAll());
                     model.addAttribute("msgError", "Recuerde que el codigo debe ser las iniciales del artesano");
                     return "Gestor/G-RegistroArtesano";
