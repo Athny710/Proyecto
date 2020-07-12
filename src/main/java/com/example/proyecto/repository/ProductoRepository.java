@@ -47,4 +47,13 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
             "                        where s.idSede=?1",nativeQuery = true)
     List<ProductosEstadosSede> listaProductosEnviadosSede(int idSede);
 
+    @Query(value = "SELECT est.idEnvioSede as idestado, est.idInventarioSede as idinventariosede, p.codigoGenerado as codigogenerado,s.nombre as nombre_sede, d.nombre,est.cantidad,i.precioMosqoy,est.fecha,est.estado,est.comentario FROM sw2_proyecto.producto p \n" +
+            "inner join sw2_proyecto.denominacion d on p.idDenominacion = d.idDenominacion\n" +
+            "inner join sw2_proyecto.inventario i on p.idProducto = i.idProducto\n" +
+            "inner join sw2_proyecto.inventariosede invs on i.idInventario = invs.idInventario\n" +
+            "inner join sw2_proyecto.estadoenviosede est on invs.idInventarioSede = est.idInventarioSede\n" +
+            "inner join sw2_proyecto.sede s on invs.idSede = s.idSede and est.estado = 'En camino a central'",nativeQuery = true)
+    List<ProductosEstadoRechazado> listaProductosDevueltos();
+
+
 }

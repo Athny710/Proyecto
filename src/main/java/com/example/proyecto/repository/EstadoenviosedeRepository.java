@@ -10,4 +10,8 @@ import java.util.List;
 
 @Repository
 public interface EstadoenviosedeRepository extends JpaRepository<Estadoenviosede, Integer> {
+
+    List<Estadoenviosede>  findByInventariosede(Inventariosede inventariosede);
+
+
 }

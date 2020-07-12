@@ -1181,14 +1181,60 @@ public class GestorController {
     }
 
     @GetMapping("borrarRechazoDeEnvio")
-    public String borrarProductosRechazados(@RequestParam("id") int idRechazado, RedirectAttributes attr) {
+    public String borrarProductosRechazados(@RequestParam("id") int idRechazado, RedirectAttributes attr) { //queda a mejorar que se puede elegir una cantidad determinada a aceptar
+        // el nombre de esta funcion es de legado. En verdad confirma que se recibio un rechazo
         Optional<Estadoenviosede> obtenerEstado = estadoenviosedeRepository.findById(idRechazado);
         if (obtenerEstado.isPresent()) {
+            Estadoenviosede estadoenviosede = obtenerEstado.get();
+            Inventario inventario = estadoenviosede.getInventariosede().getInventario();
+            Integer stock = inventario.getStock();
+            stock = stock + estadoenviosede.getCantidad();
+            inventario.setStock(stock);
+            inventarioRepository.save(inventario);
             estadoenviosedeRepository.deleteById(idRechazado);
-            attr.addFlashAttribute("msg", "El producto rechazado ha sido eliminado exitosamente");
+            String plural = ""; // plural o singular
+            if (estadoenviosede.getCantidad() > 1) {
+                plural = "s";
+            }
+
+            attr.addFlashAttribute("msg", "La devolucion de "+ estadoenviosede.getCantidad() +
+                    " " + inventario.getProducto().getCodigoGenerado() + " "+
+                    inventario.getColor() + plural + " ha sido confirmada exitosamente");
         }
         return "redirect:/gestor/gestorProductosRechazados";
     }
+
+    @GetMapping("aceptarProductosDevueltos")
+    public String aceptarProductosDevueltos(@RequestParam("id") int idDevuelto, RedirectAttributes attr) {
+        Optional<Estadoenviosede> obtenerEstado = estadoenviosedeRepository.findById(idDevuelto);
+        if (obtenerEstado.isPresent()) {
+            Estadoenviosede estadoenviosede = obtenerEstado.get();
+            Inventario inventario = estadoenviosede.getInventariosede().getInventario();
+            Integer stock = inventario.getStock();
+            stock = stock + estadoenviosede.getCantidad();
+            inventario.setStock(stock);
+            inventarioRepository.save(inventario);
+            estadoenviosedeRepository.deleteById(idDevuelto);
+            String plural = ""; // plural o singular
+            if (estadoenviosede.getCantidad() > 1) {
+                plural = "s";
+            }
+
+            attr.addFlashAttribute("msg", "La devolucion de "+ estadoenviosede.getCantidad() +
+                    " " + inventario.getProducto().getCodigoGenerado() + " "+
+                    inventario.getColor() + plural + " ha sido confirmada exitosamente");
+        }
+        return "redirect:/gestor/ProductosDevueltos";
+    }
+
+    @GetMapping("ProductosDevueltos")
+    public String ProductosDevueltos(Model model) {
+        model.addAttribute("listaProdRecha", productoRepository.listaProductosDevueltos());
+        return "Gestor/G-ProdDev";
+    }
+
+
+
 
     @GetMapping("gestorEditarEnvio")
     public String editarEnvio(@RequestParam("id") int id, @ModelAttribute("estadoenviosede") Estadoenviosede estadoenviosede, Model model) {
@@ -1200,7 +1246,6 @@ public class GestorController {
             List<Sede> listaSede = sedeRepository.findAll();
             model.addAttribute("listaInventario", listaInventario);
             model.addAttribute("listaSede", listaSede);
-            //todo hacer que de alguna manera se borre el estadoenviosede con estado "rechazado"
             return "Gestor/G-GestionEnvios";
         } else {
             return "redirect:/gestor/gestorProductosRechazados";
@@ -1241,7 +1286,18 @@ public class GestorController {
                 Optional<Sede> sede1 = sedeRepository.findById(sedkey);
                 Optional<Inventario> inventario1 = inventarioRepository.findById(invkey);
                 List<Inventariosede> inventariosede1 = inventariosedeRepository.findByInventarioAndSede(inventario1.get(), sede1.get());
-                if ((inventario1.get().getStock() - estadoenviosede.getCantidad()) >= 0) {
+                Boolean condicion = false;
+                Optional<Estadoenviosede> auxEstado = estadoenviosedeRepository.findById(estadoenviosede.getIdenviosede());
+                if(estadoenviosede.getIdenviosede() != 0){
+
+                    if(auxEstado.isPresent()){
+                        if(inventario1.get().getStock() + auxEstado.get().getCantidad() - estadoenviosede.getCantidad() >= 0){
+                            condicion = true;
+                        }
+                    }
+
+                }
+                if ((inventario1.get().getStock() - estadoenviosede.getCantidad()) >= 0 || condicion) {
                     //conseguir inventariosede
                     if (!inventariosede1.isEmpty()) {// si ya hay un registro se usa
                         estadoenviosede.setInventariosede(inventariosede1.get(0));
@@ -1269,12 +1325,14 @@ public class GestorController {
                             model.addAttribute("msg", "Por favor no editar el HTML con F12 :>");
                             return "Gestor/G-GestionEnvios";
                         }
-                        //todo logica de borrar el anterior y aquello ??????
                     } else {//este no es un reenvio
                         estadoenviosedeRepository.save(estadoenviosede);
                     }
 
                     int cantidadrestada = estadoenviosede.getInventariosede().getInventario().getStock() - estadoenviosede.getCantidad();
+                    if(condicion){
+                        cantidadrestada = cantidadrestada + auxEstado.get().getCantidad();
+                    }
                     estadoenviosede.getInventariosede().getInventario().setStock(cantidadrestada);
                 } else { // cantidad restada menor a 0
                     List<Inventario> listaInventario = inventarioRepository.findAll();

@@ -42,7 +42,7 @@
 <ul th:fragment="SideBarGestor" class="navbar-nav bg-redM sidebar sidebar-dark accordion shadow" id="accordionSidebar">
     <!-- Sidebar - Logo -->
 
-    <a class="sidebar-brand align-items-center justify-content-center" th:href="@{/system}">
+    <a class="sidebar-brand align-items-center justify-content-center" th:href="@{/gestor/gestorPrincipal}">
         <img th:src="@{/img/logoRed.png}" width="150px" height="90px"/>
     </a>
     <!-- Divider
@@ -140,6 +140,7 @@
                 <li class="nav-item"><a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosEnviados}">-Enviados</a></li>
                 <li class="nav-item"><a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosAceptados}">-Aceptados</a></li>
                 <li class="nav-item"><a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosRechazados}">-Rechazados</a></li>
+                <li class="nav-item"><a class="collapse-item text-gray-900" th:href="@{/gestor/ProductosDevueltos}">-Devueltos</a></li>
                 <li class="nav-item"><a class="collapse-item text-gray-900" th:href="@{/gestor/gestorNuevoEnvio}">-Nuevo Envio</a></li>
             </div>
         </div>
@@ -198,7 +199,7 @@
                     Perfil
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-white" th:href="@{/system}" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item text-white" href="#" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-100"></i>
                     Cerrar Sesión
                 </a>
