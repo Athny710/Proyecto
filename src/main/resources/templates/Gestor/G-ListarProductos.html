@@ -55,9 +55,35 @@
                                             <a th:href="@{'/gestor/gestorEditProducto?id='+${producto.idProducto}}">
                                                 <i class="far fa-edit text-orangeM" style="margin-right: 5px"></i>
                                             </a>
-                                            <a th:href="@{'/gestor/borrarProducto?id='+${producto.idProducto}}">
-                                                <i class="far fa-trash-alt text-redM" style="margin-left: 5px"></i>
-                                            </a>
+
+                                            <a style="margin-left: 5px" href="#" class="far fa-trash-alt text-redM"
+                                               data-toggle="modal" data-target="#modalborrar"
+                                               th:attrappend="data-target=${producto.getIdProducto()}"></a>
+
+                                            <div class="modal fade" id="modalborrar" tabindex="-1" role="dialog"
+                                                 th:attrappend="id=${producto.getIdProducto()}"
+                                                 aria-labelledby="myModalLabel">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header text-center">
+                                                            <h4 class="modal-title w-100 font-weight-bold">Eliminar producto</h4>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h6 th:text="'¿Está seguro que desea eliminar el producto ' + ${producto.denominacion.nombre} + ' con codigo' + ${producto.denominacion.codigonombre} + ' del registro?'"></h6>
+                                                            <a th:href="@{'/gestor/borrarProducto' + '?id=' + ${producto.idProducto}}"
+                                                               class="btn btn-danger btn-block">Eliminar</a>
+                                                            <button type="button" class="btn btn-searchTop btn-block"
+                                                                    data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">Cancelar</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     </tbody>
