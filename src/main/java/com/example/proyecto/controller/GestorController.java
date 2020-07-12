@@ -261,8 +261,10 @@ public class GestorController {
                                      RedirectAttributes attr, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
             if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {
+
                 model.addAttribute("msgError", "El correo ingresado no es un correo");
             }
+
             usuarios.setCorreo(usuarios.getCorreo().toLowerCase());
             if (usuarios.getIdusuarios() != 0) {
                 Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
