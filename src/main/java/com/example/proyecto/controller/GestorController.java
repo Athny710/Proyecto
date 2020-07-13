@@ -469,7 +469,97 @@ public class GestorController {
         //todo mostrar  mensaje de stock bajo
 
         model.addAttribute("inventario", inventario);
+        model.addAttribute("listaComunidades", comunidadRepository.findAll());
+        model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+        model.addAttribute("listaCategoria", categoriaRepository.findAll());
         return "Gestor/G-Inventario";
+    }
+
+    @GetMapping("/buscador")
+    public String buscadorAvanzado(Model model,@RequestParam("idComu") int idComu, @RequestParam("tipo") String tipo,
+                                   @RequestParam("idArt") int idArt,@RequestParam("idCate") int idCate) {
+
+        if (idComu != 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0) {
+            List<Inventario> Lista1 = inventarioRepository.listarPorComunidad(idComu);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista1);
+            return "Gestor/G-Inventario";
+        } else if (idComu == 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0) {
+            List<Inventario> Lista2 = inventarioRepository.listarPorCategoria(idCate);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista2);
+            return "Gestor/G-Inventario";
+        } else if (idComu == 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0) {
+            List<Inventario> Lista3 = inventarioRepository.listarPorAdquisicion(tipo);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista3);
+            return "Gestor/G-Inventario";
+        } else if (idComu == 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate == 0) {
+            List<Inventario> Lista4 = inventarioRepository.listarPorArtesanoConConsigna(tipo, idArt);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista4);
+            return "Gestor/G-Inventario";
+        }else if (idComu != 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
+            List<Inventario> Lista5 = inventarioRepository.listarPorCategoriaYComunidad(idCate, idComu);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista5);
+            return "Gestor/G-Inventario";
+        } else if (idComu != 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0){
+            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadYModalidad( idComu, tipo);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista6);
+            return "Gestor/G-Inventario";
+        }else if (idComu != 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate == 0){
+            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadConsignadoYArtesano( idComu, idArt);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista6);
+            return "Gestor/G-Inventario";
+        }else if (idComu == 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate != 0){
+            List<Inventario> Lista7 = inventarioRepository.listarPorCategoriaConsignadoYArtesano( idCate, idArt);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista7);
+            return "Gestor/G-Inventario";
+        } else if (idComu == 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
+            List<Inventario> Lista8 = inventarioRepository.listarPorCategoriaYModalidad( idCate, tipo);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista8);
+            return "Gestor/G-Inventario";
+        }else if (idComu != 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
+            List<Inventario> Lista9 = inventarioRepository.listarPorCategoriaYComunidadYModalidad( idCate, tipo, idComu);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista9);
+            return "Gestor/G-Inventario";
+        }else if (idComu != 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate != 0){
+            List<Inventario> Lista10 = inventarioRepository.listarPorCategoriaComunidadConsignadoYArtesano( idCate, idComu, idArt);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista10);
+            return "Gestor/G-Inventario";
+        } else{
+            return "redirect:/gestor";
+        }
+
     }
 
     @GetMapping("/verHistorial")
