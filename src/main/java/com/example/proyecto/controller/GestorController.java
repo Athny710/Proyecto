@@ -1364,16 +1364,6 @@ public class GestorController {
 ///////////// REPORTES DE EXCEL ///////////////////
 
     //EXCEL !!
-    @PostMapping("createExcelPorCodigo")
-    public void crearExcelCodigo(@RequestParam("codigo") String codigo, @RequestParam("nombre") String nombre, HttpServletRequest request, HttpServletResponse response) {
-        List<VentaPorCodigo> ventaCodigo = ventasService.getVentasPorCodigo(codigo);
-        boolean isFlag = ventasService.createExcelXCodigo(ventaCodigo, context, request, response);
-        if (isFlag) {
-            String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_codigo" + ".xls");
-            filedownload(fullpath, response, "ventas.xls");
-        }
-    }
-
     @PostMapping("crearExcelPorCliente")
     public String crearExcelCliente(@RequestParam("filtrado") int val, @RequestParam("estandar") String cliente, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response, RedirectAttributes attr) {
         if (val != 1) {
