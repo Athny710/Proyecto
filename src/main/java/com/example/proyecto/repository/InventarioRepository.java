@@ -84,4 +84,20 @@ public interface InventarioRepository extends JpaRepository<Inventario, Integer>
             nativeQuery = true)
     List<Inventario> listarPorCategoriaYModalidad( int idCate, String tipo);
 
+    @Query(value = "SELECT inventario.* FROM sw2_proyecto.inventario, producto, adquisicion\n" +
+            "where inventario.idProducto = producto.idProducto\n" +
+            "and producto.idAdquisicion = adquisicion.idAdquisicion\n" +
+            "and producto.idCategoria =?1 and adquisicion.modalidad = ?2 and producto.idComunidad =?3 \n" +
+            "and inventario.stock > 0",
+            nativeQuery = true)
+    List<Inventario> listarPorCategoriaYComunidadYModalidad( int idCate, String tipo,int idComu);
+
+    @Query(value = "SELECT inventario.* FROM sw2_proyecto.inventario, producto, adquisicion\n" +
+            "where inventario.idProducto = producto.idProducto\n" +
+            "and producto.idAdquisicion = adquisicion.idAdquisicion\n" +
+            "and producto.idCategoria =?1 and adquisicion.modalidad = 'consignado' and producto.idComunidad = ?2 and adquisicion.idArtesano = ?3\n" +
+            "and inventario.stock > 0;",
+            nativeQuery = true)
+    List<Inventario> listarPorCategoriaComunidadConsignadoYArtesano( int idCat, int idComu, int idArt);
+
 }
