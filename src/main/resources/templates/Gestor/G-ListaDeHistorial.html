@@ -35,7 +35,7 @@
                                     <th>Numero de Pedido</th>
                                     <th>Facilitador</th>
                                     <th>Cantidad</th>
-                                    <th>Costo Tejedor</th>
+                                    <th>Costo Tejedor (soles)</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -44,7 +44,7 @@
                                     <td th:text="${historial.numeropedido}"></td>
                                     <td th:text="${historial.facilitador}"></td>
                                     <td th:text="${historial.cantidad}"></td>
-                                    <td th:text="${historial.costotejedor}"></td>
+                                    <td th:text=" 'S/ '+ ${historial.costotejedor}"></td>
                                 </tr>
                                 </tbody>
                             </table>

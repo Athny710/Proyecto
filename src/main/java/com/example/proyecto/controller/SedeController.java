@@ -496,13 +496,13 @@ public class SedeController {
         }
     }
 
-
+/*
     @ExceptionHandler(Exception.class)
     public String ExceptionHandlerSede(Exception e,RedirectAttributes attr ){
         attr.addFlashAttribute("msgError", "Ocurrio un error, no se completo el proceso");
         System.out.println("!!!!! \n \n OCURRIO EL SIGUIENTE ERROR: \n  " + e.getMessage() + " \n \n !!!!!!!");
         return "redirect:/sede/principal";
-    }
+    } */
 }
 
 

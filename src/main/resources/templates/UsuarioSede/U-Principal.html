@@ -23,9 +23,80 @@
                         <div class="d-flex justify-content-between centrado">
                             <h5 class="m-0 font-weight-bold text-redM">Inventario</h5>
                         </div>
-
                     </div>
                     <div class="card-body bg-gray-100">
+                        <div class="card2" id="busquedaAv">
+                            <div class="row">
+                                <div class="col-lg-6ba">
+                                    <div class="row" style="margin: 1rem">
+                                        <div class="col-ba-1">
+
+                                        </div>
+                                        <div class="col-ba-2">
+                                            <label for="comunidad" style="margin-top: 0.25rem">Comunidad:</label>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <select class="form-control" name="comunidad" id="comunidad" style="border-radius: 10rem" >
+                                                <option value="0">Todos</option>
+                                                <option th:each=" comunidad : ${listaComunidades}"
+                                                        th:value="${comunidad.idComunidad}"
+                                                        th:text="${comunidad.nombre}">Todo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin: 1rem">
+                                        <div class="col-ba-1">
+
+                                        </div>
+                                        <div class="col-ba-2">
+                                            <label for="categoria" style="margin-top: 0.25rem">Categoría:</label>
+                                        </div>
+                                        <div class="col-lg-6">
+
+                                            <select class="form-control" name="categoria" id="categoria" style="border-radius: 10rem" >
+                                                <option value="0">Todos</option>
+                                                <option th:each=" categoria : ${listaCategoria}"
+                                                        th:value="${categoria.idCategoria}"
+                                                        th:text="${categoria.nombre}">Todo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin: 1rem" id="artesanoDiv">
+                                        <div class="col-ba-1"></div>
+                                        <div class="col-ba-2">
+                                            <label for="artesano" style="margin-top: 0.25rem">Artesano:</label>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <select class="form-control" name="artesano" id="artesano" style="border-radius: 10rem" >
+                                                <option value="0">Todos</option>
+                                                <option th:each=" artesano : ${listaArtesanos}"
+                                                        th:value="${artesano.idArtesano}"
+                                                        th:text="${artesano.nombre +  ' ' + artesano.apellidopaterno+ ' ' + artesano.apellidomaterno}">Todo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="divisor-ba"></div>
+                                <div class="col-lg-6">
+                                    <div class="row" style="margin: 1rem">
+                                        <div class="col-lg-5ba">
+                                            <label for="adqui" style="margin-top: 0.25rem">Tipo Adquisición:</label>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <select class="form-control" name="adqui" id="adqui" style="border-radius: 10rem">
+                                                <option value="todo">Todo</option>
+                                                <option value="compra">Compra</option>
+                                                <option value="consignado">Consignación</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div style="text-align: right">
+                                        <a id="obtenerLista" type="button" class="btn btn-orange" style="margin-top: 4.25rem; color: white">Buscar</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive bg-gray-100">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
@@ -135,6 +206,7 @@
 </a>
 <div th:replace="Fragmentos/FragmentosSede.html::Script"></div>
 
+</script>
 </body>
 
 </html>
