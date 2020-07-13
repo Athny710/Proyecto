@@ -21,10 +21,13 @@
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Inventario</h5>
-                                <button class="btn btn-orange" onclick="mostrarForm()">
-                                    Búsqueda Avanzada
-                                    <i class="fas fa-search"></i>
-                                </button>
+                                <div>
+                                    <div class="u">
+                                        <div class="divisor"></div>
+                                        <button onclick="mostrarForm()" class="linkBa"><p>Búsqueda avanzada</p><i class="fas fa-search" style="margin: auto 0 auto .5rem"></i></button>
+                                        <div class="divisor"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
@@ -84,7 +87,7 @@
                                         </div>
                                         <div class="divisor-ba"></div>
                                         <div class="col-lg-6">
-                                            <div class="row" style="margin: 1rem">
+                                            <div class="row" style="margin: 1rem 1rem 1rem 2rem">
                                                 <div class="col-lg-5ba">
                                                     <label for="adqui" style="margin-top: 0.25rem">Tipo Adquisición:</label>
                                                 </div>
@@ -98,6 +101,7 @@
                                             </div>
                                             <div style="text-align: right">
                                                 <a id="obtenerLista" type="button" class="btn btn-orange" style="margin-top: 4.25rem; color: white">Buscar</a>
+                                                <a th:href="@{/admin/principal}" type="button" class="btn btn-danger" style="margin-top: 4.25rem; margin-left: 0.5rem">Limpiar</a>
                                             </div>
 
                                         </div>
@@ -176,12 +180,13 @@
         function mostrarForm(){
 
             if(s === true){
-                $("#busquedaAv").show(500).delay(1000);
+                $("#busquedaAv").slideDown("slow");
                 s = false;
             }else{
-                $("#busquedaAv").hide(500).delay(1000);
+                $("#busquedaAv").slideUp("slow");
                 s = true;
             }
-        }</script>
+        }
+    </script>
 </body>
 </html>

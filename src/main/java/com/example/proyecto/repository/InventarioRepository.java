@@ -52,6 +52,7 @@ public interface InventarioRepository extends JpaRepository<Inventario, Integer>
             nativeQuery = true)
     List<Inventario> listarPorCategoriaYComunidad(int idCate, int idComu);
 
+
     @Query(value = "SELECT inventario.* FROM sw2_proyecto.inventario, producto, adquisicion\n" +
             "where inventario.idProducto = producto.idProducto\n" +
             "and producto.idAdquisicion = adquisicion.idAdquisicion\n" +
@@ -99,5 +100,6 @@ public interface InventarioRepository extends JpaRepository<Inventario, Integer>
             "and inventario.stock > 0;",
             nativeQuery = true)
     List<Inventario> listarPorCategoriaComunidadConsignadoYArtesano( int idCat, int idComu, int idArt);
+
 
 }

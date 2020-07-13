@@ -596,7 +596,40 @@ pre code {
     max-width: 1140px;
   }
 }
+/*--------------------------Busqueda avanzada--------------------------*/
+.u{
+  display:flex;
+  float: left;
+}
 
+.divisor{
+  border-right: 1px solid #e3e6f0;
+  margin:0 0.5rem 0 0.5rem;
+}
+
+.linkBa{
+  border:none;
+  display: flex;
+  right: 0;
+  color:#3a3b45;
+  background-color: #f8f9fc;
+}
+.linkBa:focus{
+  outline : 0;
+  -moz-outline : 0;
+  border : 0;
+  display: flex;
+  right: 0;
+  color:#3a3b45;
+  background-color: #f8f9fc;
+}
+.linkBa > p{
+  font-size: .9rem;
+}
+.u > button:hover{
+  color: #75314a;
+}
+/*----------------------------Busqueda avanzada-----------------------*/
 .container-fluid {
   width: 100%;
   padding-right: 0.75rem;
