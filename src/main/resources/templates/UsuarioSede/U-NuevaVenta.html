@@ -64,12 +64,10 @@
                                             <label>Tipo de documento de venta:</label>
                                             <select style="border-radius: 10rem" class="form-control"
                                                     th:field="*{tipodocumentoventa}"
-                                                    type="item">
+                                                    type="item" onchange="conosinruc(this.value)">
+                                                <option value="0">-----</option>
                                                 <option th:text="Boleta" value="Boleta">Boleta</option>
                                                 <option th:text="Factura"  value="Factura">Factura</option>
-                                                <option th:text="Transacción"  value="Transaccion">Transaccion</option>
-                                                <option th:text="Otro"  value="Otro">Otro</option>
-
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -81,10 +79,10 @@
                                                  th:errors="*{numerodocumentoventa}">Error
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" id="tienda">
                                             <label>Tienda:</label>
-                                            <select style="border-radius: 10rem" class="form-control"
-                                                    th:field="*{tienda.idtienda}" type="item">
+                                            <select style="border-radius: 10rem" class="form-control" th:field="*{tienda.idtienda}" type="item" >
+                                                <option value="0">-----</option>
                                                 <option th:each="tienda : ${listaTiendas}"
                                                         th:value="${tienda.getIdtienda()}" th:text="${
                                                         tienda.getNombre()}"></option>
@@ -93,7 +91,7 @@
                                                  th:if="${#fields.hasErrors('tienda.idtienda')}"
                                                  th:errors="*{tienda.idtienda}"></div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" id="lugarventa">
                                             <Label>Lugar de venta:</Label>
                                             <input type="text" class="form-control form-control-user2"
                                                    th:field="*{lugardeventa}"/>
@@ -108,6 +106,18 @@
                                             <div class="text-danger" th:if="${#fields.hasErrors('preciounitarioventa')}"
                                                  th:errors="*{preciounitarioventa}">Error
                                             </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Medio de pago:</label>
+                                            <select style="border-radius: 10rem" class="form-control" th:field="*{mediodepago}" type="item" >
+                                                <option value="efectivo">efectivo</option>
+                                                <option value="visa">VISA</option>
+                                                <option value="mastercard">Mastercard</option>
+                                                <option value="deposito bancario">Depósito bancario</option>
+                                            </select>
+                                            <div class="text-danger"
+                                                 th:if="${#fields.hasErrors('mediodepago')}"
+                                                 th:errors="*{mediodepago}"></div>
                                         </div>
                                         <div class="form-group">
                                             <label>Producto Vendido:</label>
@@ -168,6 +178,19 @@
         </div>
     </div>
 </div>
+
+<script>
+    function conosinruc(tipo) {
+        if (tipo == 'Boleta') {
+            $("#tienda").hide();
+        }else if (tipo == 'Factura') {
+            $("#tienda").show();
+        }else {
+            $("#tienda").hide();
+        }
+    }
+</script>
+
 
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
