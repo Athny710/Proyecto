@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -456,8 +457,15 @@ public class GestorController {
     public String inventarioGestor(Model model) {
         List<Inventario> inventario = inventarioRepository.listarStockMayor0();
         //todo mostrar  mensaje de stock bajo
+        boolean validar1 = false;
+        int validar2=0;
+        //Se va a definir una variable que se pasará como model attribute para poder mostrar un modal al inicio
+        if (productoRepository.productoPorEstado("Vencida").size()>0 && productoRepository.productoPorEstado("Proxima").size()>0){
+            validar1=true;
+        }
 
         model.addAttribute("inventario", inventario);
+        model.addAttribute("validar",validar1);
         return "Gestor/G-Inventario";
     }
 
@@ -1633,4 +1641,53 @@ public class GestorController {
         return "redirect:/gestor/gestorPrincipal";
 
     }
+
+
+    // CRONES TU TERROR!!!!!
+
+
+    // SE EJECUTARÁ CADA PRIMERO DE CADA MES A LAS 2 AM ,  EN LA BASE DE DATOS SE REALIZARÁN LOS CAMBIOS DE ESTADOS EL MISMO DÍA PERO UNA HORA ANTES (1 AM)--OJO!!!!!
+    //@Scheduled(cron = "0 0/3 * * * ?", zone = "GMT-5")
+    @Scheduled(cron = "0 0 2 1 * ?", zone = "GMT-5")
+    public void mensajeMensualDeAlertaDeVencimientoDeProductosParaLosGestores() throws MessagingException {
+
+        List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
+        List<String> codigosPorVencer = productoRepository.productoPorEstado("Proxima");
+        if(codigosPorVencer.size() >0){
+            if (listaCorreosGestor.size()>=1){
+
+                for (String correo:listaCorreosGestor) {
+                    Email email = new Email();
+                    email.emailAlertaConsignacionGestor(correo);
+                    //System.out.println("Se envió");
+                }
+            } else {System.out.println("No hay productos próximos a vencer");}
+
+        }
+
+    }
+
+
+    // SE EJECUTARÁ TODOS LOS DIAS A LAS 00:00 HORAS ,  SERA UNA ALERTA QUE ENVIARÁ CORREO A GESTORES INDICANDO QUE PRODUCTOS EN UNA SEMANA, ES INDIFERENTE DEL ESTADO!!!!!
+    @Scheduled(cron = "0 0 0 * * *", zone = "GMT-5")
+    public void mensajeDiarioDeProductosAVencerEnUnaSemana() throws MessagingException {
+
+        List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
+        List<String> productoSemanaVencer = productoRepository.productoAunaSemanaDeVencer();
+        if(productoSemanaVencer.size() >0){
+            if (listaCorreosGestor.size()>=1){
+
+                for (String correo:listaCorreosGestor) {
+
+                    Email email = new Email();
+                    email.emailAlertaConsignacionParaVender(correo,productoSemanaVencer);
+                    //System.out.println("Se envió");
+                }
+            } else {System.out.println("No hay productos a vencer en la semana");}
+
+        }
+
+    }
+
+
 }

@@ -29,6 +29,36 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="modal fade" id="miModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header text-center">
+                                        <h4 class="modal-title w-100 font-weight-bold">ALERTA CONSIGNACIÓN</h4>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h5>Existen productos con consignación por vencer y vencidos, favor de verificarlo en la pestaña GESTIONAR CONSIGNACIÓN</h5>
+                                        <button type="button" class="btn btn-searchTop btn-block"
+                                                data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">ACEPTAR</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button th:if=validar type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#miModal">
+                            MENSAJE IMPORTANTE
+                        </button>
+
+
+
+
+
                         <div class="card-body bg-gray-100">
                             <div class="table-responsive">
 

@@ -5,6 +5,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -103,7 +104,53 @@ public class Email {
     }
 
 
-    void emailAlertaConsignacion(String emailTo, String producto, String comunidad) throws MessagingException {
+    void emailAlertaConsignacionParaVender(String emailTo, List<String> productos) throws MessagingException {
+
+        //Propiedades
+        Properties properties2 = new Properties();
+        properties2.put("mail.smtp.auth","true");
+        properties2.put("mail.smtp.starttls.enable","true");
+        properties2.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        properties2.put("mail.smtp.host",host);
+        properties2.put("mail.smtp.port","587");
+
+        //Sesion con autenticador
+        Authenticator authenticator = new Authenticator(){
+            public PasswordAuthentication getPasswordAuthentication(){
+                return new PasswordAuthentication(user,pass);
+            }
+        };
+
+        //Sesion que le paso las propiedades
+        Session mailSession = Session.getInstance(properties2,authenticator);
+
+        //Crea mensaje y emisor
+        MimeMessage msg = new MimeMessage(mailSession);
+        msg.setFrom(new InternetAddress(user));
+
+        //Receptor toma la llamada de la función
+        to=emailTo;
+        address= new InternetAddress[]{new InternetAddress(to)};
+        msg.setRecipients(Message.RecipientType.TO,address);
+
+        //Acomodamos los códigos:
+        String arreglito = "CÓDIGOS DE PRODUCTOS : ";
+        for (String item:productos){
+            arreglito = arreglito + "//" + item;
+        }
+
+
+        //Asunto y mensaje
+        msg.setSubject("ALERTA DE CONSIGNACIÓN");
+        msg.setText("Atención, la consignación de los siguientes productos está por vencer: \n" + arreglito);
+
+        //Enviar el correo electronico
+        Transport transporte = mailSession.getTransport("smtp");
+        transporte.connect(host, user, pass);
+        transporte.sendMessage(msg, msg.getRecipients(Message.RecipientType.TO));
+    }
+
+    void emailAlertaConsignacionGestor(String emailTo) throws MessagingException {
 
         //Propiedades
         Properties properties2 = new Properties();
@@ -133,15 +180,15 @@ public class Email {
         msg.setRecipients(Message.RecipientType.TO,address);
 
         //Asunto y mensaje
-        msg.setSubject("ALERTA DE CONSIGNACIÓN");
-        msg.setText("Atención, la consignación del producto " + producto + " vencerá en exactamente una semana.\n" +
-                "Este deberá ser devuelto a la comunidad " + comunidad +"\n"+
-                "");
+        msg.setSubject("ALERTA DE PROXIMO VENCIMIENTO DE CONSIGNACIÓN");
+        msg.setText("Atención, favor de revisar la pestaña 'Gestionar Consignación' y entrar al apartado 'Próximas a vencer', este mes vencen algunas consignaciones que necesita dar tratamiento.");
 
         //Enviar el correo electronico
         Transport transporte = mailSession.getTransport("smtp");
         transporte.connect(host, user, pass);
         transporte.sendMessage(msg, msg.getRecipients(Message.RecipientType.TO));
     }
+
+
 
 }
