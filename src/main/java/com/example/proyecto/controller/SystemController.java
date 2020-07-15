@@ -14,8 +14,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.mail.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+
 
 @Controller
 @RequestMapping("/system")
@@ -89,7 +91,7 @@ public class SystemController {
     @PostMapping("enviarCorreoRecuperarCont")
     public String enviarCorreoRecupCuenta(RedirectAttributes attr,
                                           @RequestParam("correo")String correo,
-                                          Model model,HttpServletRequest request) throws MessagingException, UnknownHostException {
+                                          Model model,HttpServletRequest request) throws MessagingException, IOException {
 
             Usuarios usuarioBuscado = usuarioRepository.findByCorreo(correo);
 
@@ -106,11 +108,11 @@ public class SystemController {
                 //Prepara para usar el método del email
                 String context = request.getContextPath();
                 int localPort = request.getLocalPort();
-                String ipAddr = InetAddress.getLocalHost().getHostAddress();
+                //String ipAddr = InetAddress.getLocalHost().getHostAddress();
 
                 //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
                 Email email = new Email();
-                email.emailRecuperarCuenta(correo, usuarioBuscado.getHasheado(), ipAddr, localPort, context);
+                email.emailRecuperarCuenta(correo, usuarioBuscado.getHasheado(), localPort, context);
                 model.addAttribute("msg", "Se ha enviado el correo exitosamente");
                 return "index";
 

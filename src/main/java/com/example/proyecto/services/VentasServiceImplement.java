@@ -83,6 +83,9 @@ public class VentasServiceImplement implements VentasService {
     @Override
     public List<ReporteConCamposOriginales> getVentaMensual(String mes, String año) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteMensualTotal(mes,año); }
 
+    @Override
+    public List<ReporteConCamposOriginales> getReporteSede(Integer idsede) { return (List<ReporteConCamposOriginales>) ventaRepository.reporteSede(idsede); }
+
 
     public String traductorDeMeses(String mesEnEnglish){
         String mesEspanish = null;
@@ -271,8 +274,7 @@ public class VentasServiceImplement implements VentasService {
     }
 
     @Override
-    public boolean createExcel(List<CamposReporteSede> venta, ServletContext context, HttpServletRequest request, HttpServletResponse response) {
-
+    public boolean createExcelSede(List<ReporteConCamposOriginales> ventaXCliente, String cliente, String periodo, ServletContext context, HttpServletRequest request, HttpServletResponse response) {
         String filepath = context.getRealPath("/resources/reports");
         File file = new File(filepath);
         boolean exists = new File(filepath).exists();
@@ -280,74 +282,145 @@ public class VentasServiceImplement implements VentasService {
             new File(filepath).mkdirs();
         }
         try {
-            FileOutputStream outputStream = new FileOutputStream(file + "/" + "ventas" + ".xls");
+            FileOutputStream outputStream = new FileOutputStream(file + "/" + "ventas_sede" + ".xls");
             HSSFWorkbook workbook = new HSSFWorkbook();
-            HSSFSheet workSheet = workbook.createSheet("Ventas");
+            HSSFSheet workSheet = workbook.createSheet("Ventas Mosqoy");
             workSheet.setDefaultColumnWidth(30);
             HSSFCellStyle headerCellStyle = workbook.createCellStyle();
-            headerCellStyle.setFillForegroundColor(HSSFColor.BRIGHT_GREEN.index);
+            HSSFCellStyle headerCellStyle1 = workbook.createCellStyle();
+            headerCellStyle.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
             headerCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+            headerCellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+            headerCellStyle.setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
+            headerCellStyle.setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
+            headerCellStyle.setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
 
-            HSSFRow headerRow = workSheet.createRow(0);
+            headerCellStyle1.setFillForegroundColor(HSSFColor.WHITE.index);
+            headerCellStyle1.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+            headerCellStyle1.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+            HSSFFont cellFont = workbook.createFont();
+            cellFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+            headerCellStyle1.setFont(cellFont);
+            workSheet.addMergedRegion(new CellRangeAddress(0,0,0,10));
 
-            HSSFCell nombretienda = headerRow.createCell(0);
-            nombretienda.setCellValue("Nombre de la tienda");
-            nombretienda.setCellStyle(headerCellStyle);
+            HSSFRow headerRow = workSheet.createRow(1);
 
-            HSSFCell firstname = headerRow.createCell(1);
-            firstname.setCellValue("Nombre del cliente");
-            firstname.setCellStyle(headerCellStyle);
+            HSSFCell fechaventa = headerRow.createCell(0);
+            fechaventa.setCellValue("Fecha de venta");
+            fechaventa.setCellStyle(headerCellStyle);
 
-            HSSFCell docventa = headerRow.createCell(2);
-            docventa.setCellValue("Documento de venta");
-            docventa.setCellStyle(headerCellStyle);
+            HSSFCell tienda = headerRow.createCell(1);
+            tienda.setCellValue("Tienda");
+            tienda.setCellStyle(headerCellStyle);
 
-            HSSFCell precio = headerRow.createCell(3);
-            precio.setCellValue("Precio unitario");
-            precio.setCellStyle(headerCellStyle);
+            HSSFCell tipodocumento = headerRow.createCell(2);
+            tipodocumento.setCellValue("Tipo de documento (factura/boleta)");
+            tipodocumento.setCellStyle(headerCellStyle);
 
-            HSSFCell cantid = headerRow.createCell(4);
-            cantid.setCellValue("Cantidad");
-            cantid.setCellStyle(headerCellStyle);
+            HSSFCell numdocventa = headerRow.createCell(3);
+            numdocventa.setCellValue("N° de documento de venta");
+            numdocventa.setCellStyle(headerCellStyle);
 
-            HSSFCell pretot = headerRow.createCell(5);
-            pretot.setCellValue("Precio total");
-            pretot.setCellStyle(headerCellStyle);
+            HSSFCell rucdni = headerRow.createCell(4);
+            rucdni.setCellValue("RUC/DNI del Cliente");
+            rucdni.setCellStyle(headerCellStyle);
 
-            int i = 1;
+            HSSFCell nombreclient = headerRow.createCell(5);
+            nombreclient.setCellValue("Nombre del Cliente");
+            nombreclient.setCellStyle(headerCellStyle);
+
+            HSSFCell cantidad = headerRow.createCell(6);
+            cantidad.setCellValue("Cantidad");
+            cantidad.setCellStyle(headerCellStyle);
+
+            HSSFCell codigo = headerRow.createCell(7);
+            codigo.setCellValue("Código del producto");
+            codigo.setCellStyle(headerCellStyle);
+
+            HSSFCell nombreProducto = headerRow.createCell(8);
+            nombreProducto.setCellValue("Nombre del producto");
+            nombreProducto.setCellStyle(headerCellStyle);
+
+            HSSFCell color = headerRow.createCell(9);
+            color.setCellValue("Color del producto");
+            color.setCellStyle(headerCellStyle);
+
+            HSSFCell precioUnit = headerRow.createCell(10);
+            precioUnit.setCellValue("Precio unitario");
+            precioUnit.setCellStyle(headerCellStyle);
+
+            HSSFCell totalxProducto = headerRow.createCell(11);
+            totalxProducto.setCellValue("Precio total por producto");
+            totalxProducto.setCellStyle(headerCellStyle);
+
+
+            HSSFRow tituRow1 = workSheet.createRow(0);
+            HSSFCell titulo = tituRow1.createCell(0);
+            titulo.setCellValue(cliente);
+            titulo.setCellStyle(headerCellStyle1);
+
+            int i = 2;
             float totalTotal = 0;
-            for (CamposReporteSede ventaIter : venta){
+            for (ReporteConCamposOriginales venta1 : ventaXCliente){
                 HSSFRow bodyROW = workSheet.createRow(i);
                 HSSFCellStyle bodyCellStyle = workbook.createCellStyle();
-                bodyCellStyle.setFillForegroundColor(HSSFColor.WHITE.index);
+                bodyCellStyle.setFillForegroundColor(HSSFColor.YELLOW.index);
+                bodyCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+                bodyCellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+                bodyCellStyle.setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
+                bodyCellStyle.setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
+                bodyCellStyle.setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
 
-                HSSFCell nombretiendavalue = bodyROW.createCell(0);
-                nombretiendavalue.setCellValue(ventaIter.getNombretienda());
-                nombretiendavalue.setCellStyle(bodyCellStyle);
+                HSSFCell fechaventavalue = bodyROW.createCell(0);
+                fechaventavalue.setCellValue(venta1.getFecha());
+                fechaventavalue.setCellStyle(bodyCellStyle);
 
-                HSSFCell firstnamevalue = bodyROW.createCell(1);
-                firstnamevalue.setCellValue(ventaIter.getCliente());
-                firstnamevalue.setCellStyle(bodyCellStyle);
+                HSSFCell tiendavalue = bodyROW.createCell(1);
+                tiendavalue.setCellValue(venta1.getTienda());
+                tiendavalue.setCellStyle(bodyCellStyle);
 
-                HSSFCell docventavalue = bodyROW.createCell(2);
-                docventavalue.setCellValue(ventaIter.getDoc());
-                docventavalue.setCellStyle(bodyCellStyle);
+                HSSFCell tipodocumentovalue = bodyROW.createCell(2);
+                tipodocumentovalue.setCellValue(venta1.getTipodocventa());
+                tipodocumentovalue.setCellStyle(bodyCellStyle);
 
-                HSSFCell precvalue = bodyROW.createCell(3);
-                precvalue.setCellValue(ventaIter.getPreciounit());
-                precvalue.setCellStyle(bodyCellStyle);
+                HSSFCell numdocventavalue = bodyROW.createCell(3);
+                numdocventavalue.setCellValue(venta1.getNumerodocventa());
+                numdocventavalue.setCellStyle(bodyCellStyle);
 
-                HSSFCell cantvalue = bodyROW.createCell(4);
-                cantvalue.setCellValue(ventaIter.getCantidad());
-                cantvalue.setCellStyle(bodyCellStyle);
+                HSSFCell rucdnivalue = bodyROW.createCell(4);
+                rucdnivalue.setCellValue(venta1.getNumerodocid());
+                rucdnivalue.setCellStyle(bodyCellStyle);
 
-                HSSFCell pretotvalue = bodyROW.createCell(5);
-                pretotvalue.setCellValue(ventaIter.getPreciotot());
-                pretotvalue.setCellStyle(bodyCellStyle);
+                HSSFCell nombreclientvalue = bodyROW.createCell(5);
+                nombreclientvalue.setCellValue(venta1.getNombrecliente());
+                nombreclientvalue.setCellStyle(bodyCellStyle);
 
-                totalTotal += ventaIter.getPreciotot();
+                HSSFCell cantidadValue = bodyROW.createCell(6);
+                cantidadValue.setCellValue(venta1.getCantidad());
+                cantidadValue.setCellStyle(bodyCellStyle);
+
+                HSSFCell codigovalue = bodyROW.createCell(7);
+                codigovalue.setCellValue(venta1.getCodprod());
+                codigovalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell nombreProductvalue = bodyROW.createCell(8);
+                nombreProductvalue.setCellValue(venta1.getNombreproduct());
+                nombreProductvalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell colorvalue = bodyROW.createCell(9);
+                colorvalue.setCellValue(venta1.getColorprod());
+                colorvalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell precioUnitvalue = bodyROW.createCell(10);
+                precioUnitvalue.setCellValue(venta1.getPreciounit());
+                precioUnitvalue.setCellStyle(bodyCellStyle);
+
+                HSSFCell totalxProductovalue = bodyROW.createCell(11);
+                totalxProductovalue.setCellValue(venta1.getTotalxproduct());
+                totalxProductovalue.setCellStyle(bodyCellStyle);
+
+                totalTotal += venta1.getTotalxproduct();
                 i++;
-
             }
 
             HSSFRow bodyROW = workSheet.createRow(i);
@@ -359,83 +432,14 @@ public class VentasServiceImplement implements VentasService {
             bodyCellStyle.setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
             bodyCellStyle.setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
 
-            HSSFCell totalxtotal = bodyROW.createCell(4);
+            HSSFCell totalxtotal = bodyROW.createCell(10);
             totalxtotal.setCellValue("Total");
             totalxtotal.setCellStyle(bodyCellStyle);
 
-            HSSFCell totalxtotalvalue = bodyROW.createCell(5);
+            HSSFCell totalxtotalvalue = bodyROW.createCell(11);
             totalxtotalvalue.setCellValue(totalTotal);
             totalxtotalvalue.setCellStyle(bodyCellStyle);
-            workbook.write(outputStream);
-            outputStream.flush();
-            outputStream.close();
-            return true;
 
-        }catch (Exception e){
-            return false;
-        }
-    }
-
-    @Override
-    public boolean createExcelXCodigo(List<VentaPorCodigo> venta, ServletContext context, HttpServletRequest request, HttpServletResponse response) {
-
-        String filepath = context.getRealPath("/resources/reports");
-        File file = new File(filepath);
-        boolean exists = new File(filepath).exists();
-        if(!exists){
-            new File(filepath).mkdirs();
-        }
-        try {
-            FileOutputStream outputStream = new FileOutputStream(file + "/" + "ventas_por_codigo" + ".xls");
-            HSSFWorkbook workbook = new HSSFWorkbook();
-            HSSFSheet workSheet = workbook.createSheet("Ventas totales por codigo de producto");
-            workSheet.setDefaultColumnWidth(30);
-            HSSFCellStyle headerCellStyle = workbook.createCellStyle();
-            headerCellStyle.setFillForegroundColor(HSSFColor.BRIGHT_GREEN.index);
-            headerCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-
-            HSSFRow headerRow = workSheet.createRow(0);
-
-            HSSFCell dnioruc = headerRow.createCell(0);
-            dnioruc.setCellValue("DNI o RUC");
-            dnioruc.setCellStyle(headerCellStyle);
-
-            HSSFCell cliente = headerRow.createCell(1);
-            cliente.setCellValue("Nombre del cliente");
-            cliente.setCellStyle(headerCellStyle);
-
-            HSSFCell lugarventa = headerRow.createCell(2);
-            lugarventa.setCellValue("Lugar de venta");
-            lugarventa.setCellStyle(headerCellStyle);
-
-            HSSFCell fecha = headerRow.createCell(3);
-            fecha.setCellValue("Fecha");
-            fecha.setCellStyle(headerCellStyle);
-
-            int i = 1;
-            for (VentaPorCodigo venta1 : venta){
-                HSSFRow bodyROW = workSheet.createRow(i);
-                HSSFCellStyle bodyCellStyle = workbook.createCellStyle();
-                bodyCellStyle.setFillForegroundColor(HSSFColor.WHITE.index);
-
-                HSSFCell dniorucvalue = bodyROW.createCell(0);
-                dniorucvalue.setCellValue(venta1.getDnioruc());
-                dniorucvalue.setCellStyle(bodyCellStyle);
-
-                HSSFCell clientevalue = bodyROW.createCell(1);
-                clientevalue.setCellValue(venta1.getCliente());
-                clientevalue.setCellStyle(bodyCellStyle);
-
-                HSSFCell lugarvalue = bodyROW.createCell(2);
-                lugarvalue.setCellValue(venta1.getLugar());
-                lugarvalue.setCellStyle(bodyCellStyle);
-
-                HSSFCell fechavalue = bodyROW.createCell(3);
-                fechavalue.setCellValue(venta1.getCodgen());
-                fechavalue.setCellStyle(bodyCellStyle);
-
-                i++;
-            }
             workbook.write(outputStream);
             outputStream.flush();
             outputStream.close();
@@ -624,10 +628,5 @@ public class VentasServiceImplement implements VentasService {
         }catch (Exception e){
             return false;
         }
-    }
-
-    @Override
-    public boolean createExcelXSede(List<ReporteConCamposOriginales> ventaXSedeAnual, ServletContext context, HttpServletRequest request, HttpServletResponse response) {
-        return false;
     }
 }

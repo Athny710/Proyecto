@@ -21,10 +21,13 @@
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Inventario</h5>
-                                <button class="btn btn-orange" onclick="mostrarForm()">
-                                    Búsqueda Avanzada
-                                    <i class="fas fa-search"></i>
-                                </button>
+                                <div>
+                                    <div class="u">
+                                        <div class="divisor"></div>
+                                        <button onclick="mostrarForm()" class="linkBa"><p>Búsqueda avanzada</p><i class="fas fa-search" style="margin: auto 0 auto .5rem"></i></button>
+                                        <div class="divisor"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body bg-gray-100">
@@ -43,7 +46,8 @@
                                                         <option value="0">Todos</option>
                                                         <option th:each=" comunidad : ${listaComunidades}"
                                                                 th:value="${comunidad.idComunidad}"
-                                                                th:text="${comunidad.nombre}">Todo</option>
+                                                                th:text="${comunidad.nombre}"
+                                                                th:selected="${#request.getParameter('idComu')} != null  and ${#request.getParameter('idComu')} == ${comunidad.idComunidad}">Todo</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -60,7 +64,8 @@
                                                         <option value="0">Todos</option>
                                                         <option th:each=" categoria : ${listaCategoria}"
                                                                 th:value="${categoria.idCategoria}"
-                                                                th:text="${categoria.nombre}">Todo</option>
+                                                                th:text="${categoria.nombre}"
+                                                                th:selected="${#request.getParameter('idCate')} != null  and ${#request.getParameter('idCate')} == ${categoria.idCategoria}">Todo</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -74,27 +79,29 @@
                                                         <option value="0">Todos</option>
                                                         <option th:each=" artesano : ${listaArtesanos}"
                                                                 th:value="${artesano.idArtesano}"
-                                                                th:text="${artesano.nombre +  ' ' + artesano.apellidopaterno+ ' ' + artesano.apellidomaterno}">Todo</option>
+                                                                th:text="${artesano.nombre +  ' ' + artesano.apellidopaterno+ ' ' + artesano.apellidomaterno}"
+                                                                th:selected="${#request.getParameter('idArt')} != null  and ${#request.getParameter('idArt')} == ${artesano.idArtesano}">Todo</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="divisor-ba"></div>
                                         <div class="col-lg-6">
-                                            <div class="row" style="margin: 1rem">
+                                            <div class="row" style="margin: 1rem 1rem 1rem 2rem">
                                                 <div class="col-lg-5ba">
                                                     <label for="adqui" style="margin-top: 0.25rem">Tipo Adquisición:</label>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <select class="form-control" name="adqui" id="adqui" style="border-radius: 10rem">
                                                         <option value="todo">Todo</option>
-                                                        <option value="compra">Compra</option>
-                                                        <option value="consignado">Consignación</option>
+                                                        <option value="compra" th:selected="${#request.getParameter('tipo')} != null  and ${#request.getParameter('tipo').equalsIgnoreCase('compra')}">Compra</option>
+                                                        <option value="consignado" th:selected="${#request.getParameter('tipo')} != null  and ${#request.getParameter('tipo').equalsIgnoreCase('selected')}">Consignación</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div style="text-align: right">
                                                 <a id="obtenerLista" type="button" class="btn btn-orange" style="margin-top: 4.25rem; color: white">Buscar</a>
+                                                <a th:href="@{/admin/principal}" type="button" class="btn btn-danger" style="margin-top: 4.25rem; margin-left: 0.5rem">Limpiar</a>
                                             </div>
 
                                         </div>
@@ -154,21 +161,32 @@
             var valor2 = $("#comunidad").val();
             var valor3 = $("#categoria").val();
             var valor4 = $("#adqui").val();
-            $("#obtenerLista").attr('href', '/proyecto/admin/buscar?artesano='+valor1+'?comunidad='+valor2+'?categoria='+valor3+'?tipo='+valor4);
+            $("#obtenerLista").attr('href', '/proyecto/admin/buscador?idArt='+valor1+'&idComu='+valor2+'&idCate='+valor3+'&tipo='+valor4);
         });
 
-        $("#busquedaAv").hide();
+        var reqParam1 = [[${#request.getParameter('idComu')} != null ? true : false]] ;
+        var reqParam2 = [[${#request.getParameter('idCate')} != null ? true : false]] ;
+        var reqParam3 = [[${#request.getParameter('idArt')} != null ? true : false]] ;
+        var reqParam4 = [[${#request.getParameter('tipo')} != null ? true : false]] ;
+
+        if(reqParam1 === true ||reqParam2 === true|| reqParam3 === true || reqParam4 === true){
+            $("#busquedaAv").show();
+        }else{
+            $("#busquedaAv").hide();
+        }
+
         var s = true;
 
         function mostrarForm(){
 
             if(s === true){
-                $("#busquedaAv").show(500).delay(1000);
+                $("#busquedaAv").slideDown("slow");
                 s = false;
             }else{
-                $("#busquedaAv").hide(500).delay(1000);
+                $("#busquedaAv").slideUp("slow");
                 s = true;
             }
-        }</script>
+        }
+    </script>
 </body>
 </html>
