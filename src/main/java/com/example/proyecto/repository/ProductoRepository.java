@@ -49,6 +49,15 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
     List<ProductosEstadosSede> listaProductosEnviadosSede(int idSede);
 
 
+    @Query(value = "SELECT est.idEnvioSede as idestado, est.idInventarioSede as idinventariosede, p.codigoGenerado as codigogenerado,s.nombre as nombre_sede, d.nombre,est.cantidad,i.precioMosqoy,est.fecha,est.estado,est.comentario FROM sw2_proyecto.producto p \n" +
+            "inner join sw2_proyecto.denominacion d on p.idDenominacion = d.idDenominacion\n" +
+            "inner join sw2_proyecto.inventario i on p.idProducto = i.idProducto\n" +
+            "inner join sw2_proyecto.inventariosede invs on i.idInventario = invs.idInventario\n" +
+            "inner join sw2_proyecto.estadoenviosede est on invs.idInventarioSede = est.idInventarioSede\n" +
+            "inner join sw2_proyecto.sede s on invs.idSede = s.idSede and est.estado = 'En camino a central'",nativeQuery = true)
+    List<ProductosEstadoRechazado> listaProductosDevueltos();
+
+
     //NOS SERVIRÁ PARA REALIZAR VALIDACION CON RESPECTO AL SCHEDULER Y PARA EL MODAL DE ALERTA
     @Query(value = "SELECT p.codigoGenerado FROM adquisicion a INNER JOIN producto p ON a.idAdquisicion=p.idAdquisicion  INNER JOIN inventario i ON i.idProducto=p.idProducto WHERE i.estado=?1",
             nativeQuery = true)

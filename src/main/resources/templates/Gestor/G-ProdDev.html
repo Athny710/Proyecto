@@ -15,6 +15,7 @@
             <!-- Page Heading -->
             <div class="container-fluid">
                 <div th:if="${msg!= null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
                 <div class="card shadowA mb-4" >
                     <div class="card-header2 py-3">
                         <div class="d-flex justify-content-between centrado">
@@ -33,7 +34,6 @@
                                     <th>Fecha de envío</th>
                                     <th>Estado</th>
                                     <th>Comentario</th>
-                                    <th>Editar Envío</th>
                                     <th>Confirmar llegada</th>
                                 </tr>
                                 </thead>
@@ -46,11 +46,6 @@
                                     <td th:text="${p.getFecha()}"></td>
                                     <td th:text="${p.getEstado()}"></td>
                                     <td th:text="${p.getComentario()}"></td>
-                                    <td align="center">
-                                        <a style="margin-left: 10px"
-                                           th:href="@{'/gestor/gestorEditarEnvio' + '?id=' + ${p.getIdestado()}}"
-                                           class="far fa-edit text-orangeM"></a>
-                                    </td>
                                     <td align="center">
                                         <a style="margin-left: 10px" class="fa fa-check-circle text-success"
                                            href="#"
@@ -70,7 +65,7 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <h6 th:text="'¿Está seguro que desea confirmar que recibio '+ ${p.cantidad} + ' ' + ${p.getCodigogenerado()} + ' de ' + ${p.nombre_sede}"></h6>
-                                                    <a th:href="@{'/gestor/borrarRechazoDeEnvio' + '?id=' + ${p.getIdestado()}}"
+                                                    <a th:href="@{'/gestor/aceptarProductosDevueltos' + '?id=' + ${p.getIdestado()}}"
                                                        class="btn btn-orange btn-block">Confirmar</a>
                                                     <button type="button" class="btn btn-searchTop btn-block"
                                                             data-dismiss="modal" aria-label="Close">

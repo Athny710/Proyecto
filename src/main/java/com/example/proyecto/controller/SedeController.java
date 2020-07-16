@@ -11,6 +11,7 @@ import com.example.proyecto.entity.Inventario;
 import com.example.proyecto.entity.Tienda;
 import com.example.proyecto.repository.*;
 import com.example.proyecto.services.VentasService;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -137,48 +139,72 @@ public class SedeController {
                 model.addAttribute("producto", inventario2);
                 return "UsuarioSede/U-DetallesProducto";
             } else {
-                return "redirect:/principal";
+                return "redirect:/sede/principal";
             }
         } else {
             attr.addFlashAttribute("msgError", "Producto no encontrado");
-            return "redirect:/principal";
+            return "redirect:/sede/principal";
         }
     }
 
     @PostMapping("DevolverProducto")
     public String devolverProducto(@RequestParam("id") int id,@RequestParam("cantidad") int cantidad, @RequestParam("detalles") String detalles, RedirectAttributes attr, HttpSession session, Model model) {
         Optional<Inventariosede> inventariosede = inventariosedeRepository.findById(id);
+        Usuarios usuario = (Usuarios) session.getAttribute("user");
         if (inventariosede.isPresent()) {// existe el inventariosede con esa id
-            if(cantidad > 0) {
-                System.out.println(detalles);
-                if(!detalles.equalsIgnoreCase("" )&& !detalles.isEmpty()){
+            if((usuario.getSede().getIdsede().equals(inventariosede.get().getSede().getIdsede()))) {
+                if (cantidad > 0) {
+                    System.out.println(detalles);
+                    if (!detalles.equalsIgnoreCase("") && !detalles.isEmpty()) {
 
-                if (inventariosede.get().getSede().getIdsede().equals(((Usuarios) session.getAttribute("user")).getSede().getIdsede())) {// no es hackerman
-                    if (inventariosede.get().getStock() >= cantidad) {// se le resta a algo que no es 0
+                        if (inventariosede.get().getSede().getIdsede().equals(((Usuarios) session.getAttribute("user")).getSede().getIdsede())) {// no es hackerman
+                            if (inventariosede.get().getStock() >= cantidad) {// se le resta a algo que no es 0
 
-                        Inventario inventario = inventarioRepository.findById(inventariosede.get().getInventario().getIdInventario()).get();
-                        inventario.setStock(inventario.getStock() + cantidad);
-                        inventarioRepository.save(inventario);
-                        inventariosede.get().setStock(inventariosede.get().getStock() - cantidad);
-                        inventariosedeRepository.save(inventariosede.get());
-                        attr.addFlashAttribute("msg", "Un " + inventario.getProducto().getDenominacion().getNombre() + " " + inventario.getColor() + " devuelto exitosamente");
-                        return "redirect:/sede";
-                    } else {// se le esta restando mas de lo que se tiene
-                        attr.addFlashAttribute("msgError", "No tiene suficiente stock de " +
-                                inventariosede.get().getInventario().getProducto().getCodigoGenerado() + " " + inventariosede.get().getInventario().getColor() + " en esta sede");
+                                //Sede sede = inventariosede.get().getSede();
+                                Inventario inventario = inventarioRepository.findById(inventariosede.get().getInventario().getIdInventario()).get();
+                                Estadoenviosede estadoenviosede = new Estadoenviosede();
+                                estadoenviosede.setEstado("En camino a central");
+                                estadoenviosede.setInventariosede(inventariosede.get());
+                                estadoenviosede.setCantidad(cantidad);
+                                estadoenviosede.setComentario(detalles);
+                                estadoenviosede.setFecha(LocalDate.now());
+                                estadoenviosedeRepository.save(estadoenviosede); // guardar el nuevo envio
+
+                                //estadoenviosedeRepository.findByInventariosede(inventariosede.get()).get(0);
+                                //inventario.setStock(inventario.getStock() + cantidad); // se aumenta la cantidad en almacen
+                                //inventarioRepository.save(inventario);
+
+                                inventariosede.get().setStock(inventariosede.get().getStock() - cantidad); // se disminuye la cantidad en sede
+                                inventariosedeRepository.save(inventariosede.get());
+                                String plural = ""; // plural o singular
+                                if (cantidad > 1) {
+                                    plural = "s";
+                                }
+                                attr.addFlashAttribute("msg", cantidad + " " +
+                                        inventario.getProducto().getDenominacion().getNombre() + plural +
+                                        " " + inventario.getColor() + plural + " devuelto" + plural +
+                                        " exitosamente"); // mensaje de exito
+                                return "redirect:/sede";
+
+                            } else {// se le esta restando mas de lo que se tiene
+                                attr.addFlashAttribute("msgError", "No tiene suficiente stock de " +
+                                        inventariosede.get().getInventario().getProducto().getCodigoGenerado() + " " + inventariosede.get().getInventario().getColor() + " en esta sede");
+                                return "redirect:/sede";
+                            }
+                        } else {//hackerman detente por favor
+                            //attr.addFlashAttribute("msgError", "hackerman detente por favor, esa sede no es tuya");
+                            return "redirect:/sede";
+                        }
+                    } else {
+                        attr.addFlashAttribute("msgError", "Por favor ingrese los detalles de devolucion");
                         return "redirect:/sede";
                     }
-                } else {//hackerman detente por favor
-                    attr.addFlashAttribute("msgError", "hackerman detente por favor, esa sede no es tuya");
+                } else {
+                    attr.addFlashAttribute("msgError", "No se puede devolver una cantidad negativa o igual a 0");
                     return "redirect:/sede";
                 }
-            }else{
-                    attr.addFlashAttribute("msgError", "Por favor ingrese los detalles de devolucion");
-                    return "redirect:/sede";
-                }
-            }
-            else{
-                attr.addFlashAttribute("msgError", "No se puede devolver una cantidad negativa o igual a 0");
+            } else {
+                attr.addFlashAttribute("msgError", "No existe ese producto en esta sede");
                 return "redirect:/sede";
             }
         } else {
