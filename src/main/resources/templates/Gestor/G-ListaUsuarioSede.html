@@ -51,6 +51,11 @@
                                         <a style="margin-right: 5px"
                                            th:href="@{'/gestor/gestorEditUsuarioSede' + '?idusuarios=' + ${usuariosedes.idusuarios}}"
                                            class="far fa-edit text-orangeM"></a>
+                                        <a style="margin-left: 10px"
+                                           th:href="@{'/gestor/borrarUsuarioSede' + '?idusuarios=' + ${usuariosedes.idusuarios}}"
+                                           class="far fa-trash-alt text-redM">
+                                        </a>
+                                        <!--
                                         <a style="margin-left: 5px" href="#" class="far fa-trash-alt text-redM"
                                            data-toggle="modal" data-target="#modalborrar"
                                            th:attrappend="data-target=${usuariosedes.getIdusuarios()}"></a>
@@ -80,6 +85,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        -->
 
                                     </td>
                                 </tr>

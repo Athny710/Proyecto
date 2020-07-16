@@ -52,12 +52,18 @@
                                         </a>
                                     </td>
                                     <td align="center">
+                                        <a th:href="@{'/sede/DevolverProductoSinConfirmar?id='+${p.getIdenviosede()}}">
+                                            <i class="far fa-check-circle fa-2x text-greenM" style="font-size:1.3rem"></i>
+                                        </a>
+                                        <!--
                                         <a style="margin-left: 10px; font-size:1.3rem" class="far fa-2x fa-times-circle text-redM"
                                            href="#"
                                            data-toggle="modal" data-target="#modalborrar"
                                            th:attrappend="data-target=${p.getIdenviosede()}"></a>
+                                           -->
                                     </td>
 
+                                    <!--
                                     <div class="modal fade" id="modalborrar" tabindex="-1" role="dialog"
                                          th:attrappend="id=${p.getIdenviosede()}" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
@@ -81,6 +87,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    -->
 
 
 
