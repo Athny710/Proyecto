@@ -14,4 +14,5 @@ public interface ReporteConCamposOriginales {
     String getNombrecliente();
     String getCodprod();
     String getColorprod();
+    String getTienda();
 }

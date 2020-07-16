@@ -3,6 +3,7 @@ package com.example.proyecto.repository;
 import com.example.proyecto.dto.ProductosEstadoRechazado;
 import com.example.proyecto.dto.ProductosEstados;
 import com.example.proyecto.dto.ProductosEstadosSede;
+import com.example.proyecto.entity.Inventario;
 import com.example.proyecto.entity.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -46,5 +47,20 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
             "                        inner join sede s on invs.idSede = s.idSede and est.estado = 'en camino'\n" +
             "                        where s.idSede=?1",nativeQuery = true)
     List<ProductosEstadosSede> listaProductosEnviadosSede(int idSede);
+
+
+    //NOS SERVIRÁ PARA REALIZAR VALIDACION CON RESPECTO AL SCHEDULER Y PARA EL MODAL DE ALERTA
+    @Query(value = "SELECT p.codigoGenerado FROM adquisicion a INNER JOIN producto p ON a.idAdquisicion=p.idAdquisicion  INNER JOIN inventario i ON i.idProducto=p.idProducto WHERE i.estado=?1",
+            nativeQuery = true)
+    List<String> productoPorEstado(String estado);
+
+
+
+    // ESTE QUERY NOS DA LA LISTA DE PRODUCTOS QUE ESTAN A UNA SEMANA DE VENCER, ES INDIFERENTE DEL ESTADO QUE TENGAN EN INVENTARIO
+    @Query(value = "SELECT p.codigoGenerado FROM adquisicion a INNER JOIN producto p ON a.idAdquisicion=p.idAdquisicion  INNER JOIN inventario i ON i.idProducto=p.idProducto WHERE DATEDIFF(a.fechaFin,CURDATE())<=7;",
+            nativeQuery = true)
+    List<String> productoAunaSemanaDeVencer();
+
+
 
 }

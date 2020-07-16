@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -467,11 +468,21 @@ public class GestorController {
             }
         }*/
         //todo mostrar  mensaje de stock bajo
+        boolean validar1 = false;
+        int validar2=0;
+        //Se va a definir una variable que se pasará como model attribute para poder mostrar un modal al inicio
+        if (productoRepository.productoPorEstado("Vencida").size()>0 && productoRepository.productoPorEstado("Proxima").size()>0){
+            validar1=true;
+        }
 
         model.addAttribute("inventario", inventario);
+
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
         model.addAttribute("listaArtesanos", artesanoRepository.findAll());
         model.addAttribute("listaCategoria", categoriaRepository.findAll());
+
+        model.addAttribute("validar",validar1);
+
         return "Gestor/G-Inventario";
     }
 
@@ -1493,16 +1504,6 @@ public class GestorController {
 ///////////// REPORTES DE EXCEL ///////////////////
 
     //EXCEL !!
-    @PostMapping("createExcelPorCodigo")
-    public void crearExcelCodigo(@RequestParam("codigo") String codigo, @RequestParam("nombre") String nombre, HttpServletRequest request, HttpServletResponse response) {
-        List<VentaPorCodigo> ventaCodigo = ventasService.getVentasPorCodigo(codigo);
-        boolean isFlag = ventasService.createExcelXCodigo(ventaCodigo, context, request, response);
-        if (isFlag) {
-            String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_codigo" + ".xls");
-            filedownload(fullpath, response, "ventas.xls");
-        }
-    }
-
     @PostMapping("crearExcelPorCliente")
     public String crearExcelCliente(@RequestParam("filtrado") int val, @RequestParam("estandar") String cliente, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response, RedirectAttributes attr) {
         if (val != 1) {
@@ -1755,7 +1756,7 @@ public class GestorController {
 
     }
 
-    /*
+
     @ExceptionHandler(Exception.class)
     public String ExceptionHandlerGestor(Exception e,RedirectAttributes attr ){
         attr.addFlashAttribute("msgError", "Ocurrio un error, no se completo el proceso");
@@ -1763,6 +1764,56 @@ public class GestorController {
         System.out.println("!!!!! \n \n OCURRIO EL SIGUIENTE ERROR: \n  " + e.getCause().getMessage() + " \n \n !!!!!!!");
         return "redirect:/gestor/gestorPrincipal";
 
-    }*/
+
+    }
+
+
+    // CRONES TU TERROR!!!!!
+
+
+    // SE EJECUTARÁ CADA PRIMERO DE CADA MES A LAS 2 AM ,  EN LA BASE DE DATOS SE REALIZARÁN LOS CAMBIOS DE ESTADOS EL MISMO DÍA PERO UNA HORA ANTES (1 AM)--OJO!!!!!
+    //@Scheduled(cron = "0 0/3 * * * ?", zone = "GMT-5")
+    @Scheduled(cron = "0 0 2 1 * ?", zone = "GMT-5")
+    public void mensajeMensualDeAlertaDeVencimientoDeProductosParaLosGestores() throws MessagingException {
+
+        List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
+        List<String> codigosPorVencer = productoRepository.productoPorEstado("Proxima");
+        if(codigosPorVencer.size() >0){
+            if (listaCorreosGestor.size()>=1){
+
+                for (String correo:listaCorreosGestor) {
+                    Email email = new Email();
+                    email.emailAlertaConsignacionGestor(correo);
+                    //System.out.println("Se envió");
+                }
+            } else {System.out.println("No hay productos próximos a vencer");}
+
+        }
+
+    }
+
+
+    // SE EJECUTARÁ TODOS LOS DIAS A LAS 00:00 HORAS ,  SERA UNA ALERTA QUE ENVIARÁ CORREO A GESTORES INDICANDO QUE PRODUCTOS EN UNA SEMANA, ES INDIFERENTE DEL ESTADO!!!!!
+    @Scheduled(cron = "0 0 0 * * *", zone = "GMT-5")
+    public void mensajeDiarioDeProductosAVencerEnUnaSemana() throws MessagingException {
+
+        List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
+        List<String> productoSemanaVencer = productoRepository.productoAunaSemanaDeVencer();
+        if(productoSemanaVencer.size() >0){
+            if (listaCorreosGestor.size()>=1){
+
+                for (String correo:listaCorreosGestor) {
+
+                    Email email = new Email();
+                    email.emailAlertaConsignacionParaVender(correo,productoSemanaVencer);
+                    //System.out.println("Se envió");
+                }
+            } else {System.out.println("No hay productos a vencer en la semana");}
+
+        }
+
+        }
 
 }
+
+
