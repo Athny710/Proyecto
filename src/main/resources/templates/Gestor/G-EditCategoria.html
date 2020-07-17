@@ -15,6 +15,7 @@
                 <!-- Page Heading -->
                 <div class="container-fluid">
                     <div class="card shadowA mb-4" >
+                        <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert" align="center"></div>
                         <div class="card-header py-3">
                        <!--     <div class="d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM" th:text="${categoria.idCategoria==0?'Registro de nueva categoría':'Editar Categoría'}"></h5>
@@ -23,7 +24,7 @@
                                 <h5 class="m-0 font-weight-bold text-redM" th:text="${categoria.idCategoria==0?'Registro de nueva categoría':'Editar Categoría'}"></h5>
                             </div>
                         </div>
-                        <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
+                       <!-- <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>  -->
                         <div class="card-body bg-gray-100">
                             <div class="row">
                                 <div style="width: 62px"></div>
@@ -98,7 +99,7 @@
                                             <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
                                         </div>
                                         <div class="card-body bg-white" style="text-align: center">
-                                            El Gestor tiene el control total sobre todo el inventario. Tomar en cuenta que el código se registra con un sólo caracter.
+                                            El código se registra con una letra. De preferencia, con letra mayúscula.
                                         </div>
                                     </div>
                                 </div>
