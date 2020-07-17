@@ -1,8 +1,6 @@
 package com.example.proyecto.repository;
 
-import com.example.proyecto.dto.ProductosEstadoRechazado;
-import com.example.proyecto.dto.ProductosEstados;
-import com.example.proyecto.dto.ProductosEstadosSede;
+import com.example.proyecto.dto.*;
 import com.example.proyecto.entity.Inventario;
 import com.example.proyecto.entity.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -66,9 +64,14 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
 
     // ESTE QUERY NOS DA LA LISTA DE PRODUCTOS QUE ESTAN A UNA SEMANA DE VENCER, ES INDIFERENTE DEL ESTADO QUE TENGAN EN INVENTARIO
-    @Query(value = "SELECT p.codigoGenerado FROM adquisicion a INNER JOIN producto p ON a.idAdquisicion=p.idAdquisicion  INNER JOIN inventario i ON i.idProducto=p.idProducto WHERE DATEDIFF(a.fechaFin,CURDATE())<=7;",
+    @Query(value = "SELECT p.codigoGenerado as codigoGenerado,d.nombre as nombre,d.descripcion as descripcion ,i.color as color FROM producto p INNER JOIN adquisicion a ON a.idAdquisicion=p.idAdquisicion  INNER JOIN inventario i ON i.idProducto=p.idProducto INNER JOIN denominacion d ON d.idDenominacion = p.idDenominacion WHERE DATEDIFF(a.fechaFin,CURDATE())<=7;",
             nativeQuery = true)
-    List<String> productoAunaSemanaDeVencer();
+    List<ProductosAUnaSemanaDeVencer> productoAunaSemanaDeVencer();
+
+    // ESTE QUERY NOS DA LA LISTA DE PRODUCTOS QUE ESTAN A UNA SEMANA DE VENCER, ES INDIFERENTE DEL ESTADO QUE TENGAN EN INVENTARIO
+    @Query(value = "SELECT p.codigoGenerado as codigoGenerado,d.nombre as nombre, d.descripcion as descripcion, i.color as color, s.nombre as nombreSede FROM sede s INNER JOIN inventariosede inSed ON s.idSede=inSed.idSede INNER JOIN inventario i ON i.idInventario=inSed.idInventario INNER JOIN producto p ON p.idProducto=i.idProducto INNER JOIN denominacion d ON d.idDenominacion=p.idDenominacion WHERE inSed.stock=0;",
+            nativeQuery = true)
+    List<AlertaProductoSinStock> productoSinStockSede();
 
 
 

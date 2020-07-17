@@ -4,6 +4,7 @@ import com.example.proyecto.dto.*;
 import com.example.proyecto.entity.*;
 import com.example.proyecto.repository.*;
 import com.example.proyecto.services.VentasService;
+import javafx.scene.control.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -1856,31 +1857,31 @@ public class GestorController {
     // SE EJECUTARÁ CADA PRIMERO DE CADA MES A LAS 2 AM ,  EN LA BASE DE DATOS SE REALIZARÁN LOS CAMBIOS DE ESTADOS EL MISMO DÍA PERO UNA HORA ANTES (1 AM)--OJO!!!!!
     //@Scheduled(cron = "0 0/3 * * * ?", zone = "GMT-5")
     @Scheduled(cron = "0 0 2 1 * ?", zone = "GMT-5")
-    public void mensajeMensualDeAlertaDeVencimientoDeProductosParaLosGestores() throws MessagingException {
+        public void mensajeMensualDeAlertaDeVencimientoDeProductosParaLosGestores() throws MessagingException {
 
-        List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
-        List<String> codigosPorVencer = productoRepository.productoPorEstado("Proxima");
-        if(codigosPorVencer.size() >0){
-            if (listaCorreosGestor.size()>=1){
+            List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
+            List<String> codigosPorVencer = productoRepository.productoPorEstado("Proxima");
+            if(codigosPorVencer.size() >0){
+                if (listaCorreosGestor.size()>=1){
 
-                for (String correo:listaCorreosGestor) {
-                    Email email = new Email();
-                    email.emailAlertaConsignacionGestor(correo);
-                    //System.out.println("Se envió");
-                }
-            } else {System.out.println("No hay productos próximos a vencer");}
+                    for (String correo:listaCorreosGestor) {
+                        Email email = new Email();
+                        email.emailAlertaConsignacionGestor(correo);
+                        //System.out.println("Se envió");
+                    }
+                } else {System.out.println("No hay productos próximos a vencer");}
 
-        }
+            }
 
     }
 
 
-    // SE EJECUTARÁ TODOS LOS DIAS A LAS 00:00 HORAS ,  SERA UNA ALERTA QUE ENVIARÁ CORREO A GESTORES INDICANDO QUE PRODUCTOS EN UNA SEMANA, ES INDIFERENTE DEL ESTADO!!!!!
-    @Scheduled(cron = "0 0 0 * * *", zone = "GMT-5")
-    public void mensajeDiarioDeProductosAVencerEnUnaSemana() throws MessagingException {
+    // SE EJECUTARÁ LOS DIAS DOMINGOS A LAS 00:00 HORAS ,  SERA UNA ALERTA QUE ENVIARÁ CORREO A GESTORES INDICANDO QUE PRODUCTOS DENTRO DE LA SEMANA ENTRANTE, ES INDIFERENTE DEL ESTADO!!!!!
+    @Scheduled(cron = "0 0 0 * * 7", zone = "GMT-5")
+    public void mensajeSemanalDeProductosAVencerEnUnaSemana() throws MessagingException {
 
         List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
-        List<String> productoSemanaVencer = productoRepository.productoAunaSemanaDeVencer();
+        List<ProductosAUnaSemanaDeVencer> productoSemanaVencer = productoRepository.productoAunaSemanaDeVencer();
         if(productoSemanaVencer.size() >0){
             if (listaCorreosGestor.size()>=1){
 
@@ -1893,9 +1894,28 @@ public class GestorController {
             } else {System.out.println("No hay productos a vencer en la semana");}
 
         }
-
         }
 
-}
 
+        // SE EJECUTARÁ TODOS LOS DÍAS,  SERA UNA ALERTA QUE ENVIARÁ CORREO A LAS 10 DE LA NOCHE A GESTORES INDICANDO QUE PRODUCTOS SE HAN QUEDADO SON STOCK EN LAS SEDES en el día!!!!!
+    @Scheduled(cron = "0 0 22 * * *", zone = "GMT-5")
+    public void mensajeDiarioConStockAgotadoEnSede() throws MessagingException {
+
+        List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
+        List<AlertaProductoSinStock> alertaProductoSinStock = productoRepository.productoSinStockSede();
+        if(alertaProductoSinStock.size() >0){
+            if (listaCorreosGestor.size()>=1){
+
+                for (String correo:listaCorreosGestor) {
+
+                    Email email = new Email();
+                    email.emailAlertaSinStock(correo,alertaProductoSinStock);
+                    //System.out.println("Se envió");
+                }
+            } else {System.out.println("mensaje diario con stock agotado en sede ");}
+
+        }
+    }
+
+}
 
