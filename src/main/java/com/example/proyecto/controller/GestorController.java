@@ -1190,10 +1190,18 @@ public class GestorController {
     public String borrarArtesano(Model model, @RequestParam("idartesano") int idartesano, RedirectAttributes attr) {
         Optional<Artesano> obtenerArtesano = artesanoRepository.findById(idartesano);
         if (obtenerArtesano.isPresent()) {
-            artesanoRepository.deleteById(idartesano);
+          /*  artesanoRepository.deleteById(idartesano);
             attr.addFlashAttribute("msg", "Artesano Eliminado");
         } else {
             attr.addFlashAttribute("msge", "Artesano no ha podido eliminarse");
+        }
+        return "redirect:/gestor/gestorListaArtesano";  */
+            try {
+                comunidadRepository.deleteById(idartesano);
+                attr.addFlashAttribute("msg", "Artesano Eliminado");
+            } catch (Exception e) {
+                attr.addFlashAttribute("msge", "Artesano en consignación, no puede ser borrado");
+            }
         }
         return "redirect:/gestor/gestorListaArtesano";
     }
