@@ -45,6 +45,7 @@ public class Email {
 
         //Sesion que le paso las propiedades
         Session mailSession = Session.getInstance(properties,authenticator);
+        System.out.println("Validaciones propiedades");
 
         //Crea mensaje y emisor
         MimeMessage msg = new MimeMessage(mailSession);
@@ -54,10 +55,12 @@ public class Email {
         to=emailTo;
         address= new InternetAddress[]{new InternetAddress(to)};
         msg.setRecipients(Message.RecipientType.TO,address);
+        System.out.println("Aea");
 
 
         //Obtener la IP Elastica (Se tiene que cambiar)
-        String ipAdd= "54.161.223.241";
+        String ipAdd= "18.208.12.225";
+        //54.161.223.241
 
         //Asunto y mensaje
         msg.setSubject("SOLICITUD DE RECUPERACIÓN DE CUENTA");
@@ -69,6 +72,7 @@ public class Email {
         Transport transporte = mailSession.getTransport("smtp");
         transporte.connect(host, user, pass);
         transporte.sendMessage(msg, msg.getRecipients(Message.RecipientType.TO));
+        System.out.println("Finaliza clase email");
     }
 
     /* The following method will return the EC2 Instance ID.
