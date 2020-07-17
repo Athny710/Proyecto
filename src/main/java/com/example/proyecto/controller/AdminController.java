@@ -46,7 +46,6 @@ public class AdminController {
     //--------------------------Inventario
     @GetMapping(value = {"", "principal"})
     public String principalAdmin(Model model) {
-        Inventario inv = new Inventario();
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
         model.addAttribute("listaArtesanos", artesanoRepository.findAll());
         model.addAttribute("listaCategoria", categoriaRepository.findAll());
@@ -57,8 +56,15 @@ public class AdminController {
         for (inventarioStockTotal i: inventarioRepository.listaInventarioStockTotal()) {
             //Si el stock es mayor a cero se obtiene el producto y se guarda en la nueva lista
             if (i.getStockTotal()!=0){
+                Inventario inv = new Inventario();
                 Optional<Inventario> opt = inventarioRepository.findById(i.getIdInvent());
-                inv = opt.get();
+                inv.setEstado(opt.get().getEstado());
+                inv.setFechadevolucion(opt.get().getFechadevolucion());
+                inv.setIdInventario(opt.get().getIdInventario());
+                inv.setProducto(opt.get().getProducto());
+                inv.setColor(opt.get().getColor());
+                inv.setComentario(opt.get().getComentario());
+                inv.setPreciomosqoy(opt.get().getPreciomosqoy());
                 //Se le pone el nuevo stock, el total
                 inv.setStock(i.getStockTotal());
                 //se agrega a la lista
