@@ -359,8 +359,11 @@ public class GestorController {
     public String borrarUsuarioSede(@RequestParam("idusuarios") int idusuarios, RedirectAttributes attr) {
 
         Optional<Usuarios> optionalUsuarios = usuarioRepository.findById(idusuarios);
+        Usuarios u = new Usuarios();
         if (optionalUsuarios.isPresent()) {
-            usuarioRepository.deleteById(idusuarios);
+            u = optionalUsuarios.get();
+            u.setActivo(0);
+            usuarioRepository.save(u);
             attr.addFlashAttribute("msgSucc", "Usuario Sede Eliminado");
         } else {
             attr.addFlashAttribute("msgFail", "Este usuario no existe");
