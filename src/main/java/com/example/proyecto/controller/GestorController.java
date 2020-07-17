@@ -665,6 +665,8 @@ public class GestorController {
             formulario.setNombreTama(productooooo.getTamanho().getNombre());
             formulario.setCodigoProducto(productooooo.getDenominacion().getCodigonombre());
             formulario.setCodDescripcion(productooooo.getDenominacion().getCodigodescripcion());
+            formulario.setFechafin(productooooo.getAdquisicion().getFechafin());
+            model.addAttribute("tipo",productooooo.getAdquisicion().getModalidad());
             return "Gestor/G-EditProdCompra";
         } else {
             return "redirect:/gestor/productos";
@@ -815,6 +817,9 @@ public class GestorController {
                     Producto producto1 = producto2.get();
                     producto1.getDenominacion().setDescripcion(formulario.getDescripcion());
                     producto1.getDenominacion().setNombre(formulario.getNombreProducto());
+                    if(producto1.getAdquisicion().getModalidad().equalsIgnoreCase("consignado")){
+                        producto1.getAdquisicion().setFechafin(formulario.getFechafin());
+                    }
                     productoRepository.save(producto1);
                     attr.addFlashAttribute("msg1", "Actualizado Correctamente");
                     return "redirect:/gestor/productos";

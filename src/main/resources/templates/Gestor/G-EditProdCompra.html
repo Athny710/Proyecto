@@ -26,26 +26,34 @@
                             <input th:value="*{moda}" name="modalidad" type="hidden"/>
                             <div  class="form-group col-md-6" >
                                 <label >Nombre del Producto</label>
-                                <input type="text" class="form-control" th:field="*{nombreProducto}">
+                                <input type="text" class="form-control" th:field="*{nombreProducto}" style="border-radius: 10rem">
                                 <div class="text-danger" th:if="${#fields.hasErrors('nombreProducto')}" th:errors="*{nombreProducto}" ></div>
                             </div>
                             <div  class="form-group col-md-6" >
                                 <label th:if="${formulario.crearActualizar == 0}" >Código del Nombre del Producto</label>
-                                <input type="hidden" class="form-control" id="codigoProducto" name="codigoProducto"
+                                <input type="hidden" class="form-control" id="codigoProducto" name="codigoProducto" style="border-radius: 10rem"
                                        th:value="*{codigoProducto}">
                                 <div  class="text-danger" th:if="${#fields.hasErrors('codigoProducto') || formulario.crearActualizar == 0}" th:errors="*{codigoProducto}" ></div>
                             </div>
                             <div class="form-group col-md-6">
                                 <label >Descripción</label>
-                                <input type="text" class="form-control" id="descripcion" name="descripcion"
+                                <input type="text" class="form-control" id="descripcion" name="descripcion" style="border-radius: 10rem"
                                        th:value="*{descripcion}">
                                 <div class="text-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" ></div>
                             </div>
                             <div class="form-group col-md-6">
                                 <label  th:if="${formulario.crearActualizar == 0}" >Código de la Descripción</label>
-                                <input type="hidden" class="form-control" id="codDescripcion" name="codDescripcion"
+                                <input type="hidden" class="form-control" id="codDescripcion" name="codDescripcion" style="border-radius: 10rem"
                                        th:value="*{codDescripcion}">
                                 <div  class="text-danger" th:if="${#fields.hasErrors('codDescripcion') || formulario.crearActualizar == 0}" th:errors="*{codDescripcion}" ></div>
+                            </div>
+                            <div th:if="${tipo.equalsIgnoreCase('consignado')}" class="form-group col-md-6">
+                                <label>Fecha Fin de la Consignación</label>
+                                <input type="date" class="form-control" style="border-radius: 10rem"
+                                       th:field="*{fechafin}">
+                                <div class="text-danger"
+                                     th:if="${#fields.hasErrors('fechafin')}"
+                                     th:errors="*{fechafin}"></div>
                             </div>
 
                             <br>
