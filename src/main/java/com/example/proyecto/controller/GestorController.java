@@ -497,7 +497,7 @@ public class GestorController {
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
         //Se va a definir una variable que se pasará como model attribute para poder mostrar un modal al inicio
-        if (productoRepository.productoPorEstado("Vencida").size()>0 && productoRepository.productoPorEstado("Proxima").size()>0 && day==1){
+        if (productoRepository.productoPorEstado("Vencida").size()>=1 || productoRepository.productoPorEstado("Proxima").size()>=1 && day==1){
             validar1=true;
         }
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
