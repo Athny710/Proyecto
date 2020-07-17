@@ -64,6 +64,10 @@ public class Venta {
     @JoinColumn(name = "idusuarios")
     private Usuarios usuarios;
 
+    @Column(nullable = false)
+    @NotBlank(message = "Debe ingresar un medio de pago (Ejemplos : VISA, MasterCard, efectivo, yape, deposito)")
+    private String mediodepago;
+
     public int getIdventa() {
         return idventa;
     }
@@ -166,5 +170,13 @@ public class Venta {
 
     public void setUsuarios(Usuarios usuarios) {
         this.usuarios = usuarios;
+    }
+
+    public String getMediodepago() {
+        return mediodepago;
+    }
+
+    public void setMediodepago(String mediodepago) {
+        this.mediodepago = mediodepago;
     }
 }

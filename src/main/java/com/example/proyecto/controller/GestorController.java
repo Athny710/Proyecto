@@ -446,7 +446,7 @@ public class GestorController {
                 sedeRepository.deleteById(idsede);
                 attr.addFlashAttribute("msg", "Sede Eliminada");
             } catch (Exception e) {
-                attr.addFlashAttribute("msgE", "Ocurrió un error, no puede ser borrada");
+                attr.addFlashAttribute("msgE", "Se encuentra relaciondo a Usuario Sede, no puede ser borrado");
             }
         }
         return "redirect:/gestor/gestorListaSedes";
@@ -458,7 +458,26 @@ public class GestorController {
 
     @GetMapping(value = {"", "gestorPrincipal"})
     public String inventarioGestor(Model model) {
-        List<Inventario> inventario = inventarioRepository.listarStockMayor0();
+        List<Inventario> listaMayor0 = new ArrayList<>();
+        for (inventarioStockTotal i: inventarioRepository.listaInventarioStockTotal()) {
+            //Si el stock es mayor a cero se obtiene el producto y se guarda en la nueva lista
+            if (i.getStockTotal()!=0){
+                Inventario inv = new Inventario();
+                Optional<Inventario> opt = inventarioRepository.findById(i.getIdInvent());
+                inv.setIdInventario(opt.get().getIdInventario());
+                inv.setStock(i.getStockTotal());
+                inv.setComentario(opt.get().getComentario());
+                inv.setColor(opt.get().getColor());
+                inv.setPreciomosqoy(opt.get().getPreciomosqoy());
+                inv.setProducto(opt.get().getProducto());
+                inv.setEstado(opt.get().getEstado());
+                inv.setFechadevolucion(opt.get().getFechadevolucion());
+
+                listaMayor0.add(inv);
+            }
+        }
+        model.addAttribute("inventario", listaMayor0);
+
         // para listar el stock total en vez del stock en almacen principal
         /*
         for (Inventario inv: inventario) {
@@ -475,10 +494,100 @@ public class GestorController {
         if (productoRepository.productoPorEstado("Vencida").size()>0 && productoRepository.productoPorEstado("Proxima").size()>0){
             validar1=true;
         }
+        model.addAttribute("listaComunidades", comunidadRepository.findAll());
+        model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+        model.addAttribute("listaCategoria", categoriaRepository.findAll());
 
-        model.addAttribute("inventario", inventario);
         model.addAttribute("validar",validar1);
+
         return "Gestor/G-Inventario";
+    }
+
+    @GetMapping("/buscador")
+    public String buscadorAvanzado(Model model,@RequestParam("idComu") int idComu, @RequestParam("tipo") String tipo,
+                                   @RequestParam("idArt") int idArt,@RequestParam("idCate") int idCate) {
+
+        if (idComu != 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0) {
+            List<Inventario> Lista1 = inventarioRepository.listarPorComunidad(idComu);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista1);
+            return "Gestor/G-Inventario";
+        } else if (idComu == 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0) {
+            List<Inventario> Lista2 = inventarioRepository.listarPorCategoria(idCate);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista2);
+            return "Gestor/G-Inventario";
+        } else if (idComu == 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0) {
+            List<Inventario> Lista3 = inventarioRepository.listarPorAdquisicion(tipo);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista3);
+            return "Gestor/G-Inventario";
+        } else if (idComu == 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate == 0) {
+            List<Inventario> Lista4 = inventarioRepository.listarPorArtesanoConConsigna(tipo, idArt);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista4);
+            return "Gestor/G-Inventario";
+        }else if (idComu != 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
+            List<Inventario> Lista5 = inventarioRepository.listarPorCategoriaYComunidad(idCate, idComu);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista5);
+            return "Gestor/G-Inventario";
+        } else if (idComu != 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0){
+            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadYModalidad( idComu, tipo);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista6);
+            return "Gestor/G-Inventario";
+        }else if (idComu != 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate == 0){
+            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadConsignadoYArtesano( idComu, idArt);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista6);
+            return "Gestor/G-Inventario";
+        }else if (idComu == 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate != 0){
+            List<Inventario> Lista7 = inventarioRepository.listarPorCategoriaConsignadoYArtesano( idCate, idArt);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista7);
+            return "Gestor/G-Inventario";
+        } else if (idComu == 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
+            List<Inventario> Lista8 = inventarioRepository.listarPorCategoriaYModalidad( idCate, tipo);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista8);
+            return "Gestor/G-Inventario";
+        }else if (idComu != 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
+            List<Inventario> Lista9 = inventarioRepository.listarPorCategoriaYComunidadYModalidad( idCate, tipo, idComu);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista9);
+            return "Gestor/G-Inventario";
+        }else if (idComu != 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate != 0){
+            List<Inventario> Lista10 = inventarioRepository.listarPorCategoriaComunidadConsignadoYArtesano( idCate, idComu, idArt);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista10);
+            return "Gestor/G-Inventario";
+        } else{
+            return "redirect:/gestor";
+        }
+
     }
 
     @GetMapping("/verHistorial")
@@ -573,6 +682,8 @@ public class GestorController {
             formulario.setNombreTama(productooooo.getTamanho().getNombre());
             formulario.setCodigoProducto(productooooo.getDenominacion().getCodigonombre());
             formulario.setCodDescripcion(productooooo.getDenominacion().getCodigodescripcion());
+            formulario.setFechafin(productooooo.getAdquisicion().getFechafin());
+            model.addAttribute("tipo",productooooo.getAdquisicion().getModalidad());
             return "Gestor/G-EditProdCompra";
         } else {
             return "redirect:/gestor/productos";
@@ -723,6 +834,9 @@ public class GestorController {
                     Producto producto1 = producto2.get();
                     producto1.getDenominacion().setDescripcion(formulario.getDescripcion());
                     producto1.getDenominacion().setNombre(formulario.getNombreProducto());
+                    if(producto1.getAdquisicion().getModalidad().equalsIgnoreCase("consignado")){
+                        producto1.getAdquisicion().setFechafin(formulario.getFechafin());
+                    }
                     productoRepository.save(producto1);
                     attr.addFlashAttribute("msg1", "Actualizado Correctamente");
                     return "redirect:/gestor/productos";
@@ -1194,14 +1308,60 @@ public class GestorController {
     }
 
     @GetMapping("borrarRechazoDeEnvio")
-    public String borrarProductosRechazados(@RequestParam("id") int idRechazado, RedirectAttributes attr) {
+    public String borrarProductosRechazados(@RequestParam("id") int idRechazado, RedirectAttributes attr) { //queda a mejorar que se puede elegir una cantidad determinada a aceptar
+        // el nombre de esta funcion es de legado. En verdad confirma que se recibio un rechazo
         Optional<Estadoenviosede> obtenerEstado = estadoenviosedeRepository.findById(idRechazado);
         if (obtenerEstado.isPresent()) {
+            Estadoenviosede estadoenviosede = obtenerEstado.get();
+            Inventario inventario = estadoenviosede.getInventariosede().getInventario();
+            Integer stock = inventario.getStock();
+            stock = stock + estadoenviosede.getCantidad();
+            inventario.setStock(stock);
+            inventarioRepository.save(inventario);
             estadoenviosedeRepository.deleteById(idRechazado);
-            attr.addFlashAttribute("msg", "El producto rechazado ha sido eliminado exitosamente");
+            String plural = ""; // plural o singular
+            if (estadoenviosede.getCantidad() > 1) {
+                plural = "s";
+            }
+
+            attr.addFlashAttribute("msg", "La devolucion de "+ estadoenviosede.getCantidad() +
+                    " " + inventario.getProducto().getCodigoGenerado() + " "+
+                    inventario.getColor() + plural + " ha sido confirmada exitosamente");
         }
         return "redirect:/gestor/gestorProductosRechazados";
     }
+
+    @GetMapping("aceptarProductosDevueltos")
+    public String aceptarProductosDevueltos(@RequestParam("id") int idDevuelto, RedirectAttributes attr) {
+        Optional<Estadoenviosede> obtenerEstado = estadoenviosedeRepository.findById(idDevuelto);
+        if (obtenerEstado.isPresent()) {
+            Estadoenviosede estadoenviosede = obtenerEstado.get();
+            Inventario inventario = estadoenviosede.getInventariosede().getInventario();
+            Integer stock = inventario.getStock();
+            stock = stock + estadoenviosede.getCantidad();
+            inventario.setStock(stock);
+            inventarioRepository.save(inventario);
+            estadoenviosedeRepository.deleteById(idDevuelto);
+            String plural = ""; // plural o singular
+            if (estadoenviosede.getCantidad() > 1) {
+                plural = "s";
+            }
+
+            attr.addFlashAttribute("msg", "La devolucion de "+ estadoenviosede.getCantidad() +
+                    " " + inventario.getProducto().getCodigoGenerado() + " "+
+                    inventario.getColor() + plural + " ha sido confirmada exitosamente");
+        }
+        return "redirect:/gestor/ProductosDevueltos";
+    }
+
+    @GetMapping("ProductosDevueltos")
+    public String ProductosDevueltos(Model model) {
+        model.addAttribute("listaProdRecha", productoRepository.listaProductosDevueltos());
+        return "Gestor/G-ProdDev";
+    }
+
+
+
 
     @GetMapping("gestorEditarEnvio")
     public String editarEnvio(@RequestParam("id") int id, @ModelAttribute("estadoenviosede") Estadoenviosede estadoenviosede, Model model) {
@@ -1213,7 +1373,6 @@ public class GestorController {
             List<Sede> listaSede = sedeRepository.findAll();
             model.addAttribute("listaInventario", listaInventario);
             model.addAttribute("listaSede", listaSede);
-            //todo hacer que de alguna manera se borre el estadoenviosede con estado "rechazado"
             return "Gestor/G-GestionEnvios";
         } else {
             return "redirect:/gestor/gestorProductosRechazados";
@@ -1254,7 +1413,18 @@ public class GestorController {
                 Optional<Sede> sede1 = sedeRepository.findById(sedkey);
                 Optional<Inventario> inventario1 = inventarioRepository.findById(invkey);
                 List<Inventariosede> inventariosede1 = inventariosedeRepository.findByInventarioAndSede(inventario1.get(), sede1.get());
-                if ((inventario1.get().getStock() - estadoenviosede.getCantidad()) >= 0) {
+                Boolean condicion = false;
+                Optional<Estadoenviosede> auxEstado = estadoenviosedeRepository.findById(estadoenviosede.getIdenviosede());
+                if(estadoenviosede.getIdenviosede() != 0){
+
+                    if(auxEstado.isPresent()){
+                        if(inventario1.get().getStock() + auxEstado.get().getCantidad() - estadoenviosede.getCantidad() >= 0){
+                            condicion = true;
+                        }
+                    }
+
+                }
+                if ((inventario1.get().getStock() - estadoenviosede.getCantidad()) >= 0 || condicion) {
                     //conseguir inventariosede
                     if (!inventariosede1.isEmpty()) {// si ya hay un registro se usa
                         estadoenviosede.setInventariosede(inventariosede1.get(0));
@@ -1282,12 +1452,14 @@ public class GestorController {
                             model.addAttribute("msg", "Por favor no editar el HTML con F12 :>");
                             return "Gestor/G-GestionEnvios";
                         }
-                        //todo logica de borrar el anterior y aquello ??????
                     } else {//este no es un reenvio
                         estadoenviosedeRepository.save(estadoenviosede);
                     }
 
                     int cantidadrestada = estadoenviosede.getInventariosede().getInventario().getStock() - estadoenviosede.getCantidad();
+                    if(condicion){
+                        cantidadrestada = cantidadrestada + auxEstado.get().getCantidad();
+                    }
                     estadoenviosede.getInventariosede().getInventario().setStock(cantidadrestada);
                 } else { // cantidad restada menor a 0
                     List<Inventario> listaInventario = inventarioRepository.findAll();
@@ -1412,16 +1584,6 @@ public class GestorController {
 ///////////// REPORTES DE EXCEL ///////////////////
 
     //EXCEL !!
-    @PostMapping("createExcelPorCodigo")
-    public void crearExcelCodigo(@RequestParam("codigo") String codigo, @RequestParam("nombre") String nombre, HttpServletRequest request, HttpServletResponse response) {
-        List<VentaPorCodigo> ventaCodigo = ventasService.getVentasPorCodigo(codigo);
-        boolean isFlag = ventasService.createExcelXCodigo(ventaCodigo, context, request, response);
-        if (isFlag) {
-            String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_codigo" + ".xls");
-            filedownload(fullpath, response, "ventas.xls");
-        }
-    }
-
     @PostMapping("crearExcelPorCliente")
     public String crearExcelCliente(@RequestParam("filtrado") int val, @RequestParam("estandar") String cliente, @RequestParam("mes") String mes, @RequestParam("año") String año, HttpServletRequest request, HttpServletResponse response, RedirectAttributes attr) {
         if (val != 1) {
@@ -1674,7 +1836,7 @@ public class GestorController {
 
     }
 
-
+/*
     @ExceptionHandler(Exception.class)
     public String ExceptionHandlerGestor(Exception e,RedirectAttributes attr ){
         attr.addFlashAttribute("msgError", "Ocurrio un error, no se completo el proceso");
@@ -1684,7 +1846,7 @@ public class GestorController {
 
 
     }
-
+*/
 
     // CRONES TU TERROR!!!!!
 

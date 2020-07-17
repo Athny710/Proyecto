@@ -2,6 +2,7 @@ package com.example.proyecto.controller;
 
 
 import com.example.proyecto.dto.CamposReporteSede;
+import com.example.proyecto.dto.ReporteConCamposOriginales;
 import com.example.proyecto.entity.*;
 
 import com.example.proyecto.entity.Artesano;
@@ -10,6 +11,7 @@ import com.example.proyecto.entity.Inventario;
 import com.example.proyecto.entity.Tienda;
 import com.example.proyecto.repository.*;
 import com.example.proyecto.services.VentasService;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -35,6 +37,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -136,48 +139,72 @@ public class SedeController {
                 model.addAttribute("producto", inventario2);
                 return "UsuarioSede/U-DetallesProducto";
             } else {
-                return "redirect:/principal";
+                return "redirect:/sede/principal";
             }
         } else {
             attr.addFlashAttribute("msgError", "Producto no encontrado");
-            return "redirect:/principal";
+            return "redirect:/sede/principal";
         }
     }
 
     @PostMapping("DevolverProducto")
     public String devolverProducto(@RequestParam("id") int id,@RequestParam("cantidad") int cantidad, @RequestParam("detalles") String detalles, RedirectAttributes attr, HttpSession session, Model model) {
         Optional<Inventariosede> inventariosede = inventariosedeRepository.findById(id);
+        Usuarios usuario = (Usuarios) session.getAttribute("user");
         if (inventariosede.isPresent()) {// existe el inventariosede con esa id
-            if(cantidad > 0) {
-                System.out.println(detalles);
-                if(!detalles.equalsIgnoreCase("" )&& !detalles.isEmpty()){
+            if((usuario.getSede().getIdsede().equals(inventariosede.get().getSede().getIdsede()))) {
+                if (cantidad > 0) {
+                    System.out.println(detalles);
+                    if (!detalles.equalsIgnoreCase("") && !detalles.isEmpty()) {
 
-                if (inventariosede.get().getSede().getIdsede().equals(((Usuarios) session.getAttribute("user")).getSede().getIdsede())) {// no es hackerman
-                    if (inventariosede.get().getStock() >= cantidad) {// se le resta a algo que no es 0
+                        if (inventariosede.get().getSede().getIdsede().equals(((Usuarios) session.getAttribute("user")).getSede().getIdsede())) {// no es hackerman
+                            if (inventariosede.get().getStock() >= cantidad) {// se le resta a algo que no es 0
 
-                        Inventario inventario = inventarioRepository.findById(inventariosede.get().getInventario().getIdInventario()).get();
-                        inventario.setStock(inventario.getStock() + cantidad);
-                        inventarioRepository.save(inventario);
-                        inventariosede.get().setStock(inventariosede.get().getStock() - cantidad);
-                        inventariosedeRepository.save(inventariosede.get());
-                        attr.addFlashAttribute("msg", "Un " + inventario.getProducto().getDenominacion().getNombre() + " " + inventario.getColor() + " devuelto exitosamente");
-                        return "redirect:/sede";
-                    } else {// se le esta restando mas de lo que se tiene
-                        attr.addFlashAttribute("msgError", "No tiene suficiente stock de " +
-                                inventariosede.get().getInventario().getProducto().getCodigoGenerado() + " " + inventariosede.get().getInventario().getColor() + " en esta sede");
+                                //Sede sede = inventariosede.get().getSede();
+                                Inventario inventario = inventarioRepository.findById(inventariosede.get().getInventario().getIdInventario()).get();
+                                Estadoenviosede estadoenviosede = new Estadoenviosede();
+                                estadoenviosede.setEstado("En camino a central");
+                                estadoenviosede.setInventariosede(inventariosede.get());
+                                estadoenviosede.setCantidad(cantidad);
+                                estadoenviosede.setComentario(detalles);
+                                estadoenviosede.setFecha(LocalDate.now());
+                                estadoenviosedeRepository.save(estadoenviosede); // guardar el nuevo envio
+
+                                //estadoenviosedeRepository.findByInventariosede(inventariosede.get()).get(0);
+                                //inventario.setStock(inventario.getStock() + cantidad); // se aumenta la cantidad en almacen
+                                //inventarioRepository.save(inventario);
+
+                                inventariosede.get().setStock(inventariosede.get().getStock() - cantidad); // se disminuye la cantidad en sede
+                                inventariosedeRepository.save(inventariosede.get());
+                                String plural = ""; // plural o singular
+                                if (cantidad > 1) {
+                                    plural = "s";
+                                }
+                                attr.addFlashAttribute("msg", cantidad + " " +
+                                        inventario.getProducto().getDenominacion().getNombre() + plural +
+                                        " " + inventario.getColor() + plural + " devuelto" + plural +
+                                        " exitosamente"); // mensaje de exito
+                                return "redirect:/sede";
+
+                            } else {// se le esta restando mas de lo que se tiene
+                                attr.addFlashAttribute("msgError", "No tiene suficiente stock de " +
+                                        inventariosede.get().getInventario().getProducto().getCodigoGenerado() + " " + inventariosede.get().getInventario().getColor() + " en esta sede");
+                                return "redirect:/sede";
+                            }
+                        } else {//hackerman detente por favor
+                            //attr.addFlashAttribute("msgError", "hackerman detente por favor, esa sede no es tuya");
+                            return "redirect:/sede";
+                        }
+                    } else {
+                        attr.addFlashAttribute("msgError", "Por favor ingrese los detalles de devolucion");
                         return "redirect:/sede";
                     }
-                } else {//hackerman detente por favor
-                    attr.addFlashAttribute("msgError", "hackerman detente por favor, esa sede no es tuya");
+                } else {
+                    attr.addFlashAttribute("msgError", "No se puede devolver una cantidad negativa o igual a 0");
                     return "redirect:/sede";
                 }
-            }else{
-                    attr.addFlashAttribute("msgError", "Por favor ingrese los detalles de devolucion");
-                    return "redirect:/sede";
-                }
-            }
-            else{
-                attr.addFlashAttribute("msgError", "No se puede devolver una cantidad negativa o igual a 0");
+            } else {
+                attr.addFlashAttribute("msgError", "No existe ese producto en esta sede");
                 return "redirect:/sede";
             }
         } else {
@@ -238,9 +265,20 @@ public class SedeController {
         session.getAttribute("user");
         Usuarios u = (Usuarios) session.getAttribute("user");
         List<Inventariosede> listaInventarioSede = inventariosedeRepository.findBySede(u.getSede());
-        List<Tienda> listaTiendas = tiendaRepository.findBySede(u.getSede());
         model.addAttribute("listaInventarioSede", listaInventarioSede);
-        model.addAttribute("listaTiendas", listaTiendas);
+
+        List<Tienda> listaTiendas = tiendaRepository.findBySede(u.getSede());
+        String nombre = "Sin tienda " + "(" + u.getSede().getNombre() + ")";
+        List<Tienda> lista = new ArrayList<>();
+
+        for (Tienda t: listaTiendas) {
+            if (!t.getNombre().equals(nombre)){
+                lista.add(t);
+            }
+        }
+        model.addAttribute("listaTiendas", lista);
+
+
         return "UsuarioSede/U-NuevaVenta";
     }
 
@@ -269,37 +307,46 @@ public class SedeController {
             return "UsuarioSede/U-NuevaVenta";
         } else {
             Usuarios u = (Usuarios) session.getAttribute("user");
-            List<Tienda> tienda1 = tiendaRepository.findByIdtienda(venta.getTienda().getIdtienda());
-            if (tienda1.isEmpty()) {
-                return "UsuarioSede/U-NuevaVenta";
-            } else {
+
+            if (venta.getTienda().getIdtienda() > 0) {
+                List<Tienda> tienda1 = tiendaRepository.findByIdtienda(venta.getTienda().getIdtienda());
                 venta.setTienda(tienda1.get(0));
                 venta.getTienda().getSede().setIdsede(u.getSede().getIdsede());
-                int sedkey = venta.getTienda().getSede().getIdsede();
-                int invkey = venta.getInventario().getIdInventario();
-                Inventariosede inventariosede = inventariosedeRepository.findByInventarioAndSede(inventarioRepository.findById(invkey).get(),
-                        sedeRepository.findById(sedkey).get()).get(0);
-                if ((inventariosede.getStock() - venta.getCantidad()) >= 0) {
-                    inventariosede.setStock(inventariosede.getStock() - venta.getCantidad());
-                    venta.setInventario(inventariosede.getInventario());
-                    venta.setUsuarios(u);
-                    ventaRepository.save(venta);
-                    attr.addFlashAttribute("msg", "Venta añadida exitosamente");
-                    return "redirect:/sede/gestionVentas";
-                } else {
-                    List<Inventario> listaInventario = inventarioRepository.findAll();
-                    model.addAttribute("listaInventario", listaInventario);
-                    attr.addFlashAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
-                    return "redirect:/sede/nuevaVenta";
-                }
+            } else {
+                Tienda tiendaAbstracta = new Tienda();
+                //tiendaAbstracta.setIdtienda(9999);
+                tiendaAbstracta.setNombre("Sin tienda " + "(" + u.getSede().getNombre() + ")");
+                tiendaAbstracta.setSede(u.getSede());
+                tiendaRepository.save(tiendaAbstracta);
+                venta.setTienda(tiendaAbstracta);
+            }
+
+            int sedkey = u.getSede().getIdsede();
+            int invkey = venta.getInventario().getIdInventario();
+            Inventariosede inventariosede = inventariosedeRepository.findByInventarioAndSede(inventarioRepository.findById(invkey).get(),
+                    sedeRepository.findById(sedkey).get()).get(0);
+            if ((inventariosede.getStock() - venta.getCantidad()) >= 0) {
+                inventariosede.setStock(inventariosede.getStock() - venta.getCantidad());
+                venta.setInventario(inventariosede.getInventario());
+                venta.setUsuarios(u);
+                ventaRepository.save(venta);
+                attr.addFlashAttribute("msg", "Venta añadida exitosamente");
+                return "redirect:/sede/gestionVentas";
+            } else {
+                List<Inventario> listaInventario = inventarioRepository.findAll();
+                model.addAttribute("listaInventario", listaInventario);
+                attr.addFlashAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
+                return "redirect:/sede/nuevaVenta";
             }
         }
-
     }
+
+
 
     @GetMapping("gestionVentas")
     public String gestionDeVentas(@ModelAttribute("venta") Venta venta, Model model, HttpSession session) {
         Usuarios u = (Usuarios) session.getAttribute("user");
+        int idsede = u.getSede().getIdsede();
         List<Venta> listaVentas = new ArrayList<Venta>();
         List<Venta> listaVentas1 = ventaRepository.findAll();
         for (Venta V : listaVentas1) {
@@ -333,10 +380,11 @@ public class SedeController {
     @GetMapping("createexcel")
     public void crearExcel(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         Usuarios u = (Usuarios) session.getAttribute("user");
-        List<CamposReporteSede> venta = ventasService.getVentas(u.getSede().getIdsede());
-        boolean isFlag = ventasService.createExcel(venta, context, request, response);
+        List<ReporteConCamposOriginales> venta = ventasService.getReporteSede(u.getSede().getIdsede());
+        String titulo = "Ventas de la sede " + u.getSede().getNombre();
+        boolean isFlag = ventasService.createExcelSede(venta, titulo,"anual" , context, request, response);
         if (isFlag) {
-            String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas" + ".xls");
+            String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_sede" + ".xls");
             filedownload(fullpath, response, "ventas.xls");
         }
     }
@@ -370,17 +418,19 @@ public class SedeController {
     //----------------INICIO CRUD TIENDAS-------------------
     @GetMapping("registroTiendas")
     public String registroDeTiendas(@ModelAttribute("tienda") Tienda tienda, Model model, HttpSession session) {
-        Usuarios usuario = (Usuarios) session.getAttribute("user");
-        model.addAttribute("listaTiendas", tiendaRepository.findBySede(usuario.getSede()));
+        Usuarios u = (Usuarios) session.getAttribute("user");
+        List<Tienda> listaTiendas = tiendaRepository.findBySede(u.getSede());
+        String nombre = "Sin tienda " + "(" + u.getSede().getNombre() + ")";
+        List<Tienda> lista = new ArrayList<>();
+
+        for (Tienda t: listaTiendas) {
+            if (!t.getNombre().equals(nombre)){
+                lista.add(t);
+            }
+        }
+        model.addAttribute("listaTiendas", lista);
 
         return "UsuarioSede/U-TiendaDistribuidor";
-    }
-
-    @GetMapping("registroRealTienda")
-    public String registroRealDeTiendas(@ModelAttribute("tienda") Tienda tienda, Model model) {
-        model.addAttribute("listaTiendas", tiendaRepository.findAll());
-
-        return "UsuarioSede/U-NuevaTienda";
     }
 
     @PostMapping("guardarTienda")
@@ -495,14 +545,14 @@ public class SedeController {
             return "redirect:/sede/productosEnEspera";
         }
     }
-
 /*
-    @ExceptionHandler(Exception.class)
+   @ExceptionHandler(Exception.class)
+
     public String ExceptionHandlerSede(Exception e,RedirectAttributes attr ){
         attr.addFlashAttribute("msgError", "Ocurrio un error, no se completo el proceso");
         System.out.println("!!!!! \n \n OCURRIO EL SIGUIENTE ERROR: \n  " + e.getMessage() + " \n \n !!!!!!!");
         return "redirect:/sede/principal";
-    } */
+    }*/
 }
 
 

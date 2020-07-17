@@ -63,6 +63,11 @@
                                     </td>
                                     <td align="center">
 
+                                        <a th:href="@{'/gestor/devolverProducto2' + '?id=' + ${productos.idInventario}}">
+                                        <i class="fa fa-plus-circle" style="color: #5d21c7;margin-right: 5px"></i>
+                                        </a>
+
+                                        <!--
                                         <a style="margin-left: 5px" href="#" class="far fa-trash-alt text-redM"
                                            data-toggle="modal" data-target="#modalborrar"
                                            th:attrappend="data-target=${productos.getIdInventario()}"></a>
@@ -91,6 +96,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        -->
 
                                     </td>
                                 </tr>

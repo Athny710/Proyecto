@@ -55,7 +55,11 @@
                                             <a th:href="@{'/gestor/gestorEditProducto?id='+${producto.idProducto}}">
                                                 <i class="far fa-edit text-orangeM" style="margin-right: 5px"></i>
                                             </a>
-
+                                            <a style="margin-left: 5px"
+                                               th:href="@{'/gestor/borrarProducto' + '?id=' + ${producto.idProducto}}"
+                                               class="far fa-trash-alt text-redM">
+                                            </a>
+                                            <!--
                                             <a style="margin-left: 5px" href="#" class="far fa-trash-alt text-redM"
                                                data-toggle="modal" data-target="#modalborrar"
                                                th:attrappend="data-target=${producto.getIdProducto()}"></a>
@@ -84,6 +88,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            -->
                                         </td>
                                     </tr>
                                     </tbody>

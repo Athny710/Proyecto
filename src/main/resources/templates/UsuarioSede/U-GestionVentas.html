@@ -45,6 +45,7 @@
                                     <th>Lugar de Venta</th>
                                     <th>Precio unitario de Venta</th>
                                     <th>Cantidad adquirida</th>
+                                    <th>Medio de pago</th>
                                     <th>Fecha de venta</th>
                                 </tr>
                                 </thead>
@@ -54,10 +55,12 @@
                                     <td th:text="${venta.numerodocumentoidentidad}"></td>
                                     <td th:text="${venta.numerodocumentoventa}"></td>
                                     <td th:text="${venta.inventario.producto.codigoGenerado}"></td>
-                                    <td th:text="${venta.tienda.getSede().getNombre()}"></td>
+                                    <td th:if="${venta.tienda == null}" text="Sin tienda"></td>
+                                    <td th:if="${venta.tienda != null}" th:text="${venta.tienda.getSede().getNombre()}"></td>
                                     <td th:text="${venta.lugardeventa}"></td>
                                     <td th:text="${venta.preciounitarioventa}"></td>
                                     <td th:text="${venta.cantidad}"></td>
+                                    <td th:text="${venta.mediodepago}"></td>
                                     <td th:text="${venta.fecha}"></td>
                                 </tr>
                                 </tbody>

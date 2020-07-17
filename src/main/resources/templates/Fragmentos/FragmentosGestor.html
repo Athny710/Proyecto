@@ -42,8 +42,9 @@
 <ul th:fragment="SideBarGestor" class="navbar-nav bg-redM sidebar sidebar-dark accordion shadow" id="accordionSidebar">
     <!-- Sidebar - Logo -->
 
-    <a class="sidebar-brand align-items-center justify-content-center" th:href="@{/system}">
-        <img th:src="@{/img/logoFinalMosqoy.PNG}" width="169px" height="90px"/>
+
+    <a class="sidebar-brand align-items-center justify-content-center" th:href="@{/gestor/gestorPrincipal}">
+        <img th:src="@{/img/logoOriginal.png}" width="195px" height="120px"/>
     </a>
     <!-- Divider
     <hr class="sidebar-divider2">-->
@@ -56,6 +57,14 @@
             <span>Inventario</span>
         </a>
     </li>
+
+    <hr class="sidebar-divider my-0 bg-gray-100">
+        <li class="nav-item">
+            <a style="padding-left: 1rem; padding-bottom: 0.5rem; padding-top: 0.5rem" class="nav-link text-gray-100"  th:href="@{/gestor/gestorListarSinStock}">
+                <i class="fas fa-fw fa-folder-open text-gray-100"></i>
+                <span>Productos en Inventario sin Stock</span>
+            </a>
+        </li>
     <hr class="sidebar-divider my-0 bg-gray-100">
 
     <li class="nav-item">
@@ -140,6 +149,7 @@
                 <li class="nav-item"><a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosEnviados}">-Enviados</a></li>
                 <li class="nav-item"><a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosAceptados}">-Aceptados</a></li>
                 <li class="nav-item"><a class="collapse-item text-gray-900" th:href="@{/gestor/gestorProductosRechazados}">-Rechazados</a></li>
+                <li class="nav-item"><a class="collapse-item text-gray-900" th:href="@{/gestor/ProductosDevueltos}">-Devueltos</a></li>
                 <li class="nav-item"><a class="collapse-item text-gray-900" th:href="@{/gestor/gestorNuevoEnvio}">-Nuevo Envio</a></li>
             </div>
         </div>
@@ -198,7 +208,7 @@
                     Perfil
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-white" th:href="@{/system}" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item text-white" href="#" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-100"></i>
                     Cerrar Sesión
                 </a>
