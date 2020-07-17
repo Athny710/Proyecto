@@ -78,7 +78,7 @@ public class GestorController {
     @Autowired
     ServletContext context;
 
-
+    Date date;
     // ----------------------- ENLACES ---------------------------------
 
     @GetMapping("AnadirCompra")
@@ -492,9 +492,12 @@ public class GestorController {
         }*/
         //todo mostrar  mensaje de stock bajo
         boolean validar1 = false;
-        int validar2=0;
+        Calendar cal= Calendar.getInstance(TimeZone.getTimeZone("America/Lima"));
+        //Obtenemos el día, si es igual a uno seteamos como true el valor de validar1
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
         //Se va a definir una variable que se pasará como model attribute para poder mostrar un modal al inicio
-        if (productoRepository.productoPorEstado("Vencida").size()>0 && productoRepository.productoPorEstado("Proxima").size()>0){
+        if (productoRepository.productoPorEstado("Vencida").size()>0 && productoRepository.productoPorEstado("Proxima").size()>0 && day==1){
             validar1=true;
         }
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
