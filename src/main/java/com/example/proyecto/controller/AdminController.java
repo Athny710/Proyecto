@@ -1,5 +1,6 @@
 package com.example.proyecto.controller;
 
+import com.example.proyecto.dto.inventarioStockTotal;
 import com.example.proyecto.entity.Inventario;
 import com.example.proyecto.entity.Perfil;
 import com.example.proyecto.entity.Usuarios;
@@ -20,6 +21,7 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.net.UnknownServiceException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,10 +43,26 @@ public class AdminController {
     //--------------------------Inventario
     @GetMapping(value = {"", "principal"})
     public String principalAdmin(Model model) {
-        model.addAttribute("inventario", inventarioRepository.listarStockMayor0());
+        Inventario inv = new Inventario();
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
         model.addAttribute("listaArtesanos", artesanoRepository.findAll());
         model.addAttribute("listaCategoria", categoriaRepository.findAll());
+
+        //Nueva lista donde se guardan los productos con stock mayor a 0. Se envía al html
+        List<Inventario> listaMayor0 = new ArrayList<>();
+        //listaInventarioStockTotal es la lista del query. Devuelve stock total y el id de inventario
+        for (inventarioStockTotal i: inventarioRepository.listaInventarioStockTotal()) {
+            //Si el stock es mayor a cero se obtiene el producto y se guarda en la nueva lista
+            if (i.getStockTotal()!=0){
+                Optional<Inventario> opt = inventarioRepository.findById(i.getIdInvent());
+                inv = opt.get();
+                //Se le pone el nuevo stock, el total
+                inv.setStock(i.getStockTotal());
+                //se agrega a la lista
+                listaMayor0.add(inv);
+            }
+        }
+        model.addAttribute("inventario", listaMayor0);
         return "Administrador/A-PagPrincipal";
     }
 

@@ -108,13 +108,16 @@
                                         <div class="col-lg-6"><p th:text="${d.producto.adquisicion.modalidad}"></p></div>
                                     </div>
                                     <hr>
-                                    <div class="d-flex">
-                                        <div class="col-lg-5 centrado">
-                                            <p>Fecha:</p>
+                                    <div th:if="${d.producto.adquisicion.modalidad=='consignado'}">
+                                        <div class="d-flex" >
+                                            <div class="col-lg-5 centrado">
+                                                <p>Fecha Aquisición:</p>
+                                            </div>
+                                            <div class="col-lg-6"><p th:text="${d.producto.adquisicion.fecha}"></p></div>
                                         </div>
-                                        <div class="col-lg-6"><p th:text="${d.producto.adquisicion.fecha}"></p></div>
+                                        <hr>
                                     </div>
-                                    <hr>
+
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
                                             <p>Costo Mosqoy(S/.):</p>

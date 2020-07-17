@@ -16,15 +16,15 @@
                         <!-- Nested Row within Card Body -->
                         <div class="row h-25">
                             <div class="col-lg-6 d-none d-lg-block bg-login-image h-25">
-                                <img th:if="${param.error}" th:src="@{/img/imagenLog.PNG}" width="362px" height="565.4px">
-                                <img th:unless="${param.error}" th:src="@{/img/imagenLog.PNG}" width="362px" height="522.2px">
+                                <img th:if="${param.error}" th:src="@{/img/imagenLog.PNG}" width="362px" height="545.4px">
+                                <img th:unless="${param.error}" th:src="@{/img/imagenLog.PNG}" width="362px" height="537.4px">
                             </div>
                             <div class="col-lg-6 bg-gray-100 h-25">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <img th:src="@{/img/logoInicio.PNG}" height="120px" width="240px">
+                                        <img th:src="@{/img/logoOriginal.png}" height="140px" width="240px">
                                     </div>
-                                    <br><br><br>
+                                    <br><br>
                                     <form class="user" th:action="@{/processLogin}" method="post">
                                         <div class="form-group">
                                             <input type="email" name="correo" class="form-control-log form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
@@ -32,8 +32,8 @@
                                         <div class="form-group">
                                             <input type="password" name="password" class="form-control-log form-control-user" id="exampleInputPassword" placeholder="Password">
                                         </div>
-                                        <h6 th:if="${param.error}" class="text-danger" style="text-align: center; font-size: 0.8rem; padding-bottom: 1rem">Acceso Denegado </h6>
-                                        <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${msg!=null}" th:text="${msg}"></div>
+                                        <h6 th:if="${param.error}" class="text-danger" style="text-align: center; font-size: 0.8rem">Acceso Denegado </h6>
+                                        <div style="font-size:0.8rem;text-align: center; color:green" th:if="${msg!=null}" th:text="${msg}"></div>
                                         <button  type="submit" class="btn btn-log btn-user btn-block" >Ingresar</button>
                                     </form>
                                     <hr>
