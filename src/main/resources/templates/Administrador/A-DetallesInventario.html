@@ -132,11 +132,13 @@
                                     <br>
                                     <br>
                                     <div class="d-flex">
-                                        <div class="col-lg-2"></div>
-                                        <div class="col-xl-7 col-md-6 mb-4">
+
+                                        <div class="col-xl-auto">
                                             <div class="card border-left-warning shadow h-100 py-2">
-                                                <div class="card-body">
-                                                    <img th:src="@{|/admin/image/${d.idInventario}|}" width="210px" height="250">
+                                                <div class="card-body" style="padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;">
+                                                    <img th:src="@{|/admin/image/${d.idInventario}|}" style="max-width: 100%;max-height: 250px"
+                                                         onerror="this.onerror=null;
+                                                     this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Imagen_no_disponible.svg/1200px-Imagen_no_disponible.svg.png'" >
                                                 </div>
                                             </div>
                                         </div>
