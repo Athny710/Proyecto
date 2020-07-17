@@ -15,7 +15,7 @@
                 <!-- Page Heading -->
                 <div class="container-fluid">
                     <div th:if="${msg!= null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                    <div th:if="${msgE!= null}" th:text="${msgE}" class="alert alert-danger" role="alert"></div>
+                    <div th:if="${msgE!= null}" th:text="${msgE}" class="alert alert-danger" role="alert" align="center"></div>
                  <!--   <div th:if="${msgg != null}" th:text="${msgg}" class="alert alert-danger" role="alert" align="center"></div>  -->
                     <div class="card shadowA mb-4" >
                         <div class="card-header2" style="padding-top: 0.6rem; padding-bottom: 0.6rem">
@@ -45,6 +45,12 @@
                                                th:href="@{'/gestor/gestorEditCategoria' + '?id=' + ${categoria.idCategoria}}"
                                                class="far fa-edit text-orangeM">
                                             </a>  -->
+                                            <a style="margin-left: 10px"
+                                               th:href="@{'/gestor/gestorEliminarCategoria' + '?id=' + ${categoria.idCategoria}}"
+                                               class="far fa-trash-alt text-redM">
+                                            </a>
+
+                                       <!--
                                             <a style="margin-right: 10px" href="#" class="far fa-trash-alt text-redM"
                                                data-toggle="modal" data-target="#modalborrar"
                                                th:attrappend="data-target=${categoria.getIdCategoria()}"></a>
@@ -72,7 +78,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </td>
 
                                  <!--       <td align="center" style="margin-left: 10px" >
