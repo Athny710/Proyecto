@@ -457,7 +457,26 @@ public class GestorController {
 
     @GetMapping(value = {"", "gestorPrincipal"})
     public String inventarioGestor(Model model) {
-        List<Inventario> inventario = inventarioRepository.listarStockMayor0();
+        List<Inventario> listaMayor0 = new ArrayList<>();
+        for (inventarioStockTotal i: inventarioRepository.listaInventarioStockTotal()) {
+            //Si el stock es mayor a cero se obtiene el producto y se guarda en la nueva lista
+            if (i.getStockTotal()!=0){
+                Inventario inv = new Inventario();
+                Optional<Inventario> opt = inventarioRepository.findById(i.getIdInvent());
+                inv.setIdInventario(opt.get().getIdInventario());
+                inv.setStock(i.getStockTotal());
+                inv.setComentario(opt.get().getComentario());
+                inv.setColor(opt.get().getColor());
+                inv.setPreciomosqoy(opt.get().getPreciomosqoy());
+                inv.setProducto(opt.get().getProducto());
+                inv.setEstado(opt.get().getEstado());
+                inv.setFechadevolucion(opt.get().getFechadevolucion());
+
+                listaMayor0.add(inv);
+            }
+        }
+        model.addAttribute("inventario", listaMayor0);
+
         // para listar el stock total en vez del stock en almacen principal
         /*
         for (Inventario inv: inventario) {
@@ -474,9 +493,6 @@ public class GestorController {
         if (productoRepository.productoPorEstado("Vencida").size()>0 && productoRepository.productoPorEstado("Proxima").size()>0){
             validar1=true;
         }
-
-        model.addAttribute("inventario", inventario);
-
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
         model.addAttribute("listaArtesanos", artesanoRepository.findAll());
         model.addAttribute("listaCategoria", categoriaRepository.findAll());

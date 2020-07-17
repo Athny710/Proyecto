@@ -58,16 +58,15 @@ public class AdminController {
             if (i.getStockTotal()!=0){
                 Inventario inv = new Inventario();
                 Optional<Inventario> opt = inventarioRepository.findById(i.getIdInvent());
+                inv.setIdInventario(opt.get().getIdInventario());
+                inv.setStock(i.getStockTotal());
+                inv.setComentario(opt.get().getComentario());
+                inv.setColor(opt.get().getColor());
+                inv.setPreciomosqoy(opt.get().getPreciomosqoy());
+                inv.setProducto(opt.get().getProducto());
                 inv.setEstado(opt.get().getEstado());
                 inv.setFechadevolucion(opt.get().getFechadevolucion());
-                inv.setIdInventario(opt.get().getIdInventario());
-                inv.setProducto(opt.get().getProducto());
-                inv.setColor(opt.get().getColor());
-                inv.setComentario(opt.get().getComentario());
-                inv.setPreciomosqoy(opt.get().getPreciomosqoy());
-                //Se le pone el nuevo stock, el total
-                inv.setStock(i.getStockTotal());
-                //se agrega a la lista
+
                 listaMayor0.add(inv);
             }
         }
