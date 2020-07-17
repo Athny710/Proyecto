@@ -18,10 +18,15 @@ public interface UsuarioRepository extends JpaRepository<Usuarios,Integer> {
     public Usuarios findByTelefono(String telefono);
     public Usuarios findByNombreAndApellido(String nombre, String apellido);
 
+
     @Query(value="select hasheado from sw2_proyecto.usuarios WHERE idUsuarios=?1", nativeQuery=true)
     String seleccionarHash(Integer idusuarios);
 
     @Query(value="SELECT * FROM sw2_proyecto.usuarios WHERE hasheado=?1", nativeQuery=true)
     Usuarios obtenerUsuarioPorHash(String hasheado);
+
+    @Query(value="SELECT correo FROM sw2_proyecto.usuarios WHERE tipo='gestor' AND activo=1", nativeQuery=true)
+    public List<String> obtenerCorreosGestorActivos();
+
 
 }

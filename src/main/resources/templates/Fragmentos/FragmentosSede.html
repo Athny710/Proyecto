@@ -42,7 +42,8 @@
 <!-- Sidebar -->
 <ul th:fragment="SideBarSede" class="navbar-nav bg-redM sidebar sidebar-dark accordion shadow menu" id="accordionSidebar">
     <!-- Sidebar - Logo -->
-    <a class="sidebar-brand align-items-center justify-content-center" th:href="@{/system}">
+
+    <a class="sidebar-brand align-items-center justify-content-center" th:href="@{/sede/principal}">
         <img th:src="@{/img/logoFinalMosqoy.PNG}" width="169px" height="90px"/>
     </a>
     <!-- Divider -->
@@ -127,7 +128,7 @@
                     Perfil
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-white" th:href="@{/system}" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item text-white" href="#" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-100"></i>
                     Cerrar Sesión
                 </a>

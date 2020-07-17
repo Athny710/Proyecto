@@ -48,51 +48,54 @@
                                                th:href="@{'/gestor/gestorEditSede' + '?idsede=' + ${sedes.idsede}}"
                                                class="far fa-edit text-orangeM">
                                             </a>
+                                            <a style="margin-left: 10px"
+                                               th:href="@{'/gestor/borrarSede' + '?idsede=' + ${sedes.idsede}}"
+                                               class="far fa-trash-alt text-redM">
+                                            </a>
+                                            <!--
+                                                <a style="margin-left: 5px" href="#" class="far fa-trash-alt text-redM"
+                                                   data-toggle="modal" data-target="#modalborrar"
+                                                   th:attrappend="data-target=${sedes.getIdsede()}"></a>
 
-                                            <a style="margin-left: 5px" href="#" class="far fa-trash-alt text-redM"
-                                               data-toggle="modal" data-target="#modalborrar"
-                                               th:attrappend="data-target=${sedes.getIdsede()}"></a>
-
-                                            <div class="modal fade" id="modalborrar" tabindex="-1" role="dialog"
-                                                 th:attrappend="id=${sedes.getIdsede()}"
-                                                 aria-labelledby="myModalLabel">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header text-center">
-                                                            <h4 class="modal-title w-100 font-weight-bold">Eliminar sede</h4>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <h6 th:text="'¿Está seguro que desea eliminar la sede' + ${sedes.nombre} + ' del registro?'"></h6>
-                                                            <a th:href="@{'/gestor/borrarSede' + '?idsede=' + ${sedes.idsede}}"
-                                                               class="btn btn-danger btn-block">Eliminar</a>
-                                                            <button type="button" class="btn btn-searchTop btn-block"
-                                                                    data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">Cancelar</span>
-                                                            </button>
+                                                <div class="modal fade" id="modalborrar" tabindex="-1" role="dialog"
+                                                     th:attrappend="id=${sedes.getIdsede()}"
+                                                     aria-labelledby="myModalLabel">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header text-center">
+                                                                <h4 class="modal-title w-100 font-weight-bold">Eliminar sede</h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <h6 th:text="'¿Está seguro que desea eliminar la sede' + ${sedes.nombre} + ' del registro?'"></h6>
+                                                                <a th:href="@{'/gestor/borrarSede' + '?idsede=' + ${sedes.idsede}}"
+                                                                   class="btn btn-danger btn-block">Eliminar</a>
+                                                                <button type="button" class="btn btn-searchTop btn-block"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">Cancelar</span>
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            -->
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Scroll to Top Button-->
+    <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>

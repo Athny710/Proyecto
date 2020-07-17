@@ -79,7 +79,7 @@
                                     <hr th:if="${d.producto.adquisicion.artesano != null}" >
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
-                                            <p>Cantidad:</p>
+                                            <p>Stock en almacen:</p>
                                         </div>
                                         <div class="col-lg-6"><p th:text="${d.stock}"></p></div>
                                     </div>
@@ -135,11 +135,13 @@
                                     <br>
                                     <br>
                                     <div class="d-flex">
-                                        <div class="col-lg-2"></div>
-                                        <div class="col-xl-7 col-md-6 mb-4">
+
+                                        <div class="col-xl-auto">
                                             <div class="card border-left-warning shadow h-100 py-2">
-                                                <div class="card-body">
-                                                    <img th:src="@{|/admin/image/${d.idInventario}|}" width="210px" height="250">
+                                                <div class="card-body" style="padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;">
+                                                    <img th:src="@{|/admin/image/${d.idInventario}|}" style="max-width: 100%;max-height: 250px"
+                                                         onerror="this.onerror=null;
+                                                     this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Imagen_no_disponible.svg/1200px-Imagen_no_disponible.svg.png'" >
                                                 </div>
                                             </div>
                                         </div>
@@ -148,6 +150,43 @@
                                 </div>
                             </div>
                         </div>
+
+
+                        <div class="card-header2 py-3">
+                            <div class="d-flex justify-content-between centrado">
+                                <h5 class="m-0 font-weight-bold text-redM">Stock En Sedes</h5>
+                            </div>
+                        </div>
+                        <div class="card-body bg-gray-100">
+                            <div class="card-body bg-gray-100" th:unless="${StockSede == null}">
+                                <div class="table-responsive">
+
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr class="bg-gray-900 text-white" align="center">
+                                            <th>Sede</th>
+                                            <th>Cantidad</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr class="bg-white" align="center" th:each="cantSede: ${StockSede}">
+                                            <td th:text="${cantSede.nombre}"></td>
+                                            <td th:text="${cantSede.idsede}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                            <div class="card-body bg-gray-100" th:if="${StockSede == null}">
+                                <p>No hay stock fuera de el almacen principal.</p>
+                            </div>
+
+                        </div>
+
+
+
                     </div>
                 </div>
             </div>

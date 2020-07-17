@@ -104,6 +104,7 @@ public class SystemController {
                     BCryptPasswordEncoder hasheadoId = new BCryptPasswordEncoder();
                     usuarioBuscado.setHasheado(hasheadoId.encode(usuarioBuscado.getPassword()));
                     usuarioRepository.save(usuarioBuscado);
+                    System.out.println("Validacion de hash");
                 }
                 //Prepara para usar el método del email
                 String context = request.getContextPath();
@@ -112,8 +113,10 @@ public class SystemController {
 
                 //Envia email para recuperar la cuenta (se envia email con CambiarContra.html)
                 Email email = new Email();
+                System.out.println("Ya se va a enviar");
                 email.emailRecuperarCuenta(correo, usuarioBuscado.getHasheado(), localPort, context);
                 model.addAttribute("msg", "Se ha enviado el correo exitosamente");
+                System.out.println("Ya se envio");
                 return "index";
 
             } else {

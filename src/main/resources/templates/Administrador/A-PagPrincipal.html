@@ -46,7 +46,8 @@
                                                         <option value="0">Todos</option>
                                                         <option th:each=" comunidad : ${listaComunidades}"
                                                                 th:value="${comunidad.idComunidad}"
-                                                                th:text="${comunidad.nombre}">Todo</option>
+                                                                th:text="${comunidad.nombre}"
+                                                                th:selected="${#request.getParameter('idComu')} != null  and ${#request.getParameter('idComu')} == ${comunidad.idComunidad}">Todo</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -63,7 +64,8 @@
                                                         <option value="0">Todos</option>
                                                         <option th:each=" categoria : ${listaCategoria}"
                                                                 th:value="${categoria.idCategoria}"
-                                                                th:text="${categoria.nombre}">Todo</option>
+                                                                th:text="${categoria.nombre}"
+                                                                th:selected="${#request.getParameter('idCate')} != null  and ${#request.getParameter('idCate')} == ${categoria.idCategoria}">Todo</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -77,7 +79,8 @@
                                                         <option value="0">Todos</option>
                                                         <option th:each=" artesano : ${listaArtesanos}"
                                                                 th:value="${artesano.idArtesano}"
-                                                                th:text="${artesano.nombre +  ' ' + artesano.apellidopaterno+ ' ' + artesano.apellidomaterno}">Todo</option>
+                                                                th:text="${artesano.nombre +  ' ' + artesano.apellidopaterno+ ' ' + artesano.apellidomaterno}"
+                                                                th:selected="${#request.getParameter('idArt')} != null  and ${#request.getParameter('idArt')} == ${artesano.idArtesano}">Todo</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -91,14 +94,14 @@
                                                 <div class="col-lg-6">
                                                     <select class="form-control" name="adqui" id="adqui" style="border-radius: 10rem">
                                                         <option value="todo">Todo</option>
-                                                        <option value="compra">Compra</option>
-                                                        <option value="consignado">Consignación</option>
+                                                        <option value="compra" th:selected="${#request.getParameter('tipo')} != null  and ${#request.getParameter('tipo').equalsIgnoreCase('compra')}">Compra</option>
+                                                        <option value="consignado" th:selected="${#request.getParameter('tipo')} != null  and ${#request.getParameter('tipo').equalsIgnoreCase('consignado')}">Consignación</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div style="text-align: right">
                                                 <a id="obtenerLista" type="button" class="btn btn-orange" style="margin-top: 4.25rem; color: white">Buscar</a>
-                                                <a th:href="@{/admin/principal}" type="button" class="btn btn-danger" style="margin-top: 4.25rem; margin-left: 0.5rem">Limpiar</a>
+                                                <a th:href="@{/admin/principal}" type="button" class="btn btn-danger" style="margin-top: 4.25rem; margin-left: 0.5rem">Limpiar Búsqueda</a>
                                             </div>
 
                                         </div>
@@ -143,7 +146,17 @@
     </a>
     <div th:replace="Fragmentos/FragmentosAdmin.html::Script"></div>
     <script type="text/javascript">
-        $("#artesanoDiv").hide();
+        var reqParam1 = [[${#request.getParameter('idComu')} != null ? true : false]] ;
+        var reqParam2 = [[${#request.getParameter('idCate')} != null ? true : false]] ;
+        var reqParam3 = [[${#request.getParameter('idArt')} != null ? true : false]] ;
+        var reqParam4 = [[${#request.getParameter('tipo')} != null ? true : false]] ;
+
+        if(reqParam3 === true){
+            $("#artesanoDiv").show();
+        }else{
+            $("#artesanoDiv").hide();
+        }
+
         $("#adqui").on('change',function () {
             var tipo = $(this).val();
             console.log(tipo);
@@ -158,10 +171,17 @@
             var valor2 = $("#comunidad").val();
             var valor3 = $("#categoria").val();
             var valor4 = $("#adqui").val();
-            $("#obtenerLista").attr('href', '/proyecto/admin/buscar?artesano='+valor1+'?comunidad='+valor2+'?categoria='+valor3+'?tipo='+valor4);
+            $("#obtenerLista").attr('href', '/proyecto/admin/buscador?idArt='+valor1+'&idComu='+valor2+'&idCate='+valor3+'&tipo='+valor4);
         });
 
-        $("#busquedaAv").hide();
+
+
+        if(reqParam1 === true ||reqParam2 === true|| reqParam3 === true || reqParam4 === true){
+            $("#busquedaAv").show();
+        }else{
+            $("#busquedaAv").hide();
+        }
+
         var s = true;
 
         function mostrarForm(){

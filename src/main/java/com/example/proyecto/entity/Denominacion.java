@@ -16,14 +16,12 @@ public class Denominacion {
     private String nombre;
     @Column(nullable = false)
     @NotBlank(message = "Este campo no puede estar vacío")
-    @Size(min = 3 ,max = 3, message = "Solo 3 caracteres")
     private String codigonombre;
     @NotBlank(message = "Este campo no puede estar vacío")
     @Size(max = 45, message = "No puede tener más de 45 caracteres")
     private String descripcion;
     @Column(nullable = false)
     @NotBlank(message = "Este campo no puede estar vacío")
-    @Size(min = 3 ,max = 3, message = "Solo 3 caracteres")
     private String codigodescripcion;
     @ManyToOne
     @JoinColumn(name="idlinea")

@@ -30,12 +30,11 @@
                                     <th>Sede</th>
                                     <th>Producto</th>
                                     <th>Cantidad</th>
-                                    <th>Precio de venta</th>
                                     <th>Fecha de envío</th>
                                     <th>Estado</th>
                                     <th>Comentario</th>
                                     <th>Editar Envío</th>
-                                    <th>Eliminar</th>
+                                    <th>Confirmar llegada</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -44,7 +43,6 @@
                                     <td th:text="${p.getNombre_sede()}"></td>
                                     <td th:text="${p.getNombre()}"></td>
                                     <td th:text="${p.getCantidad()}"></td>
-                                    <td th:text="${p.getPreciomosqoy()}"></td>
                                     <td th:text="${p.getFecha()}"></td>
                                     <td th:text="${p.getEstado()}"></td>
                                     <td th:text="${p.getComentario()}"></td>
@@ -54,7 +52,7 @@
                                            class="far fa-edit text-orangeM"></a>
                                     </td>
                                     <td align="center">
-                                        <a style="margin-left: 10px" class="far fa-trash-alt text-redM"
+                                        <a style="margin-left: 10px" class="fa fa-check-circle text-success"
                                            href="#"
                                            data-toggle="modal" data-target="#modalborrar"
                                            th:attrappend="data-target=${p.getIdestado()}"></a>
@@ -64,17 +62,16 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header text-center">
-                                                    <h4 class="modal-title w-100 font-weight-bold">Eliminar producto
-                                                        rechazado del registro</h4>
+                                                    <h4 class="modal-title w-100 font-weight-bold">Confirmar devolucion de producto</h4>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <h6 th:text="'¿Está seguro que desea eliminar ' + ${p.getCodigogenerado()} + ' del registro?'"></h6>
+                                                    <h6 th:text="'¿Está seguro que desea confirmar que recibio '+ ${p.cantidad} + ' ' + ${p.getCodigogenerado()} + ' de ' + ${p.nombre_sede}"></h6>
                                                     <a th:href="@{'/gestor/borrarRechazoDeEnvio' + '?id=' + ${p.getIdestado()}}"
-                                                       class="btn btn-danger btn-block">Eliminar</a>
+                                                       class="btn btn-orange btn-block">Confirmar</a>
                                                     <button type="button" class="btn btn-searchTop btn-block"
                                                             data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">Cancelar</span>

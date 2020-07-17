@@ -1,9 +1,10 @@
 package com.example.proyecto.controller;
 
+
 import com.example.proyecto.dto.inventarioStockTotal;
-import com.example.proyecto.entity.Inventario;
-import com.example.proyecto.entity.Perfil;
-import com.example.proyecto.entity.Usuarios;
+
+
+import com.example.proyecto.entity.*;
 import com.example.proyecto.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -39,6 +40,8 @@ public class AdminController {
     ArtesanoRepository artesanoRepository;
     @Autowired
     CategoriaRepository categoriaRepository;
+    @Autowired
+    InventariosedeRepository inventariosedeRepository;
 
     //--------------------------Inventario
     @GetMapping(value = {"", "principal"})
@@ -66,9 +69,9 @@ public class AdminController {
         return "Administrador/A-PagPrincipal";
     }
 
-    @PostMapping("/bucador")
-    public String buscadorAvanzado(Model model,@RequestParam("comunidad") int idComu, @RequestParam("adqui") String tipo,
-                                   @RequestParam("artesano") int idArt,@RequestParam("categoria") int idCate) {
+    @GetMapping("/buscador")
+    public String buscadorAvanzado(Model model,@RequestParam("idComu") int idComu, @RequestParam("tipo") String tipo,
+                                   @RequestParam("idArt") int idArt,@RequestParam("idCate") int idCate) {
 
         if (idComu != 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0) {
             List<Inventario> Lista1 = inventarioRepository.listarPorComunidad(idComu);
@@ -91,7 +94,7 @@ public class AdminController {
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista3);
             return "Administrador/A-PagPrincipal";
-        } else if (idComu == 0 && !tipo.equalsIgnoreCase("todo") && idArt != 0 && idCate == 0) {
+        } else if (idComu == 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate == 0) {
             List<Inventario> Lista4 = inventarioRepository.listarPorArtesanoConConsigna(tipo, idArt);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
@@ -105,7 +108,49 @@ public class AdminController {
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista5);
             return "Administrador/A-PagPrincipal";
-        }else{
+        } else if (idComu != 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0){
+            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadYModalidad( idComu, tipo);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista6);
+            return "Administrador/A-PagPrincipal";
+        }else if (idComu != 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate == 0){
+            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadConsignadoYArtesano( idComu, idArt);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista6);
+            return "Administrador/A-PagPrincipal";
+        }else if (idComu == 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate != 0){
+            List<Inventario> Lista7 = inventarioRepository.listarPorCategoriaConsignadoYArtesano( idCate, idArt);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista7);
+            return "Administrador/A-PagPrincipal";
+        } else if (idComu == 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
+            List<Inventario> Lista8 = inventarioRepository.listarPorCategoriaYModalidad( idCate, tipo);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista8);
+            return "Administrador/A-PagPrincipal";
+        }else if (idComu != 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
+            List<Inventario> Lista9 = inventarioRepository.listarPorCategoriaYComunidadYModalidad( idCate, tipo, idComu);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista9);
+            return "Administrador/A-PagPrincipal";
+        }else if (idComu != 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate != 0){
+            List<Inventario> Lista10 = inventarioRepository.listarPorCategoriaComunidadConsignadoYArtesano( idCate, idComu, idArt);
+            model.addAttribute("listaComunidades", comunidadRepository.findAll());
+            model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+            model.addAttribute("listaCategoria", categoriaRepository.findAll());
+            model.addAttribute("inventario", Lista10);
+            return "Administrador/A-PagPrincipal";
+        } else{
             return "redirect:/admin";
         }
 
@@ -116,6 +161,13 @@ public class AdminController {
         Optional<Inventario> inventario = inventarioRepository.findById(id);
         if (inventario.isPresent()) {
             Inventario i = inventario.get();
+
+            // para mandar un error si es que no se encuentra la imagen en la bd.
+            // En el HTML automaticamente se muestra una imagen por defecto
+            if (i.getFotocontenttype() == null || i.getFotocontenttype().isEmpty() || i.getFoto().length == 0 || i.getFoto() == null) {
+                HttpHeaders httpHeaders = new HttpHeaders();
+                return new ResponseEntity<>(null, httpHeaders, HttpStatus.NOT_FOUND);
+            } // fin IF
 
             byte[] imagenComoBytes = i.getFoto();
             HttpHeaders httpHeaders = new HttpHeaders();
@@ -132,6 +184,31 @@ public class AdminController {
         Optional<Inventario> opt = inventarioRepository.findById(id);
         if (opt.isPresent()) {
             Inventario inventa = opt.get();
+
+
+            // no queria crear un DTO asi que ahora en idSede le guardare el Stock de la sede
+            List<Inventariosede> listaInvSede = inventariosedeRepository.findByInventario(inventa);
+            if (!listaInvSede.isEmpty()) {
+                ArrayList<Sede> StockSede = new ArrayList<Sede>();
+                for (Inventariosede IS : listaInvSede) {
+                    if (IS.getStock() > 0) {
+                        Sede temp = new Sede();
+                        temp.setIdsede(IS.getStock());
+                        temp.setNombre(IS.getSede().getNombre());
+
+                        StockSede.add(temp);
+                    }
+                }
+                if (!StockSede.isEmpty()) {
+                    model.addAttribute("StockSede", StockSede);
+                }
+            }
+
+
+
+
+
+
             model.addAttribute("d", inventa);
             return "Administrador/A-DetallesInventario";
         } else {
