@@ -288,7 +288,6 @@ public class SedeController {
                 venta.getTienda().getSede().setIdsede(u.getSede().getIdsede());
             } else {
                 Tienda tiendaAbstracta = new Tienda();
-                //tiendaAbstracta.setIdtienda(9999);
                 tiendaAbstracta.setNombre("Sin tienda " + "(" + u.getSede().getNombre() + ")");
                 tiendaAbstracta.setSede(u.getSede());
                 tiendaRepository.save(tiendaAbstracta);
