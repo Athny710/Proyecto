@@ -79,7 +79,7 @@
                                     <hr th:if="${d.producto.adquisicion.artesano != null}" >
                                     <div class="d-flex">
                                         <div class="col-lg-5 centrado">
-                                            <p>Cantidad:</p>
+                                            <p>Stock en almacen:</p>
                                         </div>
                                         <div class="col-lg-6"><p th:text="${d.stock}"></p></div>
                                     </div>
@@ -147,6 +147,43 @@
                                 </div>
                             </div>
                         </div>
+
+
+                        <div class="card-header2 py-3">
+                            <div class="d-flex justify-content-between centrado">
+                                <h5 class="m-0 font-weight-bold text-redM">Stock En Sedes</h5>
+                            </div>
+                        </div>
+                        <div class="card-body bg-gray-100">
+                            <div class="card-body bg-gray-100" th:unless="${StockSede == null}">
+                                <div class="table-responsive">
+
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr class="bg-gray-900 text-white" align="center">
+                                            <th>Sede</th>
+                                            <th>Cantidad</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr class="bg-white" align="center" th:each="cantSede: ${StockSede}">
+                                            <td th:text="${cantSede.nombre}"></td>
+                                            <td th:text="${cantSede.idsede}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                            <div class="card-body bg-gray-100" th:if="${StockSede == null}">
+                                <p>No hay stock fuera de el almacen principal.</p>
+                            </div>
+
+                        </div>
+
+
+
                     </div>
                 </div>
             </div>

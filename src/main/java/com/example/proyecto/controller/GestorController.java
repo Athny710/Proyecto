@@ -1814,7 +1814,7 @@ public class GestorController {
 
     }
 
-
+/*
     @ExceptionHandler(Exception.class)
     public String ExceptionHandlerGestor(Exception e,RedirectAttributes attr ){
         attr.addFlashAttribute("msgError", "Ocurrio un error, no se completo el proceso");
@@ -1824,7 +1824,7 @@ public class GestorController {
 
 
     }
-
+*/
 
     // CRONES TU TERROR!!!!!
 
