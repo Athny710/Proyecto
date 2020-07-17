@@ -95,13 +95,13 @@
                                                     <select class="form-control" name="adqui" id="adqui" style="border-radius: 10rem">
                                                         <option value="todo">Todo</option>
                                                         <option value="compra" th:selected="${#request.getParameter('tipo')} != null  and ${#request.getParameter('tipo').equalsIgnoreCase('compra')}">Compra</option>
-                                                        <option value="consignado" th:selected="${#request.getParameter('tipo')} != null  and ${#request.getParameter('tipo').equalsIgnoreCase('selected')}">Consignación</option>
+                                                        <option value="consignado" th:selected="${#request.getParameter('tipo')} != null  and ${#request.getParameter('tipo').equalsIgnoreCase('consignado')}">Consignación</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div style="text-align: right">
                                                 <a id="obtenerLista" type="button" class="btn btn-orange" style="margin-top: 4.25rem; color: white">Buscar</a>
-                                                <a th:href="@{/admin/principal}" type="button" class="btn btn-danger" style="margin-top: 4.25rem; margin-left: 0.5rem">Limpiar</a>
+                                                <a th:href="@{/admin/principal}" type="button" class="btn btn-danger" style="margin-top: 4.25rem; margin-left: 0.5rem">Limpiar Búsqueda</a>
                                             </div>
 
                                         </div>
@@ -113,7 +113,7 @@
                                         <tr class="bg-gray-900 text-white" align="center">
                                             <th>Nombre del Producto</th>
                                             <th>Código</th>
-                                            <th>Stock</th>
+                                            <th>Stock Total</th>
                                             <th>Color</th>
                                             <th>Tipo de Adquisicion</th>
                                             <th>Detalles</th>
@@ -146,7 +146,17 @@
     </a>
     <div th:replace="Fragmentos/FragmentosAdmin.html::Script"></div>
     <script type="text/javascript">
-        $("#artesanoDiv").hide();
+        var reqParam1 = [[${#request.getParameter('idComu')} != null ? true : false]] ;
+        var reqParam2 = [[${#request.getParameter('idCate')} != null ? true : false]] ;
+        var reqParam3 = [[${#request.getParameter('idArt')} != null ? true : false]] ;
+        var reqParam4 = [[${#request.getParameter('tipo')} != null ? true : false]] ;
+
+        if(reqParam3 === true){
+            $("#artesanoDiv").show();
+        }else{
+            $("#artesanoDiv").hide();
+        }
+
         $("#adqui").on('change',function () {
             var tipo = $(this).val();
             console.log(tipo);
@@ -164,10 +174,7 @@
             $("#obtenerLista").attr('href', '/proyecto/admin/buscador?idArt='+valor1+'&idComu='+valor2+'&idCate='+valor3+'&tipo='+valor4);
         });
 
-        var reqParam1 = [[${#request.getParameter('idComu')} != null ? true : false]] ;
-        var reqParam2 = [[${#request.getParameter('idCate')} != null ? true : false]] ;
-        var reqParam3 = [[${#request.getParameter('idArt')} != null ? true : false]] ;
-        var reqParam4 = [[${#request.getParameter('tipo')} != null ? true : false]] ;
+
 
         if(reqParam1 === true ||reqParam2 === true|| reqParam3 === true || reqParam4 === true){
             $("#busquedaAv").show();

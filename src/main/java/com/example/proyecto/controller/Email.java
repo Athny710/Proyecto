@@ -1,5 +1,8 @@
 package com.example.proyecto.controller;
 
+import com.example.proyecto.dto.AlertaProductoSinStock;
+import com.example.proyecto.dto.ProductosAUnaSemanaDeVencer;
+
 import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -45,6 +48,7 @@ public class Email {
 
         //Sesion que le paso las propiedades
         Session mailSession = Session.getInstance(properties,authenticator);
+        System.out.println("Validaciones propiedades");
 
         //Crea mensaje y emisor
         MimeMessage msg = new MimeMessage(mailSession);
@@ -54,10 +58,12 @@ public class Email {
         to=emailTo;
         address= new InternetAddress[]{new InternetAddress(to)};
         msg.setRecipients(Message.RecipientType.TO,address);
+        System.out.println("Aea");
 
 
         //Obtener la IP Elastica (Se tiene que cambiar)
         String ipAdd= "18.208.12.225";
+        //54.161.223.241
 
         //Asunto y mensaje
         msg.setSubject("SOLICITUD DE RECUPERACIÓN DE CUENTA");
@@ -69,6 +75,7 @@ public class Email {
         Transport transporte = mailSession.getTransport("smtp");
         transporte.connect(host, user, pass);
         transporte.sendMessage(msg, msg.getRecipients(Message.RecipientType.TO));
+        System.out.println("Finaliza clase email");
     }
 
     /* The following method will return the EC2 Instance ID.
@@ -130,7 +137,7 @@ public class Email {
     }
 
 
-    void emailAlertaConsignacionParaVender(String emailTo, List<String> productos) throws MessagingException {
+    void emailAlertaConsignacionParaVender(String emailTo, List<ProductosAUnaSemanaDeVencer> productos) throws MessagingException {
 
         //Propiedades
         Properties properties2 = new Properties();
@@ -160,15 +167,15 @@ public class Email {
         msg.setRecipients(Message.RecipientType.TO,address);
 
         //Acomodamos los códigos:
-        String arreglito = "CÓDIGOS DE PRODUCTOS : ";
-        for (String item:productos){
-            arreglito = arreglito + "//" + item;
+        String arreglito = "CÓDIGOS DE PRODUCTOS : \n?";
+        for (ProductosAUnaSemanaDeVencer item:productos){
+            arreglito = arreglito + "- " + item.getCodigoGenerado() + " " + item.getNombre() + " " + item.getDescripcion() + " " + item.getColor() + "\n";
         }
 
 
         //Asunto y mensaje
         msg.setSubject("ALERTA DE CONSIGNACIÓN");
-        msg.setText("Atención, la consignación de los siguientes productos está por vencer: \n" + arreglito);
+        msg.setText("Atención, la consignación de los siguientes productos vencerán en el trasncurso de la semana : \n" + arreglito);
 
         //Enviar el correo electronico
         Transport transporte = mailSession.getTransport("smtp");
@@ -215,6 +222,53 @@ public class Email {
         transporte.sendMessage(msg, msg.getRecipients(Message.RecipientType.TO));
     }
 
+
+
+    void emailAlertaSinStock(String emailTo, List<AlertaProductoSinStock> productos) throws MessagingException {
+
+        //Propiedades
+        Properties properties2 = new Properties();
+        properties2.put("mail.smtp.auth","true");
+        properties2.put("mail.smtp.starttls.enable","true");
+        properties2.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        properties2.put("mail.smtp.host",host);
+        properties2.put("mail.smtp.port","587");
+
+        //Sesion con autenticador
+        Authenticator authenticator = new Authenticator(){
+            public PasswordAuthentication getPasswordAuthentication(){
+                return new PasswordAuthentication(user,pass);
+            }
+        };
+
+        //Sesion que le paso las propiedades
+        Session mailSession = Session.getInstance(properties2,authenticator);
+
+        //Crea mensaje y emisor
+        MimeMessage msg = new MimeMessage(mailSession);
+        msg.setFrom(new InternetAddress(user));
+
+        //Receptor toma la llamada de la función
+        to=emailTo;
+        address= new InternetAddress[]{new InternetAddress(to)};
+        msg.setRecipients(Message.RecipientType.TO,address);
+
+        //Acomodamos los códigos:
+        String arreglito2 = "CÓDIGOS DE PRODUCTOS : \n?";
+        for (AlertaProductoSinStock item:productos){
+            arreglito2 = arreglito2 + "- " + item.getCodigoGenerado() + " " + item.getNombre() + " " + item.getDescripcion() + " " + item.getColor() + "AGOTADO en sede " + item.getNombreSede() + "\n";
+        }
+
+
+        //Asunto y mensaje
+        msg.setSubject("ALERTA DE STOCK");
+        msg.setText("Atención, el stock en Sede de los siguientes productos se ha agotado : \n" + arreglito2);
+
+        //Enviar el correo electronico
+        Transport transporte = mailSession.getTransport("smtp");
+        transporte.connect(host, user, pass);
+        transporte.sendMessage(msg, msg.getRecipients(Message.RecipientType.TO));
+    }
 
 
 }

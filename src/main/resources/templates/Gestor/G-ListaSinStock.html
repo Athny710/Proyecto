@@ -25,18 +25,42 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                     <tr class="bg-gray-900 text-white" align="center">
-                                        <th>Nombre</th>
-                                        <th>Código</th>
-                                        <th>Línea</th>
+                                        <th>Linea</th>
                                         <th>Categoría</th>
+                                        <th>Codigo del Producto</th>
+                                        <th>Color</th>
+                                        <th>Tipo</th>
+                                        <th>Stock total</th>
+                                        <th>Detalles</th>
+                                        <th>Agregar Stock</th>
+                                        <th>Ver Historial</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr class="bg-white" align="center" th:each="productos, info: ${listaSinStock}">
-                                        <td th:text="${productos.producto.denominacion.nombre}"></td>
-                                        <td th:text="${productos.producto.codigoGenerado}"></td>
                                         <td th:text="${productos.producto.denominacion.linea.nombre}"></td>
                                         <td th:text="${productos.producto.categoria.nombre}"></td>
+                                        <td th:text="${productos.producto.codigoGenerado}"></td>
+                                        <td th:text="${productos.color }"></td>
+                                        <td th:text="${productos.producto.adquisicion.modalidad}"></td>
+                                        <td th:text="${productos.stock}"></td>
+                                        <td align="center">
+                                            <a th:href="@{'/gestor/gestorDetallesProducto?id='+${productos.idInventario}}">
+                                                <i class="far fa-list-alt text-greenM"></i>
+                                            </a>
+                                        </td>
+                                        <td align="center">
+                                            <a th:href="@{'/gestor/AnadirCompra?id='+${productos.idInventario}}">
+                                                <i class="fa fa-plus-circle" style="color: #5d21c7;margin-right: 5px"></i>
+                                            </a>
+
+                                        </td>
+                                        <td align="center">
+                                            <a th:href="@{'/gestor/verHistorial?id='+${productos.idInventario}}">
+                                                <i class="fas fa-book text-gray-900" style="margin-left: 5px"></i>
+                                            </a>
+                                        </td>
+
                                     </tr>
                                     </tbody>
                                 </table>

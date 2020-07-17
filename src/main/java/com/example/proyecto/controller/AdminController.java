@@ -1,8 +1,10 @@
 package com.example.proyecto.controller;
 
-import com.example.proyecto.entity.Inventario;
-import com.example.proyecto.entity.Perfil;
-import com.example.proyecto.entity.Usuarios;
+
+import com.example.proyecto.dto.inventarioStockTotal;
+
+
+import com.example.proyecto.entity.*;
 import com.example.proyecto.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +22,7 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.net.UnknownServiceException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,14 +40,37 @@ public class AdminController {
     ArtesanoRepository artesanoRepository;
     @Autowired
     CategoriaRepository categoriaRepository;
+    @Autowired
+    InventariosedeRepository inventariosedeRepository;
 
     //--------------------------Inventario
     @GetMapping(value = {"", "principal"})
     public String principalAdmin(Model model) {
-        model.addAttribute("inventario", inventarioRepository.listarStockMayor0());
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
         model.addAttribute("listaArtesanos", artesanoRepository.findAll());
         model.addAttribute("listaCategoria", categoriaRepository.findAll());
+
+        //Nueva lista donde se guardan los productos con stock mayor a 0. Se envía al html
+        List<Inventario> listaMayor0 = new ArrayList<>();
+        //listaInventarioStockTotal es la lista del query. Devuelve stock total y el id de inventario
+        for (inventarioStockTotal i: inventarioRepository.listaInventarioStockTotal()) {
+            //Si el stock es mayor a cero se obtiene el producto y se guarda en la nueva lista
+            if (i.getStockTotal()!=0){
+                Inventario inv = new Inventario();
+                Optional<Inventario> opt = inventarioRepository.findById(i.getIdInvent());
+                inv.setIdInventario(opt.get().getIdInventario());
+                inv.setStock(i.getStockTotal());
+                inv.setComentario(opt.get().getComentario());
+                inv.setColor(opt.get().getColor());
+                inv.setPreciomosqoy(opt.get().getPreciomosqoy());
+                inv.setProducto(opt.get().getProducto());
+                inv.setEstado(opt.get().getEstado());
+                inv.setFechadevolucion(opt.get().getFechadevolucion());
+
+                listaMayor0.add(inv);
+            }
+        }
+        model.addAttribute("inventario", listaMayor0);
         return "Administrador/A-PagPrincipal";
     }
 
@@ -141,6 +167,13 @@ public class AdminController {
         if (inventario.isPresent()) {
             Inventario i = inventario.get();
 
+            // para mandar un error si es que no se encuentra la imagen en la bd.
+            // En el HTML automaticamente se muestra una imagen por defecto
+            if (i.getFotocontenttype() == null || i.getFotocontenttype().isEmpty() || i.getFoto().length == 0 || i.getFoto() == null) {
+                HttpHeaders httpHeaders = new HttpHeaders();
+                return new ResponseEntity<>(null, httpHeaders, HttpStatus.NOT_FOUND);
+            } // fin IF
+
             byte[] imagenComoBytes = i.getFoto();
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setContentType(MediaType.parseMediaType(i.getFotocontenttype()));
@@ -156,6 +189,31 @@ public class AdminController {
         Optional<Inventario> opt = inventarioRepository.findById(id);
         if (opt.isPresent()) {
             Inventario inventa = opt.get();
+
+
+            // no queria crear un DTO asi que ahora en idSede le guardare el Stock de la sede
+            List<Inventariosede> listaInvSede = inventariosedeRepository.findByInventario(inventa);
+            if (!listaInvSede.isEmpty()) {
+                ArrayList<Sede> StockSede = new ArrayList<Sede>();
+                for (Inventariosede IS : listaInvSede) {
+                    if (IS.getStock() > 0) {
+                        Sede temp = new Sede();
+                        temp.setIdsede(IS.getStock());
+                        temp.setNombre(IS.getSede().getNombre());
+
+                        StockSede.add(temp);
+                    }
+                }
+                if (!StockSede.isEmpty()) {
+                    model.addAttribute("StockSede", StockSede);
+                }
+            }
+
+
+
+
+
+
             model.addAttribute("d", inventa);
             return "Administrador/A-DetallesInventario";
         } else {

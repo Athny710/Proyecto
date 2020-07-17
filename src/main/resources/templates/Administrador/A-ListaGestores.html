@@ -43,6 +43,13 @@
                                             <td th:text="${gestor.correo}"></td>
                                             <td th:text="${gestor.telefono}"></td>
                                             <td align="center">
+                                            <a style="margin-left: 10px"
+                                               th:href="@{'/admin/borrarGestor' + '?id=' + ${gestor.idusuarios}}"
+                                               class="far fa-trash-alt text-redM">
+                                            </a>
+                                            </td>
+                                            <!--
+                                            <td align="center">
                                                 <a data-toggle="modal" data-target="#modalborrar"
                                                    th:attrappend="data-target=${gestor.idusuarios}"
                                                    th:href="@{'/admin/borrarGestor?id='+ ${gestor.idusuarios}}">
@@ -67,6 +74,7 @@
                                                     </div>
                                                 </div>
                                             </td>
+                                            -->
                                         </tr>
                                     </tbody>
                                 </table>

@@ -18,7 +18,7 @@
                     </div>
                     <br> -->
                     <div th:if="${msg!= null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                    <div th:if="${msgE!= null}" th:text="${msgE}" class="alert alert-danger" role="alert"></div>
+                    <div th:if="${msgE!= null}" th:text="${msgE}" class="alert alert-danger" role="alert" align="center"></div>
                   <!--  <div th:if="${msgg != null}" th:text="${msgg}" class="alert alert-danger" role="alert" align="center"></div>  -->
                     <div class="card shadowA mb-4" >
                         <div class="card-header2" style="padding-top: 0.6rem; padding-bottom: 0.6rem">
@@ -49,7 +49,11 @@
                                                class="far fa-edit text-orangeM"> -->
                                                <!-- <i class="far fa-list-alt text-orangeM"></i> -->
                                           <!--  </a>  -->
-                                            <a style="margin-left: 10px" href="#" class="far fa-trash-alt text-redM"
+                                            <a style="margin-left: 10px"
+                                               th:href="@{'/gestor/gestorBorarComunidad' + '?idcomunidad=' + ${comunidad.idComunidad}}"
+                                               class="far fa-trash-alt text-redM">
+                                            </a>
+                                         <!--   <a style="margin-left: 10px" href="#" class="far fa-trash-alt text-redM"
                                                data-toggle="modal" data-target="#modalborrar"
                                                th:attrappend="data-target=${comunidad.getIdComunidad()}"></a>
 
@@ -76,7 +80,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>  -->
                                         </td>
                                     </tr>
                                     </tbody>
