@@ -1508,7 +1508,13 @@ public class GestorController {
     @GetMapping("/nuevaVenta")
     public String nuevaVenta(@ModelAttribute("venta") Venta venta, Model model) {
         List<Inventario> listaInventario = inventarioRepository.findAll();
-        model.addAttribute("listaInventario", listaInventario);
+        List<Inventario> listaFinal = new ArrayList<>();
+        for (Inventario i : listaInventario){
+            if(i.getStock() != 0){
+                listaFinal.add(i);
+            }
+        }
+        model.addAttribute("listaInventario", listaFinal);
         return "Gestor/G-NuevaVenta";
     }
 
@@ -1545,8 +1551,8 @@ public class GestorController {
                 } else {
                     List<Inventario> listaInventario = inventarioRepository.findAll();
                     model.addAttribute("listaInventario", listaInventario);
-                    attr.addFlashAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
-                    return "redirect:/gestor/nuevaVenta";
+                    model.addAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
+                    return "Gestor/G-NuevaVenta";
                 }
 
             } else {
