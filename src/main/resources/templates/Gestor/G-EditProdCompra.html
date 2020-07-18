@@ -19,7 +19,7 @@
                             <h5 class="m-0 font-weight-bold text-redM">Editar Producto</h5>
                         </div>
                     </div>
-                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
+                    <div th:if="${msg != null}" th:text="${msg}" align="center" class="alert alert-danger" role="alert"></div>
                     <div class="card-body">
                         <form method="post" th:action="@{/gestor/guardarProducto}"  th:object="${formulario}">
                             <input th:value="*{crearActualizar}" name="crearActualizar" type="hidden"/>

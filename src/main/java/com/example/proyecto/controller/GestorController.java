@@ -477,6 +477,8 @@ public class GestorController {
                 inv.setFechadevolucion(opt.get().getFechadevolucion());
 
                 listaMayor0.add(inv);
+
+
             }
         }
         model.addAttribute("inventario", listaMayor0);
@@ -918,6 +920,7 @@ public class GestorController {
                     Producto producto1 = producto.get();
                     historial.getInventario().setProducto(producto1);
                     historial.getInventario().setStock(historial.getCantidad());
+                    historial.getInventario().setEstado("Disponible");
                     inventarioRepository.save(historial.getInventario());
                     List<Inventario> inventarios = inventarioRepository.findAll();
                     historial.setInventario(inventarios.get(inventarios.size() - 1));
