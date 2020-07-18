@@ -1,5 +1,5 @@
 package com.example.proyecto.dto;
 
-public interface AñoDeCompraXCliente {
+public interface AñoDeCompraXFiltro {
     String getAnio();
 }

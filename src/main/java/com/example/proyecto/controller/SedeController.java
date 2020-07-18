@@ -77,13 +77,13 @@ public class SedeController {
 
     //--------------------------Inventario---------------------------------------------
     @GetMapping(value = {"", "principal"})
-    public String principal( Model model, HttpSession session) {
+    public String principal(Model model, HttpSession session) {
         Usuarios usuario = (Usuarios) session.getAttribute("user");
         List<Inventariosede> listafinal = new ArrayList<>();
         List<Inventariosede> lista = inventariosedeRepository.findBySede(usuario.getSede());
-        for (Inventariosede inventariosede : lista){
-            if(inventariosede.getStock() != 0){
-            listafinal.add(inventariosede);
+        for (Inventariosede inventariosede : lista) {
+            if (inventariosede.getStock() != 0) {
+                listafinal.add(inventariosede);
             }
         }
         Integer cantidad = 0;
@@ -93,21 +93,20 @@ public class SedeController {
     }
 
     @GetMapping("/image/{id}")
-    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id){
+    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id) {
         Optional<Inventario> inventario = inventarioRepository.findById(id);
-        if (inventario.isPresent()){
+        if (inventario.isPresent()) {
             Inventario i = inventario.get();
 
             byte[] imagenComoBytes = i.getFoto();
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setContentType(MediaType.parseMediaType(i.getFotocontenttype()));
-            return new ResponseEntity<>(imagenComoBytes,httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(imagenComoBytes, httpHeaders, HttpStatus.OK);
 
-        }else {
+        } else {
             return null;
         }
     }
-
 
 
     @GetMapping("DetallesProducto")
@@ -148,11 +147,11 @@ public class SedeController {
     }
 
     @PostMapping("DevolverProducto")
-    public String devolverProducto(@RequestParam("id") int id,@RequestParam("cantidad") int cantidad, @RequestParam("detalles") String detalles, RedirectAttributes attr, HttpSession session, Model model) {
+    public String devolverProducto(@RequestParam("id") int id, @RequestParam("cantidad") int cantidad, @RequestParam("detalles") String detalles, RedirectAttributes attr, HttpSession session, Model model) {
         Optional<Inventariosede> inventariosede = inventariosedeRepository.findById(id);
         Usuarios usuario = (Usuarios) session.getAttribute("user");
         if (inventariosede.isPresent()) {// existe el inventariosede con esa id
-            if((usuario.getSede().getIdsede().equals(inventariosede.get().getSede().getIdsede()))) {
+            if ((usuario.getSede().getIdsede().equals(inventariosede.get().getSede().getIdsede()))) {
                 if (cantidad > 0) {
                     System.out.println(detalles);
                     if (!detalles.equalsIgnoreCase("") && !detalles.isEmpty()) {
@@ -244,7 +243,7 @@ public class SedeController {
                 return "redirect:/sede/editarInfo";
             } else {
                 Usuarios us = usuarioRepository.findByCorreo(perfil.getCorreo());
-                if (us != null && us.getActivo()==1) {
+                if (us != null && us.getActivo() == 1) {
                     model.addAttribute("msgC", "Este correo ya está registrado");
                     return "UsuarioSede/U-Perfil";
                 } else {
@@ -265,20 +264,24 @@ public class SedeController {
         session.getAttribute("user");
         Usuarios u = (Usuarios) session.getAttribute("user");
         List<Inventariosede> listaInventarioSede = inventariosedeRepository.findBySede(u.getSede());
-        model.addAttribute("listaInventarioSede", listaInventarioSede);
-
-        List<Tienda> listaTiendas = tiendaRepository.findBySede(u.getSede());
-        String nombre = "Sin tienda " + "(" + u.getSede().getNombre() + ")";
-        List<Tienda> lista = new ArrayList<>();
-
-        for (Tienda t: listaTiendas) {
-            if (!t.getNombre().equals(nombre)){
-                lista.add(t);
+        List<Inventariosede> listaFinal = new ArrayList<>();
+        for (Inventariosede inventariosede : listaInventarioSede) {
+            if (inventariosede.getStock() != 0) {
+                listaFinal.add(inventariosede);
             }
+            model.addAttribute("listaInventarioSede", listaFinal);
+            List<Tienda> listaTiendas = tiendaRepository.findBySede(u.getSede());
+            String nombre = "Sin tienda " + "(" + u.getSede().getNombre() + ")";
+            List<Tienda> lista = new ArrayList<>();
+
+            for (Tienda t : listaTiendas) {
+                if (!t.getNombre().equals(nombre)) {
+                    lista.add(t);
+                }
+            }
+            model.addAttribute("listaTiendas", lista);
+
         }
-        model.addAttribute("listaTiendas", lista);
-
-
         return "UsuarioSede/U-NuevaVenta";
     }
 
@@ -294,7 +297,8 @@ public class SedeController {
 
 
     @PostMapping("/guardarVenta")
-    public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult bindingResult, Model model,
+    public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult bindingResult, Model
+            model,
                                HttpSession session, RedirectAttributes attr) {
 
         if (bindingResult.hasErrors()) {
@@ -314,7 +318,6 @@ public class SedeController {
                 venta.getTienda().getSede().setIdsede(u.getSede().getIdsede());
             } else {
                 Tienda tiendaAbstracta = new Tienda();
-                //tiendaAbstracta.setIdtienda(9999);
                 tiendaAbstracta.setNombre("Sin tienda " + "(" + u.getSede().getNombre() + ")");
                 tiendaAbstracta.setSede(u.getSede());
                 tiendaRepository.save(tiendaAbstracta);
@@ -333,15 +336,30 @@ public class SedeController {
                 attr.addFlashAttribute("msg", "Venta añadida exitosamente");
                 return "redirect:/sede/gestionVentas";
             } else {
-                List<Inventario> listaInventario = inventarioRepository.findAll();
-                model.addAttribute("listaInventario", listaInventario);
-                attr.addFlashAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
-                return "redirect:/sede/nuevaVenta";
+                model.addAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
+                List<Inventariosede> listaInventarioSede = inventariosedeRepository.findBySede(u.getSede());
+                List<Inventariosede> listaFinal = new ArrayList<>();
+                for (Inventariosede inventariosede2 : listaInventarioSede) {
+                    if (inventariosede2.getStock() != 0) {
+                        listaFinal.add(inventariosede2);
+                    }
+                    model.addAttribute("listaInventarioSede", listaFinal);
+                    List<Tienda> listaTiendas = tiendaRepository.findBySede(u.getSede());
+                    String nombre = "Sin tienda " + "(" + u.getSede().getNombre() + ")";
+                    List<Tienda> lista = new ArrayList<>();
+
+                    for (Tienda t : listaTiendas) {
+                        if (!t.getNombre().equals(nombre)) {
+                            lista.add(t);
+                        }
+                    }
+                    model.addAttribute("listaTiendas", lista);
+                    return "UsuarioSede/U-NuevaVenta";
+                }
             }
+            return "UsuarioSede/U-NuevaVenta";
         }
     }
-
-
 
     @GetMapping("gestionVentas")
     public String gestionDeVentas(@ModelAttribute("venta") Venta venta, Model model, HttpSession session) {
@@ -382,7 +400,7 @@ public class SedeController {
         Usuarios u = (Usuarios) session.getAttribute("user");
         List<ReporteConCamposOriginales> venta = ventasService.getReporteSede(u.getSede().getIdsede());
         String titulo = "Ventas de la sede " + u.getSede().getNombre();
-        boolean isFlag = ventasService.createExcelSede(venta, titulo,"anual" , context, request, response);
+        boolean isFlag = ventasService.createExcelSede(venta, titulo, "anual", context, request, response);
         if (isFlag) {
             String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_sede" + ".xls");
             filedownload(fullpath, response, "ventas.xls");
@@ -423,14 +441,19 @@ public class SedeController {
         String nombre = "Sin tienda " + "(" + u.getSede().getNombre() + ")";
         List<Tienda> lista = new ArrayList<>();
 
-        for (Tienda t: listaTiendas) {
-            if (!t.getNombre().equals(nombre)){
+        for (Tienda t : listaTiendas) {
+            if (!t.getNombre().equals(nombre)) {
                 lista.add(t);
             }
         }
         model.addAttribute("listaTiendas", lista);
 
         return "UsuarioSede/U-TiendaDistribuidor";
+    }
+
+    @GetMapping("registroRealTienda")
+    public String registroTiendas(@ModelAttribute("tienda") Tienda tienda) {
+        return "UsuarioSede/U-NuevaTienda";
     }
 
     @PostMapping("guardarTienda")
@@ -468,7 +491,8 @@ public class SedeController {
     }
 
     @PostMapping("/buscarTienda")
-    public String buscarComunidad(@ModelAttribute("tienda") Tienda tienda, @RequestParam("searchField") String searchField,
+    public String buscarComunidad(@ModelAttribute("tienda") Tienda tienda, @RequestParam("searchField") String
+            searchField,
                                   Model model) {
 
         List<Tienda> listaT = tiendaRepository.buscarPorNombreDeTienda(searchField);
@@ -545,14 +569,14 @@ public class SedeController {
             return "redirect:/sede/productosEnEspera";
         }
     }
-
+/*
    @ExceptionHandler(Exception.class)
 
     public String ExceptionHandlerSede(Exception e,RedirectAttributes attr ){
         attr.addFlashAttribute("msgError", "Ocurrio un error, no se completo el proceso");
         System.out.println("!!!!! \n \n OCURRIO EL SIGUIENTE ERROR: \n  " + e.getMessage() + " \n \n !!!!!!!");
         return "redirect:/sede/principal";
-    }
+    }*/
 }
 
 

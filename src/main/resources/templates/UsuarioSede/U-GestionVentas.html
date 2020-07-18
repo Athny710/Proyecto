@@ -41,7 +41,7 @@
                                     <th>N° de documento de Identidad</th>
                                     <th>Número de documento de Venta</th>
                                     <th>Producto</th>
-                                    <th>Sede</th>
+                                    <th>Tienda</th>
                                     <th>Lugar de Venta</th>
                                     <th>Precio unitario de Venta</th>
                                     <th>Cantidad adquirida</th>
@@ -55,8 +55,7 @@
                                     <td th:text="${venta.numerodocumentoidentidad}"></td>
                                     <td th:text="${venta.numerodocumentoventa}"></td>
                                     <td th:text="${venta.inventario.producto.codigoGenerado}"></td>
-                                    <td th:if="${venta.tienda == null}" text="Sin tienda"></td>
-                                    <td th:if="${venta.tienda != null}" th:text="${venta.tienda.getSede().getNombre()}"></td>
+                                    <td th:text="${venta.tienda==null?'Sin tienda':venta.tienda.getNombre()}"></td>
                                     <td th:text="${venta.lugardeventa}"></td>
                                     <td th:text="${venta.preciounitarioventa}"></td>
                                     <td th:text="${venta.cantidad}"></td>

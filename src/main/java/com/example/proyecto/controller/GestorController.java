@@ -4,6 +4,7 @@ import com.example.proyecto.dto.*;
 import com.example.proyecto.entity.*;
 import com.example.proyecto.repository.*;
 import com.example.proyecto.services.VentasService;
+import javafx.scene.control.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -77,7 +78,7 @@ public class GestorController {
     @Autowired
     ServletContext context;
 
-
+    Date date;
     // ----------------------- ENLACES ---------------------------------
 
     @GetMapping("AnadirCompra")
@@ -359,8 +360,11 @@ public class GestorController {
     public String borrarUsuarioSede(@RequestParam("idusuarios") int idusuarios, RedirectAttributes attr) {
 
         Optional<Usuarios> optionalUsuarios = usuarioRepository.findById(idusuarios);
+        Usuarios u = new Usuarios();
         if (optionalUsuarios.isPresent()) {
-            usuarioRepository.deleteById(idusuarios);
+            u = optionalUsuarios.get();
+            u.setActivo(0);
+            usuarioRepository.save(u);
             attr.addFlashAttribute("msgSucc", "Usuario Sede Eliminado");
         } else {
             attr.addFlashAttribute("msgFail", "Este usuario no existe");
@@ -445,7 +449,7 @@ public class GestorController {
                 sedeRepository.deleteById(idsede);
                 attr.addFlashAttribute("msg", "Sede Eliminada");
             } catch (Exception e) {
-                attr.addFlashAttribute("msgE", "Ocurrió un error, no puede ser borrada");
+                attr.addFlashAttribute("msgE", "Se encuentra relaciondo a Usuario Sede, no puede ser borrado");
             }
         }
         return "redirect:/gestor/gestorListaSedes";
@@ -457,7 +461,26 @@ public class GestorController {
 
     @GetMapping(value = {"", "gestorPrincipal"})
     public String inventarioGestor(Model model) {
-        List<Inventario> inventario = inventarioRepository.listarStockMayor0();
+        List<Inventario> listaMayor0 = new ArrayList<>();
+        for (inventarioStockTotal i: inventarioRepository.listaInventarioStockTotal()) {
+            //Si el stock es mayor a cero se obtiene el producto y se guarda en la nueva lista
+            if (i.getStockTotal()!=0){
+                Inventario inv = new Inventario();
+                Optional<Inventario> opt = inventarioRepository.findById(i.getIdInvent());
+                inv.setIdInventario(opt.get().getIdInventario());
+                inv.setStock(i.getStockTotal());
+                inv.setComentario(opt.get().getComentario());
+                inv.setColor(opt.get().getColor());
+                inv.setPreciomosqoy(opt.get().getPreciomosqoy());
+                inv.setProducto(opt.get().getProducto());
+                inv.setEstado(opt.get().getEstado());
+                inv.setFechadevolucion(opt.get().getFechadevolucion());
+
+                listaMayor0.add(inv);
+            }
+        }
+        model.addAttribute("inventario", listaMayor0);
+
         // para listar el stock total en vez del stock en almacen principal
         /*
         for (Inventario inv: inventario) {
@@ -469,14 +492,14 @@ public class GestorController {
         }*/
         //todo mostrar  mensaje de stock bajo
         boolean validar1 = false;
-        int validar2=0;
+        Calendar cal= Calendar.getInstance(TimeZone.getTimeZone("America/Lima"));
+        //Obtenemos el día, si es igual a uno seteamos como true el valor de validar1
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
         //Se va a definir una variable que se pasará como model attribute para poder mostrar un modal al inicio
-        if (productoRepository.productoPorEstado("Vencida").size()>0 && productoRepository.productoPorEstado("Proxima").size()>0){
+        if (productoRepository.productoPorEstado("Vencida").size()>=1 || productoRepository.productoPorEstado("Proxima").size()>=1 && day==1){
             validar1=true;
         }
-
-        model.addAttribute("inventario", inventario);
-
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
         model.addAttribute("listaArtesanos", artesanoRepository.findAll());
         model.addAttribute("listaCategoria", categoriaRepository.findAll());
@@ -1167,10 +1190,18 @@ public class GestorController {
     public String borrarArtesano(Model model, @RequestParam("idartesano") int idartesano, RedirectAttributes attr) {
         Optional<Artesano> obtenerArtesano = artesanoRepository.findById(idartesano);
         if (obtenerArtesano.isPresent()) {
-            artesanoRepository.deleteById(idartesano);
+          /*  artesanoRepository.deleteById(idartesano);
             attr.addFlashAttribute("msg", "Artesano Eliminado");
         } else {
             attr.addFlashAttribute("msge", "Artesano no ha podido eliminarse");
+        }
+        return "redirect:/gestor/gestorListaArtesano";  */
+            try {
+                comunidadRepository.deleteById(idartesano);
+                attr.addFlashAttribute("msg", "Artesano Eliminado");
+            } catch (Exception e) {
+                attr.addFlashAttribute("msge", "Artesano en consignación, no puede ser borrado");
+            }
         }
         return "redirect:/gestor/gestorListaArtesano";
     }
@@ -1477,7 +1508,13 @@ public class GestorController {
     @GetMapping("/nuevaVenta")
     public String nuevaVenta(@ModelAttribute("venta") Venta venta, Model model) {
         List<Inventario> listaInventario = inventarioRepository.findAll();
-        model.addAttribute("listaInventario", listaInventario);
+        List<Inventario> listaFinal = new ArrayList<>();
+        for (Inventario i : listaInventario){
+            if(i.getStock() != 0){
+                listaFinal.add(i);
+            }
+        }
+        model.addAttribute("listaInventario", listaFinal);
         return "Gestor/G-NuevaVenta";
     }
 
@@ -1514,8 +1551,8 @@ public class GestorController {
                 } else {
                     List<Inventario> listaInventario = inventarioRepository.findAll();
                     model.addAttribute("listaInventario", listaInventario);
-                    attr.addFlashAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
-                    return "redirect:/gestor/nuevaVenta";
+                    model.addAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
+                    return "Gestor/G-NuevaVenta";
                 }
 
             } else {
@@ -1837,31 +1874,31 @@ public class GestorController {
     // SE EJECUTARÁ CADA PRIMERO DE CADA MES A LAS 2 AM ,  EN LA BASE DE DATOS SE REALIZARÁN LOS CAMBIOS DE ESTADOS EL MISMO DÍA PERO UNA HORA ANTES (1 AM)--OJO!!!!!
     //@Scheduled(cron = "0 0/3 * * * ?", zone = "GMT-5")
     @Scheduled(cron = "0 0 2 1 * ?", zone = "GMT-5")
-    public void mensajeMensualDeAlertaDeVencimientoDeProductosParaLosGestores() throws MessagingException {
+        public void mensajeMensualDeAlertaDeVencimientoDeProductosParaLosGestores() throws MessagingException {
 
-        List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
-        List<String> codigosPorVencer = productoRepository.productoPorEstado("Proxima");
-        if(codigosPorVencer.size() >0){
-            if (listaCorreosGestor.size()>=1){
+            List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
+            List<String> codigosPorVencer = productoRepository.productoPorEstado("Proxima");
+            if(codigosPorVencer.size() >0){
+                if (listaCorreosGestor.size()>=1){
 
-                for (String correo:listaCorreosGestor) {
-                    Email email = new Email();
-                    email.emailAlertaConsignacionGestor(correo);
-                    //System.out.println("Se envió");
-                }
-            } else {System.out.println("No hay productos próximos a vencer");}
+                    for (String correo:listaCorreosGestor) {
+                        Email email = new Email();
+                        email.emailAlertaConsignacionGestor(correo);
+                        //System.out.println("Se envió");
+                    }
+                } else {System.out.println("No hay productos próximos a vencer");}
 
-        }
+            }
 
     }
 
 
-    // SE EJECUTARÁ TODOS LOS DIAS A LAS 00:00 HORAS ,  SERA UNA ALERTA QUE ENVIARÁ CORREO A GESTORES INDICANDO QUE PRODUCTOS EN UNA SEMANA, ES INDIFERENTE DEL ESTADO!!!!!
-    @Scheduled(cron = "0 0 0 * * *", zone = "GMT-5")
-    public void mensajeDiarioDeProductosAVencerEnUnaSemana() throws MessagingException {
+    // SE EJECUTARÁ LOS DIAS DOMINGOS A LAS 00:00 HORAS ,  SERA UNA ALERTA QUE ENVIARÁ CORREO A GESTORES INDICANDO QUE PRODUCTOS DENTRO DE LA SEMANA ENTRANTE, ES INDIFERENTE DEL ESTADO!!!!!
+    @Scheduled(cron = "0 0 0 * * 7", zone = "GMT-5")
+    public void mensajeSemanalDeProductosAVencerEnUnaSemana() throws MessagingException {
 
         List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
-        List<String> productoSemanaVencer = productoRepository.productoAunaSemanaDeVencer();
+        List<ProductosAUnaSemanaDeVencer> productoSemanaVencer = productoRepository.productoAunaSemanaDeVencer();
         if(productoSemanaVencer.size() >0){
             if (listaCorreosGestor.size()>=1){
 
@@ -1874,9 +1911,28 @@ public class GestorController {
             } else {System.out.println("No hay productos a vencer en la semana");}
 
         }
-
         }
 
-}
 
+        // SE EJECUTARÁ TODOS LOS DÍAS,  SERA UNA ALERTA QUE ENVIARÁ CORREO A LAS 10 DE LA NOCHE A GESTORES INDICANDO QUE PRODUCTOS SE HAN QUEDADO SON STOCK EN LAS SEDES en el día!!!!!
+    @Scheduled(cron = "0 0 22 * * *", zone = "GMT-5")
+    public void mensajeDiarioConStockAgotadoEnSede() throws MessagingException {
+
+        List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
+        List<AlertaProductoSinStock> alertaProductoSinStock = productoRepository.productoSinStockSede();
+        if(alertaProductoSinStock.size() >0){
+            if (listaCorreosGestor.size()>=1){
+
+                for (String correo:listaCorreosGestor) {
+
+                    Email email = new Email();
+                    email.emailAlertaSinStock(correo,alertaProductoSinStock);
+                    //System.out.println("Se envió");
+                }
+            } else {System.out.println("mensaje diario con stock agotado en sede ");}
+
+        }
+    }
+
+}
 

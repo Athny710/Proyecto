@@ -14,18 +14,19 @@
                 <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert" align="center"></div>
                     <div class="card shadowA mb-4" >
                         <div class="card-header2 py-3">
                             <h5 class="m-0 font-weight-bold text-redM">Reporte de Ventas</h5>
                         </div>
                         <div class="card-body">
                             <h5 class="m-0 text-gray-900" style="font-weight: 600">Reporte avanzado</h5><br>
-                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
+
                             <a th:href="@{/gestor/nuevaVenta}"><div th:if="${msg1 != null}" th:text="${msg1}" class="alert alert-danger" role="alert"></div></a>
                             <form method="post" th:action="@{/gestor/crearExcelPorCliente}" id="form1">
                                 <div class="row">
                                     <div class="form-group col-md-3">
-                                        <label for="cliente" id="nombreVariable">Filtrar por:</label>
+                                        <label for="client" id="nombreVariable">Filtrar por:</label>
                                         <select class="form-control" type="item" id="client" name="filtrado" onchange="lista(this.value)">
                                             <option th:value="0">------</option>
                                             <option th:if="${listaClients != null}" th:value="1">Cliente</option>
@@ -36,9 +37,16 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="ddlCategoria">Nombre:</label>
-                                        <select class="form-control" type="item" id="ddlCategoria" name="estandar">
+                                        <select class="form-control" type="item" id="ddlCategoria" name="estandar" onchange="lista1(this.value)">
                                             <option th:value="nada"
                                                     th:text="------" >Samuel Ayala</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="año">Año:</label>
+                                        <select class="form-control" type="item" id="año" name="año">
+                                            <option th:each="lista1 : ${listaAnhos}" th:value="${lista1.fecha}"
+                                                    th:text="${lista1.fecha}" >Samuel Ayala</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-2">
@@ -48,13 +56,6 @@
                                             <option th:value="trimestre">trimestral</option>
                                             <option th:each="lista1 : ${listaMeses}" th:value="${lista1.fecha}"
                                                     th:text="${lista1.fechaname}" >Samuel Ayala</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <label for="año">Año:</label>
-                                        <select class="form-control" type="item" id="año" name="año">
-                                            <option th:each="lista1 : ${listaAnhos}" th:value="${lista1.fecha}"
-                                                    th:text="${lista1.fecha}" >Samuel Ayala</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-2">
@@ -147,6 +148,76 @@
                                             var cambioAction = $('#form1');
                                             cambioAction.attr("action", "/proyecto/gestor/crearExcelPorCliente");
                                         })
+                                    }
+                                }
+                            </script>
+                            <script>
+                                function lista1(filtro) {
+                                    var filtroSeleccionado = document.getElementById('client').value;
+                                    if(filtroSeleccionado == 1){
+                                        $('#año option').remove();
+                                        console.log(filtro)
+                                        $.ajax({
+                                            method: "GET",
+                                            url: "http://localhost:8080/proyecto/reporte/" + filtro
+                                        }).done(function (msg) {
+                                            console.log(msg.anho[0].anio);
+                                            for (i = 0; msg.anho.length; i++){
+                                                var an = msg.anho[i];
+                                                $('#año').append('\'<option value="'+an.anio+'">'+an.anio+'</option>\'');
+                                            }
+                                        }).fail(function(err){
+                                            console.log(err);
+                                            alert("ocurrió un error al cargar la página");
+                                        });
+                                    }else if (filtroSeleccionado == 2){
+                                        $('#año option').remove();
+                                        console.log(filtro)
+                                        $.ajax({
+                                            method: "GET",
+                                            url: "http://localhost:8080/proyecto/reporte/sede/" + filtro
+                                        }).done(function (msg) {
+                                            console.log(msg.anho[0].anio);
+                                            for (i = 0; msg.anho.length; i++){
+                                                var an = msg.anho[i];
+                                                $('#año').append('\'<option value="'+an.anio+'">'+an.anio+'</option>\'');
+                                            }
+                                        }).fail(function(err){
+                                            console.log(err);
+                                            alert("ocurrió un error al cargar la página");
+                                        });
+                                    }else if (filtroSeleccionado == 3){
+                                        $('#año option').remove();
+                                        console.log(filtro)
+                                        $.ajax({
+                                            method: "GET",
+                                            url: "http://localhost:8080/proyecto/reporte/producto/" + filtro
+                                        }).done(function (msg) {
+                                            console.log(msg.anho[0].anio);
+                                            for (i = 0; msg.anho.length; i++){
+                                                var an = msg.anho[i];
+                                                $('#año').append('\'<option value="'+an.anio+'">'+an.anio+'</option>\'');
+                                            }
+                                        }).fail(function(err){
+                                            console.log(err);
+                                            alert("ocurrió un error al cargar la página");
+                                        });
+                                    }else if (filtroSeleccionado == 4){
+                                        $('#año option').remove();
+                                        console.log(filtro)
+                                        $.ajax({
+                                            method: "GET",
+                                            url: "http://localhost:8080/proyecto/reporte/comunidad/" + filtro
+                                        }).done(function (msg) {
+                                            console.log(msg.anho[0].anio);
+                                            for (i = 0; msg.anho.length; i++){
+                                                var an = msg.anho[i];
+                                                $('#año').append('\'<option value="'+an.anio+'">'+an.anio+'</option>\'');
+                                            }
+                                        }).fail(function(err){
+                                            console.log(err);
+                                            alert("ocurrió un error al cargar la página");
+                                        });
                                     }
                                 }
                             </script>

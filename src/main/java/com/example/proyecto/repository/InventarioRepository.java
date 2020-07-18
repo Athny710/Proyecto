@@ -1,5 +1,6 @@
 package com.example.proyecto.repository;
 
+import com.example.proyecto.dto.inventarioStockTotal;
 import com.example.proyecto.entity.Inventario;
 import com.example.proyecto.entity.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,10 @@ public interface InventarioRepository extends JpaRepository<Inventario, Integer>
     List<Inventario> findByStock(int stock);
     List<Inventario> findByProducto(Producto producto);
     List<Inventario> findByEstado(String estado);
+
+
+    @Query(value = "SELECT (inventario.stock + coalesce((SELECT sum(inventariosede.stock) as stock FROM sw2_proyecto.inventariosede where inventariosede.idInventario = inventario.idInventario ), 0))  as 'stockTotal', inventario.idInventario as 'idInvent' FROM sw2_proyecto.inventario ", nativeQuery = true)
+    List<inventarioStockTotal> listaInventarioStockTotal();
 
     @Query(value = "SELECT * FROM sw2_proyecto.inventario \n" +
             "where stock > 0 and (estado != 'Devuelto' and estado != 'Vencido')",
