@@ -621,7 +621,7 @@ public class GestorController {
 
     @GetMapping("gestorListarSinStock")
     public String listaSinStock(Model model) {
-        List<Inventario> listaSinStock = inventarioRepository.findByStock(0);
+        List<Inventario> listaSinStock = inventarioRepository.SinStock();
         model.addAttribute("listaSinStock", listaSinStock);
         return "Gestor/G-ListaSinStock";
     }
@@ -1402,7 +1402,7 @@ public class GestorController {
     // --------------------------  INICIO CRUD ENVIOS ------------------------------
     @GetMapping("gestorNuevoEnvio")
     public String NuevoEnvio(@ModelAttribute("estadoenviosede") Estadoenviosede estadoenviosede, Model model) {
-        List<Inventario> listaInventario = inventarioRepository.findAll();
+        List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
         List<Sede> listaSede = sedeRepository.findAll();
         model.addAttribute("listaInventario", listaInventario);
         model.addAttribute("listaSede", listaSede);
@@ -1415,7 +1415,7 @@ public class GestorController {
                                RedirectAttributes attr,
                                Model model) {
         if (bindingResult.hasErrors()) {
-            List<Inventario> listaInventario = inventarioRepository.findAll();
+            List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
             List<Sede> listaSede = sedeRepository.findAll();
             model.addAttribute("listaInventario", listaInventario);
             model.addAttribute("listaSede", listaSede);
@@ -1462,7 +1462,7 @@ public class GestorController {
                             estadoenviosedeRepository.save(estadoenviosede);
                         } else {
                             //fue hackerman
-                            List<Inventario> listaInventario = inventarioRepository.findAll();
+                            List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
                             List<Sede> listaSede = sedeRepository.findAll();
                             model.addAttribute("listaInventario", listaInventario);
                             model.addAttribute("listaSede", listaSede);
@@ -1495,7 +1495,7 @@ public class GestorController {
             model.addAttribute("msg", "Por favor no editar el HTML :)");
             List<Sede> listaSede = sedeRepository.findAll();
             model.addAttribute("listaSede", listaSede);
-            List<Inventario> listaInventario = inventarioRepository.findAll();
+            List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
             model.addAttribute("listaInventario", listaInventario);
             return "Gestor/G-GestionEnvios";
 
