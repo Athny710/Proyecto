@@ -12,6 +12,8 @@
                 <div th:insert="Fragmentos/FragmentosSede.html::TopBar"></div>
                 <div th:insert="Fragmentos/FragmentosSede.html::LogOut"></div>
                 <div class="container-fluid">
+                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert" align="center"></div>
+                    <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert" align="center"></div>
                         <div class="card shadowA mb-4">
                             <div class="card-header2 py-3 d-flex justify-content-between centrado">
                                 <h5 class="m-0 font-weight-bold text-redM">Lista de Tiendas</h5>
@@ -21,8 +23,6 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                                    <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert"></div>
                                     <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                         <tr class = "bg-gray-900 text-white" align="center">
