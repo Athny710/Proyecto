@@ -12,7 +12,11 @@ import java.util.List;
 @Repository
 public interface InventarioRepository extends JpaRepository<Inventario, Integer> {
 
-    List<Inventario> findByStock(int stock);
+    @Query(value = "SELECT * FROM sw2_proyecto.inventario \n" +
+            "where stock = 0 and (estado != 'Devuelto' and estado != 'Vencido')",
+            nativeQuery = true)
+    List<Inventario> SinStock();
+
     List<Inventario> findByProducto(Producto producto);
     List<Inventario> findByEstado(String estado);
 

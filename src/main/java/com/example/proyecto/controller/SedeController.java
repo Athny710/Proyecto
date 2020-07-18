@@ -294,7 +294,11 @@ public class SedeController {
         List<Inventariosede> listaFinal = new ArrayList<>();
         for (Inventariosede inventariosede : listaInventarioSede) {
             if (inventariosede.getStock() != 0) {
-                listaFinal.add(inventariosede);
+                if (inventariosede.getInventario().getEstado().equals("Devuelto")) {
+
+                } else {
+                    listaFinal.add(inventariosede);
+                }
             }
             model.addAttribute("listaInventarioSede", listaFinal);
             List<Tienda> listaTiendas = tiendaRepository.findBySede(u.getSede());
@@ -325,17 +329,26 @@ public class SedeController {
 
     @PostMapping("/guardarVenta")
     public String guardarVenta(@ModelAttribute("venta") @Valid Venta venta, BindingResult bindingResult, Model
-            model,
-                               HttpSession session, RedirectAttributes attr) {
+            model, HttpSession session, RedirectAttributes attr) {
 
         if (bindingResult.hasErrors()) {
             session.getAttribute("user");
             Usuarios u = (Usuarios) session.getAttribute("user");
             List<Inventariosede> listaInventarioSede = inventariosedeRepository.findBySede(u.getSede());
             List<Tienda> listaTiendas = tiendaRepository.findBySede(u.getSede());
-            model.addAttribute("listaInventarioSede", listaInventarioSede);
-            model.addAttribute("listaTiendas", listaTiendas);
-            return "UsuarioSede/U-NuevaVenta";
+            List<Inventariosede> listaFinal = new ArrayList<>();
+            for (Inventariosede inventariosede : listaInventarioSede) {
+                if (inventariosede.getStock() != 0) {
+                    if (inventariosede.getInventario().getEstado().equals("Devuelto")) {
+
+                    } else {
+                        listaFinal.add(inventariosede);
+                    }
+                }
+                model.addAttribute("listaInventarioSede", listaFinal);
+                model.addAttribute("listaTiendas", listaTiendas);
+                return "UsuarioSede/U-NuevaVenta";
+            }
         } else {
             Usuarios u = (Usuarios) session.getAttribute("user");
 
@@ -368,7 +381,12 @@ public class SedeController {
                 List<Inventariosede> listaFinal = new ArrayList<>();
                 for (Inventariosede inventariosede2 : listaInventarioSede) {
                     if (inventariosede2.getStock() != 0) {
-                        listaFinal.add(inventariosede2);
+                        if (inventariosede.getInventario().getEstado().equals("Devuelto")) {
+
+                        } else {
+                            listaFinal.add(inventariosede2);
+                        }
+
                     }
                     model.addAttribute("listaInventarioSede", listaFinal);
                     List<Tienda> listaTiendas = tiendaRepository.findBySede(u.getSede());
@@ -386,6 +404,7 @@ public class SedeController {
             }
             return "UsuarioSede/U-NuevaVenta";
         }
+        return "UsuarioSede/U-NuevaVenta";
     }
 
     @GetMapping("gestionVentas")
