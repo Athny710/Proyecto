@@ -432,6 +432,11 @@ public class SedeController {
         return "UsuarioSede/U-TiendaDistribuidor";
     }
 
+    @GetMapping("registroRealTienda")
+    public String registroTiendas(@ModelAttribute("tienda") Tienda tienda){
+        return "UsuarioSede/U-NuevaTienda";
+    }
+
     @PostMapping("guardarTienda")
     public String guardarTienda(@ModelAttribute("tienda") @Valid Tienda tienda, BindingResult bindingResult,
                                 RedirectAttributes attr,
