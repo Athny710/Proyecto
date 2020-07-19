@@ -36,7 +36,9 @@
                                     <th>Email</th>
                                     <th>Teléfono</th>
                                     <th>Sede</th>
-                                    <th>Editar/Borrar</th>
+                                    <th>Borrar</th>
+                                   <!-- <th>Editar/Borrar</th> -->
+
                                 </tr>
                                 </thead>
 
@@ -48,9 +50,9 @@
                                     <td th:text="${usuariosedes.telefono}"></td>
                                     <td th:text="${usuariosedes.sede.nombre}"></td>
                                     <td align="center">
-                                        <a style="margin-right: 5px"
+                                    <!--    <a style="margin-right: 5px"
                                            th:href="@{'/gestor/gestorEditUsuarioSede' + '?idusuarios=' + ${usuariosedes.idusuarios}}"
-                                           class="far fa-edit text-orangeM"></a>
+                                           class="far fa-edit text-orangeM"></a>  -->
                                         <a style="margin-left: 5px"
                                            th:href="@{'/gestor/borrarUsuarioSede' + '?idusuarios=' + ${usuariosedes.idusuarios}}"
                                            class="far fa-trash-alt text-redM">

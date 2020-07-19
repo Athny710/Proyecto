@@ -462,9 +462,9 @@ public class GestorController {
     @GetMapping(value = {"", "gestorPrincipal"})
     public String inventarioGestor(Model model) {
         List<Inventario> listaMayor0 = new ArrayList<>();
-        for (inventarioStockTotal i: inventarioRepository.listaInventarioStockTotal()) {
+        for (inventarioStockTotal i : inventarioRepository.listaInventarioStockTotal()) {
             //Si el stock es mayor a cero se obtiene el producto y se guarda en la nueva lista
-            if (i.getStockTotal()!=0){
+            if (i.getStockTotal() != 0) {
                 Inventario inv = new Inventario();
                 Optional<Inventario> opt = inventarioRepository.findById(i.getIdInvent());
                 inv.setIdInventario(opt.get().getIdInventario());
@@ -494,26 +494,26 @@ public class GestorController {
         }*/
         //todo mostrar  mensaje de stock bajo
         boolean validar1 = false;
-        Calendar cal= Calendar.getInstance(TimeZone.getTimeZone("America/Lima"));
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("America/Lima"));
         //Obtenemos el día, si es igual a uno seteamos como true el valor de validar1
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
         //Se va a definir una variable que se pasará como model attribute para poder mostrar un modal al inicio
-        if (productoRepository.productoPorEstado("Vencida").size()>=1 || productoRepository.productoPorEstado("Proxima").size()>=1 && day==1){
-            validar1=true;
+        if (productoRepository.productoPorEstado("Vencida").size() >= 1 || productoRepository.productoPorEstado("Proxima").size() >= 1 && day == 1) {
+            validar1 = true;
         }
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
         model.addAttribute("listaArtesanos", artesanoRepository.findAll());
         model.addAttribute("listaCategoria", categoriaRepository.findAll());
 
-        model.addAttribute("validar",validar1);
+        model.addAttribute("validar", validar1);
 
         return "Gestor/G-Inventario";
     }
 
     @GetMapping("/buscador")
-    public String buscadorAvanzado(Model model,@RequestParam("idComu") int idComu, @RequestParam("tipo") String tipo,
-                                   @RequestParam("idArt") int idArt,@RequestParam("idCate") int idCate) {
+    public String buscadorAvanzado(Model model, @RequestParam("idComu") int idComu, @RequestParam("tipo") String tipo,
+                                   @RequestParam("idArt") int idArt, @RequestParam("idCate") int idCate) {
 
         if (idComu != 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0) {
             List<Inventario> Lista1 = inventarioRepository.listarPorComunidad(idComu);
@@ -543,56 +543,56 @@ public class GestorController {
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista4);
             return "Gestor/G-Inventario";
-        }else if (idComu != 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
+        } else if (idComu != 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0) {
             List<Inventario> Lista5 = inventarioRepository.listarPorCategoriaYComunidad(idCate, idComu);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista5);
             return "Gestor/G-Inventario";
-        } else if (idComu != 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0){
-            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadYModalidad( idComu, tipo);
+        } else if (idComu != 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0) {
+            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadYModalidad(idComu, tipo);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista6);
             return "Gestor/G-Inventario";
-        }else if (idComu != 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate == 0){
-            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadConsignadoYArtesano( idComu, idArt);
+        } else if (idComu != 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate == 0) {
+            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadConsignadoYArtesano(idComu, idArt);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista6);
             return "Gestor/G-Inventario";
-        }else if (idComu == 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate != 0){
-            List<Inventario> Lista7 = inventarioRepository.listarPorCategoriaConsignadoYArtesano( idCate, idArt);
+        } else if (idComu == 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate != 0) {
+            List<Inventario> Lista7 = inventarioRepository.listarPorCategoriaConsignadoYArtesano(idCate, idArt);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista7);
             return "Gestor/G-Inventario";
-        } else if (idComu == 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
-            List<Inventario> Lista8 = inventarioRepository.listarPorCategoriaYModalidad( idCate, tipo);
+        } else if (idComu == 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0) {
+            List<Inventario> Lista8 = inventarioRepository.listarPorCategoriaYModalidad(idCate, tipo);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista8);
             return "Gestor/G-Inventario";
-        }else if (idComu != 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
-            List<Inventario> Lista9 = inventarioRepository.listarPorCategoriaYComunidadYModalidad( idCate, tipo, idComu);
+        } else if (idComu != 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0) {
+            List<Inventario> Lista9 = inventarioRepository.listarPorCategoriaYComunidadYModalidad(idCate, tipo, idComu);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista9);
             return "Gestor/G-Inventario";
-        }else if (idComu != 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate != 0){
-            List<Inventario> Lista10 = inventarioRepository.listarPorCategoriaComunidadConsignadoYArtesano( idCate, idComu, idArt);
+        } else if (idComu != 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate != 0) {
+            List<Inventario> Lista10 = inventarioRepository.listarPorCategoriaComunidadConsignadoYArtesano(idCate, idComu, idArt);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista10);
             return "Gestor/G-Inventario";
-        } else{
+        } else {
             return "redirect:/gestor";
         }
 
@@ -691,10 +691,12 @@ public class GestorController {
             formulario.setCodigoProducto(productooooo.getDenominacion().getCodigonombre());
             formulario.setCodDescripcion(productooooo.getDenominacion().getCodigodescripcion());
             formulario.setFechafin(productooooo.getAdquisicion().getFechafin());
+
             formulario.setTipo(productooooo.getAdquisicion().getModalidad());
-            model.addAttribute("tipo",productooooo.getAdquisicion().getModalidad());
             System.out.println(formulario.getTipo());
             System.out.println("ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            model.addAttribute("tipo", productooooo.getAdquisicion().getModalidad());
+
             return "Gestor/G-EditProdCompra";
         } else {
             return "redirect:/gestor/productos";
@@ -849,7 +851,7 @@ public class GestorController {
                     formulario.setTipo(producto1.getAdquisicion().getModalidad());
                     producto1.getDenominacion().setDescripcion(formulario.getDescripcion());
                     producto1.getDenominacion().setNombre(formulario.getNombreProducto());
-                    if(producto1.getAdquisicion().getModalidad().equalsIgnoreCase("consignado")){
+                    if (producto1.getAdquisicion().getModalidad().equalsIgnoreCase("consignado")) {
                         producto1.getAdquisicion().setFechafin(formulario.getFechafin());
                     }
                     productoRepository.save(producto1);
@@ -1348,8 +1350,8 @@ public class GestorController {
                 plural = "s";
             }
 
-            attr.addFlashAttribute("msg", "La devolucion de "+ estadoenviosede.getCantidad() +
-                    " " + inventario.getProducto().getCodigoGenerado() + " "+
+            attr.addFlashAttribute("msg", "La devolucion de " + estadoenviosede.getCantidad() +
+                    " " + inventario.getProducto().getCodigoGenerado() + " " +
                     inventario.getColor() + plural + " ha sido confirmada exitosamente");
         }
         return "redirect:/gestor/gestorProductosRechazados";
@@ -1371,8 +1373,8 @@ public class GestorController {
                 plural = "s";
             }
 
-            attr.addFlashAttribute("msg", "La devolucion de "+ estadoenviosede.getCantidad() +
-                    " " + inventario.getProducto().getCodigoGenerado() + " "+
+            attr.addFlashAttribute("msg", "La devolucion de " + estadoenviosede.getCantidad() +
+                    " " + inventario.getProducto().getCodigoGenerado() + " " +
                     inventario.getColor() + plural + " ha sido confirmada exitosamente");
         }
         return "redirect:/gestor/ProductosDevueltos";
@@ -1383,8 +1385,6 @@ public class GestorController {
         model.addAttribute("listaProdRecha", productoRepository.listaProductosDevueltos());
         return "Gestor/G-ProdDev";
     }
-
-
 
 
     @GetMapping("gestorEditarEnvio")
@@ -1439,10 +1439,10 @@ public class GestorController {
                 List<Inventariosede> inventariosede1 = inventariosedeRepository.findByInventarioAndSede(inventario1.get(), sede1.get());
                 Boolean condicion = false;
                 Optional<Estadoenviosede> auxEstado = estadoenviosedeRepository.findById(estadoenviosede.getIdenviosede());
-                if(estadoenviosede.getIdenviosede() != 0){
+                if (estadoenviosede.getIdenviosede() != 0) {
 
-                    if(auxEstado.isPresent()){
-                        if(inventario1.get().getStock() + auxEstado.get().getCantidad() - estadoenviosede.getCantidad() >= 0){
+                    if (auxEstado.isPresent()) {
+                        if (inventario1.get().getStock() + auxEstado.get().getCantidad() - estadoenviosede.getCantidad() >= 0) {
                             condicion = true;
                         }
                     }
@@ -1481,7 +1481,7 @@ public class GestorController {
                     }
 
                     int cantidadrestada = estadoenviosede.getInventariosede().getInventario().getStock() - estadoenviosede.getCantidad();
-                    if(condicion){
+                    if (condicion) {
                         cantidadrestada = cantidadrestada + auxEstado.get().getCantidad();
                     }
                     estadoenviosede.getInventariosede().getInventario().setStock(cantidadrestada);
@@ -1519,9 +1519,13 @@ public class GestorController {
     public String nuevaVenta(@ModelAttribute("venta") Venta venta, Model model) {
         List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
         List<Inventario> listaFinal = new ArrayList<>();
-        for (Inventario i : listaInventario){
-            if(i.getStock() != 0){
-                listaFinal.add(i);
+        for (Inventario i : listaInventario) {
+            if (i.getStock() != 0) {
+                if (i.getEstado().equals("Devuelto")) {
+
+                } else {
+                    listaFinal.add(i);
+                }
             }
         }
         model.addAttribute("listaInventario", listaFinal);
@@ -1543,6 +1547,7 @@ public class GestorController {
         if (bindingResult.hasErrors()) {
             List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
             model.addAttribute("listaInventario", listaInventario);
+
             return "Gestor/G-NuevaVenta";
         } else {
 
@@ -1559,6 +1564,7 @@ public class GestorController {
                     attr.addFlashAttribute("msg", "Venta añadida exitosamente");
                     return "redirect:/gestor/gestionVentas";
                 } else {
+
                     List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
                     model.addAttribute("listaInventario", listaInventario);
                     model.addAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
@@ -1884,21 +1890,23 @@ public class GestorController {
     // SE EJECUTARÁ CADA PRIMERO DE CADA MES A LAS 2 AM ,  EN LA BASE DE DATOS SE REALIZARÁN LOS CAMBIOS DE ESTADOS EL MISMO DÍA PERO UNA HORA ANTES (1 AM)--OJO!!!!!
     //@Scheduled(cron = "0 0/3 * * * ?", zone = "GMT-5")
     @Scheduled(cron = "0 0 2 1 * ?", zone = "GMT-5")
-        public void mensajeMensualDeAlertaDeVencimientoDeProductosParaLosGestores() throws MessagingException {
+    public void mensajeMensualDeAlertaDeVencimientoDeProductosParaLosGestores() throws MessagingException {
 
-            List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
-            List<String> codigosPorVencer = productoRepository.productoPorEstado("Proxima");
-            if(codigosPorVencer.size() >0){
-                if (listaCorreosGestor.size()>=1){
+        List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
+        List<String> codigosPorVencer = productoRepository.productoPorEstado("Proxima");
+        if (codigosPorVencer.size() > 0) {
+            if (listaCorreosGestor.size() >= 1) {
 
-                    for (String correo:listaCorreosGestor) {
-                        Email email = new Email();
-                        email.emailAlertaConsignacionGestor(correo);
-                        //System.out.println("Se envió");
-                    }
-                } else {System.out.println("No hay productos próximos a vencer");}
-
+                for (String correo : listaCorreosGestor) {
+                    Email email = new Email();
+                    email.emailAlertaConsignacionGestor(correo);
+                    //System.out.println("Se envió");
+                }
+            } else {
+                System.out.println("No hay productos próximos a vencer");
             }
+
+        }
 
     }
 
@@ -1909,37 +1917,41 @@ public class GestorController {
 
         List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
         List<ProductosAUnaSemanaDeVencer> productoSemanaVencer = productoRepository.productoAunaSemanaDeVencer();
-        if(productoSemanaVencer.size() >0){
-            if (listaCorreosGestor.size()>=1){
+        if (productoSemanaVencer.size() > 0) {
+            if (listaCorreosGestor.size() >= 1) {
 
-                for (String correo:listaCorreosGestor) {
+                for (String correo : listaCorreosGestor) {
 
                     Email email = new Email();
-                    email.emailAlertaConsignacionParaVender(correo,productoSemanaVencer);
+                    email.emailAlertaConsignacionParaVender(correo, productoSemanaVencer);
                     //System.out.println("Se envió");
                 }
-            } else {System.out.println("No hay productos a vencer en la semana");}
+            } else {
+                System.out.println("No hay productos a vencer en la semana");
+            }
 
         }
-        }
+    }
 
 
-        // SE EJECUTARÁ TODOS LOS DÍAS,  SERA UNA ALERTA QUE ENVIARÁ CORREO A LAS 10 DE LA NOCHE A GESTORES INDICANDO QUE PRODUCTOS SE HAN QUEDADO SON STOCK EN LAS SEDES en el día!!!!!
+    // SE EJECUTARÁ TODOS LOS DÍAS,  SERA UNA ALERTA QUE ENVIARÁ CORREO A LAS 10 DE LA NOCHE A GESTORES INDICANDO QUE PRODUCTOS SE HAN QUEDADO SON STOCK EN LAS SEDES en el día!!!!!
     @Scheduled(cron = "0 0 22 * * *", zone = "GMT-5")
     public void mensajeDiarioConStockAgotadoEnSede() throws MessagingException {
 
         List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
         List<AlertaProductoSinStock> alertaProductoSinStock = productoRepository.productoSinStockSede();
-        if(alertaProductoSinStock.size() >0){
-            if (listaCorreosGestor.size()>=1){
+        if (alertaProductoSinStock.size() > 0) {
+            if (listaCorreosGestor.size() >= 1) {
 
-                for (String correo:listaCorreosGestor) {
+                for (String correo : listaCorreosGestor) {
 
                     Email email = new Email();
-                    email.emailAlertaSinStock(correo,alertaProductoSinStock);
+                    email.emailAlertaSinStock(correo, alertaProductoSinStock);
                     //System.out.println("Se envió");
                 }
-            } else {System.out.println("mensaje diario con stock agotado en sede ");}
+            } else {
+                System.out.println("mensaje diario con stock agotado en sede ");
+            }
 
         }
     }
