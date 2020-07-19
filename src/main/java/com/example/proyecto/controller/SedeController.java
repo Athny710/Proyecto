@@ -80,7 +80,7 @@ public class SedeController {
     public String principal(Model model, HttpSession session) {
         Usuarios usuario = (Usuarios) session.getAttribute("user");
         List<Inventariosede> listafinal = new ArrayList<>();
-        List<Inventariosede> lista = inventariosedeRepository.findBySede(usuario.getSede());
+        List<Inventariosede> lista = inventariosedeRepository.obtenerInventarioSede(usuario.getSede());
         for (Inventariosede inventariosede : lista) {
             if (inventariosede.getStock() != 0) {
                 listafinal.add(inventariosede);
@@ -263,7 +263,7 @@ public class SedeController {
     public String nuevaVenta(@ModelAttribute("venta") Venta venta, Model model, HttpSession session) {
         session.getAttribute("user");
         Usuarios u = (Usuarios) session.getAttribute("user");
-        List<Inventariosede> listaInventarioSede = inventariosedeRepository.findBySede(u.getSede());
+        List<Inventariosede> listaInventarioSede = inventariosedeRepository.obtenerInventarioSede(u.getSede());
         List<Inventariosede> listaFinal = new ArrayList<>();
         for (Inventariosede inventariosede : listaInventarioSede) {
             if (inventariosede.getStock() != 0) {
@@ -304,7 +304,7 @@ public class SedeController {
         if (bindingResult.hasErrors()) {
             session.getAttribute("user");
             Usuarios u = (Usuarios) session.getAttribute("user");
-            List<Inventariosede> listaInventarioSede = inventariosedeRepository.findBySede(u.getSede());
+            List<Inventariosede> listaInventarioSede = inventariosedeRepository.obtenerInventarioSede(u.getSede());
             List<Tienda> listaTiendas = tiendaRepository.findBySede(u.getSede());
             model.addAttribute("listaInventarioSede", listaInventarioSede);
             model.addAttribute("listaTiendas", listaTiendas);
@@ -337,7 +337,7 @@ public class SedeController {
                 return "redirect:/sede/gestionVentas";
             } else {
                 model.addAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
-                List<Inventariosede> listaInventarioSede = inventariosedeRepository.findBySede(u.getSede());
+                List<Inventariosede> listaInventarioSede = inventariosedeRepository.obtenerInventarioSede(u.getSede());
                 List<Inventariosede> listaFinal = new ArrayList<>();
                 for (Inventariosede inventariosede2 : listaInventarioSede) {
                     if (inventariosede2.getStock() != 0) {

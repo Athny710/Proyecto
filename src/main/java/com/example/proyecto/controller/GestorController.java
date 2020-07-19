@@ -691,7 +691,10 @@ public class GestorController {
             formulario.setCodigoProducto(productooooo.getDenominacion().getCodigonombre());
             formulario.setCodDescripcion(productooooo.getDenominacion().getCodigodescripcion());
             formulario.setFechafin(productooooo.getAdquisicion().getFechafin());
+            formulario.setTipo(productooooo.getAdquisicion().getModalidad());
             model.addAttribute("tipo",productooooo.getAdquisicion().getModalidad());
+            System.out.println(formulario.getTipo());
+            System.out.println("ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             return "Gestor/G-EditProdCompra";
         } else {
             return "redirect:/gestor/productos";
@@ -735,6 +738,9 @@ public class GestorController {
                 model.addAttribute("listaTama", tamañoRepository.findAll());
                 model.addAttribute("listaLinea", lineaRepository.findAll());
                 model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+                model.addAttribute("tipo",formulario.getTipo());
+                System.out.println(formulario.getTipo());
+                System.out.println("ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                 return "Gestor/G-EditProdCompra";
             } else {
                 return "redirect:/gestor/productos";
@@ -840,6 +846,7 @@ public class GestorController {
                 Optional<Producto> producto2 = productoRepository.findById(formulario.getCrearActualizar());
                 if (producto2.isPresent()) {
                     Producto producto1 = producto2.get();
+                    formulario.setTipo(producto1.getAdquisicion().getModalidad());
                     producto1.getDenominacion().setDescripcion(formulario.getDescripcion());
                     producto1.getDenominacion().setNombre(formulario.getNombreProducto());
                     if(producto1.getAdquisicion().getModalidad().equalsIgnoreCase("consignado")){
@@ -1510,7 +1517,7 @@ public class GestorController {
     //--------------------CRUD VENTAS---------------
     @GetMapping("/nuevaVenta")
     public String nuevaVenta(@ModelAttribute("venta") Venta venta, Model model) {
-        List<Inventario> listaInventario = inventarioRepository.findAll();
+        List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
         List<Inventario> listaFinal = new ArrayList<>();
         for (Inventario i : listaInventario){
             if(i.getStock() != 0){
@@ -1534,7 +1541,7 @@ public class GestorController {
                                HttpSession session, RedirectAttributes attr) {
 
         if (bindingResult.hasErrors()) {
-            List<Inventario> listaInventario = inventarioRepository.findAll();
+            List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
             model.addAttribute("listaInventario", listaInventario);
             return "Gestor/G-NuevaVenta";
         } else {
@@ -1552,7 +1559,7 @@ public class GestorController {
                     attr.addFlashAttribute("msg", "Venta añadida exitosamente");
                     return "redirect:/gestor/gestionVentas";
                 } else {
-                    List<Inventario> listaInventario = inventarioRepository.findAll();
+                    List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
                     model.addAttribute("listaInventario", listaInventario);
                     model.addAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
                     return "Gestor/G-NuevaVenta";
