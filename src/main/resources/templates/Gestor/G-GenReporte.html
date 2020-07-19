@@ -44,14 +44,16 @@
                                     </div>
                                     <div class="form-group col-md-2">
                                         <label for="año">Año:</label>
-                                        <select class="form-control" type="item" id="año" name="año">
+                                        <select class="form-control" type="item" id="año" name="año" onchange="lista2(this.value)">
+                                            <option th:value="0">-----</option>
                                             <option th:each="lista1 : ${listaAnhos}" th:value="${lista1.fecha}"
                                                     th:text="${lista1.fecha}" >Samuel Ayala</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-2">
-                                        <label for="mes">Periodo:</label>
-                                        <select class="form-control" type="item" id="mes" name="mes">
+                                        <label for="periodo">Periodo:</label>
+                                        <select class="form-control" type="item" id="periodo" name="mes">
+                                            <option th:value="0">-----</option>
                                             <option th:value="todo">todos los meses</option>
                                             <option th:value="trimestre">trimestral</option>
                                             <option th:each="lista1 : ${listaMeses}" th:value="${lista1.fecha}"
@@ -89,19 +91,19 @@
                             <form method="post" th:action="@{/gestor/crearExcelTotal}">
                                 <div class="row">
                                     <div class="form-group col-md-2">
+                                        <label for="año4">Año:</label>
+                                        <select class="form-control" type="item" id="año4" name="año4">
+                                            <option th:each="lista1 : ${listaAnhos}" th:value="${lista1.fecha}"
+                                                    th:text="${lista1.fecha}" >Samuel Ayala</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
                                         <label for="mes4">Periodo:</label>
                                         <select class="form-control" type="item" id="mes4" name="mes4">
                                             <option th:value="todo">todos los meses</option>
                                             <option th:value="trimestre">trimestral</option>
                                             <option th:each="lista1 : ${listaMeses}" th:value="${lista1.fecha}"
                                                     th:text="${lista1.fechaname}" >Samuel Ayala</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <label for="año4">Año:</label>
-                                        <select class="form-control" type="item" id="año4" name="año4">
-                                            <option th:each="lista1 : ${listaAnhos}" th:value="${lista1.fecha}"
-                                                    th:text="${lista1.fecha}" >Samuel Ayala</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-2">
@@ -153,18 +155,20 @@
                             </script>
                             <script>
                                 function lista1(filtro) {
+                                    var getURL = window.location.origin;
+                                    console.log(getURL);
                                     var filtroSeleccionado = document.getElementById('client').value;
                                     if(filtroSeleccionado == 1){
                                         $('#año option').remove();
                                         console.log(filtro)
                                         $.ajax({
                                             method: "GET",
-                                            url: "http://localhost:8080/proyecto/reporte/" + filtro
+                                            url: getURL + "/proyecto/reporte/" + filtro
                                         }).done(function (msg) {
                                             console.log(msg.anho[0].anio);
+                                            $('#año').append('\'<option value="0">-----</option>\'');
                                             for (i = 0; msg.anho.length; i++){
-                                                var an = msg.anho[i];
-                                                $('#año').append('\'<option value="'+an.anio+'">'+an.anio+'</option>\'');
+                                                $('#año').append('\'<option value="'+msg.anho[i].anio+'">'+msg.anho[i].anio+'</option>\'');
                                             }
                                         }).fail(function(err){
                                             console.log(err);
@@ -175,12 +179,12 @@
                                         console.log(filtro)
                                         $.ajax({
                                             method: "GET",
-                                            url: "http://localhost:8080/proyecto/reporte/sede/" + filtro
+                                            url: getURL + "/proyecto/reporte/sede/" + filtro
                                         }).done(function (msg) {
                                             console.log(msg.anho[0].anio);
+                                            $('#año').append('\'<option value="0">-----</option>\'');
                                             for (i = 0; msg.anho.length; i++){
-                                                var an = msg.anho[i];
-                                                $('#año').append('\'<option value="'+an.anio+'">'+an.anio+'</option>\'');
+                                                $('#año').append('\'<option value="'+msg.anho[i].anio+'">'+msg.anho[i].anio+'</option>\'');
                                             }
                                         }).fail(function(err){
                                             console.log(err);
@@ -191,12 +195,12 @@
                                         console.log(filtro)
                                         $.ajax({
                                             method: "GET",
-                                            url: "http://localhost:8080/proyecto/reporte/producto/" + filtro
+                                            url: getURL + "/proyecto/reporte/producto/" + filtro
                                         }).done(function (msg) {
                                             console.log(msg.anho[0].anio);
+                                            $('#año').append('\'<option value="0">-----</option>\'');
                                             for (i = 0; msg.anho.length; i++){
-                                                var an = msg.anho[i];
-                                                $('#año').append('\'<option value="'+an.anio+'">'+an.anio+'</option>\'');
+                                                $('#año').append('\'<option value="'+msg.anho[i].anio+'">'+msg.anho[i].anio+'</option>\'');
                                             }
                                         }).fail(function(err){
                                             console.log(err);
@@ -207,12 +211,88 @@
                                         console.log(filtro)
                                         $.ajax({
                                             method: "GET",
-                                            url: "http://localhost:8080/proyecto/reporte/comunidad/" + filtro
+                                            url: getURL + "/proyecto/reporte/comunidad/" + filtro
                                         }).done(function (msg) {
                                             console.log(msg.anho[0].anio);
+                                            $('#año').append('\'<option value="0">-----</option>\'');
                                             for (i = 0; msg.anho.length; i++){
-                                                var an = msg.anho[i];
-                                                $('#año').append('\'<option value="'+an.anio+'">'+an.anio+'</option>\'');
+                                                $('#año').append('\'<option value="'+msg.anho[i].anio+'">'+msg.anho[i].anio+'</option>\'');
+                                            }
+                                        }).fail(function(err){
+                                            console.log(err);
+                                            alert("ocurrió un error al cargar la página");
+                                        });
+                                    }
+                                }
+                            </script>
+                            <script>
+                                function lista2(anhoseleccionado) {
+                                    var getURL = window.location.origin;
+                                    var filtroSeleccionado = document.getElementById('client').value;
+                                    var filtroNombre = document.getElementById('ddlCategoria').value;
+                                    if(filtroSeleccionado == 1){
+                                        $('#periodo option').remove();
+                                        $.ajax({
+                                            method: "GET",
+                                            url: getURL + "/proyecto/reporte/" + anhoseleccionado + "/" + filtroNombre
+                                        }).done(function (msg) {
+                                            console.log(msg.periodo[0].fecha);
+                                            $('#periodo').append('\'<option value="0">-----</option>\'');
+                                            $('#periodo').append('\'<option value="todo">todos los meses</option>\'');
+                                            $('#periodo').append('\'<option value="trimestre">trimestral</option>\'');
+                                            for (i = 0; msg.periodo.length; i++){
+                                                $('#periodo').append('\'<option value="'+msg.periodo[i].fecha+'">'+msg.periodo[i].fechaname+'</option>\'');
+                                            }
+                                        }).fail(function(err){
+                                            console.log(err);
+                                            alert("ocurrió un error al cargar la página");
+                                        });
+                                    }else if (filtroSeleccionado == 2){
+                                        $('#periodo option').remove();
+                                        $.ajax({
+                                            method: "GET",
+                                            url: getURL + "/proyecto/reporte/sede/" + anhoseleccionado + "/" + filtroNombre
+                                        }).done(function (msg) {
+                                            console.log(msg.periodo[0].fecha);
+                                            $('#periodo').append('\'<option value="0">-----</option>\'');
+                                            $('#periodo').append('\'<option value="todo">todos los meses</option>\'');
+                                            $('#periodo').append('\'<option value="trimestre">trimestral</option>\'');
+                                            for (i = 0; msg.periodo.length; i++){
+                                                $('#periodo').append('\'<option value="'+msg.periodo[i].fecha+'">'+msg.periodo[i].fechaname+'</option>\'');
+                                            }
+                                        }).fail(function(err){
+                                            console.log(err);
+                                            alert("ocurrió un error al cargar la página");
+                                        });
+                                    }else if (filtroSeleccionado == 3){
+                                        $('#periodo option').remove();
+                                        $.ajax({
+                                            method: "GET",
+                                            url: getURL + "/proyecto/reporte/producto/" + anhoseleccionado + "/" + filtroNombre
+                                        }).done(function (msg) {
+                                            console.log(msg.periodo[0].fecha);
+                                            $('#periodo').append('\'<option value="0">-----</option>\'');
+                                            $('#periodo').append('\'<option value="todo">todos los meses</option>\'');
+                                            $('#periodo').append('\'<option value="trimestre">trimestral</option>\'');
+                                            for (i = 0; msg.periodo.length; i++){
+                                                $('#periodo').append('\'<option value="'+msg.periodo[i].fecha+'">'+msg.periodo[i].fechaname+'</option>\'');
+                                            }
+                                        }).fail(function(err){
+                                            console.log(err);
+                                            alert("ocurrió un error al cargar la página");
+                                        });
+                                    }else if (filtroSeleccionado == 4){
+                                        $('#periodo option').remove();
+                                        $.ajax({
+                                            method: "GET",
+                                            url: getURL + "/proyecto/reporte/comunidad/" + anhoseleccionado + "/" + filtroNombre
+                                        }).done(function (msg) {
+                                            console.log(msg.periodo[0].fecha);
+                                            $('#periodo').append('\'<option value="0">-----</option>\'');
+                                            $('#periodo').append('\'<option value="todo">todos los meses</option>\'');
+                                            $('#periodo').append('\'<option value="trimestre">trimestral</option>\'');
+                                            for (i = 0; msg.periodo.length; i++){
+                                                $('#periodo').append('\'<option value="'+msg.periodo[i].fecha+'">'+msg.periodo[i].fechaname+'</option>\'');
                                             }
                                         }).fail(function(err){
                                             console.log(err);
