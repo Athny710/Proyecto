@@ -16,6 +16,7 @@
                 <div th:insert="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <!-- Page Heading -->
                 <div class="container-fluid">
+                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert" align="center"></div>
                     <div class="card shadowA mb-4" >
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
@@ -23,7 +24,7 @@
                                     th:text="${estadoenviosede.idenviosede == 0? 'Registro de nuevo envio' : 'Edición del pedido'}">
                                     Registro de nuevo envio</h5>
                             </div>
-                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
+
                         </div>
                         <div class="card-body bg-gray-100">
                             <div class="row">
