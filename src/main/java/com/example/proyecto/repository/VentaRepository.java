@@ -21,6 +21,12 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             nativeQuery = true)
     List<Venta> buscarPorSede(int sedeid);
 
+    @Query(value = "select v.nombreCliente as nombre from venta v\n" +
+            "inner join tienda t on v.idTienda = t.idTienda\n" +
+            "inner join sede s on t.idSede = s.idSede and s.idSede = ?1 and t.idTienda = ?2\n" +
+            "order by v.fecha", nativeQuery = true)
+    List<ClientesQueCompraron> obtenerVentaPorTiendaYSede(int idsede, int idtienda);
+
     List<Venta> findByTienda(Tienda tienda);
 
     @Query(value = "select v.numeroDocumentoIdentidad as dnioruc, v.nombreCliente as cliente, v.numeroDocumentoVenta as numerodoc, v.lugarDeVenta as lugar, p.codigoGenerado as codgen,\n" +

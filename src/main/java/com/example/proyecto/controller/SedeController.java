@@ -2,6 +2,7 @@ package com.example.proyecto.controller;
 
 
 import com.example.proyecto.dto.CamposReporteSede;
+import com.example.proyecto.dto.ClientesQueCompraron;
 import com.example.proyecto.dto.ReporteConCamposOriginales;
 import com.example.proyecto.entity.*;
 
@@ -547,13 +548,22 @@ public class SedeController {
     }
 
     @GetMapping("borrarTienda")
-    public String borrarTiendas(Model model, @RequestParam("id") int idtienda, RedirectAttributes attr) {
-        Optional<Tienda> obtenerTienda = tiendaRepository.findById(idtienda);
-        if (obtenerTienda.isPresent()) {
-            tiendaRepository.deleteById(idtienda);
-            attr.addFlashAttribute("msg", "La tienda ha sido eliminada permanentemente");
+    public String borrarTiendas(Model model, @RequestParam("id") int idtienda, RedirectAttributes attr, HttpSession session) {
+
+        Usuarios u = (Usuarios) session.getAttribute("user");
+        List<ClientesQueCompraron> validacion = ventaRepository.obtenerVentaPorTiendaYSede(u.getSede().getIdsede(),idtienda);
+        if (validacion.size() >= 1){
+            attr.addFlashAttribute("msgError", "La tienda no se puede borrar, porque se encuentra registrada en ventas");
+            return "redirect:/sede/registroTiendas";
+        }else {
+            Optional<Tienda> obtenerTienda = tiendaRepository.findById(idtienda);
+            if (obtenerTienda.isPresent()) {
+                tiendaRepository.deleteById(idtienda);
+                attr.addFlashAttribute("msg", "La tienda ha sido eliminada permanentemente");
+            }
+            return "redirect:/sede/registroTiendas";
         }
-        return "redirect:/sede/registroTiendas";
+
     }
 
     @GetMapping("editarTienda")
