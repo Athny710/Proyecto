@@ -40,6 +40,9 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Optional;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Controller
 @RequestMapping("/gestor")
 public class GestorController {
@@ -80,6 +83,14 @@ public class GestorController {
 
     Date date;
     // ----------------------- ENLACES ---------------------------------
+
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    public static boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
+    }
 
     @GetMapping("AnadirCompra")
     public String AnadirCompra(@ModelAttribute("historial") Historial historial, Model model, @RequestParam("id") int id) {
@@ -262,8 +273,8 @@ public class GestorController {
                                      Model model,
                                      RedirectAttributes attr, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
-            if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {
-
+         //   if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {
+            if (!validate(usuarios.getCorreo())) {
                 model.addAttribute("msgError", "El correo ingresado no es un correo");
             }
 
@@ -285,7 +296,8 @@ public class GestorController {
             }
 
         } else {
-            if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {// validacion tipo correo
+          //  if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {// validacion tipo correo
+            if (!validate(usuarios.getCorreo())) {// validacion tipo correo
                 usuarios.setCorreo(usuarios.getCorreo().toLowerCase());
                 if (usuarios.getIdusuarios() != 0) {
                     Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
