@@ -272,6 +272,62 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "\tgroup by fecha", nativeQuery = true)
     List<FechaMesVenta> obtenerPeriodoXAño(String cliente, String año);
 
+    @Query(value = "select distinct(month(v.fecha)) as fecha, CASE\n" +
+            "WHEN MONTH(v.fecha) = 1 THEN \"enero\"\n" +
+            "WHEN MONTH(v.fecha) = 2 THEN \"febrero\"\n" +
+            "WHEN MONTH(v.fecha) = 3 THEN \"marzo\"\n" +
+            "WHEN MONTH(v.fecha) = 4 THEN \"abril\"\n" +
+            "WHEN MONTH(v.fecha) = 5 THEN \"mayo\"\n" +
+            "WHEN MONTH(v.fecha) = 6 THEN \"junio\"\n" +
+            "WHEN MONTH(v.fecha) = 7 THEN \"julio\"\n" +
+            "WHEN MONTH(v.fecha) = 8 THEN \"agosto\"\n" +
+            "WHEN MONTH(v.fecha) = 9 THEN \"septiembre\"\n" +
+            "WHEN MONTH(v.fecha) = 10 THEN \"octubre\"\n" +
+            "WHEN MONTH(v.fecha) = 11 THEN \"noviembre\"\n" +
+            "WHEN MONTH(v.fecha) = 12 THEN \"diciembre\" END AS fechaname from venta v\n" +
+            "inner join tienda t on v.idTienda = t.idTienda\n" +
+            "inner join sede s on t.idSede = s.idSede and s.nombre = ?1 and year(v.fecha) = ?2\n" +
+            "order by v.fecha", nativeQuery = true)
+    List<FechaMesVenta> obtenerPeriodoXAñoSede(String sede, String año);
+
+    @Query(value = "select distinct(month(v.fecha)) as fecha, CASE\n" +
+            "WHEN MONTH(v.fecha) = 1 THEN \"enero\"\n" +
+            "WHEN MONTH(v.fecha) = 2 THEN \"febrero\"\n" +
+            "WHEN MONTH(v.fecha) = 3 THEN \"marzo\"\n" +
+            "WHEN MONTH(v.fecha) = 4 THEN \"abril\"\n" +
+            "WHEN MONTH(v.fecha) = 5 THEN \"mayo\"\n" +
+            "WHEN MONTH(v.fecha) = 6 THEN \"junio\"\n" +
+            "WHEN MONTH(v.fecha) = 7 THEN \"julio\"\n" +
+            "WHEN MONTH(v.fecha) = 8 THEN \"agosto\"\n" +
+            "WHEN MONTH(v.fecha) = 9 THEN \"septiembre\"\n" +
+            "WHEN MONTH(v.fecha) = 10 THEN \"octubre\"\n" +
+            "WHEN MONTH(v.fecha) = 11 THEN \"noviembre\"\n" +
+            "WHEN MONTH(v.fecha) = 12 THEN \"diciembre\" END AS fechaname from venta v\n" +
+            "inner join inventario inv on v.idInventario = inv.idInventario\n" +
+            "inner join producto p on inv.idProducto = p.idProducto\n" +
+            "inner join denominacion d on p.idDenominacion = d.idDenominacion and d.nombre = ?1 and year(v.fecha) = ?2\n" +
+            "order by v.fecha", nativeQuery = true)
+    List<FechaMesVenta> obtenerPeriodoXAñoProducto(String producto, String año);
+
+    @Query(value = "select distinct(month(v.fecha)) as fecha, CASE\n" +
+            "WHEN MONTH(v.fecha) = 1 THEN \"enero\"\n" +
+            "WHEN MONTH(v.fecha) = 2 THEN \"febrero\"\n" +
+            "WHEN MONTH(v.fecha) = 3 THEN \"marzo\"\n" +
+            "WHEN MONTH(v.fecha) = 4 THEN \"abril\"\n" +
+            "WHEN MONTH(v.fecha) = 5 THEN \"mayo\"\n" +
+            "WHEN MONTH(v.fecha) = 6 THEN \"junio\"\n" +
+            "WHEN MONTH(v.fecha) = 7 THEN \"julio\"\n" +
+            "WHEN MONTH(v.fecha) = 8 THEN \"agosto\"\n" +
+            "WHEN MONTH(v.fecha) = 9 THEN \"septiembre\"\n" +
+            "WHEN MONTH(v.fecha) = 10 THEN \"octubre\"\n" +
+            "WHEN MONTH(v.fecha) = 11 THEN \"noviembre\"\n" +
+            "WHEN MONTH(v.fecha) = 12 THEN \"diciembre\" END AS fechaname from venta v\n" +
+            "inner join inventario inv on v.idInventario = inv.idInventario\n" +
+            "inner join producto p on inv.idProducto = p.idProducto\n" +
+            "inner join comunidad c on c.idComunidad = p.idComunidad and c.nombre = \"Huaran\" and year(v.fecha) = '2019'\n" +
+            "order by v.fecha", nativeQuery = true)
+    List<FechaMesVenta> obtenerPeriodoXAñoComunidad(String comunidad, String año);
+
     @Query(value = "SELECT t.nombre as nombretienda, v.nombreCliente as cliente, v.tipoDocumentoVenta as doc, v.precioUnitarioVenta as preciounit, v.Cantidad as cantidad, v.precioUnitarioVenta*v.Cantidad as preciotot FROM venta v\n" +
             "inner join tienda t on t.idTienda = v.idTienda\n" +
             "inner join sede s on s.idSede = t.idSede and s.idSede = ?1", nativeQuery = true)

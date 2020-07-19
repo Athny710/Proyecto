@@ -39,24 +39,6 @@ public class Rest{
             }
     }
 
-    //localhost:8080/proyecto/reporte/(año)/(cliente)
-    @GetMapping(value = "/reporte/{anho}/{cliente}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity obtenerPeriodo(@PathVariable("anho") String anho, @PathVariable("cliente") String cliente) {
-
-        HashMap<String, Object> responseMap = new HashMap<>();
-
-        List<FechaMesVenta> listaMes = ventaRepository.obtenerPeriodoXAño(cliente, anho);
-        if (listaMes != null) {
-            responseMap.put("estado", "ok");
-            responseMap.put("meses", listaMes);
-            return new ResponseEntity(responseMap, HttpStatus.OK);
-        } else {
-            responseMap.put("estado", "error");
-            responseMap.put("msg", "no se encontró un registro con la busqueda cliente-año igual a: " + cliente + "-" + anho);
-            return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
-        }
-    }
-
     //localhost:8080/proyecto/reporte/sede/(sede)
     @GetMapping(value = "/reporte/sede/{sede}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity obtenerAñoSede(@PathVariable("sede") String sede) {
@@ -110,4 +92,85 @@ public class Rest{
         }
     }
 
+
+
+    /////////////////////// 3er FILTRO !! (año + 2do filtro) ///////////////////////////////////
+
+
+    //localhost:8080/proyecto/reporte/(año)/(cliente)
+    @GetMapping(value = "/reporte/{anho}/{cliente}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity obtenerPeriodo(@PathVariable("anho") String anho, @PathVariable("cliente") String cliente) {
+
+        HashMap<String, Object> responseMap = new HashMap<>();
+        List<FechaMesVenta> listaMes = ventaRepository.obtenerPeriodoXAño(cliente, anho);
+        if (listaMes != null) {
+            responseMap.put("estado", "ok");
+            responseMap.put("periodo", listaMes);
+            return new ResponseEntity(responseMap, HttpStatus.OK);
+        } else {
+            responseMap.put("estado", "error");
+            responseMap.put("msg", "no se encontró un registro con la busqueda cliente-año igual a: " + cliente + "-" + anho);
+            return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/reporte/sede/{anho}/{sede}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity obtenerPeriodoSede(@PathVariable("anho") String anho, @PathVariable("sede") String sede) {
+
+        HashMap<String, Object> responseMap = new HashMap<>();
+        List<FechaMesVenta> listaMes = ventaRepository.obtenerPeriodoXAñoSede(sede, anho);
+        if (listaMes != null) {
+            responseMap.put("estado", "ok");
+            responseMap.put("periodo", listaMes);
+            return new ResponseEntity(responseMap, HttpStatus.OK);
+        } else {
+            responseMap.put("estado", "error");
+            responseMap.put("msg", "no se encontró un registro con la busqueda sede-año igual a: " + sede + "-" + anho);
+            return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/reporte/producto/{anho}/{producto}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity obtenerPeriodoProducto(@PathVariable("anho") String anho, @PathVariable("producto") String producto) {
+
+        HashMap<String, Object> responseMap = new HashMap<>();
+        List<FechaMesVenta> listaMes = ventaRepository.obtenerPeriodoXAñoProducto(producto, anho);
+        if (listaMes != null) {
+            responseMap.put("estado", "ok");
+            responseMap.put("periodo", listaMes);
+            return new ResponseEntity(responseMap, HttpStatus.OK);
+        } else {
+            responseMap.put("estado", "error");
+            responseMap.put("msg", "no se encontró un registro con la busqueda sede-año igual a: " + producto + "-" + anho);
+            return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/reporte/comunidad/{anho}/{comunidad}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity obtenerPeriodoComunidad(@PathVariable("anho") String anho, @PathVariable("comunidad") String comunidad) {
+
+        HashMap<String, Object> responseMap = new HashMap<>();
+        List<FechaMesVenta> listaMes = ventaRepository.obtenerPeriodoXAñoComunidad(comunidad, anho);
+        if (listaMes != null) {
+            responseMap.put("estado", "ok");
+            responseMap.put("periodo", listaMes);
+            return new ResponseEntity(responseMap, HttpStatus.OK);
+        } else {
+            responseMap.put("estado", "error");
+            responseMap.put("msg", "no se encontró un registro con la busqueda sede-año igual a: " + comunidad + "-" + anho);
+            return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
