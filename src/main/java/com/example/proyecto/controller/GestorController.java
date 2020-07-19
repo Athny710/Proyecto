@@ -1393,9 +1393,7 @@ public class GestorController {
         if (estadoPorID.isPresent()) {
             estadoenviosede = estadoPorID.get();
             model.addAttribute("estadoenviosede", estadoenviosede);
-            List<Inventario> listaInventario = inventarioRepository.findAll();
             List<Sede> listaSede = sedeRepository.findAll();
-            model.addAttribute("listaInventario", listaInventario);
             model.addAttribute("listaSede", listaSede);
             return "Gestor/G-GestionEnvios";
         } else {
@@ -1834,18 +1832,25 @@ public class GestorController {
     }
 
     @GetMapping("devolverProducto1")
-    public String devolverProducto1(@RequestParam("id") int id, Model model) {
+    public String devolverProducto1(@RequestParam("id") int id, Model model, RedirectAttributes attr) {
         Date date = new Date();
         Optional<Inventario> inventario1 = inventarioRepository.findById(id);
         if (inventario1.isPresent()) {
             Inventario inventario = inventario1.get();
-            inventario.setIdInventario(id);
-            inventario.setEstado("Devuelto");
-            inventario.setFechadevolucion(date);
-            inventarioRepository.save(inventario);
-            model.addAttribute("lista", inventarioRepository.findByEstado("Proxima"));
-            model.addAttribute("msg", "Producto Devuelto exitosamente");
-            return "Gestor/G-ConsignacionesProxAVencer";
+            //check si to-do esta en almacen
+            inventarioStockTotal inventarioStockTotal1 = inventarioRepository.singleInventarioStockTotal(inventario.getIdInventario());
+            if(inventarioStockTotal1.getStockTotal() == inventario.getStock()) {
+                inventario.setIdInventario(id); // se ejecuta si to-do esta en almacen
+                inventario.setEstado("Devuelto");
+                inventario.setFechadevolucion(date);
+                inventarioRepository.save(inventario);
+                model.addAttribute("lista", inventarioRepository.findByEstado("Proxima"));
+                model.addAttribute("msg", "Producto Devuelto exitosamente");
+                return "Gestor/G-ConsignacionesProxAVencer";
+            }else{// se ejecuta si hay stock fuera de almacen
+                attr.addFlashAttribute("msgError", "No se pudo devolver. Hay stock fuera de el almacen principal.");
+                return "redirect:/gestor/consignacionesProxVencer";
+            }
         } else {
             return "redirect:/gestor/consignacionesProxVencer";
         }
@@ -1854,18 +1859,25 @@ public class GestorController {
 
 
     @GetMapping("devolverProducto2")
-    public String devolverProducto2(@RequestParam("id") int id, Model model) {
+    public String devolverProducto2(@RequestParam("id") int id, Model model, RedirectAttributes attr) {
         Date date = new Date();
         Optional<Inventario> inventario1 = inventarioRepository.findById(id);
         if (inventario1.isPresent()) {
-            Inventario inventario = inventario1.get();
-            inventario.setIdInventario(id);
-            inventario.setEstado("Devuelto");
-            inventario.setFechadevolucion(date);
-            inventarioRepository.save(inventario);
-            model.addAttribute("lista", inventarioRepository.findByEstado("Vencida"));
-            model.addAttribute("msg", "Producto Devuelto exitosamente");
-            return "Gestor/G-ConsignacionesVencidas";
+                Inventario inventario = inventario1.get();
+            //check si to-do esta en almacen
+            inventarioStockTotal inventarioStockTotal1 = inventarioRepository.singleInventarioStockTotal(inventario.getIdInventario());
+            if(inventarioStockTotal1.getStockTotal() == inventario.getStock()) {
+                inventario.setIdInventario(id); // se ejecuta si to-do esta en almacen
+                inventario.setEstado("Devuelto");
+                inventario.setFechadevolucion(date);
+                inventarioRepository.save(inventario);
+                model.addAttribute("lista", inventarioRepository.findByEstado("Vencida"));
+                model.addAttribute("msg", "Producto Devuelto exitosamente");
+                return "Gestor/G-ConsignacionesVencidas";
+            }else{// se ejecuta si hay stock fuera de almacen
+                attr.addFlashAttribute("msgError", "No se pudo devolver. Hay stock fuera de el almacen principal.");
+                return "redirect:/gestor/ConsignacionesVencidas";
+            }
         } else {
             return "redirect:/gestor/ConsignacionesVencidas";
         }

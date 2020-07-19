@@ -62,12 +62,19 @@
                                                 <label for="inventariosede">Producto a enviar:</label>
                                                 <select th:field="*{inventariosede.inventario.idInventario}"
                                                         class="form-control" id="inventariosede" style="border-radius: 10rem"
-                                                        placeholder="producto" >
-                                                    <option th:each="inventario : ${listaInventario}"
+                                                        placeholder="producto" onchange="selMax()" >
+                                                    <option th:if="${estadoenviosede.idenviosede == 0}"
+                                                            th:each="inventario : ${listaInventario}"
                                                             th:value="${inventario.idInventario}" th:text="${
                                                             inventario.producto.getCodigoGenerado()  + ' ' +
                                                             inventario.color
                                                             + ' quedan: ' + inventario.stock }"></option>
+                                                    <option th:if="${estadoenviosede.idenviosede != 0}"
+                                                            th:value="*{inventariosede.inventario.idInventario}" th:text="*{
+                                                            inventariosede.inventario.producto.getCodigoGenerado()  + ' ' +
+                                                            inventariosede.inventario.color
+                                                            + ' quedan: ' + (inventariosede.inventario.stock + cantidad) }"></option>
+
                                                 </select>
                                                 <div class="text-danger"
                                                      th:if="${#fields.hasErrors('inventariosede.inventario.idInventario')}"
@@ -92,14 +99,14 @@
                                                     Reenviar o enviar
                                                 </button>
 
-                                            <div class="row" th:if="${estadoenviosede.idenviosede == 0}">
-                                                <a class="btn btn-danger btn-block" style="border-radius:10rem;margin-top: 8px;"
+
+                                                <a th:if="${estadoenviosede.idenviosede == 0}" class="btn btn-danger btn-block" style="border-radius:10rem;margin-top: 8px;"
                                                    th:href="@{/gestor/gestorProductosEnviados}">Cancelar</a>
-                                            </div>
-                                            <div class="row" th:if="${estadoenviosede.idenviosede != 0}">
-                                                <a class="btn btn-danger btn-block" style="border-radius:10rem;margin-top: 8px;"
+
+
+                                                <a th:if="${estadoenviosede.idenviosede != 0}" class="btn btn-danger btn-block" style="border-radius:10rem;margin-top: 8px;"
                                                    th:href="@{/gestor/gestorProductosRechazados}">Cancelar</a>
-                                            </div>
+
                                         </form>
                                     </div>
                                 </div>
@@ -130,6 +137,17 @@
     <i class="fas fa-angle-up"></i>
 </a>
 <div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
+    <script>
+        function selMax() {
+            if(document.readyState === 'complete'){
+                var texto = document.getElementById("inventariosede");
+                var strUser = texto.options[texto.selectedIndex].text;
+                var lastnum = strUser.split(" ").pop();
+                var cantidadIn = document.getElementById("cantidad");
+                cantidadIn.max=lastnum;
+            }
+        }
+    </script>
 
 </body>
 

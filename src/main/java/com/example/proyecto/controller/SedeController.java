@@ -593,12 +593,8 @@ public class SedeController {
     public String DevolverProductoSinConfirmar(@RequestParam("id") int id, RedirectAttributes attr) {
         Optional<Estadoenviosede> estadoenviosede = estadoenviosedeRepository.findById(id);
         if (estadoenviosede.isPresent()) {
-            Inventario inventario = estadoenviosede.get().getInventariosede().getInventario();
-            inventario.setStock(inventario.getStock() + estadoenviosede.get().getCantidad());
-            inventarioRepository.save(inventario);
             estadoenviosede.get().setEstado("rechazado");
             estadoenviosedeRepository.save(estadoenviosede.get());
-            System.out.println("----------Bien borrado ---------------");
             return "redirect:/sede/productosEnEspera";
         } else {
             System.out.println("error en Devolver producto, no existe el id");
