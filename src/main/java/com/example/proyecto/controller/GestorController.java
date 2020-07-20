@@ -40,6 +40,9 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Optional;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Controller
 @RequestMapping("/gestor")
 public class GestorController {
@@ -80,6 +83,14 @@ public class GestorController {
 
     Date date;
     // ----------------------- ENLACES ---------------------------------
+
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    public static boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
+    }
 
     @GetMapping("AnadirCompra")
     public String AnadirCompra(@ModelAttribute("historial") Historial historial, Model model, @RequestParam("id") int id) {
@@ -262,8 +273,8 @@ public class GestorController {
                                      Model model,
                                      RedirectAttributes attr, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
-            if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {
-
+         //   if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {
+            if (!validate(usuarios.getCorreo())) {
                 model.addAttribute("msgError", "El correo ingresado no es un correo");
             }
 
@@ -285,7 +296,8 @@ public class GestorController {
             }
 
         } else {
-            if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {// validacion tipo correo
+          //  if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {// validacion tipo correo
+            if (!validate(usuarios.getCorreo())) {// validacion tipo correo
                 usuarios.setCorreo(usuarios.getCorreo().toLowerCase());
                 if (usuarios.getIdusuarios() != 0) {
                     Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
@@ -462,9 +474,9 @@ public class GestorController {
     @GetMapping(value = {"", "gestorPrincipal"})
     public String inventarioGestor(Model model) {
         List<Inventario> listaMayor0 = new ArrayList<>();
-        for (inventarioStockTotal i: inventarioRepository.listaInventarioStockTotal()) {
+        for (inventarioStockTotal i : inventarioRepository.listaInventarioStockTotal()) {
             //Si el stock es mayor a cero se obtiene el producto y se guarda en la nueva lista
-            if (i.getStockTotal()!=0){
+            if (i.getStockTotal() != 0) {
                 Inventario inv = new Inventario();
                 Optional<Inventario> opt = inventarioRepository.findById(i.getIdInvent());
                 inv.setIdInventario(opt.get().getIdInventario());
@@ -477,6 +489,8 @@ public class GestorController {
                 inv.setFechadevolucion(opt.get().getFechadevolucion());
 
                 listaMayor0.add(inv);
+
+
             }
         }
         model.addAttribute("inventario", listaMayor0);
@@ -492,26 +506,26 @@ public class GestorController {
         }*/
         //todo mostrar  mensaje de stock bajo
         boolean validar1 = false;
-        Calendar cal= Calendar.getInstance(TimeZone.getTimeZone("America/Lima"));
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("America/Lima"));
         //Obtenemos el día, si es igual a uno seteamos como true el valor de validar1
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
         //Se va a definir una variable que se pasará como model attribute para poder mostrar un modal al inicio
-        if (productoRepository.productoPorEstado("Vencida").size()>=1 || productoRepository.productoPorEstado("Proxima").size()>=1 && day==1){
-            validar1=true;
+        if (productoRepository.productoPorEstado("Vencida").size() >= 1 || productoRepository.productoPorEstado("Proxima").size() >= 1 && day == 1) {
+            validar1 = true;
         }
         model.addAttribute("listaComunidades", comunidadRepository.findAll());
         model.addAttribute("listaArtesanos", artesanoRepository.findAll());
         model.addAttribute("listaCategoria", categoriaRepository.findAll());
 
-        model.addAttribute("validar",validar1);
+        model.addAttribute("validar", validar1);
 
         return "Gestor/G-Inventario";
     }
 
     @GetMapping("/buscador")
-    public String buscadorAvanzado(Model model,@RequestParam("idComu") int idComu, @RequestParam("tipo") String tipo,
-                                   @RequestParam("idArt") int idArt,@RequestParam("idCate") int idCate) {
+    public String buscadorAvanzado(Model model, @RequestParam("idComu") int idComu, @RequestParam("tipo") String tipo,
+                                   @RequestParam("idArt") int idArt, @RequestParam("idCate") int idCate) {
 
         if (idComu != 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0) {
             List<Inventario> Lista1 = inventarioRepository.listarPorComunidad(idComu);
@@ -541,56 +555,56 @@ public class GestorController {
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista4);
             return "Gestor/G-Inventario";
-        }else if (idComu != 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
+        } else if (idComu != 0 && tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0) {
             List<Inventario> Lista5 = inventarioRepository.listarPorCategoriaYComunidad(idCate, idComu);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista5);
             return "Gestor/G-Inventario";
-        } else if (idComu != 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0){
-            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadYModalidad( idComu, tipo);
+        } else if (idComu != 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate == 0) {
+            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadYModalidad(idComu, tipo);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista6);
             return "Gestor/G-Inventario";
-        }else if (idComu != 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate == 0){
-            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadConsignadoYArtesano( idComu, idArt);
+        } else if (idComu != 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate == 0) {
+            List<Inventario> Lista6 = inventarioRepository.listarPorComunidadConsignadoYArtesano(idComu, idArt);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista6);
             return "Gestor/G-Inventario";
-        }else if (idComu == 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate != 0){
-            List<Inventario> Lista7 = inventarioRepository.listarPorCategoriaConsignadoYArtesano( idCate, idArt);
+        } else if (idComu == 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate != 0) {
+            List<Inventario> Lista7 = inventarioRepository.listarPorCategoriaConsignadoYArtesano(idCate, idArt);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista7);
             return "Gestor/G-Inventario";
-        } else if (idComu == 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
-            List<Inventario> Lista8 = inventarioRepository.listarPorCategoriaYModalidad( idCate, tipo);
+        } else if (idComu == 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0) {
+            List<Inventario> Lista8 = inventarioRepository.listarPorCategoriaYModalidad(idCate, tipo);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista8);
             return "Gestor/G-Inventario";
-        }else if (idComu != 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0){
-            List<Inventario> Lista9 = inventarioRepository.listarPorCategoriaYComunidadYModalidad( idCate, tipo, idComu);
+        } else if (idComu != 0 && !tipo.equalsIgnoreCase("todo") && idArt == 0 && idCate != 0) {
+            List<Inventario> Lista9 = inventarioRepository.listarPorCategoriaYComunidadYModalidad(idCate, tipo, idComu);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista9);
             return "Gestor/G-Inventario";
-        }else if (idComu != 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate != 0){
-            List<Inventario> Lista10 = inventarioRepository.listarPorCategoriaComunidadConsignadoYArtesano( idCate, idComu, idArt);
+        } else if (idComu != 0 && tipo.equalsIgnoreCase("consignado") && idArt != 0 && idCate != 0) {
+            List<Inventario> Lista10 = inventarioRepository.listarPorCategoriaComunidadConsignadoYArtesano(idCate, idComu, idArt);
             model.addAttribute("listaComunidades", comunidadRepository.findAll());
             model.addAttribute("listaArtesanos", artesanoRepository.findAll());
             model.addAttribute("listaCategoria", categoriaRepository.findAll());
             model.addAttribute("inventario", Lista10);
             return "Gestor/G-Inventario";
-        } else{
+        } else {
             return "redirect:/gestor";
         }
 
@@ -619,7 +633,7 @@ public class GestorController {
 
     @GetMapping("gestorListarSinStock")
     public String listaSinStock(Model model) {
-        List<Inventario> listaSinStock = inventarioRepository.findByStock(0);
+        List<Inventario> listaSinStock = inventarioRepository.SinStock();
         model.addAttribute("listaSinStock", listaSinStock);
         return "Gestor/G-ListaSinStock";
     }
@@ -689,7 +703,12 @@ public class GestorController {
             formulario.setCodigoProducto(productooooo.getDenominacion().getCodigonombre());
             formulario.setCodDescripcion(productooooo.getDenominacion().getCodigodescripcion());
             formulario.setFechafin(productooooo.getAdquisicion().getFechafin());
-            model.addAttribute("tipo",productooooo.getAdquisicion().getModalidad());
+
+            formulario.setTipo(productooooo.getAdquisicion().getModalidad());
+            System.out.println(formulario.getTipo());
+            System.out.println("ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            model.addAttribute("tipo", productooooo.getAdquisicion().getModalidad());
+
             return "Gestor/G-EditProdCompra";
         } else {
             return "redirect:/gestor/productos";
@@ -733,6 +752,9 @@ public class GestorController {
                 model.addAttribute("listaTama", tamañoRepository.findAll());
                 model.addAttribute("listaLinea", lineaRepository.findAll());
                 model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+                model.addAttribute("tipo",formulario.getTipo());
+                System.out.println(formulario.getTipo());
+                System.out.println("ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                 return "Gestor/G-EditProdCompra";
             } else {
                 return "redirect:/gestor/productos";
@@ -838,9 +860,10 @@ public class GestorController {
                 Optional<Producto> producto2 = productoRepository.findById(formulario.getCrearActualizar());
                 if (producto2.isPresent()) {
                     Producto producto1 = producto2.get();
+                    formulario.setTipo(producto1.getAdquisicion().getModalidad());
                     producto1.getDenominacion().setDescripcion(formulario.getDescripcion());
                     producto1.getDenominacion().setNombre(formulario.getNombreProducto());
-                    if(producto1.getAdquisicion().getModalidad().equalsIgnoreCase("consignado")){
+                    if (producto1.getAdquisicion().getModalidad().equalsIgnoreCase("consignado")) {
                         producto1.getAdquisicion().setFechafin(formulario.getFechafin());
                     }
                     productoRepository.save(producto1);
@@ -918,6 +941,7 @@ public class GestorController {
                     Producto producto1 = producto.get();
                     historial.getInventario().setProducto(producto1);
                     historial.getInventario().setStock(historial.getCantidad());
+                    historial.getInventario().setEstado("Disponible");
                     inventarioRepository.save(historial.getInventario());
                     List<Inventario> inventarios = inventarioRepository.findAll();
                     historial.setInventario(inventarios.get(inventarios.size() - 1));
@@ -1190,10 +1214,18 @@ public class GestorController {
     public String borrarArtesano(Model model, @RequestParam("idartesano") int idartesano, RedirectAttributes attr) {
         Optional<Artesano> obtenerArtesano = artesanoRepository.findById(idartesano);
         if (obtenerArtesano.isPresent()) {
-            artesanoRepository.deleteById(idartesano);
+          /*  artesanoRepository.deleteById(idartesano);
             attr.addFlashAttribute("msg", "Artesano Eliminado");
         } else {
             attr.addFlashAttribute("msge", "Artesano no ha podido eliminarse");
+        }
+        return "redirect:/gestor/gestorListaArtesano";  */
+            try {
+                comunidadRepository.deleteById(idartesano);
+                attr.addFlashAttribute("msg", "Artesano Eliminado");
+            } catch (Exception e) {
+                attr.addFlashAttribute("msge", "Artesano en consignación, no puede ser borrado");
+            }
         }
         return "redirect:/gestor/gestorListaArtesano";
     }
@@ -1330,8 +1362,8 @@ public class GestorController {
                 plural = "s";
             }
 
-            attr.addFlashAttribute("msg", "La devolucion de "+ estadoenviosede.getCantidad() +
-                    " " + inventario.getProducto().getCodigoGenerado() + " "+
+            attr.addFlashAttribute("msg", "La devolucion de " + estadoenviosede.getCantidad() +
+                    " " + inventario.getProducto().getCodigoGenerado() + " " +
                     inventario.getColor() + plural + " ha sido confirmada exitosamente");
         }
         return "redirect:/gestor/gestorProductosRechazados";
@@ -1353,8 +1385,8 @@ public class GestorController {
                 plural = "s";
             }
 
-            attr.addFlashAttribute("msg", "La devolucion de "+ estadoenviosede.getCantidad() +
-                    " " + inventario.getProducto().getCodigoGenerado() + " "+
+            attr.addFlashAttribute("msg", "La devolucion de " + estadoenviosede.getCantidad() +
+                    " " + inventario.getProducto().getCodigoGenerado() + " " +
                     inventario.getColor() + plural + " ha sido confirmada exitosamente");
         }
         return "redirect:/gestor/ProductosDevueltos";
@@ -1367,17 +1399,13 @@ public class GestorController {
     }
 
 
-
-
     @GetMapping("gestorEditarEnvio")
     public String editarEnvio(@RequestParam("id") int id, @ModelAttribute("estadoenviosede") Estadoenviosede estadoenviosede, Model model) {
         Optional<Estadoenviosede> estadoPorID = estadoenviosedeRepository.findById(id);
         if (estadoPorID.isPresent()) {
             estadoenviosede = estadoPorID.get();
             model.addAttribute("estadoenviosede", estadoenviosede);
-            List<Inventario> listaInventario = inventarioRepository.findAll();
             List<Sede> listaSede = sedeRepository.findAll();
-            model.addAttribute("listaInventario", listaInventario);
             model.addAttribute("listaSede", listaSede);
             return "Gestor/G-GestionEnvios";
         } else {
@@ -1391,7 +1419,7 @@ public class GestorController {
     // --------------------------  INICIO CRUD ENVIOS ------------------------------
     @GetMapping("gestorNuevoEnvio")
     public String NuevoEnvio(@ModelAttribute("estadoenviosede") Estadoenviosede estadoenviosede, Model model) {
-        List<Inventario> listaInventario = inventarioRepository.findAll();
+        List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
         List<Sede> listaSede = sedeRepository.findAll();
         model.addAttribute("listaInventario", listaInventario);
         model.addAttribute("listaSede", listaSede);
@@ -1404,7 +1432,7 @@ public class GestorController {
                                RedirectAttributes attr,
                                Model model) {
         if (bindingResult.hasErrors()) {
-            List<Inventario> listaInventario = inventarioRepository.findAll();
+            List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
             List<Sede> listaSede = sedeRepository.findAll();
             model.addAttribute("listaInventario", listaInventario);
             model.addAttribute("listaSede", listaSede);
@@ -1421,10 +1449,10 @@ public class GestorController {
                 List<Inventariosede> inventariosede1 = inventariosedeRepository.findByInventarioAndSede(inventario1.get(), sede1.get());
                 Boolean condicion = false;
                 Optional<Estadoenviosede> auxEstado = estadoenviosedeRepository.findById(estadoenviosede.getIdenviosede());
-                if(estadoenviosede.getIdenviosede() != 0){
+                if (estadoenviosede.getIdenviosede() != 0) {
 
-                    if(auxEstado.isPresent()){
-                        if(inventario1.get().getStock() + auxEstado.get().getCantidad() - estadoenviosede.getCantidad() >= 0){
+                    if (auxEstado.isPresent()) {
+                        if (inventario1.get().getStock() + auxEstado.get().getCantidad() - estadoenviosede.getCantidad() >= 0) {
                             condicion = true;
                         }
                     }
@@ -1451,7 +1479,7 @@ public class GestorController {
                             estadoenviosedeRepository.save(estadoenviosede);
                         } else {
                             //fue hackerman
-                            List<Inventario> listaInventario = inventarioRepository.findAll();
+                            List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
                             List<Sede> listaSede = sedeRepository.findAll();
                             model.addAttribute("listaInventario", listaInventario);
                             model.addAttribute("listaSede", listaSede);
@@ -1463,7 +1491,7 @@ public class GestorController {
                     }
 
                     int cantidadrestada = estadoenviosede.getInventariosede().getInventario().getStock() - estadoenviosede.getCantidad();
-                    if(condicion){
+                    if (condicion) {
                         cantidadrestada = cantidadrestada + auxEstado.get().getCantidad();
                     }
                     estadoenviosede.getInventariosede().getInventario().setStock(cantidadrestada);
@@ -1484,7 +1512,7 @@ public class GestorController {
             model.addAttribute("msg", "Por favor no editar el HTML :)");
             List<Sede> listaSede = sedeRepository.findAll();
             model.addAttribute("listaSede", listaSede);
-            List<Inventario> listaInventario = inventarioRepository.findAll();
+            List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
             model.addAttribute("listaInventario", listaInventario);
             return "Gestor/G-GestionEnvios";
 
@@ -1499,8 +1527,18 @@ public class GestorController {
     //--------------------CRUD VENTAS---------------
     @GetMapping("/nuevaVenta")
     public String nuevaVenta(@ModelAttribute("venta") Venta venta, Model model) {
-        List<Inventario> listaInventario = inventarioRepository.findAll();
-        model.addAttribute("listaInventario", listaInventario);
+        List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
+        List<Inventario> listaFinal = new ArrayList<>();
+        for (Inventario i : listaInventario) {
+            if (i.getStock() != 0) {
+                if (i.getEstado().equals("Devuelto")) {
+
+                } else {
+                    listaFinal.add(i);
+                }
+            }
+        }
+        model.addAttribute("listaInventario", listaFinal);
         return "Gestor/G-NuevaVenta";
     }
 
@@ -1517,8 +1555,9 @@ public class GestorController {
                                HttpSession session, RedirectAttributes attr) {
 
         if (bindingResult.hasErrors()) {
-            List<Inventario> listaInventario = inventarioRepository.findAll();
+            List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
             model.addAttribute("listaInventario", listaInventario);
+
             return "Gestor/G-NuevaVenta";
         } else {
 
@@ -1535,10 +1574,11 @@ public class GestorController {
                     attr.addFlashAttribute("msg", "Venta añadida exitosamente");
                     return "redirect:/gestor/gestionVentas";
                 } else {
-                    List<Inventario> listaInventario = inventarioRepository.findAll();
+
+                    List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
                     model.addAttribute("listaInventario", listaInventario);
-                    attr.addFlashAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
-                    return "redirect:/gestor/nuevaVenta";
+                    model.addAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
+                    return "Gestor/G-NuevaVenta";
                 }
 
             } else {
@@ -1596,29 +1636,34 @@ public class GestorController {
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         } else {
-            if (mes.equals("todo")) {
-                List<ReporteConCamposOriginales> ventaXClienteAnual = ventasService.getVentasPorClienteAnual(año, cliente);
-                String titulo = "Ventas anuales realizadas al cliente " + cliente;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXClienteAnual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_clientes_anual.xls");
-                }
-            } else if (mes.equals("trimestre")) {
-                List<ReporteConCamposOriginales> ventaXClienteTrimestral = ventasService.getVentasPorClienteTrimestral(año, cliente);
-                String titulo = "Ventas trimestrales realizadas al cliente " + cliente;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXClienteTrimestral, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_clientes_trimestral.xls");
-                }
-            } else {
-                List<ReporteConCamposOriginales> ventaXClienteMensual = ventasService.getVentasPorCliente(mes, año, cliente);
-                String titulo = "Ventas mensuales realizadas al cliente " + cliente;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXClienteMensual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_clientes_mensual.xls");
+            if (cliente.equals("0") || mes.equals("0") || año.equals("0")){
+                attr.addFlashAttribute("msg", "Error: debe escoger un nombre, año y periodo correctos");
+                return "redirect:/gestor/gestorReporteVentas";
+            }else {
+                if (mes.equals("todo")) {
+                    List<ReporteConCamposOriginales> ventaXClienteAnual = ventasService.getVentasPorClienteAnual(año, cliente);
+                    String titulo = "Ventas anuales realizadas al cliente " + cliente;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXClienteAnual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_clientes_anual.xls");
+                    }
+                } else if (mes.equals("trimestre")) {
+                    List<ReporteConCamposOriginales> ventaXClienteTrimestral = ventasService.getVentasPorClienteTrimestral(año, cliente);
+                    String titulo = "Ventas trimestrales realizadas al cliente " + cliente;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXClienteTrimestral, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_clientes_trimestral.xls");
+                    }
+                } else {
+                    List<ReporteConCamposOriginales> ventaXClienteMensual = ventasService.getVentasPorCliente(mes, año, cliente);
+                    String titulo = "Ventas mensuales realizadas al cliente " + cliente;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXClienteMensual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_clientes_mensual.xls");
+                    }
                 }
             }
         }
@@ -1631,29 +1676,34 @@ public class GestorController {
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         } else {
-            if (mes.equals("todo")) {
-                List<ReporteConCamposOriginales> ventaXSedeAnual = ventasService.getVentasPorSedeAnual(año, idsede);
-                String titulo = "Ventas anuales realizadas por la sede " + idsede;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXSedeAnual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_sedes_anual.xls");
-                }
-            } else if (mes.equals("trimestre")) {
-                List<ReporteConCamposOriginales> ventaXSedeTrimestral = ventasService.getVentasPorSedeTrimestral(año, idsede);
-                String titulo = "Ventas trimestrales realizadas al cliente " + idsede;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXSedeTrimestral, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_sedes_trimestral.xls");
-                }
-            } else {
-                List<ReporteConCamposOriginales> ventaXSedeMensual = ventasService.getVentasPorSede(mes, año, idsede);
-                String titulo = "Ventas mensuales realizadas al cliente " + idsede;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXSedeMensual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_sedes_mensual.xls");
+            if (idsede.equals("0") || mes.equals("0") || año.equals("0")){
+                attr.addFlashAttribute("msg", "Error: debe escoger un nombre, año y periodo correctos");
+                return "redirect:/gestor/gestorReporteVentas";
+            }else {
+                if (mes.equals("todo")) {
+                    List<ReporteConCamposOriginales> ventaXSedeAnual = ventasService.getVentasPorSedeAnual(año, idsede);
+                    String titulo = "Ventas anuales realizadas por la sede " + idsede;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXSedeAnual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_sedes_anual.xls");
+                    }
+                } else if (mes.equals("trimestre")) {
+                    List<ReporteConCamposOriginales> ventaXSedeTrimestral = ventasService.getVentasPorSedeTrimestral(año, idsede);
+                    String titulo = "Ventas trimestrales realizadas al cliente " + idsede;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXSedeTrimestral, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_sedes_trimestral.xls");
+                    }
+                } else {
+                    List<ReporteConCamposOriginales> ventaXSedeMensual = ventasService.getVentasPorSede(mes, año, idsede);
+                    String titulo = "Ventas mensuales realizadas al cliente " + idsede;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXSedeMensual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_sedes_mensual.xls");
+                    }
                 }
             }
         }
@@ -1666,29 +1716,34 @@ public class GestorController {
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         } else {
-            if (mes.equals("todo")) {
-                List<ReporteConCamposOriginales> ventaXArticuloAnual = ventasService.getVentasPorArticuloAnual(año, articulo);
-                String titulo = "Ventas anuales del artículo " + articulo;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloAnual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_articulo_anual.xls");
-                }
-            } else if (mes.equals("trimestre")) {
-                List<ReporteConCamposOriginales> ventaXArticuloTrimestral = ventasService.getVentasPorArticuloTrimestral(año, articulo);
-                String titulo = "Ventas trimestrales del artículo " + articulo;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloTrimestral, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_articulo_trimestral.xls");
-                }
-            } else {
-                List<ReporteConCamposOriginales> ventaXArticuloMensual = ventasService.getVentasPorArticuloMensual(mes, año, articulo);
-                String titulo = "Ventas mensuales del artículo " + articulo;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloMensual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_articulo_mensual.xls");
+            if (articulo.equals("0") || mes.equals("0") || año.equals("0")){
+                attr.addFlashAttribute("msg", "Error: debe escoger un nombre, año y periodo correctos");
+                return "redirect:/gestor/gestorReporteVentas";
+            }else {
+                if (mes.equals("todo")) {
+                    List<ReporteConCamposOriginales> ventaXArticuloAnual = ventasService.getVentasPorArticuloAnual(año, articulo);
+                    String titulo = "Ventas anuales del artículo " + articulo;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloAnual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_articulo_anual.xls");
+                    }
+                } else if (mes.equals("trimestre")) {
+                    List<ReporteConCamposOriginales> ventaXArticuloTrimestral = ventasService.getVentasPorArticuloTrimestral(año, articulo);
+                    String titulo = "Ventas trimestrales del artículo " + articulo;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloTrimestral, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_articulo_trimestral.xls");
+                    }
+                } else {
+                    List<ReporteConCamposOriginales> ventaXArticuloMensual = ventasService.getVentasPorArticuloMensual(mes, año, articulo);
+                    String titulo = "Ventas mensuales del artículo " + articulo;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloMensual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_articulo_mensual.xls");
+                    }
                 }
             }
         }
@@ -1701,29 +1756,34 @@ public class GestorController {
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         } else {
-            if (mes.equals("todo")) {
-                List<ReporteConCamposOriginales> ventaXComunidadAnual = ventasService.getVentasPorComunidadAnual(año, comunidad);
-                String titulo = "Ventas anuales de los productos de la comunidad " + comunidad;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadAnual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_comunidad_anual.xls");
-                }
-            } else if (mes.equals("trimestre")) {
-                List<ReporteConCamposOriginales> ventaXComunidadTrimestral = ventasService.getVentasPorComunidadTrimestral(año, comunidad);
-                String titulo = "Ventas trimestrales de los productos de la comunidad " + comunidad;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadTrimestral, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_comunidad_trimestral.xls");
-                }
-            } else {
-                List<ReporteConCamposOriginales> ventaXComunidadMensual = ventasService.getVentasPorComunidadMensual(mes, año, comunidad);
-                String titulo = "Ventas mensuales de los productos de la comunidad " + comunidad;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadMensual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_comunidad_mensual.xls");
+            if (comunidad.equals("0") || mes.equals("0") || año.equals("0")){
+                attr.addFlashAttribute("msg", "Error: debe escoger un nombre, año y periodo correctos");
+                return "redirect:/gestor/gestorReporteVentas";
+            }else {
+                if (mes.equals("todo")) {
+                    List<ReporteConCamposOriginales> ventaXComunidadAnual = ventasService.getVentasPorComunidadAnual(año, comunidad);
+                    String titulo = "Ventas anuales de los productos de la comunidad " + comunidad;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadAnual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_comunidad_anual.xls");
+                    }
+                } else if (mes.equals("trimestre")) {
+                    List<ReporteConCamposOriginales> ventaXComunidadTrimestral = ventasService.getVentasPorComunidadTrimestral(año, comunidad);
+                    String titulo = "Ventas trimestrales de los productos de la comunidad " + comunidad;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadTrimestral, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_comunidad_trimestral.xls");
+                    }
+                } else {
+                    List<ReporteConCamposOriginales> ventaXComunidadMensual = ventasService.getVentasPorComunidadMensual(mes, año, comunidad);
+                    String titulo = "Ventas mensuales de los productos de la comunidad " + comunidad;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadMensual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_comunidad_mensual.xls");
+                    }
                 }
             }
         }
@@ -1804,18 +1864,25 @@ public class GestorController {
     }
 
     @GetMapping("devolverProducto1")
-    public String devolverProducto1(@RequestParam("id") int id, Model model) {
+    public String devolverProducto1(@RequestParam("id") int id, Model model, RedirectAttributes attr) {
         Date date = new Date();
         Optional<Inventario> inventario1 = inventarioRepository.findById(id);
         if (inventario1.isPresent()) {
             Inventario inventario = inventario1.get();
-            inventario.setIdInventario(id);
-            inventario.setEstado("Devuelto");
-            inventario.setFechadevolucion(date);
-            inventarioRepository.save(inventario);
-            model.addAttribute("lista", inventarioRepository.findByEstado("Proxima"));
-            model.addAttribute("msg", "Producto Devuelto exitosamente");
-            return "Gestor/G-ConsignacionesProxAVencer";
+            //check si to-do esta en almacen
+            inventarioStockTotal inventarioStockTotal1 = inventarioRepository.singleInventarioStockTotal(inventario.getIdInventario());
+            if(inventarioStockTotal1.getStockTotal() == inventario.getStock()) {
+                inventario.setIdInventario(id); // se ejecuta si to-do esta en almacen
+                inventario.setEstado("Devuelto");
+                inventario.setFechadevolucion(date);
+                inventarioRepository.save(inventario);
+                model.addAttribute("lista", inventarioRepository.findByEstado("Proxima"));
+                model.addAttribute("msg", "Producto Devuelto exitosamente");
+                return "Gestor/G-ConsignacionesProxAVencer";
+            }else{// se ejecuta si hay stock fuera de almacen
+                attr.addFlashAttribute("msgError", "No se pudo devolver. Hay stock fuera de el almacen principal.");
+                return "redirect:/gestor/consignacionesProxVencer";
+            }
         } else {
             return "redirect:/gestor/consignacionesProxVencer";
         }
@@ -1824,18 +1891,25 @@ public class GestorController {
 
 
     @GetMapping("devolverProducto2")
-    public String devolverProducto2(@RequestParam("id") int id, Model model) {
+    public String devolverProducto2(@RequestParam("id") int id, Model model, RedirectAttributes attr) {
         Date date = new Date();
         Optional<Inventario> inventario1 = inventarioRepository.findById(id);
         if (inventario1.isPresent()) {
-            Inventario inventario = inventario1.get();
-            inventario.setIdInventario(id);
-            inventario.setEstado("Devuelto");
-            inventario.setFechadevolucion(date);
-            inventarioRepository.save(inventario);
-            model.addAttribute("lista", inventarioRepository.findByEstado("Vencida"));
-            model.addAttribute("msg", "Producto Devuelto exitosamente");
-            return "Gestor/G-ConsignacionesVencidas";
+                Inventario inventario = inventario1.get();
+            //check si to-do esta en almacen
+            inventarioStockTotal inventarioStockTotal1 = inventarioRepository.singleInventarioStockTotal(inventario.getIdInventario());
+            if(inventarioStockTotal1.getStockTotal() == inventario.getStock()) {
+                inventario.setIdInventario(id); // se ejecuta si to-do esta en almacen
+                inventario.setEstado("Devuelto");
+                inventario.setFechadevolucion(date);
+                inventarioRepository.save(inventario);
+                model.addAttribute("lista", inventarioRepository.findByEstado("Vencida"));
+                model.addAttribute("msg", "Producto Devuelto exitosamente");
+                return "Gestor/G-ConsignacionesVencidas";
+            }else{// se ejecuta si hay stock fuera de almacen
+                attr.addFlashAttribute("msgError", "No se pudo devolver. Hay stock fuera de el almacen principal.");
+                return "redirect:/gestor/ConsignacionesVencidas";
+            }
         } else {
             return "redirect:/gestor/ConsignacionesVencidas";
         }
@@ -1860,21 +1934,23 @@ public class GestorController {
     // SE EJECUTARÁ CADA PRIMERO DE CADA MES A LAS 2 AM ,  EN LA BASE DE DATOS SE REALIZARÁN LOS CAMBIOS DE ESTADOS EL MISMO DÍA PERO UNA HORA ANTES (1 AM)--OJO!!!!!
     //@Scheduled(cron = "0 0/3 * * * ?", zone = "GMT-5")
     @Scheduled(cron = "0 0 2 1 * ?", zone = "GMT-5")
-        public void mensajeMensualDeAlertaDeVencimientoDeProductosParaLosGestores() throws MessagingException {
+    public void mensajeMensualDeAlertaDeVencimientoDeProductosParaLosGestores() throws MessagingException {
 
-            List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
-            List<String> codigosPorVencer = productoRepository.productoPorEstado("Proxima");
-            if(codigosPorVencer.size() >0){
-                if (listaCorreosGestor.size()>=1){
+        List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
+        List<String> codigosPorVencer = productoRepository.productoPorEstado("Proxima");
+        if (codigosPorVencer.size() > 0) {
+            if (listaCorreosGestor.size() >= 1) {
 
-                    for (String correo:listaCorreosGestor) {
-                        Email email = new Email();
-                        email.emailAlertaConsignacionGestor(correo);
-                        //System.out.println("Se envió");
-                    }
-                } else {System.out.println("No hay productos próximos a vencer");}
-
+                for (String correo : listaCorreosGestor) {
+                    Email email = new Email();
+                    email.emailAlertaConsignacionGestor(correo);
+                    //System.out.println("Se envió");
+                }
+            } else {
+                System.out.println("No hay productos próximos a vencer");
             }
+
+        }
 
     }
 
@@ -1885,37 +1961,41 @@ public class GestorController {
 
         List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
         List<ProductosAUnaSemanaDeVencer> productoSemanaVencer = productoRepository.productoAunaSemanaDeVencer();
-        if(productoSemanaVencer.size() >0){
-            if (listaCorreosGestor.size()>=1){
+        if (productoSemanaVencer.size() > 0) {
+            if (listaCorreosGestor.size() >= 1) {
 
-                for (String correo:listaCorreosGestor) {
+                for (String correo : listaCorreosGestor) {
 
                     Email email = new Email();
-                    email.emailAlertaConsignacionParaVender(correo,productoSemanaVencer);
+                    email.emailAlertaConsignacionParaVender(correo, productoSemanaVencer);
                     //System.out.println("Se envió");
                 }
-            } else {System.out.println("No hay productos a vencer en la semana");}
+            } else {
+                System.out.println("No hay productos a vencer en la semana");
+            }
 
         }
-        }
+    }
 
 
-        // SE EJECUTARÁ TODOS LOS DÍAS,  SERA UNA ALERTA QUE ENVIARÁ CORREO A LAS 10 DE LA NOCHE A GESTORES INDICANDO QUE PRODUCTOS SE HAN QUEDADO SON STOCK EN LAS SEDES en el día!!!!!
+    // SE EJECUTARÁ TODOS LOS DÍAS,  SERA UNA ALERTA QUE ENVIARÁ CORREO A LAS 10 DE LA NOCHE A GESTORES INDICANDO QUE PRODUCTOS SE HAN QUEDADO SON STOCK EN LAS SEDES en el día!!!!!
     @Scheduled(cron = "0 0 22 * * *", zone = "GMT-5")
     public void mensajeDiarioConStockAgotadoEnSede() throws MessagingException {
 
         List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
         List<AlertaProductoSinStock> alertaProductoSinStock = productoRepository.productoSinStockSede();
-        if(alertaProductoSinStock.size() >0){
-            if (listaCorreosGestor.size()>=1){
+        if (alertaProductoSinStock.size() > 0) {
+            if (listaCorreosGestor.size() >= 1) {
 
-                for (String correo:listaCorreosGestor) {
+                for (String correo : listaCorreosGestor) {
 
                     Email email = new Email();
-                    email.emailAlertaSinStock(correo,alertaProductoSinStock);
+                    email.emailAlertaSinStock(correo, alertaProductoSinStock);
                     //System.out.println("Se envió");
                 }
-            } else {System.out.println("mensaje diario con stock agotado en sede ");}
+            } else {
+                System.out.println("mensaje diario con stock agotado en sede ");
+            }
 
         }
     }

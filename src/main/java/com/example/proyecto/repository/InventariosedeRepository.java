@@ -13,9 +13,11 @@ import java.util.List;
 @Repository
 public interface InventariosedeRepository extends JpaRepository<Inventariosede, Integer> {
 
-    @Query(value="SELECT * FROM sw2_proyecto.inventariosede" +
-            " where inventariosede.idSede = ?1", nativeQuery= true)
-    List<Inventariosede> obtenerInventarioSede(Integer idSede);
+    @Query(value="SELECT inventariosede.* FROM sw2_proyecto.inventariosede, sw2_proyecto.inventario\n" +
+            "where inventariosede.idInventario = inventario.idInventario\n" +
+            "and inventario.stock > 0 and (inventario.estado != 'Devuelto' and inventario.estado != 'Vencido') \n" +
+            "and inventariosede.idSede = ?1", nativeQuery= true)
+    List<Inventariosede> obtenerInventarioSede(Sede sede);
 
     List<Inventariosede> findByInventarioAndSede(Inventario xd, Sede xd1);
 

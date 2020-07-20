@@ -38,9 +38,7 @@
                                     <th>Color</th>
                                     <th>Vencimiento de consignación</th>
                                     <th>Stock total</th>
-                                    <th>Renovar</th>
-                                    <th>Comprar</th>
-                                    <th>Devolver</th>
+                                    <th>Devolver a Artesano</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -51,16 +49,6 @@
                                     <td th:text="${productos.color}"></td>
                                     <td th:text="${productos.producto.adquisicion.fechafin}"></td>
                                     <td th:text="${productos.stock}"></td>
-                                    <td align="center">
-                                        <a th:href="@{'/gestor/renovarConsignacion?id='+${productos.idInventario}}">
-                                            <i class="fa fa-plus-circle" style="color: #5d21c7;margin-right: 5px"></i>
-                                        </a>
-                                    </td>
-                                    <td align="center">
-                                        <a th:href="@{'/gestor/comprarProductoConsignado?id='+${productos.idInventario}}">
-                                            <i class="fa fa-plus-circle" style="color: #5d21c7;margin-right: 5px"></i>
-                                        </a>
-                                    </td>
                                     <td align="center">
 
                                         <a th:href="@{'/gestor/devolverProducto2' + '?id=' + ${productos.idInventario}}">

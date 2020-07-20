@@ -14,6 +14,7 @@
             <div th:replace="Fragmentos/FragmentosGestor.html:: LogOut"></div>
             <div class="container-fluid">
                 <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                <div th:if="${msgError != null}" th:text="${msgError}" class="alert alert-danger" role="alert" align="center"></div>
                 <div class="card shadowA mb-4">
                     <div class="card-header2" style="padding-top: 0.6rem; padding-bottom: 0.6rem">
                         <div class="d-flex justify-content-between centrado">
@@ -38,9 +39,7 @@
                                     <th>Color</th>
                                     <th>Vencimiento de consignación</th>
                                     <th>Stock total</th>
-                                    <th>Renovar</th>
-                                    <th>Comprar</th>
-                                    <th>Devolver</th>
+                                    <th>Devolver a Artesano</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -51,16 +50,6 @@
                                     <td th:text="${productos.color}"></td>
                                     <td th:text="${productos.producto.adquisicion.fechafin}"></td>
                                     <td th:text="${productos.stock}"></td>
-                                    <td align="center">
-                                        <a th:href="@{'/gestor/RenovarConsignacion?id='+${productos.idInventario}}">
-                                            <i class="fa fa-plus-circle" style="color: #5d21c7;margin-right: 5px"></i>
-                                        </a>
-                                    </td>
-                                    <td align="center">
-                                        <a th:href="@{'/gestor/ComprarProductoConsignado?id='+${productos.idInventario}}">
-                                            <i class="fa fa-plus-circle" style="color: #5d21c7;margin-right: 5px"></i>
-                                        </a>
-                                    </td>
                                     <td align="center">
                                         <a th:href="@{'/gestor/devolverProducto1' + '?id=' + ${productos.idInventario}}">
                                             <i class="fa fa-plus-circle" style="color: #5d21c7;margin-right: 5px"></i>
