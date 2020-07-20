@@ -29,10 +29,10 @@
                                         <form method="post" class="user" th:href="@{/gestor/gestorGuardarComunidad}" th:object="${comunidad}">
                                             <input th:value="*{idComunidad}" name="shipperId" type="hidden" />
                                             <div class="form-group">
-                                                <input th:field="*{nombre}" type="text" class="form-control form-control-user" id="nombre" placeholder="Nombre">
+                                                <input th:field="*{nombre}" type="text" class="form-control form-control-user" id="nombre" >
                                             </div>
                                             <div class="form-group">
-                                                <input th:field="*{codigo}" type="text" class="form-control form-control-user" id="apellidoPaterno" placeholder="Apellido Paterno">
+                                                <input th:field="*{codigo}" type="text" class="form-control form-control-user" id="apellidoPaterno" >
                                             </div>
                                             <button type="submit" class="btn btn-primary" th:text="*{nombre==null?'Registrar':'Actualizar'}"></button>
                                             <a th:href="@{/gestor/gestorListaComunidad}" class="btn btn-searchTop btn-user btn-block">
