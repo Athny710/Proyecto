@@ -433,7 +433,7 @@ public class SedeController {
     @GetMapping("createpdf")
     public void crearPDFdeLista(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         Usuarios u = (Usuarios) session.getAttribute("user");
-        List<CamposReporteSede> venta = ventasService.getVentas(u.getSede().getIdsede());
+        List<ReporteConCamposOriginales> venta = ventasService.getReporteSede(u.getSede().getIdsede());
         boolean isFlag = ventasService.createPDF(venta, context, request, response);
         if (isFlag) {
             String fullPath = request.getServletContext().getRealPath("/resources/reports/" + "ventas" + ".pdf");
