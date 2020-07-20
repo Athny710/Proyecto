@@ -125,7 +125,7 @@ public class VentasServiceImplement implements VentasService {
     //String nombreSede = u.getSede().getNombre();
 
     @Override
-    public boolean createPDF(List<ReporteConCamposOriginales> venta, ServletContext context, HttpServletRequest request, HttpServletResponse response) {
+    public boolean createPDF(List<ReporteConCamposOriginales> venta, String titulo, ServletContext context, HttpServletRequest request, HttpServletResponse response) {
         Document document = new Document(PageSize.A3.rotate(),15,15,45,30);
         try {
             String filepath = context.getRealPath("/resources/reports");
@@ -138,7 +138,7 @@ public class VentasServiceImplement implements VentasService {
             document.open();
 
             Font mainfont = FontFactory.getFont("Arial",10, BaseColor.BLACK);
-            Paragraph paragraph = new Paragraph("Ventas generales de la sede ",mainfont);
+            Paragraph paragraph = new Paragraph(titulo,mainfont);
             paragraph.setAlignment(Element.ALIGN_CENTER);
             paragraph.setIndentationLeft(50);
             paragraph.setIndentationRight(50);
