@@ -135,20 +135,27 @@ public class VentasServiceImplement implements VentasService {
                 new File(filepath).mkdirs();
             }
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file+"/"+"ventas"+".pdf"));
+
+
             document.open();
 
-            Font mainfont = FontFactory.getFont("Arial",10, BaseColor.BLACK);
+            Font mainfont = FontFactory.getFont("Arial",20, Font.BOLD);
             Paragraph paragraph = new Paragraph(titulo,mainfont);
             paragraph.setAlignment(Element.ALIGN_CENTER);
             paragraph.setIndentationLeft(50);
             paragraph.setIndentationRight(50);
             paragraph.setSpacingAfter(10);
+            Image imagen = Image.getInstance("src/main/resources/static/img/logoOriginal.png");
+            imagen.setAbsolutePosition(1000f, 705f);
+            imagen.scaleToFit(170,170);
+
             document.add(paragraph);
+            document.add(imagen);
 
             PdfPTable table = new PdfPTable(14);
             table.setWidthPercentage(100);
-            table.setSpacingBefore(10f);
-            table.setSpacingAfter(10);
+            table.setSpacingBefore(45f);
+            table.setSpacingAfter(10f);
 
             Font tableheader = FontFactory.getFont("Arial",10,BaseColor.BLACK);
             Font tablebody = FontFactory.getFont("Arial",9,BaseColor.BLACK);
@@ -724,7 +731,7 @@ public class VentasServiceImplement implements VentasService {
                 numdocventavalue.setCellStyle(bodyCellStyle);
 
                 HSSFCell mediodepagoValue = bodyROW.createCell(3);
-                mediodepagoValue.setCellValue(venta1.getNumerodocventa());
+                mediodepagoValue.setCellValue(venta1.getMediodepago());
                 mediodepagoValue.setCellStyle(bodyCellStyle);
 
                 HSSFCell rucdnivalue = bodyROW.createCell(4);
