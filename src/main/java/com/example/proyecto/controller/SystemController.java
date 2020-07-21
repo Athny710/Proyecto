@@ -4,6 +4,7 @@ package com.example.proyecto.controller;
 import com.example.proyecto.entity.Usuarios;
 import com.example.proyecto.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,33 +36,42 @@ public class SystemController {
 
 
     @PostMapping("guardarContSession")
-    public String guardarCont(@RequestParam("psw1") String psw1,
+    public String guardarCont(@RequestParam("pswActual") String pswActual,
+                              @RequestParam("psw1") String psw1,
                               @RequestParam("psw2") String psw2,
                               Model model, RedirectAttributes attr,
                               HttpSession session){
         if(!"".equals(psw1) && !"".equals(psw2)){
             if(psw1.equals(psw2)){
-                if(psw1.length()<8){
-                    attr.addFlashAttribute("msg", "Mínimo 8 caracteres");
-                    return "redirect:/system/CambiarContSess";
-                }else if(psw1.length()>40){
-                    attr.addFlashAttribute("msg", "Demasiados caracteres");
-                    return "redirect:/system/CambiarContSess";
-                }else {
-                    attr.addFlashAttribute("msg", "Contraseña actualizada.");
-                    Usuarios usuarioLog=(Usuarios) session.getAttribute("user");
-                    usuarioLog.setPassword(new BCryptPasswordEncoder().encode(psw1));
-                    session.setAttribute("user", usuarioLog);
-                    usuarioRepository.save(usuarioLog);
-                    if (usuarioLog.getTipo().equalsIgnoreCase("administrador")){
-                        return "redirect:/admin";
-                    }else if (usuarioLog.getTipo().equalsIgnoreCase("gestor")){
-                        return "redirect:/gestor";
-                    }else if (usuarioLog.getTipo().equalsIgnoreCase("sede")){
-                        return "redirect:/sede";
-                    }else {
-                        return "redirect:/";
+                Usuarios u1 = (Usuarios) session.getAttribute("user");
+                String pwdHashedActual = u1.getPassword();
+                //String pwdHashedIngresada = new BCryptPasswordEncoder().matches(pswActual,pwdHashedActual);
+                if (new BCryptPasswordEncoder().matches(pswActual,pwdHashedActual)) {
+                    if (psw1.length() < 8) {
+                        attr.addFlashAttribute("msg", "Mínimo 8 caracteres");
+                        return "redirect:/system/CambiarContSess";
+                    } else if (psw1.length() > 40) {
+                        attr.addFlashAttribute("msg", "Demasiados caracteres");
+                        return "redirect:/system/CambiarContSess";
+                    } else {
+                        attr.addFlashAttribute("msg", "Contraseña actualizada.");
+                        Usuarios usuarioLog = (Usuarios) session.getAttribute("user");
+                        usuarioLog.setPassword(new BCryptPasswordEncoder().encode(psw1));
+                        session.setAttribute("user", usuarioLog);
+                        usuarioRepository.save(usuarioLog);
+                        if (usuarioLog.getTipo().equalsIgnoreCase("administrador")) {
+                            return "redirect:/admin";
+                        } else if (usuarioLog.getTipo().equalsIgnoreCase("gestor")) {
+                            return "redirect:/gestor";
+                        } else if (usuarioLog.getTipo().equalsIgnoreCase("sede")) {
+                            return "redirect:/sede";
+                        } else {
+                            return "redirect:/";
+                        }
                     }
+                }else {
+                    attr.addFlashAttribute("msg", "La contraseña actual no es la correcta");
+                    return "redirect:/system/CambiarContSess";
                 }
             }else{
                 attr.addFlashAttribute("msg", "Las contraseñas no coinciden");
