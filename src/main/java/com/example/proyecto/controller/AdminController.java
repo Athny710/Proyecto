@@ -287,7 +287,7 @@ public class AdminController {
             attr.addFlashAttribute("msg1","ID no válido");
         }
 
-        return "Administrador/A-ListaGestores";
+        return "redirect:/admin/listaGestores";
     }
 
 

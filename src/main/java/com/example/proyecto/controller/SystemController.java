@@ -79,10 +79,11 @@ public class SystemController {
                 attr.addFlashAttribute("msg", "No puede haber campos vacíos.");
                 return "redirect:/system/CambiarContSess";
             }
-    }else{
+        }else{
             attr.addFlashAttribute("msg", "Las contraseña actual no es correcta");
             return "redirect:/system/CambiarContSess";
-    }
+        }
+
     }
 
 
