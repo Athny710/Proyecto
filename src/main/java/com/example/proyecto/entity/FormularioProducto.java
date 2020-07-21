@@ -31,12 +31,12 @@ public class FormularioProducto {
     private String nombreTama;
     private String nombreComun;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "por favor ingrese una fecha")
     private LocalDate fechafin;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechainicio;
     private int codigoArtesano;
     private String moda;
-    @NotBlank(message = "Nopuede ser vacio")
     private  String tipo;
 
     public String getNombreProducto() {

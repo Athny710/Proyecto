@@ -757,6 +757,8 @@ public class GestorController {
                 model.addAttribute("listaTama", tamañoRepository.findAll());
                 model.addAttribute("listaLinea", lineaRepository.findAll());
                 model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+
+
                 return "Gestor/G-RegCompra";
             } else if (formulario.getCrearActualizar() > 0) {
                 System.out.println("Tiene errores");

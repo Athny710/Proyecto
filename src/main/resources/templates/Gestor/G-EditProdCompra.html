@@ -30,8 +30,8 @@
                                 <input type="text" class="form-control" th:field="*{nombreProducto}" style="border-radius: 10rem">
                                 <div class="text-danger" th:if="${#fields.hasErrors('nombreProducto')}" th:errors="*{nombreProducto}" ></div>
                             </div>
-                            <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6" >
-                                <label  >Código del Nombre del Producto</label>
+                            <div  class="form-group col-md-6" >
+                                <label  th:if="${formulario.crearActualizar == 0}" >Código del Nombre del Producto</label>
                                 <input type="hidden" class="form-control" id="codigoProducto" name="codigoProducto" style="border-radius: 10rem"
                                        th:value="*{codigoProducto}">
                                 <div  class="text-danger" th:if="${#fields.hasErrors('codigoProducto') || formulario.crearActualizar == 0}" th:errors="*{codigoProducto}" ></div>
@@ -42,18 +42,18 @@
                                        th:value="*{descripcion}">
                                 <div class="text-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" ></div>
                             </div>
-                            <div th:if="${formulario.crearActualizar == 0}" class="form-group col-md-6">
-                                <label   >Código de la Descripción</label>
+                            <div  class="form-group col-md-6">
+                                <label  th:if="${formulario.crearActualizar == 0}" >Código de la Descripción</label>
                                 <input type="hidden" class="form-control" id="codDescripcion" name="codDescripcion" style="border-radius: 10rem"
                                        th:value="*{codDescripcion}">
                                 <div  class="text-danger" th:if="${#fields.hasErrors('codDescripcion') || formulario.crearActualizar == 0}" th:errors="*{codDescripcion}" ></div>
                             </div>
-                            <div th:if="${tipo.equalsIgnoreCase('consignado') && formulario.crearActualizar == 0 }" class="form-group col-md-6">
+                            <div th:if="${formulario.tipo.equalsIgnoreCase('consignado')  }" class="form-group col-md-6">
                                 <label>Fecha Fin de la Consignación</label>
                                 <input type="date" class="form-control" style="border-radius: 10rem"
                                        th:field="*{fechafin}">
                                 <div class="text-danger"
-                                     th:if="${#fields.hasErrors('fechafin') || formulario.crearActualizar == 0}}"
+                                     th:if="${#fields.hasErrors('fechafin')  }"
                                      th:errors="*{fechafin}"></div>
                             </div>
 

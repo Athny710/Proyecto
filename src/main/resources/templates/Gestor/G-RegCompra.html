@@ -32,7 +32,7 @@
                                 <div class="p-5">
                                     <form method="post" th:action="@{/gestor/guardarProducto}" th:object="${formulario}" class="user">
                                         <input th:value="*{crearActualizar}" name="crearActualizar" type="hidden"/>
-
+                                        <input th:value="${desplegar}" name="crearActualizar" type="hidden"/>
                                             <label>Modalidad</label>
                                             <select style="border-radius: 10rem" class="form-control"
                                                     id="miselect" name="modalidad">
@@ -162,6 +162,8 @@
 <div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
 
 <script>
+
+
 
     var modalidad = document.getElementById("miselect");
     var text = modalidad.options[modalidad.selectedIndex].text;
