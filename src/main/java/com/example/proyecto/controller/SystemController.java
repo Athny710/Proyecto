@@ -37,40 +37,52 @@ public class SystemController {
     @PostMapping("guardarContSession")
     public String guardarCont(@RequestParam("psw1") String psw1,
                               @RequestParam("psw2") String psw2,
+                              @RequestParam("psw2") String psw0,
                               Model model, RedirectAttributes attr,
-                              HttpSession session){
-        if(!"".equals(psw1) && !"".equals(psw2)){
-            if(psw1.equals(psw2)){
-                if(psw1.length()<8){
-                    attr.addFlashAttribute("msg", "Mínimo 8 caracteres");
-                    return "redirect:/system/CambiarContSess";
-                }else if(psw1.length()>40){
-                    attr.addFlashAttribute("msg", "Demasiados caracteres");
-                    return "redirect:/system/CambiarContSess";
-                }else {
-                    attr.addFlashAttribute("msg", "Contraseña actualizada.");
-                    Usuarios usuarioLog=(Usuarios) session.getAttribute("user");
-                    usuarioLog.setPassword(new BCryptPasswordEncoder().encode(psw1));
-                    session.setAttribute("user", usuarioLog);
-                    usuarioRepository.save(usuarioLog);
-                    if (usuarioLog.getTipo().equalsIgnoreCase("administrador")){
-                        return "redirect:/admin";
-                    }else if (usuarioLog.getTipo().equalsIgnoreCase("gestor")){
-                        return "redirect:/gestor";
-                    }else if (usuarioLog.getTipo().equalsIgnoreCase("sede")){
-                        return "redirect:/sede";
-                    }else {
-                        return "redirect:/";
-                    }
-                }
-            }else{
-                attr.addFlashAttribute("msg", "Las contraseñas no coinciden");
-                return "redirect:/system/CambiarContSess";
-            }
-        }else{
+                              HttpSession session) {
+        if("".equals(psw0)){
             attr.addFlashAttribute("msg", "No puede haber campos vacíos.");
             return "redirect:/system/CambiarContSess";
         }
+        Usuarios usuarioLog = (Usuarios) session.getAttribute("user");
+        boolean match = new BCryptPasswordEncoder().matches(psw0,usuarioLog.getPassword());
+        if (match){
+            if (!"".equals(psw1) && !"".equals(psw2)) {
+                if (psw1.equals(psw2)) {
+                    if (psw1.length() < 8) {
+                        attr.addFlashAttribute("msg", "Mínimo 8 caracteres");
+                        return "redirect:/system/CambiarContSess";
+                    } else if (psw1.length() > 40) {
+                        attr.addFlashAttribute("msg", "Demasiados caracteres");
+                        return "redirect:/system/CambiarContSess";
+                    } else {
+                        attr.addFlashAttribute("msg", "Contraseña actualizada.");
+
+                        usuarioLog.setPassword(new BCryptPasswordEncoder().encode(psw1));
+                        session.setAttribute("user", usuarioLog);
+                        usuarioRepository.save(usuarioLog);
+                        if (usuarioLog.getTipo().equalsIgnoreCase("administrador")) {
+                            return "redirect:/admin";
+                        } else if (usuarioLog.getTipo().equalsIgnoreCase("gestor")) {
+                            return "redirect:/gestor";
+                        } else if (usuarioLog.getTipo().equalsIgnoreCase("sede")) {
+                            return "redirect:/sede";
+                        } else {
+                            return "redirect:/";
+                        }
+                    }
+                } else {
+                    attr.addFlashAttribute("msg", "Las contraseñas no coinciden");
+                    return "redirect:/system/CambiarContSess";
+                }
+            } else {
+                attr.addFlashAttribute("msg", "No puede haber campos vacíos.");
+                return "redirect:/system/CambiarContSess";
+            }
+    }else{
+            attr.addFlashAttribute("msg", "Las contraseña actual no es correcta");
+            return "redirect:/system/CambiarContSess";
+    }
     }
 
 
