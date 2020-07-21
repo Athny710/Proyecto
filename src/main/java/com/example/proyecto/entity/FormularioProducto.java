@@ -36,6 +36,8 @@ public class FormularioProducto {
     private LocalDate fechainicio;
     private int codigoArtesano;
     private String moda;
+    @NotBlank(message = "Nopuede ser vacio")
+    private  String tipo;
 
     public String getNombreProducto() {
         return nombreProducto;
@@ -140,5 +142,13 @@ public class FormularioProducto {
 
     public void setModa(String moda) {
         this.moda = moda;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 }

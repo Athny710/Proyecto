@@ -21,6 +21,12 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             nativeQuery = true)
     List<Venta> buscarPorSede(int sedeid);
 
+    @Query(value = "select v.nombreCliente as nombre from venta v\n" +
+            "inner join tienda t on v.idTienda = t.idTienda\n" +
+            "inner join sede s on t.idSede = s.idSede and s.idSede = ?1 and t.idTienda = ?2\n" +
+            "order by v.fecha", nativeQuery = true)
+    List<ClientesQueCompraron> obtenerVentaPorTiendaYSede(int idsede, int idtienda);
+
     List<Venta> findByTienda(Tienda tienda);
 
     @Query(value = "select v.numeroDocumentoIdentidad as dnioruc, v.nombreCliente as cliente, v.numeroDocumentoVenta as numerodoc, v.lugarDeVenta as lugar, p.codigoGenerado as codgen,\n" +
@@ -37,21 +43,21 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "inner join denominacion d on p.idDenominacion = d.idDenominacion and d.nombre = ?1", nativeQuery = true)
     List<VentasXNombreDeProducto> listarVentasXNombre(String nombreProduct);
 
-    @Query(value = "select v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod, p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
+    @Query(value = "select v.medioDePago as mediodepago, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod, p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion and month(v.fecha) = ?1 and year(v.fecha) = ?2 and v.nombreCliente = ?3\n" +
             "order by v.fecha asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteMensualCliente(String mes, String año, String cliente);
 
-    @Query(value = "select v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
+    @Query(value = "select v.medioDePago as mediodepago, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion and year(v.fecha) = ?1 and v.nombreCliente = ?2\n" +
             "order by v.fecha asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteAnualCliente(String año, String cliente);
 
-    @Query(value = "select v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, \n" +
+    @Query(value = "select v.medioDePago as mediodepago, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, \n" +
             "CASE \n" +
             "    WHEN month(v.fecha) BETWEEN 1 AND 3 THEN '1er trimestre (enero - febrero - marzo)' \n" +
             "    WHEN month(v.fecha) BETWEEN 4 AND 6 THEN '2do trimestre (abril - mayo - junio)'\n" +
@@ -65,7 +71,7 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "order by fech asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteTrimestralCliente(String año, String cliente);
 
-    @Query(value = "select t.nombre as tienda, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
+    @Query(value = "select v.medioDePago as mediodepago, t.nombre as tienda, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion\n" +
@@ -74,7 +80,7 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "order by v.fecha asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteMensualSede(String mes, String año, String idsede);
 
-    @Query(value = "select t.nombre as tienda, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
+    @Query(value = "select v.medioDePago as mediodepago, t.nombre as tienda, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion\n" +
@@ -83,7 +89,7 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "order by v.fecha asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteAnualSede(String año, String idsede);
 
-    @Query(value = "select t.nombre as tienda, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, \n" +
+    @Query(value = "select v.medioDePago as mediodepago, t.nombre as tienda, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, \n" +
             "CASE \n" +
             "    WHEN month(v.fecha) BETWEEN 1 AND 3 THEN '1er trimestre (enero - febrero - marzo)' \n" +
             "    WHEN month(v.fecha) BETWEEN 4 AND 6 THEN '2do trimestre (abril - mayo - junio)'\n" +
@@ -98,21 +104,21 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "order by v.fecha asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteTrimestralSede(String año, String idsede);
 
-    @Query(value = "select v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
+    @Query(value = "select v.medioDePago as mediodepago, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion and month(v.fecha) = ?1 and year(v.fecha) = ?2 and d.nombre = ?3\n" +
             "order by v.fecha asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteMensualArticulo(String mes, String año, String articulo);
 
-    @Query(value = "select v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
+    @Query(value = "select v.medioDePago as mediodepago, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion and year(v.fecha) = ?1 and d.nombre = ?2\n" +
             "order by v.fecha asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteAnualArticulo(String año, String articulo);
 
-    @Query(value = "select v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, \n" +
+    @Query(value = "select v.medioDePago as mediodepago, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, \n" +
             "CASE \n" +
             "    WHEN month(v.fecha) BETWEEN 1 AND 3 THEN '1er trimestre (enero - febrero - marzo)' \n" +
             "    WHEN month(v.fecha) BETWEEN 4 AND 6 THEN '2do trimestre (abril - mayo - junio)'\n" +
@@ -126,7 +132,7 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "order by fech asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteTrimestralArticulo(String año, String articulo);
 
-    @Query(value = "select v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
+    @Query(value = "select v.medioDePago as mediodepago, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion \n" +
@@ -134,7 +140,7 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "order by v.fecha asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteMensualComunidad(String mes, String año, String articulo);
 
-    @Query(value = "select v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
+    @Query(value = "select v.medioDePago as mediodepago, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion \n" +
@@ -142,7 +148,7 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "order by v.fecha asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteAnualComunidad(String año, String articulo);
 
-    @Query(value = "select v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, \n" +
+    @Query(value = "select v.medioDePago as mediodepago, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, \n" +
             "CASE \n" +
             "    WHEN month(v.fecha) BETWEEN 1 AND 3 THEN '1er trimestre (enero - febrero - marzo)' \n" +
             "    WHEN month(v.fecha) BETWEEN 4 AND 6 THEN '2do trimestre (abril - mayo - junio)'\n" +
@@ -157,21 +163,21 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "order by fech asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteTrimestralComunidad(String año, String articulo);
 
-    @Query(value = "select v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
+    @Query(value = "select v.medioDePago as mediodepago, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion and month(v.fecha) = ?1 and year(v.fecha) = ?2\n" +
             "order by v.fecha asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteMensualTotal(String mes, String año);
 
-    @Query(value = "select v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
+    @Query(value = "select v.medioDePago as mediodepago, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion and year(v.fecha) = ?1\n" +
             "order by v.fecha asc", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteAnualTotal(String año);
 
-    @Query(value = "select v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, \n" +
+    @Query(value = "select v.medioDePago as mediodepago, v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, \n" +
             "CASE \n" +
             "    WHEN month(v.fecha) BETWEEN 1 AND 3 THEN '1er trimestre (enero - febrero - marzo)' \n" +
             "    WHEN month(v.fecha) BETWEEN 4 AND 6 THEN '2do trimestre (abril - mayo - junio)'\n" +
@@ -266,19 +272,92 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "\tgroup by fecha", nativeQuery = true)
     List<FechaMesVenta> obtenerPeriodoXAño(String cliente, String año);
 
+    @Query(value = "SELECT distinct(month(v.fecha)) as fecha,\n" +
+            "CASE\n" +
+            "WHEN MONTH(v.fecha) = 1 THEN \"enero\"\n" +
+            "WHEN MONTH(v.fecha) = 2 THEN \"febrero\"\n" +
+            "WHEN MONTH(v.fecha) = 3 THEN \"marzo\"\n" +
+            "WHEN MONTH(v.fecha) = 4 THEN \"abril\"\n" +
+            "WHEN MONTH(v.fecha) = 5 THEN \"mayo\"\n" +
+            "WHEN MONTH(v.fecha) = 6 THEN \"junio\"\n" +
+            "WHEN MONTH(v.fecha) = 7 THEN \"julio\"\n" +
+            "WHEN MONTH(v.fecha) = 8 THEN \"agosto\"\n" +
+            "WHEN MONTH(v.fecha) = 9 THEN \"septiembre\"\n" +
+            "WHEN MONTH(v.fecha) = 10 THEN \"octubre\"\n" +
+            "WHEN MONTH(v.fecha) = 11 THEN \"noviembre\"\n" +
+            "WHEN MONTH(v.fecha) = 12 THEN \"diciembre\" END AS fechaname FROM venta v where year(v.fecha) = ?1\n" +
+            "group by fecha", nativeQuery = true)
+    List<FechaMesVenta> obtenerPeriodoParaReporteTotal(String anho);
+
+    @Query(value = "select distinct(month(v.fecha)) as fecha, CASE\n" +
+            "WHEN MONTH(v.fecha) = 1 THEN \"enero\"\n" +
+            "WHEN MONTH(v.fecha) = 2 THEN \"febrero\"\n" +
+            "WHEN MONTH(v.fecha) = 3 THEN \"marzo\"\n" +
+            "WHEN MONTH(v.fecha) = 4 THEN \"abril\"\n" +
+            "WHEN MONTH(v.fecha) = 5 THEN \"mayo\"\n" +
+            "WHEN MONTH(v.fecha) = 6 THEN \"junio\"\n" +
+            "WHEN MONTH(v.fecha) = 7 THEN \"julio\"\n" +
+            "WHEN MONTH(v.fecha) = 8 THEN \"agosto\"\n" +
+            "WHEN MONTH(v.fecha) = 9 THEN \"septiembre\"\n" +
+            "WHEN MONTH(v.fecha) = 10 THEN \"octubre\"\n" +
+            "WHEN MONTH(v.fecha) = 11 THEN \"noviembre\"\n" +
+            "WHEN MONTH(v.fecha) = 12 THEN \"diciembre\" END AS fechaname from venta v\n" +
+            "inner join tienda t on v.idTienda = t.idTienda\n" +
+            "inner join sede s on t.idSede = s.idSede and s.nombre = ?1 and year(v.fecha) = ?2\n" +
+            "order by v.fecha", nativeQuery = true)
+    List<FechaMesVenta> obtenerPeriodoXAñoSede(String sede, String año);
+
+    @Query(value = "select distinct(month(v.fecha)) as fecha, CASE\n" +
+            "WHEN MONTH(v.fecha) = 1 THEN \"enero\"\n" +
+            "WHEN MONTH(v.fecha) = 2 THEN \"febrero\"\n" +
+            "WHEN MONTH(v.fecha) = 3 THEN \"marzo\"\n" +
+            "WHEN MONTH(v.fecha) = 4 THEN \"abril\"\n" +
+            "WHEN MONTH(v.fecha) = 5 THEN \"mayo\"\n" +
+            "WHEN MONTH(v.fecha) = 6 THEN \"junio\"\n" +
+            "WHEN MONTH(v.fecha) = 7 THEN \"julio\"\n" +
+            "WHEN MONTH(v.fecha) = 8 THEN \"agosto\"\n" +
+            "WHEN MONTH(v.fecha) = 9 THEN \"septiembre\"\n" +
+            "WHEN MONTH(v.fecha) = 10 THEN \"octubre\"\n" +
+            "WHEN MONTH(v.fecha) = 11 THEN \"noviembre\"\n" +
+            "WHEN MONTH(v.fecha) = 12 THEN \"diciembre\" END AS fechaname from venta v\n" +
+            "inner join inventario inv on v.idInventario = inv.idInventario\n" +
+            "inner join producto p on inv.idProducto = p.idProducto\n" +
+            "inner join denominacion d on p.idDenominacion = d.idDenominacion and d.nombre = ?1 and year(v.fecha) = ?2\n" +
+            "order by v.fecha", nativeQuery = true)
+    List<FechaMesVenta> obtenerPeriodoXAñoProducto(String producto, String año);
+
+    @Query(value = "select distinct(month(v.fecha)) as fecha, CASE\n" +
+            "WHEN MONTH(v.fecha) = 1 THEN \"enero\"\n" +
+            "WHEN MONTH(v.fecha) = 2 THEN \"febrero\"\n" +
+            "WHEN MONTH(v.fecha) = 3 THEN \"marzo\"\n" +
+            "WHEN MONTH(v.fecha) = 4 THEN \"abril\"\n" +
+            "WHEN MONTH(v.fecha) = 5 THEN \"mayo\"\n" +
+            "WHEN MONTH(v.fecha) = 6 THEN \"junio\"\n" +
+            "WHEN MONTH(v.fecha) = 7 THEN \"julio\"\n" +
+            "WHEN MONTH(v.fecha) = 8 THEN \"agosto\"\n" +
+            "WHEN MONTH(v.fecha) = 9 THEN \"septiembre\"\n" +
+            "WHEN MONTH(v.fecha) = 10 THEN \"octubre\"\n" +
+            "WHEN MONTH(v.fecha) = 11 THEN \"noviembre\"\n" +
+            "WHEN MONTH(v.fecha) = 12 THEN \"diciembre\" END AS fechaname from venta v\n" +
+            "inner join inventario inv on v.idInventario = inv.idInventario\n" +
+            "inner join producto p on inv.idProducto = p.idProducto\n" +
+            "inner join comunidad c on c.idComunidad = p.idComunidad and c.nombre = \"Huaran\" and year(v.fecha) = '2019'\n" +
+            "order by v.fecha", nativeQuery = true)
+    List<FechaMesVenta> obtenerPeriodoXAñoComunidad(String comunidad, String año);
+
     @Query(value = "SELECT t.nombre as nombretienda, v.nombreCliente as cliente, v.tipoDocumentoVenta as doc, v.precioUnitarioVenta as preciounit, v.Cantidad as cantidad, v.precioUnitarioVenta*v.Cantidad as preciotot FROM venta v\n" +
             "inner join tienda t on t.idTienda = v.idTienda\n" +
             "inner join sede s on s.idSede = t.idSede and s.idSede = ?1", nativeQuery = true)
     List<CamposReporteSede> obtenerDatosParaReporteSede(int id);
 
     //SEDEEE
-    @Query(value = "select t.nombre as tienda,v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
+    @Query(value = "select v.medioDePago as mediodepago, t.nombre as tienda,v.fecha as fecha, v.tipoDocumentoVenta as tipodocventa, v.numeroDocumentoVenta as numerodocventa, v.numeroDocumentoIdentidad as numerodocid, v.nombreCliente as nombrecliente, d.codigoNombre as codprod, inv.color as colorprod,p.codigoGenerado as codgen, d.nombre as nombreproduct, v.Cantidad as cantidad, v.precioUnitarioVenta as preciounit, monthname(v.fecha) as fech, v.Cantidad*v.precioUnitarioVenta as totalxproduct from venta v\n" +
             "inner join inventario inv on v.idInventario = inv.idInventario\n" +
             "inner join producto p on inv.idProducto = p.idProducto\n" +
             "inner join denominacion d on p.idDenominacion = d.idDenominacion\n" +
             "inner join tienda t on v.idTienda = t.idTienda\n" +
             "inner join sede s on t.idSede = s.idSede and s.idSede = ?1\n" +
-            "order by v.fecha asc", nativeQuery = true)
+            "order by t.nombre", nativeQuery = true)
     List<ReporteConCamposOriginales> reporteSede(int idsede);
 
 }

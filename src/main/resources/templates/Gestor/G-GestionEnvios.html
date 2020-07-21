@@ -16,6 +16,7 @@
                 <div th:insert="Fragmentos/FragmentosGestor.html:: LogOut"></div>
                 <!-- Page Heading -->
                 <div class="container-fluid">
+                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert" align="center"></div>
                     <div class="card shadowA mb-4" >
                         <div class="card-header2 py-3">
                             <div class="d-flex justify-content-between centrado">
@@ -23,7 +24,7 @@
                                     th:text="${estadoenviosede.idenviosede == 0? 'Registro de nuevo envio' : 'Edición del pedido'}">
                                     Registro de nuevo envio</h5>
                             </div>
-                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
+
                         </div>
                         <div class="card-body bg-gray-100">
                             <div class="row">
@@ -36,14 +37,14 @@
                                             <div class="form-group">
                                                 <label>Fecha de envio:</label>
                                                 <input th:field="*{fecha}" type="date" class="form-control"
-                                                       placeholder="fecha" style="border-radius:10rem">
+                                                       style="border-radius:10rem">
                                                 <div class="text-danger" th:if="${#fields.hasErrors('fecha')}"
                                                      th:errors="*{fecha}"></div>
                                             </div>
                                             <div class="form-group">
                                                 <label>Cantidad enviada:</label>
                                                 <input th:field="*{cantidad}" type="number" min="0"
-                                                       class="form-control form-control-user2" placeholder="cantidad"
+                                                       class="form-control form-control-user2"
                                                        style="border-radius:10rem">
                                                 <div class="text-danger" th:if="${#fields.hasErrors('cantidad')}"
                                                      th:errors="*{cantidad}"></div>
@@ -62,12 +63,19 @@
                                                 <label for="inventariosede">Producto a enviar:</label>
                                                 <select th:field="*{inventariosede.inventario.idInventario}"
                                                         class="form-control" id="inventariosede" style="border-radius: 10rem"
-                                                        placeholder="producto" >
-                                                    <option th:each="inventario : ${listaInventario}"
+                                                        placeholder="producto" onchange="selMax()" >
+                                                    <option th:if="${estadoenviosede.idenviosede == 0}"
+                                                            th:each="inventario : ${listaInventario}"
                                                             th:value="${inventario.idInventario}" th:text="${
                                                             inventario.producto.getCodigoGenerado()  + ' ' +
                                                             inventario.color
                                                             + ' quedan: ' + inventario.stock }"></option>
+                                                    <option th:if="${estadoenviosede.idenviosede != 0}"
+                                                            th:value="*{inventariosede.inventario.idInventario}" th:text="*{
+                                                            inventariosede.inventario.producto.getCodigoGenerado()  + ' ' +
+                                                            inventariosede.inventario.color
+                                                            + ' quedan: ' + (inventariosede.inventario.stock + cantidad) }"></option>
+
                                                 </select>
                                                 <div class="text-danger"
                                                      th:if="${#fields.hasErrors('inventariosede.inventario.idInventario')}"
@@ -77,8 +85,7 @@
                                             <div class="form-group">
                                                 <label for="listaSede">Sede destino:</label>
                                                 <select th:field="*{inventariosede.sede.idsede}"
-                                                        class="form-control" id="listaSede" style="border-radius: 10rem"
-                                                        placeholder="Sede" >
+                                                        class="form-control" id="listaSede" style="border-radius: 10rem">
                                                     <option th:each="sede : ${listaSede}" th:value="${sede.idsede}"
                                                             th:text="${sede.nombre}"></option>
                                                 </select>
@@ -92,14 +99,14 @@
                                                     Reenviar o enviar
                                                 </button>
 
-                                            <div class="row" th:if="${estadoenviosede.idenviosede == 0}">
-                                                <a class="btn btn-danger btn-block" style="border-radius:10rem;margin-top: 8px;"
+
+                                                <a th:if="${estadoenviosede.idenviosede == 0}" class="btn btn-danger btn-block" style="border-radius:10rem;margin-top: 8px;"
                                                    th:href="@{/gestor/gestorProductosEnviados}">Cancelar</a>
-                                            </div>
-                                            <div class="row" th:if="${estadoenviosede.idenviosede != 0}">
-                                                <a class="btn btn-danger btn-block" style="border-radius:10rem;margin-top: 8px;"
+
+
+                                                <a th:if="${estadoenviosede.idenviosede != 0}" class="btn btn-danger btn-block" style="border-radius:10rem;margin-top: 8px;"
                                                    th:href="@{/gestor/gestorProductosRechazados}">Cancelar</a>
-                                            </div>
+
                                         </form>
                                     </div>
                                 </div>
@@ -130,6 +137,17 @@
     <i class="fas fa-angle-up"></i>
 </a>
 <div th:replace="Fragmentos/FragmentosGestor.html::Script"></div>
+    <script>
+        function selMax() {
+            if(document.readyState === 'complete'){
+                var texto = document.getElementById("inventariosede");
+                var strUser = texto.options[texto.selectedIndex].text;
+                var lastnum = strUser.split(" ").pop();
+                var cantidadIn = document.getElementById("cantidad");
+                cantidadIn.max=lastnum;
+            }
+        }
+    </script>
 
 </body>
 

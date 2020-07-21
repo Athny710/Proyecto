@@ -289,7 +289,7 @@ public class AdminController {
             usuarios.setCorreo(usuarios.getCorreo().toLowerCase());
 
             if (usuarioRepository.findByCorreo(usuarios.getCorreo()) == null) {
-                if (usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {
+                if (usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@.+\\..+$")) {
                     if (usuarioRepository.findByTelefono(usuarios.getTelefono()) == null) {
                         if (usuarioRepository.findByNombreAndApellido(usuarios.getNombre(), usuarios.getApellido()) == null) {
                             usuarios.setPassword(getAlphaNumericString(12));

@@ -29,7 +29,7 @@ public interface VentasService {
     List<ReporteConCamposOriginales> getVentaMensual(String mes, String año);
     List<ReporteConCamposOriginales> getReporteSede(Integer idsede);
 
-    boolean createPDF(List<CamposReporteSede> venta, ServletContext context, HttpServletRequest request, HttpServletResponse response);
+    boolean createPDF(List<ReporteConCamposOriginales> venta, String titulo, ServletContext context, HttpServletRequest request, HttpServletResponse response);
     boolean createExcelXCliente(List<ReporteConCamposOriginales> ventaXCliente,String cliente, String periodo, ServletContext context, HttpServletRequest request, HttpServletResponse response);
     boolean createExcelSede(List<ReporteConCamposOriginales> ventaXCliente,String cliente, String periodo, ServletContext context, HttpServletRequest request, HttpServletResponse response);
 

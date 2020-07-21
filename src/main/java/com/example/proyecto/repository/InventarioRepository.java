@@ -21,8 +21,56 @@ public interface InventarioRepository extends JpaRepository<Inventario, Integer>
     List<Inventario> findByEstado(String estado);
 
 
-    @Query(value = "SELECT (inventario.stock + coalesce((SELECT sum(inventariosede.stock) as stock FROM sw2_proyecto.inventariosede where inventariosede.idInventario = inventario.idInventario ), 0))  as 'stockTotal', inventario.idInventario as 'idInvent' FROM sw2_proyecto.inventario where stock > 0 and (estado != 'Devuelto' and estado != 'Vencido') ", nativeQuery = true)
+    @Query(
+            value = "SELECT * \n" +
+                    "from \n" +
+                    "(\n" +
+                    "SELECT\n" +
+                    "(\n" +
+                    "inventario.stock + \n" +
+                    "coalesce ((SELECT sum(inventariosede.stock) as stock\n" +
+                    " FROM sw2_proyecto.inventariosede \n" +
+                    " where inventariosede.idInventario = inventario.idInventario ), 0) + \n" +
+                    "coalesce ((SELECT sum(ens.cantidad) \n" +
+                    "FROM sw2_proyecto.estadoenviosede ens \n" +
+                    "left join inventariosede ins \n" +
+                    "on ins.idInventarioSede=ens.idInventarioSede \n" +
+                    "where ins.idInventario = inventario.idInventario and ens.estado NOT REGEXP 'recibido' ), 0)\n" +
+                    ")\n" +
+                    "  as stockTotal,\n" +
+                    " inventario.idInventario as idInvent \n" +
+                    " FROM sw2_proyecto.inventario\n" +
+                    " where (inventario.estado != 'Devuelto' and inventario.estado != 'Vencido') \n" +
+                    " ) as subQ \n" +
+                    " where subQ.stockTotal > 0 "
+            , nativeQuery = true)
     List<inventarioStockTotal> listaInventarioStockTotal();
+
+    @Query(
+            value = "SELECT * \n" +
+                    "                    from \n" +
+                    "                    (\n" +
+                    "                    SELECT\n" +
+                    "                    (\n" +
+                    "                    inventario.stock + \n" +
+                    "                    coalesce ((SELECT sum(inventariosede.stock) as stock\n" +
+                    "                     FROM sw2_proyecto.inventariosede \n" +
+                    "                     where inventariosede.idInventario = ?1 ), 0)  +\n" +
+                    "                    coalesce ((SELECT sum(ens.cantidad)\n" +
+                    "                    FROM sw2_proyecto.estadoenviosede ens \n" +
+                    "                    left join inventariosede ins \n" +
+                    "                    on ins.idInventarioSede=ens.idInventarioSede\n" +
+                    "                    where ins.idInventario = ?1 and ens.estado NOT REGEXP 'recibido' ), 0)\n" +
+                    "                    )\n" +
+                    "                      as stockTotal,\n" +
+                    "                     inventario.idInventario as idInvent\n" +
+                    "                     FROM sw2_proyecto.inventario\n" +
+                    "                     where (inventario.estado != 'Devuelto' and inventario.estado != 'Vencido' and inventario.idInventario = ?1) \n" +
+                    "                     ) as subQ \n" +
+                    "                     where subQ.stockTotal > 0 "
+            , nativeQuery = true)
+    inventarioStockTotal singleInventarioStockTotal(int id);
+
 
     @Query(value = "SELECT * FROM sw2_proyecto.inventario \n" +
             "where stock > 0 and (estado != 'Devuelto' and estado != 'Vencido')",

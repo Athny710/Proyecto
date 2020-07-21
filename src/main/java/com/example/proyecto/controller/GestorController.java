@@ -4,7 +4,6 @@ import com.example.proyecto.dto.*;
 import com.example.proyecto.entity.*;
 import com.example.proyecto.repository.*;
 import com.example.proyecto.services.VentasService;
-import javafx.scene.control.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -29,8 +27,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -39,6 +35,9 @@ import java.io.OutputStream;
 
 import java.util.List;
 import java.util.Optional;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/gestor")
@@ -80,6 +79,14 @@ public class GestorController {
 
     Date date;
     // ----------------------- ENLACES ---------------------------------
+
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    public static boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
+    }
 
     @GetMapping("AnadirCompra")
     public String AnadirCompra(@ModelAttribute("historial") Historial historial, Model model, @RequestParam("id") int id) {
@@ -262,8 +269,8 @@ public class GestorController {
                                      Model model,
                                      RedirectAttributes attr, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
-            if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {
-
+         //   if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {
+            if (!validate(usuarios.getCorreo())) {
                 model.addAttribute("msgError", "El correo ingresado no es un correo");
             }
 
@@ -285,7 +292,8 @@ public class GestorController {
             }
 
         } else {
-            if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {// validacion tipo correo
+          //  if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {// validacion tipo correo
+            if (!validate(usuarios.getCorreo())) {// validacion tipo correo
                 usuarios.setCorreo(usuarios.getCorreo().toLowerCase());
                 if (usuarios.getIdusuarios() != 0) {
                     Optional<Usuarios> usuariosID = usuarioRepository.findById(usuarios.getIdusuarios());
@@ -691,7 +699,12 @@ public class GestorController {
             formulario.setCodigoProducto(productooooo.getDenominacion().getCodigonombre());
             formulario.setCodDescripcion(productooooo.getDenominacion().getCodigodescripcion());
             formulario.setFechafin(productooooo.getAdquisicion().getFechafin());
+
+            formulario.setTipo(productooooo.getAdquisicion().getModalidad());
+            System.out.println(formulario.getTipo());
+            System.out.println("ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             model.addAttribute("tipo", productooooo.getAdquisicion().getModalidad());
+
             return "Gestor/G-EditProdCompra";
         } else {
             return "redirect:/gestor/productos";
@@ -735,6 +748,9 @@ public class GestorController {
                 model.addAttribute("listaTama", tamañoRepository.findAll());
                 model.addAttribute("listaLinea", lineaRepository.findAll());
                 model.addAttribute("listaArtesanos", artesanoRepository.findAll());
+                model.addAttribute("tipo",formulario.getTipo());
+                System.out.println(formulario.getTipo());
+                System.out.println("ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                 return "Gestor/G-EditProdCompra";
             } else {
                 return "redirect:/gestor/productos";
@@ -840,6 +856,7 @@ public class GestorController {
                 Optional<Producto> producto2 = productoRepository.findById(formulario.getCrearActualizar());
                 if (producto2.isPresent()) {
                     Producto producto1 = producto2.get();
+                    formulario.setTipo(producto1.getAdquisicion().getModalidad());
                     producto1.getDenominacion().setDescripcion(formulario.getDescripcion());
                     producto1.getDenominacion().setNombre(formulario.getNombreProducto());
                     if (producto1.getAdquisicion().getModalidad().equalsIgnoreCase("consignado")) {
@@ -1384,9 +1401,7 @@ public class GestorController {
         if (estadoPorID.isPresent()) {
             estadoenviosede = estadoPorID.get();
             model.addAttribute("estadoenviosede", estadoenviosede);
-            List<Inventario> listaInventario = inventarioRepository.findAll();
             List<Sede> listaSede = sedeRepository.findAll();
-            model.addAttribute("listaInventario", listaInventario);
             model.addAttribute("listaSede", listaSede);
             return "Gestor/G-GestionEnvios";
         } else {
@@ -1508,7 +1523,7 @@ public class GestorController {
     //--------------------CRUD VENTAS---------------
     @GetMapping("/nuevaVenta")
     public String nuevaVenta(@ModelAttribute("venta") Venta venta, Model model) {
-        List<Inventario> listaInventario = inventarioRepository.findAll();
+        List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
         List<Inventario> listaFinal = new ArrayList<>();
         for (Inventario i : listaInventario) {
             if (i.getStock() != 0) {
@@ -1536,18 +1551,9 @@ public class GestorController {
                                HttpSession session, RedirectAttributes attr) {
 
         if (bindingResult.hasErrors()) {
-            List<Inventario> listaInventario = inventarioRepository.findAll();
-            List<Inventario> listaFinal = new ArrayList<>();
-            for (Inventario i : listaInventario) {
-                if (i.getStock() != 0) {
-                    if (i.getEstado().equals("Devuelto")) {
+            List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
+            model.addAttribute("listaInventario", listaInventario);
 
-                    } else {
-                        listaFinal.add(i);
-                    }
-                }
-            }
-            model.addAttribute("listaInventario", listaFinal);
             return "Gestor/G-NuevaVenta";
         } else {
 
@@ -1564,19 +1570,10 @@ public class GestorController {
                     attr.addFlashAttribute("msg", "Venta añadida exitosamente");
                     return "redirect:/gestor/gestionVentas";
                 } else {
-                    model.addAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
-                    List<Inventario> listaInventario = inventarioRepository.findAll();
-                    List<Inventario> listaFinal = new ArrayList<>();
-                    for (Inventario i : listaInventario) {
-                        if (i.getStock() != 0) {
-                            if (i.getEstado().equals("Devuelto")) {
 
-                            } else {
-                                listaFinal.add(i);
-                            }
-                        }
-                    }
-                    model.addAttribute("listaInventario", listaFinal);
+                    List<Inventario> listaInventario = inventarioRepository.listarStockMayor0();
+                    model.addAttribute("listaInventario", listaInventario);
+                    model.addAttribute("msg", "Se esta tratando de vender mas de lo que se tiene");
                     return "Gestor/G-NuevaVenta";
                 }
 
@@ -1635,29 +1632,34 @@ public class GestorController {
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         } else {
-            if (mes.equals("todo")) {
-                List<ReporteConCamposOriginales> ventaXClienteAnual = ventasService.getVentasPorClienteAnual(año, cliente);
-                String titulo = "Ventas anuales realizadas al cliente " + cliente;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXClienteAnual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_clientes_anual.xls");
-                }
-            } else if (mes.equals("trimestre")) {
-                List<ReporteConCamposOriginales> ventaXClienteTrimestral = ventasService.getVentasPorClienteTrimestral(año, cliente);
-                String titulo = "Ventas trimestrales realizadas al cliente " + cliente;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXClienteTrimestral, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_clientes_trimestral.xls");
-                }
-            } else {
-                List<ReporteConCamposOriginales> ventaXClienteMensual = ventasService.getVentasPorCliente(mes, año, cliente);
-                String titulo = "Ventas mensuales realizadas al cliente " + cliente;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXClienteMensual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_clientes_mensual.xls");
+            if (cliente.equals("0") || mes.equals("0") || año.equals("0")){
+                attr.addFlashAttribute("msg", "Error: debe escoger un nombre, año y periodo correctos");
+                return "redirect:/gestor/gestorReporteVentas";
+            }else {
+                if (mes.equals("todo")) {
+                    List<ReporteConCamposOriginales> ventaXClienteAnual = ventasService.getVentasPorClienteAnual(año, cliente);
+                    String titulo = "Ventas anuales realizadas al cliente " + cliente;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXClienteAnual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_clientes_anual.xls");
+                    }
+                } else if (mes.equals("trimestre")) {
+                    List<ReporteConCamposOriginales> ventaXClienteTrimestral = ventasService.getVentasPorClienteTrimestral(año, cliente);
+                    String titulo = "Ventas trimestrales realizadas al cliente " + cliente;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXClienteTrimestral, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_clientes_trimestral.xls");
+                    }
+                } else {
+                    List<ReporteConCamposOriginales> ventaXClienteMensual = ventasService.getVentasPorCliente(mes, año, cliente);
+                    String titulo = "Ventas mensuales realizadas al cliente " + cliente;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXClienteMensual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_clientes_mensual.xls");
+                    }
                 }
             }
         }
@@ -1670,29 +1672,34 @@ public class GestorController {
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         } else {
-            if (mes.equals("todo")) {
-                List<ReporteConCamposOriginales> ventaXSedeAnual = ventasService.getVentasPorSedeAnual(año, idsede);
-                String titulo = "Ventas anuales realizadas por la sede " + idsede;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXSedeAnual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_sedes_anual.xls");
-                }
-            } else if (mes.equals("trimestre")) {
-                List<ReporteConCamposOriginales> ventaXSedeTrimestral = ventasService.getVentasPorSedeTrimestral(año, idsede);
-                String titulo = "Ventas trimestrales realizadas al cliente " + idsede;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXSedeTrimestral, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_sedes_trimestral.xls");
-                }
-            } else {
-                List<ReporteConCamposOriginales> ventaXSedeMensual = ventasService.getVentasPorSede(mes, año, idsede);
-                String titulo = "Ventas mensuales realizadas al cliente " + idsede;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXSedeMensual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_sedes_mensual.xls");
+            if (idsede.equals("0") || mes.equals("0") || año.equals("0")){
+                attr.addFlashAttribute("msg", "Error: debe escoger un nombre, año y periodo correctos");
+                return "redirect:/gestor/gestorReporteVentas";
+            }else {
+                if (mes.equals("todo")) {
+                    List<ReporteConCamposOriginales> ventaXSedeAnual = ventasService.getVentasPorSedeAnual(año, idsede);
+                    String titulo = "Ventas anuales realizadas por la sede " + idsede;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXSedeAnual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_sedes_anual.xls");
+                    }
+                } else if (mes.equals("trimestre")) {
+                    List<ReporteConCamposOriginales> ventaXSedeTrimestral = ventasService.getVentasPorSedeTrimestral(año, idsede);
+                    String titulo = "Ventas trimestrales realizadas al cliente " + idsede;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXSedeTrimestral, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_sedes_trimestral.xls");
+                    }
+                } else {
+                    List<ReporteConCamposOriginales> ventaXSedeMensual = ventasService.getVentasPorSede(mes, año, idsede);
+                    String titulo = "Ventas mensuales realizadas al cliente " + idsede;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXSedeMensual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_sedes_mensual.xls");
+                    }
                 }
             }
         }
@@ -1705,29 +1712,34 @@ public class GestorController {
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         } else {
-            if (mes.equals("todo")) {
-                List<ReporteConCamposOriginales> ventaXArticuloAnual = ventasService.getVentasPorArticuloAnual(año, articulo);
-                String titulo = "Ventas anuales del artículo " + articulo;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloAnual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_articulo_anual.xls");
-                }
-            } else if (mes.equals("trimestre")) {
-                List<ReporteConCamposOriginales> ventaXArticuloTrimestral = ventasService.getVentasPorArticuloTrimestral(año, articulo);
-                String titulo = "Ventas trimestrales del artículo " + articulo;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloTrimestral, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_articulo_trimestral.xls");
-                }
-            } else {
-                List<ReporteConCamposOriginales> ventaXArticuloMensual = ventasService.getVentasPorArticuloMensual(mes, año, articulo);
-                String titulo = "Ventas mensuales del artículo " + articulo;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloMensual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_articulo_mensual.xls");
+            if (articulo.equals("0") || mes.equals("0") || año.equals("0")){
+                attr.addFlashAttribute("msg", "Error: debe escoger un nombre, año y periodo correctos");
+                return "redirect:/gestor/gestorReporteVentas";
+            }else {
+                if (mes.equals("todo")) {
+                    List<ReporteConCamposOriginales> ventaXArticuloAnual = ventasService.getVentasPorArticuloAnual(año, articulo);
+                    String titulo = "Ventas anuales del artículo " + articulo;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloAnual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_articulo_anual.xls");
+                    }
+                } else if (mes.equals("trimestre")) {
+                    List<ReporteConCamposOriginales> ventaXArticuloTrimestral = ventasService.getVentasPorArticuloTrimestral(año, articulo);
+                    String titulo = "Ventas trimestrales del artículo " + articulo;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloTrimestral, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_articulo_trimestral.xls");
+                    }
+                } else {
+                    List<ReporteConCamposOriginales> ventaXArticuloMensual = ventasService.getVentasPorArticuloMensual(mes, año, articulo);
+                    String titulo = "Ventas mensuales del artículo " + articulo;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXArticuloMensual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_articulo_mensual.xls");
+                    }
                 }
             }
         }
@@ -1740,29 +1752,34 @@ public class GestorController {
             attr.addFlashAttribute("msg", "Debe ingresar un parámetro para el filtrado");
             return "redirect:/gestor/gestorReporteVentas";
         } else {
-            if (mes.equals("todo")) {
-                List<ReporteConCamposOriginales> ventaXComunidadAnual = ventasService.getVentasPorComunidadAnual(año, comunidad);
-                String titulo = "Ventas anuales de los productos de la comunidad " + comunidad;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadAnual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_comunidad_anual.xls");
-                }
-            } else if (mes.equals("trimestre")) {
-                List<ReporteConCamposOriginales> ventaXComunidadTrimestral = ventasService.getVentasPorComunidadTrimestral(año, comunidad);
-                String titulo = "Ventas trimestrales de los productos de la comunidad " + comunidad;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadTrimestral, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_comunidad_trimestral.xls");
-                }
-            } else {
-                List<ReporteConCamposOriginales> ventaXComunidadMensual = ventasService.getVentasPorComunidadMensual(mes, año, comunidad);
-                String titulo = "Ventas mensuales de los productos de la comunidad " + comunidad;
-                boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadMensual, titulo, mes, context, request, response);
-                if (isFlag) {
-                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                    filedownload(fullpath, response, "ventas_comunidad_mensual.xls");
+            if (comunidad.equals("0") || mes.equals("0") || año.equals("0")){
+                attr.addFlashAttribute("msg", "Error en reporte avanzado: debe escoger un nombre, año y periodo correctos");
+                return "redirect:/gestor/gestorReporteVentas";
+            }else {
+                if (mes.equals("todo")) {
+                    List<ReporteConCamposOriginales> ventaXComunidadAnual = ventasService.getVentasPorComunidadAnual(año, comunidad);
+                    String titulo = "Ventas anuales de los productos de la comunidad " + comunidad;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadAnual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_comunidad_anual.xls");
+                    }
+                } else if (mes.equals("trimestre")) {
+                    List<ReporteConCamposOriginales> ventaXComunidadTrimestral = ventasService.getVentasPorComunidadTrimestral(año, comunidad);
+                    String titulo = "Ventas trimestrales de los productos de la comunidad " + comunidad;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadTrimestral, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_comunidad_trimestral.xls");
+                    }
+                } else {
+                    List<ReporteConCamposOriginales> ventaXComunidadMensual = ventasService.getVentasPorComunidadMensual(mes, año, comunidad);
+                    String titulo = "Ventas mensuales de los productos de la comunidad " + comunidad;
+                    boolean isFlag = ventasService.createExcelXCliente(ventaXComunidadMensual, titulo, mes, context, request, response);
+                    if (isFlag) {
+                        String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                        filedownload(fullpath, response, "ventas_comunidad_mensual.xls");
+                    }
                 }
             }
         }
@@ -1770,32 +1787,38 @@ public class GestorController {
     }
 
     @PostMapping("crearExcelTotal")
-    public void crearExcelTotal(@RequestParam("mes4") String mes, @RequestParam("año4") String año, HttpServletRequest request, HttpServletResponse response) {
-        if (mes.equals("todo")) {
-            List<ReporteConCamposOriginales> ventaXAnual = ventasService.getVentaAnual(año);
-            String titulo = "Ventas totales de Mosqoy del año " + año;
-            boolean isFlag = ventasService.createExcelXCliente(ventaXAnual, titulo, mes, context, request, response);
-            if (isFlag) {
-                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                filedownload(fullpath, response, "ventas_total_anual.xls");
-            }
-        } else if (mes.equals("trimestre")) {
-            List<ReporteConCamposOriginales> ventaXTrimestral = ventasService.getVentaTrimestral(año);
-            String titulo = "Ventas trimestrales de Mosqoy del año " + año;
-            boolean isFlag = ventasService.createExcelXCliente(ventaXTrimestral, titulo, mes, context, request, response);
-            if (isFlag) {
-                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                filedownload(fullpath, response, "ventas_total_trimestral.xls");
-            }
-        } else {
-            List<ReporteConCamposOriginales> ventaXMensual = ventasService.getVentaMensual(mes, año);
-            String titulo = "Ventas Mosqoy de " + mes + " del año " + año;
-            boolean isFlag = ventasService.createExcelXCliente(ventaXMensual, titulo, mes, context, request, response);
-            if (isFlag) {
-                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                filedownload(fullpath, response, "ventas_total_mensual.xls");
+    public Object crearExcelTotal(@RequestParam("mes4") String mes, @RequestParam("año4") String año, HttpServletRequest request, HttpServletResponse response, RedirectAttributes attr) {
+        if (año.equals("0") || mes.equals("0")){
+            attr.addFlashAttribute("msg", "Error en reporte total: debe escoger año y periodo correctos");
+            return "redirect:/gestor/gestorReporteVentas";
+        }else {
+            if (mes.equals("todo")) {
+                List<ReporteConCamposOriginales> ventaXAnual = ventasService.getVentaAnual(año);
+                String titulo = "Ventas totales de Mosqoy del año " + año;
+                boolean isFlag = ventasService.createExcelXCliente(ventaXAnual, titulo, mes, context, request, response);
+                if (isFlag) {
+                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                    filedownload(fullpath, response, "ventas_total_anual.xls");
+                }
+            } else if (mes.equals("trimestre")) {
+                List<ReporteConCamposOriginales> ventaXTrimestral = ventasService.getVentaTrimestral(año);
+                String titulo = "Ventas trimestrales de Mosqoy del año " + año;
+                boolean isFlag = ventasService.createExcelXCliente(ventaXTrimestral, titulo, mes, context, request, response);
+                if (isFlag) {
+                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                    filedownload(fullpath, response, "ventas_total_trimestral.xls");
+                }
+            } else {
+                List<ReporteConCamposOriginales> ventaXMensual = ventasService.getVentaMensual(mes, año);
+                String titulo = "Ventas Mosqoy del " + mes + "/" + año;
+                boolean isFlag = ventasService.createExcelXCliente(ventaXMensual, titulo, mes, context, request, response);
+                if (isFlag) {
+                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                    filedownload(fullpath, response, "ventas_total_mensual.xls");
+                }
             }
         }
+            return mes;
     }
 
     private void filedownload(String fullpath, HttpServletResponse response, String filename) {
@@ -1843,18 +1866,25 @@ public class GestorController {
     }
 
     @GetMapping("devolverProducto1")
-    public String devolverProducto1(@RequestParam("id") int id, Model model) {
+    public String devolverProducto1(@RequestParam("id") int id, Model model, RedirectAttributes attr) {
         Date date = new Date();
         Optional<Inventario> inventario1 = inventarioRepository.findById(id);
         if (inventario1.isPresent()) {
             Inventario inventario = inventario1.get();
-            inventario.setIdInventario(id);
-            inventario.setEstado("Devuelto");
-            inventario.setFechadevolucion(date);
-            inventarioRepository.save(inventario);
-            model.addAttribute("lista", inventarioRepository.findByEstado("Proxima"));
-            model.addAttribute("msg", "Producto Devuelto exitosamente");
-            return "Gestor/G-ConsignacionesProxAVencer";
+            //check si to-do esta en almacen
+            inventarioStockTotal inventarioStockTotal1 = inventarioRepository.singleInventarioStockTotal(inventario.getIdInventario());
+            if(inventarioStockTotal1.getStockTotal() == inventario.getStock()) {
+                inventario.setIdInventario(id); // se ejecuta si to-do esta en almacen
+                inventario.setEstado("Devuelto");
+                inventario.setFechadevolucion(date);
+                inventarioRepository.save(inventario);
+                model.addAttribute("lista", inventarioRepository.findByEstado("Proxima"));
+                model.addAttribute("msg", "Producto Devuelto exitosamente");
+                return "Gestor/G-ConsignacionesProxAVencer";
+            }else{// se ejecuta si hay stock fuera de almacen
+                attr.addFlashAttribute("msgError", "No se pudo devolver. Hay stock fuera de el almacen principal.");
+                return "redirect:/gestor/consignacionesProxVencer";
+            }
         } else {
             return "redirect:/gestor/consignacionesProxVencer";
         }
@@ -1863,18 +1893,25 @@ public class GestorController {
 
 
     @GetMapping("devolverProducto2")
-    public String devolverProducto2(@RequestParam("id") int id, Model model) {
+    public String devolverProducto2(@RequestParam("id") int id, Model model, RedirectAttributes attr) {
         Date date = new Date();
         Optional<Inventario> inventario1 = inventarioRepository.findById(id);
         if (inventario1.isPresent()) {
-            Inventario inventario = inventario1.get();
-            inventario.setIdInventario(id);
-            inventario.setEstado("Devuelto");
-            inventario.setFechadevolucion(date);
-            inventarioRepository.save(inventario);
-            model.addAttribute("lista", inventarioRepository.findByEstado("Vencida"));
-            model.addAttribute("msg", "Producto Devuelto exitosamente");
-            return "Gestor/G-ConsignacionesVencidas";
+                Inventario inventario = inventario1.get();
+            //check si to-do esta en almacen
+            inventarioStockTotal inventarioStockTotal1 = inventarioRepository.singleInventarioStockTotal(inventario.getIdInventario());
+            if(inventarioStockTotal1.getStockTotal() == inventario.getStock()) {
+                inventario.setIdInventario(id); // se ejecuta si to-do esta en almacen
+                inventario.setEstado("Devuelto");
+                inventario.setFechadevolucion(date);
+                inventarioRepository.save(inventario);
+                model.addAttribute("lista", inventarioRepository.findByEstado("Vencida"));
+                model.addAttribute("msg", "Producto Devuelto exitosamente");
+                return "Gestor/G-ConsignacionesVencidas";
+            }else{// se ejecuta si hay stock fuera de almacen
+                attr.addFlashAttribute("msgError", "No se pudo devolver. Hay stock fuera de el almacen principal.");
+                return "redirect:/gestor/ConsignacionesVencidas";
+            }
         } else {
             return "redirect:/gestor/ConsignacionesVencidas";
         }

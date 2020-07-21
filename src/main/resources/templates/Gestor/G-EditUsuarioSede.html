@@ -29,19 +29,19 @@
                                         <input th:field="*{idusuarios}" name="idUsuarios" type="hidden" />
                                         <div class="form-group">
                                             <label>Nombre:</label>
-                                            <input th:field="*{nombre}" type="text" class="form-control form-control-user2" id="nombre" placeholder="Nombre">
+                                            <input th:field="*{nombre}" type="text" class="form-control form-control-user2" id="nombre" >
                                             <div class="text-danger" th:if="${#fields.hasErrors('nombre')}"
                                                  th:errors="*{nombre}"></div>
                                         </div>
                                         <div class="form-group">
                                             <label>Apellidos:</label>
-                                            <input th:field="*{apellido}" type="text" class="form-control form-control-user2" id="apellido" placeholder="Apellidos">
+                                            <input th:field="*{apellido}" type="text" class="form-control form-control-user2" id="apellido" >
                                             <div class="text-danger" th:if="${#fields.hasErrors('apellido')}"
                                                  th:errors="*{apellido}"></div>
                                         </div>
                                         <div class="form-group">
                                             <label>Teléfono:</label>
-                                            <input th:field="*{telefono}" type="text" class="form-control form-control-user2" id="telefono" placeholder="Telefono">
+                                            <input th:field="*{telefono}" type="text" class="form-control form-control-user2" id="telefono" >
                                             <div class="text-danger" th:if="${#fields.hasErrors('telefono')}"
                                                  th:errors="*{telefono}"></div>
                                         </div>
