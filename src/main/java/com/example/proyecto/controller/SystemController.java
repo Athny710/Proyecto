@@ -39,7 +39,9 @@ public class SystemController {
     public String guardarCont(@RequestParam("pswActual") String pswActual,
                               @RequestParam("psw1") String psw1,
                               @RequestParam("psw2") String psw2,
+                              @RequestParam("psw0") String psw0,
                               Model model, RedirectAttributes attr,
+<<<<<<< HEAD
                               HttpSession session){
         if(!"".equals(psw1) && !"".equals(psw2)){
             if(psw1.equals(psw2)){
@@ -47,6 +49,18 @@ public class SystemController {
                 String pwdHashedActual = u1.getPassword();
                 //String pwdHashedIngresada = new BCryptPasswordEncoder().matches(pswActual,pwdHashedActual);
                 if (new BCryptPasswordEncoder().matches(pswActual,pwdHashedActual)) {
+=======
+                              HttpSession session) {
+        if("".equals(psw0)){
+            attr.addFlashAttribute("msg", "No puede haber campos vacíos.");
+            return "redirect:/system/CambiarContSess";
+        }
+        Usuarios usuarioLog = (Usuarios) session.getAttribute("user");
+        boolean match = new BCryptPasswordEncoder().matches(psw0,usuarioLog.getPassword());
+        if (match){
+            if (!"".equals(psw1) && !"".equals(psw2)) {
+                if (psw1.equals(psw2)) {
+>>>>>>> 7c4bff3ba3832230d2aec3d5261e176309680a97
                     if (psw1.length() < 8) {
                         attr.addFlashAttribute("msg", "Mínimo 8 caracteres");
                         return "redirect:/system/CambiarContSess";
@@ -55,7 +69,11 @@ public class SystemController {
                         return "redirect:/system/CambiarContSess";
                     } else {
                         attr.addFlashAttribute("msg", "Contraseña actualizada.");
+<<<<<<< HEAD
                         Usuarios usuarioLog = (Usuarios) session.getAttribute("user");
+=======
+
+>>>>>>> 7c4bff3ba3832230d2aec3d5261e176309680a97
                         usuarioLog.setPassword(new BCryptPasswordEncoder().encode(psw1));
                         session.setAttribute("user", usuarioLog);
                         usuarioRepository.save(usuarioLog);
@@ -69,18 +87,23 @@ public class SystemController {
                             return "redirect:/";
                         }
                     }
+<<<<<<< HEAD
                 }else {
                     attr.addFlashAttribute("msg", "La contraseña actual no es la correcta");
+=======
+                } else {
+                    attr.addFlashAttribute("msg", "Las contraseñas no coinciden");
+>>>>>>> 7c4bff3ba3832230d2aec3d5261e176309680a97
                     return "redirect:/system/CambiarContSess";
                 }
-            }else{
-                attr.addFlashAttribute("msg", "Las contraseñas no coinciden");
+            } else {
+                attr.addFlashAttribute("msg", "No puede haber campos vacíos.");
                 return "redirect:/system/CambiarContSess";
             }
-        }else{
-            attr.addFlashAttribute("msg", "No puede haber campos vacíos.");
+    }else{
+            attr.addFlashAttribute("msg", "Las contraseña actual no es correcta");
             return "redirect:/system/CambiarContSess";
-        }
+    }
     }
 
 

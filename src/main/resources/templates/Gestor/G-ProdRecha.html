@@ -72,7 +72,7 @@
                                                     <h6 th:text="'¿Está seguro que desea confirmar que recibio '+ ${p.cantidad} + ' ' + ${p.getCodigogenerado()} + ' de ' + ${p.nombre_sede}"></h6>
                                                     <a th:href="@{'/gestor/borrarRechazoDeEnvio' + '?id=' + ${p.getIdestado()}}"
                                                        class="btn btn-orange btn-block">Confirmar</a>
-                                                    <button type="button" class="btn btn-searchTop btn-block"
+                                                    <button type="button" class="btn btn-danger btn-block"
                                                             data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">Cancelar</span>
                                                     </button>

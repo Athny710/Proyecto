@@ -24,6 +24,7 @@
                         <form method="post" th:action="@{/gestor/guardarProducto}"  th:object="${formulario}">
                             <input th:value="*{crearActualizar}" name="crearActualizar" type="hidden"/>
                             <input th:value="*{moda}" name="modalidad" type="hidden"/>
+                            <input th:field="*{tipo}"  type="hidden"/>
                             <div  class="form-group col-md-6" >
                                 <label >Nombre del Producto</label>
                                 <input type="text" class="form-control" th:field="*{nombreProducto}" style="border-radius: 10rem">

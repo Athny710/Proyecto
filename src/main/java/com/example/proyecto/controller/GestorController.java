@@ -1855,7 +1855,7 @@ public class GestorController {
 
     @GetMapping("consignacionesVencidas")
     public String consignacionesVencidas(@ModelAttribute("inventario") Inventario inventario, Model model) {
-        model.addAttribute("lista", inventarioRepository.findByEstado("Vencida"));
+        model.addAttribute("lista", inventarioRepository.findByEstado("Vencido"));
         return "Gestor/G-ConsignacionesVencidas";
     }
 
@@ -1905,15 +1905,15 @@ public class GestorController {
                 inventario.setEstado("Devuelto");
                 inventario.setFechadevolucion(date);
                 inventarioRepository.save(inventario);
-                model.addAttribute("lista", inventarioRepository.findByEstado("Vencida"));
+                model.addAttribute("lista", inventarioRepository.findByEstado("Vencido"));
                 model.addAttribute("msg", "Producto Devuelto exitosamente");
                 return "Gestor/G-ConsignacionesVencidas";
             }else{// se ejecuta si hay stock fuera de almacen
                 attr.addFlashAttribute("msgError", "No se pudo devolver. Hay stock fuera de el almacen principal.");
-                return "redirect:/gestor/ConsignacionesVencidas";
+                return "redirect:/gestor/consignacionesVencidas";
             }
         } else {
-            return "redirect:/gestor/ConsignacionesVencidas";
+            return "redirect:/gestor/consignacionesVencidas";
         }
 
     }
@@ -1939,7 +1939,7 @@ public class GestorController {
     public void mensajeMensualDeAlertaDeVencimientoDeProductosParaLosGestores() throws MessagingException {
 
         List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
-        List<String> codigosPorVencer = productoRepository.productoPorEstado("Proxima");
+        List<String> codigosPorVencer = productoRepository.productoPorEstado("Proximo");
         if (codigosPorVencer.size() > 0) {
             if (listaCorreosGestor.size() >= 1) {
 
