@@ -37,7 +37,7 @@ public class SystemController {
     @PostMapping("guardarContSession")
     public String guardarCont(@RequestParam("psw1") String psw1,
                               @RequestParam("psw2") String psw2,
-                              @RequestParam("psw2") String psw0,
+                              @RequestParam("psw0") String psw0,
                               Model model, RedirectAttributes attr,
                               HttpSession session) {
         if("".equals(psw0)){
