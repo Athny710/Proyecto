@@ -1939,7 +1939,7 @@ public class GestorController {
     public void mensajeMensualDeAlertaDeVencimientoDeProductosParaLosGestores() throws MessagingException {
 
         List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
-        List<String> codigosPorVencer = productoRepository.productoPorEstado("Proxima");
+        List<String> codigosPorVencer = productoRepository.productoPorEstado("Proximo");
         if (codigosPorVencer.size() > 0) {
             if (listaCorreosGestor.size() >= 1) {
 
