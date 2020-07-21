@@ -266,12 +266,27 @@ public class AdminController {
     }
 
 
-    //--------------------------Gestores
+    //--------------------------Gestores------------------------------------
     @GetMapping("listaGestores")
     public String listaGestores(Model model) {
         model.addAttribute("listaGestores", usuarioRepository.findByTipoAndActivo("gestor", 1));
+        model.addAttribute("listaGestoresNoDisponibles", usuarioRepository.findByTipoAndActivo("gestor", 0));
         return "Administrador/A-ListaGestores";
     }
+
+    @GetMapping("/activarUsuario")
+    public String activarUsuario(Model model, @RequestParam("id") int id, RedirectAttributes attr) {
+
+        Optional<Usuarios> usu1 = usuarioRepository.findById(id);
+        if(usu1.isPresent()){
+            Usuarios usu2 = usu1.get();
+        }else{
+
+        }
+
+        return "Administrador/A-ListaGestores";
+    }
+
 
     @GetMapping("nuevoGestor")
     public String nuevoGestor(@ModelAttribute("usu") Usuarios usuario) {
