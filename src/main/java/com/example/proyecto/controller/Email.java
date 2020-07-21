@@ -62,7 +62,7 @@ public class Email {
 
 
         //Obtener la IP Elastica (Se tiene que cambiar)
-        String ipAdd= "18.208.12.225";
+        String ipAdd= "54.161.223.241";
         //54.161.223.241
 
         //Asunto y mensaje
