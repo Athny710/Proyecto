@@ -16,8 +16,9 @@
             <div class="container-fluid">
                 <div th:if="${msgFail != null}" th:text="${msgFail}" class="alert alert-danger" role="alert"></div>
                 <div th:if="${msgSucc != null}" th:text="${msgSucc}" class="alert alert-success" role="alert"></div>
+                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                 <div class="card shadowA mb-4" >
-                <div class="card-header2" style="padding-top: 0.6rem; padding-bottom: 0.6rem">
+                    <div class="card-header2" style="padding-top: 0.6rem; padding-bottom: 0.6rem">
                     <div class="d-flex justify-content-between centrado">
                         <h5 class="m-0 font-weight-bold text-redM">Lista de Usuarios Sede</h5>
                         <div style="width: 180px">
@@ -28,7 +29,7 @@
                 </div>
                 <div class="card-body bg-gray-100">
                     <div class="table-responsive bg-gray-100">
-                        <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
                             <thead>
                             <tr class="bg-gray-900 text-white" align="center">
                                 <th>Nombres</th>
@@ -36,7 +37,7 @@
                                 <th>Email</th>
                                 <th>Teléfono</th>
                                 <th>Sede</th>
-                                <th>Borrar</th>
+                                <th>Bloquear</th>
                                 <!-- <th>Editar/Borrar</th> -->
 
                             </tr>
@@ -105,7 +106,7 @@
                     </div>
                     <div class="card-body bg-gray-100">
                         <div class="table-responsive bg-gray-100">
-                            <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
                                 <thead>
                                 <tr class="bg-gray-900 text-white" align="center">
                                     <th>Nombres</th>
@@ -131,7 +132,7 @@
                                                th:href="@{'/gestor/gestorEditUsuarioSede' + '?idusuarios=' + ${usuariosedes.idusuarios}}"
                                                class="far fa-edit text-orangeM"></a>  -->
                                         <a style="margin-left: 5px"
-                                           th:href="@{'/gestor/activarUsuario' + '?idusuarios=' + ${usuariosedesBloqueados.idusuarios}}"
+                                           th:href="@{'/gestor/activarUsuario' + '?id=' + ${usuariosedesBloqueados.idusuarios}}"
                                            class="fas fa-check-square text-redM">
                                         </a>
                                         <!--

@@ -248,7 +248,7 @@ public class GestorController {
         List<Usuarios> listausuariosedes = usuarioRepository.findByTipoAndActivo("sede", 1);
         List<Usuarios> listausuariosedes2 = usuarioRepository.findByTipoAndActivo("sede", 0);
         model.addAttribute("listausuariosedes", listausuariosedes);
-        model.addAttribute("listausuariosedesNoDisponible", listausuariosedes);
+        model.addAttribute("listausuariosedesNoDisponible", listausuariosedes2);
         return "Gestor/G-ListaUsuarioSede";
     }
 
@@ -259,11 +259,11 @@ public class GestorController {
             Usuarios usu2 = usu1.get();
             usu2.setActivo(1);
             usuarioRepository.save(usu2);
-            attr.addFlashAttribute("msg","Desbloqueado exitoamente");
+            attr.addFlashAttribute("msg","Desbloqueado exitosamente");
         }else{
             attr.addFlashAttribute("msg1","ID no válido");
         }
-        return "Gestor/G-ListaUsuarioSede";
+        return "redirect:/gestor/gestorListaUsuarioSede";
     }
 
 
@@ -391,7 +391,7 @@ public class GestorController {
             u = optionalUsuarios.get();
             u.setActivo(0);
             usuarioRepository.save(u);
-            attr.addFlashAttribute("msgSucc", "Usuario Sede Eliminado");
+            attr.addFlashAttribute("msgSucc", "Usuario Sede Bloqueado");
         } else {
             attr.addFlashAttribute("msgFail", "Este usuario no existe");
         }
