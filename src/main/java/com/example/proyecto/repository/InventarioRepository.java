@@ -65,7 +65,7 @@ public interface InventarioRepository extends JpaRepository<Inventario, Integer>
                     "                      as stockTotal,\n" +
                     "                     inventario.idInventario as idInvent\n" +
                     "                     FROM sw2_proyecto.inventario\n" +
-                    "                     where (inventario.estado != 'Devuelto' and inventario.estado != 'Vencido' and inventario.idInventario = ?1) \n" +
+                    "                     where (inventario.estado != 'Devuelto'  and inventario.idInventario = ?1) \n" +
                     "                     ) as subQ \n" +
                     "                     where subQ.stockTotal > 0 "
             , nativeQuery = true)
