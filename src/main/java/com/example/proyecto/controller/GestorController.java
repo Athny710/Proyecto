@@ -1910,10 +1910,10 @@ public class GestorController {
                 return "Gestor/G-ConsignacionesVencidas";
             }else{// se ejecuta si hay stock fuera de almacen
                 attr.addFlashAttribute("msgError", "No se pudo devolver. Hay stock fuera de el almacen principal.");
-                return "redirect:/gestor/ConsignacionesVencidas";
+                return "redirect:/gestor/consignacionesVencidas";
             }
         } else {
-            return "redirect:/gestor/ConsignacionesVencidas";
+            return "redirect:/gestor/consignacionesVencidas";
         }
 
     }
