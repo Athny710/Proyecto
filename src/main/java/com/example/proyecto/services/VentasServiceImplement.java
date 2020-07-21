@@ -146,14 +146,14 @@ public class VentasServiceImplement implements VentasService {
             paragraph.setIndentationLeft(50);
             paragraph.setIndentationRight(50);
             paragraph.setSpacingAfter(10);
-            URL imageUrl = getClass().getResource("/static/img/logoOriginal.png");
+            //URL imageUrl = getClass().getResource("/static/img/logoOriginal.png");
             //String urlimg = "src/main/resources/static/img/logoOriginal.png";
-            Image imagen = Image.getInstance(imageUrl);
-            imagen.setAbsolutePosition(1000f, 705f);
-            imagen.scaleToFit(170,170);
+            //Image imagen = Image.getInstance(imageUrl);
+            //imagen.setAbsolutePosition(1000f, 705f);
+            //imagen.scaleToFit(170,170);
 
             document.add(paragraph);
-            document.add(imagen);
+            //document.add(imagen);
 
             PdfPTable table = new PdfPTable(14);
             table.setWidthPercentage(100);
