@@ -87,33 +87,55 @@
                             </div>
 
                             <hr style="width: 75%; height: 10px">
-                            <h5 class="m-0 text-gray-900" style="font-weight: 600">Reporte total</h5><br>
-                            <form method="post" th:action="@{/gestor/crearExcelTotal}">
-                                <div class="row">
-                                    <div class="form-group col-md-2">
-                                        <label for="año4">Año:</label>
-                                        <select class="form-control" type="item" id="año4" name="año4" onchange="lista3(this.value)">
-                                            <option value="0">-----</option>
-                                            <option th:each="lista1 : ${listaAnhos}" th:value="${lista1.fecha}"
-                                                    th:text="${lista1.fecha}" >Samuel Ayala</option>
-                                        </select>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                <h5 class="m-0 text-gray-900" style="font-weight: 600">Reporte total</h5><br>
+                                <form method="post" th:action="@{/gestor/crearExcelTotal}">
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label for="año4">Año:</label>
+                                            <select class="form-control" type="item" id="año4" name="año4" onchange="lista3(this.value)">
+                                                <option value="0">-----</option>
+                                                <option th:each="lista1 : ${listaAnhos}" th:value="${lista1.fecha}"
+                                                        th:text="${lista1.fecha}" >Samuel Ayala</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="mes4">Periodo:</label>
+                                            <select class="form-control" type="item" id="mes4" name="mes4">
+                                                <option value="0">-----</option>
+                                                <option th:value="todo">todos los meses</option>
+                                                <option th:value="trimestre">trimestral</option>
+                                                <option th:each="lista1 : ${listaMeses}" th:value="${lista1.fecha}"
+                                                        th:text="${lista1.fechaname}" >Samuel Ayala</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <p>Generar reporte:</p>
+                                            <button type="submit" style="border-radius: 50%"><img th:src="@{/img/excel-xls-icon.png}" style="width:40px;"></button>
+                                        </div>
                                     </div>
-                                    <div class="form-group col-md-2">
-                                        <label for="mes4">Periodo:</label>
-                                        <select class="form-control" type="item" id="mes4" name="mes4">
-                                            <option value="0">-----</option>
-                                            <option th:value="todo">todos los meses</option>
-                                            <option th:value="trimestre">trimestral</option>
-                                            <option th:each="lista1 : ${listaMeses}" th:value="${lista1.fecha}"
-                                                    th:text="${lista1.fechaname}" >Samuel Ayala</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <p>Generar reporte:</p>
-                                        <button type="submit" style="border-radius: 50%"><img th:src="@{/img/excel-xls-icon.png}" style="width:40px;"></button>
+                                </form>
+                                </div>
+                                <div class="col-lg-5 mr-1">
+                                    <div class="card shadowA mb-5">
+                                        <div class="card-header py-3 bg-white">
+                                            <h6 class="m-0 font-weight-bold text-greenM">Recordar!</h6>
+                                        </div>
+                                        <div class="card-body bg-white" style="text-align: left">
+                                            <p>Pasos para realizar el <strong>reporte avanzado</strong>:</p>
+                                            <p>1. En 'Filtrar por' seleccione el filtro deseado.</p>
+                                            <p>2. En 'Nombre' seleccione el nombre específico de acuerdo al filtro que eligió.</p>
+                                            <p>3. En 'Año' escoja el año del cual desea generar el reporte.</p>
+                                            <p>4. En 'Período' seleccione la opción deseada para una mayor precisión del reporte y, finalmente, presione el botón 'Generar reporte'.</p>
+                                            <br>
+                                            <p>Pasos para realizar el <strong>reporte total</strong>:</p>
+                                            <p>1. En 'Año' escoja el año del cual desea generar el reporte.</p>
+                                            <p>2. En 'Período' seleccione la opción deseada para una mayor precisión del reporte y, finalmente presione el botón 'Generar reporte'.</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
 
                             <script>
                                 function lista(tipo) {
