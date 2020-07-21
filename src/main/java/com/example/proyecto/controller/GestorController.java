@@ -269,7 +269,7 @@ public class GestorController {
                                      Model model,
                                      RedirectAttributes attr, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
-         //   if (!usuarios.getCorreo().matches("^[A-Za-z0-9\\._-]+@[mM][Oo][Ss][Qq][Oo][Yy]\\.[Oo][Rr][Gg]$")) {
+         //   if (!usuarios.getCorreo().matches("^[A-Za-z0-9\._-]+@.+\..+$")) {
             if (!validate(usuarios.getCorreo())) {
                 model.addAttribute("msgError", "El correo ingresado no es un correo");
             }
@@ -1939,7 +1939,7 @@ public class GestorController {
     public void mensajeMensualDeAlertaDeVencimientoDeProductosParaLosGestores() throws MessagingException {
 
         List<String> listaCorreosGestor = usuarioRepository.obtenerCorreosGestorActivos();
-        List<String> codigosPorVencer = productoRepository.productoPorEstado("Proxima");
+        List<String> codigosPorVencer = productoRepository.productoPorEstado("Proximo");
         if (codigosPorVencer.size() > 0) {
             if (listaCorreosGestor.size() >= 1) {
 
