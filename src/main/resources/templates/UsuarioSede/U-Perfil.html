@@ -32,16 +32,15 @@
                                         <div class="col-lg-10">
                                             <br><br>
                                             <input type="hidden" th:value="${session.user.idusuarios}">
-                                            <div class="form-group d-flex centrado">
-                                                <div class="col-lg-4">
-                                                    <label>Correo:</label>
+                                            <div class="d-flex">
+                                                <div class="col-lg-4 centrado">
+                                                    <p>Correo:</p>
                                                 </div>
-                                                <div>
-                                                    <input type="email" class="form-control form-control-user2" th:field="*{correo}" th:placeholder="${perfil.correo}">
-                                                    <div class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}" style="font-size: 0.7rem">Error</div>
-                                                    <div style="font-size:0.8rem;text-align: center" class="text-danger" th:if="${msgC!=null}" th:text="${msgC}"></div>
-                                                </div>
-                                                <div class="col-lg-2"></div>
+                                                <div class="col-lg-10"><p th:text="${session.user.correo}"></p></div>
+                                            </div>
+                                            <div class="d-flex">
+                                                <div class="col-lg-3"></div>
+                                                <hr class="col-lg-8">
                                             </div>
                                             <div class="form-group d-flex centrado">
                                                 <div class="col-lg-4">

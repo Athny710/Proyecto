@@ -29,4 +29,6 @@ public interface UsuarioRepository extends JpaRepository<Usuarios,Integer> {
     public List<String> obtenerCorreosGestorActivos();
 
 
+
+
 }

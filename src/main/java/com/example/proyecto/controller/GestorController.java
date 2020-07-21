@@ -246,9 +246,27 @@ public class GestorController {
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede(Model model) {
         List<Usuarios> listausuariosedes = usuarioRepository.findByTipoAndActivo("sede", 1);
+        List<Usuarios> listausuariosedes2 = usuarioRepository.findByTipoAndActivo("sede", 0);
         model.addAttribute("listausuariosedes", listausuariosedes);
+        model.addAttribute("listausuariosedesNoDisponible", listausuariosedes2);
         return "Gestor/G-ListaUsuarioSede";
     }
+
+    @GetMapping("/activarUsuario")
+    public String activarUsuario(Model mode, @RequestParam("id") int id, RedirectAttributes attr) {
+        Optional<Usuarios> usu1 = usuarioRepository.findById(id);
+        if(usu1.isPresent()){
+            Usuarios usu2 = usu1.get();
+            usu2.setActivo(1);
+            usuarioRepository.save(usu2);
+            attr.addFlashAttribute("msg","Desbloqueado exitosamente");
+        }else{
+            attr.addFlashAttribute("msg1","ID no válido");
+        }
+        return "redirect:/gestor/gestorListaUsuarioSede";
+    }
+
+
 
     @GetMapping("gestorEditUsuarioSede")
     public String editarUsuarioSede(@RequestParam("idusuarios") int idusuarios, @ModelAttribute("usuarios") Usuarios usuarios, Model model) {
@@ -373,7 +391,7 @@ public class GestorController {
             u = optionalUsuarios.get();
             u.setActivo(0);
             usuarioRepository.save(u);
-            attr.addFlashAttribute("msgSucc", "Usuario Sede Eliminado");
+            attr.addFlashAttribute("msgSucc", "Usuario Sede Bloqueado");
         } else {
             attr.addFlashAttribute("msgFail", "Este usuario no existe");
         }

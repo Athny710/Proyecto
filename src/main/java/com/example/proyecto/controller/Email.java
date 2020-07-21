@@ -254,7 +254,7 @@ public class Email {
         msg.setRecipients(Message.RecipientType.TO,address);
 
         //Acomodamos los códigos:
-        String arreglito2 = "CÓDIGOS DE PRODUCTOS : \n?";
+        String arreglito2 = "CÓDIGOS DE PRODUCTOS : \n";
         for (AlertaProductoSinStock item:productos){
             arreglito2 = arreglito2 + "- " + item.getCodigoGenerado() + " " + item.getNombre() + " " + item.getDescripcion() + " " + item.getColor() + "AGOTADO en sede " + item.getNombreSede() + "\n";
         }
