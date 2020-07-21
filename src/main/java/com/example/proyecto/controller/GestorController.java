@@ -4,7 +4,6 @@ import com.example.proyecto.dto.*;
 import com.example.proyecto.entity.*;
 import com.example.proyecto.repository.*;
 import com.example.proyecto.services.VentasService;
-import javafx.scene.control.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -29,8 +27,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -1757,7 +1753,7 @@ public class GestorController {
             return "redirect:/gestor/gestorReporteVentas";
         } else {
             if (comunidad.equals("0") || mes.equals("0") || año.equals("0")){
-                attr.addFlashAttribute("msg", "Error: debe escoger un nombre, año y periodo correctos");
+                attr.addFlashAttribute("msg", "Error en reporte avanzado: debe escoger un nombre, año y periodo correctos");
                 return "redirect:/gestor/gestorReporteVentas";
             }else {
                 if (mes.equals("todo")) {
@@ -1791,32 +1787,38 @@ public class GestorController {
     }
 
     @PostMapping("crearExcelTotal")
-    public void crearExcelTotal(@RequestParam("mes4") String mes, @RequestParam("año4") String año, HttpServletRequest request, HttpServletResponse response) {
-        if (mes.equals("todo")) {
-            List<ReporteConCamposOriginales> ventaXAnual = ventasService.getVentaAnual(año);
-            String titulo = "Ventas totales de Mosqoy del año " + año;
-            boolean isFlag = ventasService.createExcelXCliente(ventaXAnual, titulo, mes, context, request, response);
-            if (isFlag) {
-                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                filedownload(fullpath, response, "ventas_total_anual.xls");
-            }
-        } else if (mes.equals("trimestre")) {
-            List<ReporteConCamposOriginales> ventaXTrimestral = ventasService.getVentaTrimestral(año);
-            String titulo = "Ventas trimestrales de Mosqoy del año " + año;
-            boolean isFlag = ventasService.createExcelXCliente(ventaXTrimestral, titulo, mes, context, request, response);
-            if (isFlag) {
-                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                filedownload(fullpath, response, "ventas_total_trimestral.xls");
-            }
-        } else {
-            List<ReporteConCamposOriginales> ventaXMensual = ventasService.getVentaMensual(mes, año);
-            String titulo = "Ventas Mosqoy de " + mes + " del año " + año;
-            boolean isFlag = ventasService.createExcelXCliente(ventaXMensual, titulo, mes, context, request, response);
-            if (isFlag) {
-                String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
-                filedownload(fullpath, response, "ventas_total_mensual.xls");
+    public Object crearExcelTotal(@RequestParam("mes4") String mes, @RequestParam("año4") String año, HttpServletRequest request, HttpServletResponse response, RedirectAttributes attr) {
+        if (año.equals("0") || mes.equals("0")){
+            attr.addFlashAttribute("msg", "Error en reporte total: debe escoger año y periodo correctos");
+            return "redirect:/gestor/gestorReporteVentas";
+        }else {
+            if (mes.equals("todo")) {
+                List<ReporteConCamposOriginales> ventaXAnual = ventasService.getVentaAnual(año);
+                String titulo = "Ventas totales de Mosqoy del año " + año;
+                boolean isFlag = ventasService.createExcelXCliente(ventaXAnual, titulo, mes, context, request, response);
+                if (isFlag) {
+                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                    filedownload(fullpath, response, "ventas_total_anual.xls");
+                }
+            } else if (mes.equals("trimestre")) {
+                List<ReporteConCamposOriginales> ventaXTrimestral = ventasService.getVentaTrimestral(año);
+                String titulo = "Ventas trimestrales de Mosqoy del año " + año;
+                boolean isFlag = ventasService.createExcelXCliente(ventaXTrimestral, titulo, mes, context, request, response);
+                if (isFlag) {
+                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                    filedownload(fullpath, response, "ventas_total_trimestral.xls");
+                }
+            } else {
+                List<ReporteConCamposOriginales> ventaXMensual = ventasService.getVentaMensual(mes, año);
+                String titulo = "Ventas Mosqoy del " + mes + "/" + año;
+                boolean isFlag = ventasService.createExcelXCliente(ventaXMensual, titulo, mes, context, request, response);
+                if (isFlag) {
+                    String fullpath = request.getServletContext().getRealPath("/resources/reports/" + "ventas_por_cliente" + ".xls");
+                    filedownload(fullpath, response, "ventas_total_mensual.xls");
+                }
             }
         }
+            return mes;
     }
 
     private void filedownload(String fullpath, HttpServletResponse response, String filename) {

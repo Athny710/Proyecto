@@ -272,6 +272,23 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
             "\tgroup by fecha", nativeQuery = true)
     List<FechaMesVenta> obtenerPeriodoXAño(String cliente, String año);
 
+    @Query(value = "SELECT distinct(month(v.fecha)) as fecha,\n" +
+            "CASE\n" +
+            "WHEN MONTH(v.fecha) = 1 THEN \"enero\"\n" +
+            "WHEN MONTH(v.fecha) = 2 THEN \"febrero\"\n" +
+            "WHEN MONTH(v.fecha) = 3 THEN \"marzo\"\n" +
+            "WHEN MONTH(v.fecha) = 4 THEN \"abril\"\n" +
+            "WHEN MONTH(v.fecha) = 5 THEN \"mayo\"\n" +
+            "WHEN MONTH(v.fecha) = 6 THEN \"junio\"\n" +
+            "WHEN MONTH(v.fecha) = 7 THEN \"julio\"\n" +
+            "WHEN MONTH(v.fecha) = 8 THEN \"agosto\"\n" +
+            "WHEN MONTH(v.fecha) = 9 THEN \"septiembre\"\n" +
+            "WHEN MONTH(v.fecha) = 10 THEN \"octubre\"\n" +
+            "WHEN MONTH(v.fecha) = 11 THEN \"noviembre\"\n" +
+            "WHEN MONTH(v.fecha) = 12 THEN \"diciembre\" END AS fechaname FROM venta v where year(v.fecha) = ?1\n" +
+            "group by fecha", nativeQuery = true)
+    List<FechaMesVenta> obtenerPeriodoParaReporteTotal(String anho);
+
     @Query(value = "select distinct(month(v.fecha)) as fecha, CASE\n" +
             "WHEN MONTH(v.fecha) = 1 THEN \"enero\"\n" +
             "WHEN MONTH(v.fecha) = 2 THEN \"febrero\"\n" +

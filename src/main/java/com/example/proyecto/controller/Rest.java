@@ -162,6 +162,22 @@ public class Rest{
         }
     }
 
+    @GetMapping(value = "/reporte/total/{anho}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity obtenerPeriodoParaReporteTotal(@PathVariable("anho") String anho) {
+
+        HashMap<String, Object> responseMap = new HashMap<>();
+        List<FechaMesVenta> listaMes = ventaRepository.obtenerPeriodoParaReporteTotal(anho);
+        if (listaMes != null) {
+            responseMap.put("estado", "ok");
+            responseMap.put("periodo", listaMes);
+            return new ResponseEntity(responseMap, HttpStatus.OK);
+        } else {
+            responseMap.put("estado", "error");
+            responseMap.put("msg", "no se encontró un registro en el año: " + anho);
+            return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
 
 

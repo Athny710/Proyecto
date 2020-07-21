@@ -92,7 +92,8 @@
                                 <div class="row">
                                     <div class="form-group col-md-2">
                                         <label for="año4">Año:</label>
-                                        <select class="form-control" type="item" id="año4" name="año4">
+                                        <select class="form-control" type="item" id="año4" name="año4" onchange="lista3(this.value)">
+                                            <option value="0">-----</option>
                                             <option th:each="lista1 : ${listaAnhos}" th:value="${lista1.fecha}"
                                                     th:text="${lista1.fecha}" >Samuel Ayala</option>
                                         </select>
@@ -100,6 +101,7 @@
                                     <div class="form-group col-md-2">
                                         <label for="mes4">Periodo:</label>
                                         <select class="form-control" type="item" id="mes4" name="mes4">
+                                            <option value="0">-----</option>
                                             <option th:value="todo">todos los meses</option>
                                             <option th:value="trimestre">trimestral</option>
                                             <option th:each="lista1 : ${listaMeses}" th:value="${lista1.fecha}"
@@ -117,6 +119,7 @@
                                 function lista(tipo) {
                                     $('#ddlCategoria option').remove();
                                     if (tipo == 1) {
+                                        $('#ddlCategoria').append('\'<option value="0">-----</option>\'');
                                         $("#cliente option").each(function() {
                                             $('#ddlCategoria').append('\'<option value="'+$(this).text()+'">'+$(this).text()+'</option>\'');
                                             var cambioAction = $('#form1');
@@ -124,6 +127,7 @@
                                         })
                                     }
                                     else if (tipo == 2) {
+                                        $('#ddlCategoria').append('\'<option value="0">-----</option>\'');
                                         $("#idsede option").each(function() {
                                             $('#ddlCategoria').append('\'<option value="'+$(this).text()+'">'+$(this).text()+'</option>\'');
                                             var cambioAction = $('#form1');
@@ -131,6 +135,7 @@
                                         })
                                     }
                                     else if (tipo == 3) {
+                                        $('#ddlCategoria').append('\'<option value="0">-----</option>\'');
                                         $("#articulo option").each(function() {
                                             $('#ddlCategoria').append('\'<option value="'+$(this).text()+'">'+$(this).text()+'</option>\'');
                                             var cambioAction = $('#form1');
@@ -138,6 +143,7 @@
                                         })
                                     }
                                     else if (tipo == 4) {
+                                        $('#ddlCategoria').append('\'<option value="0">-----</option>\'');
                                         $("#comunidad option").each(function() {
                                             $('#ddlCategoria').append('\'<option value="'+$(this).text()+'">'+$(this).text()+'</option>\'');
                                             var cambioAction = $('#form1');
@@ -145,11 +151,9 @@
                                         })
                                     }
                                     else {
-                                        $("#cliente option").each(function() {
-                                            $('#ddlCategoria').append('\'<option value="'+$(this).text()+'">------</option>\'');
+                                            $('#ddlCategoria').append('\'<option value="0">------</option>\'');
                                             var cambioAction = $('#form1');
                                             cambioAction.attr("action", "/proyecto/gestor/crearExcelPorCliente");
-                                        })
                                     }
                                 }
                             </script>
@@ -158,70 +162,72 @@
                                     var getURL = window.location.origin;
                                     console.log(getURL);
                                     var filtroSeleccionado = document.getElementById('client').value;
-                                    if(filtroSeleccionado == 1){
-                                        $('#año option').remove();
-                                        console.log(filtro)
-                                        $.ajax({
-                                            method: "GET",
-                                            url: getURL + "/proyecto/reporte/" + filtro
-                                        }).done(function (msg) {
-                                            console.log(msg.anho[0].anio);
-                                            $('#año').append('\'<option value="0">-----</option>\'');
-                                            for (i = 0; msg.anho.length; i++){
-                                                $('#año').append('\'<option value="'+msg.anho[i].anio+'">'+msg.anho[i].anio+'</option>\'');
-                                            }
-                                        }).fail(function(err){
-                                            console.log(err);
-                                            alert("ocurrió un error al cargar la página");
-                                        });
-                                    }else if (filtroSeleccionado == 2){
-                                        $('#año option').remove();
-                                        console.log(filtro)
-                                        $.ajax({
-                                            method: "GET",
-                                            url: getURL + "/proyecto/reporte/sede/" + filtro
-                                        }).done(function (msg) {
-                                            console.log(msg.anho[0].anio);
-                                            $('#año').append('\'<option value="0">-----</option>\'');
-                                            for (i = 0; msg.anho.length; i++){
-                                                $('#año').append('\'<option value="'+msg.anho[i].anio+'">'+msg.anho[i].anio+'</option>\'');
-                                            }
-                                        }).fail(function(err){
-                                            console.log(err);
-                                            alert("ocurrió un error al cargar la página");
-                                        });
-                                    }else if (filtroSeleccionado == 3){
-                                        $('#año option').remove();
-                                        console.log(filtro)
-                                        $.ajax({
-                                            method: "GET",
-                                            url: getURL + "/proyecto/reporte/producto/" + filtro
-                                        }).done(function (msg) {
-                                            console.log(msg.anho[0].anio);
-                                            $('#año').append('\'<option value="0">-----</option>\'');
-                                            for (i = 0; msg.anho.length; i++){
-                                                $('#año').append('\'<option value="'+msg.anho[i].anio+'">'+msg.anho[i].anio+'</option>\'');
-                                            }
-                                        }).fail(function(err){
-                                            console.log(err);
-                                            alert("ocurrió un error al cargar la página");
-                                        });
-                                    }else if (filtroSeleccionado == 4){
-                                        $('#año option').remove();
-                                        console.log(filtro)
-                                        $.ajax({
-                                            method: "GET",
-                                            url: getURL + "/proyecto/reporte/comunidad/" + filtro
-                                        }).done(function (msg) {
-                                            console.log(msg.anho[0].anio);
-                                            $('#año').append('\'<option value="0">-----</option>\'');
-                                            for (i = 0; msg.anho.length; i++){
-                                                $('#año').append('\'<option value="'+msg.anho[i].anio+'">'+msg.anho[i].anio+'</option>\'');
-                                            }
-                                        }).fail(function(err){
-                                            console.log(err);
-                                            alert("ocurrió un error al cargar la página");
-                                        });
+                                    if (filtro != 0){
+                                        if(filtroSeleccionado == 1){
+                                            $('#año option').remove();
+                                            console.log(filtro)
+                                            $.ajax({
+                                                method: "GET",
+                                                url: getURL + "/proyecto/reporte/" + filtro
+                                            }).done(function (msg) {
+                                                console.log(msg.anho[0].anio);
+                                                $('#año').append('\'<option value="0">-----</option>\'');
+                                                for (i = 0; msg.anho.length; i++){
+                                                    $('#año').append('\'<option value="'+msg.anho[i].anio+'">'+msg.anho[i].anio+'</option>\'');
+                                                }
+                                            }).fail(function(err){
+                                                console.log(err);
+                                                alert("ocurrió un error al cargar la página");
+                                            });
+                                        }else if (filtroSeleccionado == 2){
+                                            $('#año option').remove();
+                                            console.log(filtro)
+                                            $.ajax({
+                                                method: "GET",
+                                                url: getURL + "/proyecto/reporte/sede/" + filtro
+                                            }).done(function (msg) {
+                                                console.log(msg.anho[0].anio);
+                                                $('#año').append('\'<option value="0">-----</option>\'');
+                                                for (i = 0; msg.anho.length; i++){
+                                                    $('#año').append('\'<option value="'+msg.anho[i].anio+'">'+msg.anho[i].anio+'</option>\'');
+                                                }
+                                            }).fail(function(err){
+                                                console.log(err);
+                                                alert("ocurrió un error al cargar la página");
+                                            });
+                                        }else if (filtroSeleccionado == 3){
+                                            $('#año option').remove();
+                                            console.log(filtro)
+                                            $.ajax({
+                                                method: "GET",
+                                                url: getURL + "/proyecto/reporte/producto/" + filtro
+                                            }).done(function (msg) {
+                                                console.log(msg.anho[0].anio);
+                                                $('#año').append('\'<option value="0">-----</option>\'');
+                                                for (i = 0; msg.anho.length; i++){
+                                                    $('#año').append('\'<option value="'+msg.anho[i].anio+'">'+msg.anho[i].anio+'</option>\'');
+                                                }
+                                            }).fail(function(err){
+                                                console.log(err);
+                                                alert("ocurrió un error al cargar la página");
+                                            });
+                                        }else if (filtroSeleccionado == 4){
+                                            $('#año option').remove();
+                                            console.log(filtro)
+                                            $.ajax({
+                                                method: "GET",
+                                                url: getURL + "/proyecto/reporte/comunidad/" + filtro
+                                            }).done(function (msg) {
+                                                console.log(msg.anho[0].anio);
+                                                $('#año').append('\'<option value="0">-----</option>\'');
+                                                for (i = 0; msg.anho.length; i++){
+                                                    $('#año').append('\'<option value="'+msg.anho[i].anio+'">'+msg.anho[i].anio+'</option>\'');
+                                                }
+                                            }).fail(function(err){
+                                                console.log(err);
+                                                alert("ocurrió un error al cargar la página");
+                                            });
+                                        }
                                     }
                                 }
                             </script>
@@ -230,71 +236,96 @@
                                     var getURL = window.location.origin;
                                     var filtroSeleccionado = document.getElementById('client').value;
                                     var filtroNombre = document.getElementById('ddlCategoria').value;
-                                    if(filtroSeleccionado == 1){
-                                        $('#periodo option').remove();
+                                    if (anhoseleccionado != 0) {
+                                        if (filtroSeleccionado == 1) {
+                                            $('#periodo option').remove();
+                                            $.ajax({
+                                                method: "GET",
+                                                url: getURL + "/proyecto/reporte/" + anhoseleccionado + "/" + filtroNombre
+                                            }).done(function (msg) {
+                                                console.log(msg.periodo[0].fecha);
+                                                $('#periodo').append('\'<option value="0">-----</option>\'');
+                                                $('#periodo').append('\'<option value="todo">todos los meses</option>\'');
+                                                $('#periodo').append('\'<option value="trimestre">trimestral</option>\'');
+                                                for (i = 0; msg.periodo.length; i++) {
+                                                    $('#periodo').append('\'<option value="' + msg.periodo[i].fecha + '">' + msg.periodo[i].fechaname + '</option>\'');
+                                                }
+                                            }).fail(function (err) {
+                                                console.log(err);
+                                                alert("ocurrió un error al cargar la página");
+                                            });
+                                        } else if (filtroSeleccionado == 2) {
+                                            $('#periodo option').remove();
+                                            $.ajax({
+                                                method: "GET",
+                                                url: getURL + "/proyecto/reporte/sede/" + anhoseleccionado + "/" + filtroNombre
+                                            }).done(function (msg) {
+                                                console.log(msg.periodo[0].fecha);
+                                                $('#periodo').append('\'<option value="0">-----</option>\'');
+                                                $('#periodo').append('\'<option value="todo">todos los meses</option>\'');
+                                                $('#periodo').append('\'<option value="trimestre">trimestral</option>\'');
+                                                for (i = 0; msg.periodo.length; i++) {
+                                                    $('#periodo').append('\'<option value="' + msg.periodo[i].fecha + '">' + msg.periodo[i].fechaname + '</option>\'');
+                                                }
+                                            }).fail(function (err) {
+                                                console.log(err);
+                                                alert("ocurrió un error al cargar la página");
+                                            });
+                                        } else if (filtroSeleccionado == 3) {
+                                            $('#periodo option').remove();
+                                            $.ajax({
+                                                method: "GET",
+                                                url: getURL + "/proyecto/reporte/producto/" + anhoseleccionado + "/" + filtroNombre
+                                            }).done(function (msg) {
+                                                console.log(msg.periodo[0].fecha);
+                                                $('#periodo').append('\'<option value="0">-----</option>\'');
+                                                $('#periodo').append('\'<option value="todo">todos los meses</option>\'');
+                                                $('#periodo').append('\'<option value="trimestre">trimestral</option>\'');
+                                                for (i = 0; msg.periodo.length; i++) {
+                                                    $('#periodo').append('\'<option value="' + msg.periodo[i].fecha + '">' + msg.periodo[i].fechaname + '</option>\'');
+                                                }
+                                            }).fail(function (err) {
+                                                console.log(err);
+                                                alert("ocurrió un error al cargar la página");
+                                            });
+                                        } else if (filtroSeleccionado == 4) {
+                                            $('#periodo option').remove();
+                                            $.ajax({
+                                                method: "GET",
+                                                url: getURL + "/proyecto/reporte/comunidad/" + anhoseleccionado + "/" + filtroNombre
+                                            }).done(function (msg) {
+                                                console.log(msg.periodo[0].fecha);
+                                                $('#periodo').append('\'<option value="0">-----</option>\'');
+                                                $('#periodo').append('\'<option value="todo">todos los meses</option>\'');
+                                                $('#periodo').append('\'<option value="trimestre">trimestral</option>\'');
+                                                for (i = 0; msg.periodo.length; i++) {
+                                                    $('#periodo').append('\'<option value="' + msg.periodo[i].fecha + '">' + msg.periodo[i].fechaname + '</option>\'');
+                                                }
+                                            }).fail(function (err) {
+                                                console.log(err);
+                                                alert("ocurrió un error al cargar la página");
+                                            });
+                                        }
+                                    }
+                                }
+                            </script>
+                            <script>
+                                function lista3(anhoSeleccionado) {
+                                    if (anhoSeleccionado != 0) {
+                                        var getURLT = window.location.origin;
+                                        $('#mes4 option').remove();
                                         $.ajax({
                                             method: "GET",
-                                            url: getURL + "/proyecto/reporte/" + anhoseleccionado + "/" + filtroNombre
+                                            url: getURLT + "/proyecto/reporte/total/" + anhoSeleccionado
                                         }).done(function (msg) {
                                             console.log(msg.periodo[0].fecha);
-                                            $('#periodo').append('\'<option value="0">-----</option>\'');
-                                            $('#periodo').append('\'<option value="todo">todos los meses</option>\'');
-                                            $('#periodo').append('\'<option value="trimestre">trimestral</option>\'');
-                                            for (i = 0; msg.periodo.length; i++){
-                                                $('#periodo').append('\'<option value="'+msg.periodo[i].fecha+'">'+msg.periodo[i].fechaname+'</option>\'');
+                                            $('#mes4').append('\'<option value="0">-----</option>\'');
+                                            $('#mes4').append('\'<option value="todo">todos los meses</option>\'');
+                                            $('#mes4').append('\'<option value="trimestre">trimestral</option>\'');
+                                            for (i = 0; msg.periodo.length; i++) {
+                                                $('#mes4').append('\'<option value="' + msg.periodo[i].fecha + '">' + msg.periodo[i].fechaname + '</option>\'');
                                             }
-                                        }).fail(function(err){
-                                            console.log(err);
-                                            alert("ocurrió un error al cargar la página");
-                                        });
-                                    }else if (filtroSeleccionado == 2){
-                                        $('#periodo option').remove();
-                                        $.ajax({
-                                            method: "GET",
-                                            url: getURL + "/proyecto/reporte/sede/" + anhoseleccionado + "/" + filtroNombre
-                                        }).done(function (msg) {
-                                            console.log(msg.periodo[0].fecha);
-                                            $('#periodo').append('\'<option value="0">-----</option>\'');
-                                            $('#periodo').append('\'<option value="todo">todos los meses</option>\'');
-                                            $('#periodo').append('\'<option value="trimestre">trimestral</option>\'');
-                                            for (i = 0; msg.periodo.length; i++){
-                                                $('#periodo').append('\'<option value="'+msg.periodo[i].fecha+'">'+msg.periodo[i].fechaname+'</option>\'');
-                                            }
-                                        }).fail(function(err){
-                                            console.log(err);
-                                            alert("ocurrió un error al cargar la página");
-                                        });
-                                    }else if (filtroSeleccionado == 3){
-                                        $('#periodo option').remove();
-                                        $.ajax({
-                                            method: "GET",
-                                            url: getURL + "/proyecto/reporte/producto/" + anhoseleccionado + "/" + filtroNombre
-                                        }).done(function (msg) {
-                                            console.log(msg.periodo[0].fecha);
-                                            $('#periodo').append('\'<option value="0">-----</option>\'');
-                                            $('#periodo').append('\'<option value="todo">todos los meses</option>\'');
-                                            $('#periodo').append('\'<option value="trimestre">trimestral</option>\'');
-                                            for (i = 0; msg.periodo.length; i++){
-                                                $('#periodo').append('\'<option value="'+msg.periodo[i].fecha+'">'+msg.periodo[i].fechaname+'</option>\'');
-                                            }
-                                        }).fail(function(err){
-                                            console.log(err);
-                                            alert("ocurrió un error al cargar la página");
-                                        });
-                                    }else if (filtroSeleccionado == 4){
-                                        $('#periodo option').remove();
-                                        $.ajax({
-                                            method: "GET",
-                                            url: getURL + "/proyecto/reporte/comunidad/" + anhoseleccionado + "/" + filtroNombre
-                                        }).done(function (msg) {
-                                            console.log(msg.periodo[0].fecha);
-                                            $('#periodo').append('\'<option value="0">-----</option>\'');
-                                            $('#periodo').append('\'<option value="todo">todos los meses</option>\'');
-                                            $('#periodo').append('\'<option value="trimestre">trimestral</option>\'');
-                                            for (i = 0; msg.periodo.length; i++){
-                                                $('#periodo').append('\'<option value="'+msg.periodo[i].fecha+'">'+msg.periodo[i].fechaname+'</option>\'');
-                                            }
-                                        }).fail(function(err){
+                                        }).fail(function (err) {
                                             console.log(err);
                                             alert("ocurrió un error al cargar la página");
                                         });
