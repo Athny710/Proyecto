@@ -17,18 +17,95 @@
                 <div th:if="${msgFail != null}" th:text="${msgFail}" class="alert alert-danger" role="alert"></div>
                 <div th:if="${msgSucc != null}" th:text="${msgSucc}" class="alert alert-success" role="alert"></div>
                 <div class="card shadowA mb-4" >
+                <div class="card-header2" style="padding-top: 0.6rem; padding-bottom: 0.6rem">
+                    <div class="d-flex justify-content-between centrado">
+                        <h5 class="m-0 font-weight-bold text-redM">Lista de Usuarios Sede</h5>
+                        <div style="width: 180px">
+                            <a class="btn btn-orange btn-user btn-block"
+                               th:href="@{/gestor/gestorRegistroUsuarioSede}">Añadir Usuario Sede</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body bg-gray-100">
+                    <div class="table-responsive bg-gray-100">
+                        <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+                            <thead>
+                            <tr class="bg-gray-900 text-white" align="center">
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Email</th>
+                                <th>Teléfono</th>
+                                <th>Sede</th>
+                                <th>Borrar</th>
+                                <!-- <th>Editar/Borrar</th> -->
+
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr class="bg-white" align="center" th:each="usuariosedes, info: ${listausuariosedes}">
+                                <td th:text="${usuariosedes.nombre}"></td>
+                                <td th:text="${usuariosedes.apellido}"></td>
+                                <td th:text="${usuariosedes.correo}"></td>
+                                <td th:text="${usuariosedes.telefono}"></td>
+                                <td th:text="${usuariosedes.sede.nombre}"></td>
+                                <td align="center">
+                                    <!--    <a style="margin-right: 5px"
+                                           th:href="@{'/gestor/gestorEditUsuarioSede' + '?idusuarios=' + ${usuariosedes.idusuarios}}"
+                                           class="far fa-edit text-orangeM"></a>  -->
+                                    <a style="margin-left: 5px"
+                                       th:href="@{'/gestor/borrarUsuarioSede' + '?idusuarios=' + ${usuariosedes.idusuarios}}"
+                                       class="far fa-trash-alt text-redM">
+                                    </a>
+                                    <!--
+                                    <a style="margin-left: 5px" href="#" class="far fa-trash-alt text-redM"
+                                       data-toggle="modal" data-target="#modalborrar"
+                                       th:attrappend="data-target=${usuariosedes.getIdusuarios()}"></a>
+
+                                    <div class="modal fade" id="modalborrar" tabindex="-1" role="dialog"
+                                         th:attrappend="id=${usuariosedes.getIdusuarios()}"
+                                         aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header text-center">
+                                                    <h4 class="modal-title w-100 font-weight-bold">Eliminar usuario
+                                                        sede del registro</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h6 th:text="'¿Está seguro que desea eliminar a ' + ${usuariosedes.nombre + ' ' + usuariosedes.apellido} + ' del registro?'"></h6>
+                                                    <a th:href="@{'/gestor/borrarUsuarioSede' + '?idusuarios=' + ${usuariosedes.idusuarios}}"
+                                                       class="btn btn-danger btn-block">Eliminar</a>
+                                                    <button type="button" class="btn btn-searchTop btn-block"
+                                                            data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">Cancelar</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    -->
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+                <div class="card shadowA mb-4" >
                     <div class="card-header2" style="padding-top: 0.6rem; padding-bottom: 0.6rem">
                         <div class="d-flex justify-content-between centrado">
-                            <h5 class="m-0 font-weight-bold text-redM">Lista de Usuarios Sede</h5>
-                            <div style="width: 180px">
-                                <a class="btn btn-orange btn-user btn-block"
-                                   th:href="@{/gestor/gestorRegistroUsuarioSede}">Añadir Usuario Sede</a>
-                            </div>
+                            <h5 class="m-0 font-weight-bold text-redM">Lista de Usuarios Sede Bloqueados</h5>
                         </div>
                     </div>
                     <div class="card-body bg-gray-100">
                         <div class="table-responsive bg-gray-100">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
                                 <thead>
                                 <tr class="bg-gray-900 text-white" align="center">
                                     <th>Nombres</th>
@@ -36,26 +113,26 @@
                                     <th>Email</th>
                                     <th>Teléfono</th>
                                     <th>Sede</th>
-                                    <th>Borrar</th>
-                                   <!-- <th>Editar/Borrar</th> -->
+                                    <th>Desbloquear</th>
+                                    <!-- <th>Editar/Borrar</th> -->
 
                                 </tr>
                                 </thead>
 
                                 <tbody>
-                                <tr class="bg-white" align="center" th:each="usuariosedes, info: ${listausuariosedes}">
-                                    <td th:text="${usuariosedes.nombre}"></td>
-                                    <td th:text="${usuariosedes.apellido}"></td>
-                                    <td th:text="${usuariosedes.correo}"></td>
-                                    <td th:text="${usuariosedes.telefono}"></td>
-                                    <td th:text="${usuariosedes.sede.nombre}"></td>
+                                <tr class="bg-white" align="center" th:each="usuariosedesBloqueados, info: ${listausuariosedesNoDisponible}">
+                                    <td th:text="${usuariosedesBloqueados.nombre}"></td>
+                                    <td th:text="${usuariosedesBloqueados.apellido}"></td>
+                                    <td th:text="${usuariosedesBloqueados.correo}"></td>
+                                    <td th:text="${usuariosedesBloqueados.telefono}"></td>
+                                    <td th:text="${usuariosedesBloqueados.sede.nombre}"></td>
                                     <td align="center">
-                                    <!--    <a style="margin-right: 5px"
-                                           th:href="@{'/gestor/gestorEditUsuarioSede' + '?idusuarios=' + ${usuariosedes.idusuarios}}"
-                                           class="far fa-edit text-orangeM"></a>  -->
+                                        <!--    <a style="margin-right: 5px"
+                                               th:href="@{'/gestor/gestorEditUsuarioSede' + '?idusuarios=' + ${usuariosedes.idusuarios}}"
+                                               class="far fa-edit text-orangeM"></a>  -->
                                         <a style="margin-left: 5px"
-                                           th:href="@{'/gestor/borrarUsuarioSede' + '?idusuarios=' + ${usuariosedes.idusuarios}}"
-                                           class="far fa-trash-alt text-redM">
+                                           th:href="@{'/gestor/activarUsuario' + '?idusuarios=' + ${usuariosedesBloqueados.idusuarios}}"
+                                           class="fas fa-check-square text-redM">
                                         </a>
                                         <!--
                                         <a style="margin-left: 5px" href="#" class="far fa-trash-alt text-redM"
@@ -96,6 +173,11 @@
                         </div>
                     </div>
                 </div>
+
+
+
+
+
             </div>
         </div>
     </div>
