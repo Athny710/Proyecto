@@ -246,9 +246,27 @@ public class GestorController {
     @GetMapping("gestorListaUsuarioSede")
     public String listaUsuarioSede(Model model) {
         List<Usuarios> listausuariosedes = usuarioRepository.findByTipoAndActivo("sede", 1);
+        List<Usuarios> listausuariosedes2 = usuarioRepository.findByTipoAndActivo("sede", 0);
         model.addAttribute("listausuariosedes", listausuariosedes);
+        model.addAttribute("listausuariosedesNoDisponible", listausuariosedes);
         return "Gestor/G-ListaUsuarioSede";
     }
+
+    @GetMapping("/activarUsuario")
+    public String activarUsuario(Model mode, @RequestParam("id") int id, RedirectAttributes attr) {
+        Optional<Usuarios> usu1 = usuarioRepository.findById(id);
+        if(usu1.isPresent()){
+            Usuarios usu2 = usu1.get();
+            usu2.setActivo(1);
+            usuarioRepository.save(usu2);
+            attr.addFlashAttribute("msg","Desbloqueado exitoamente");
+        }else{
+            attr.addFlashAttribute("msg1","ID no válido");
+        }
+        return "Gestor/G-ListaUsuarioSede";
+    }
+
+
 
     @GetMapping("gestorEditUsuarioSede")
     public String editarUsuarioSede(@RequestParam("idusuarios") int idusuarios, @ModelAttribute("usuarios") Usuarios usuarios, Model model) {

@@ -280,8 +280,11 @@ public class AdminController {
         Optional<Usuarios> usu1 = usuarioRepository.findById(id);
         if(usu1.isPresent()){
             Usuarios usu2 = usu1.get();
+            usu2.setActivo(1);
+            usuarioRepository.save(usu2);
+            attr.addFlashAttribute("msg","Desbloqueado exitoamente");
         }else{
-
+            attr.addFlashAttribute("msg1","ID no válido");
         }
 
         return "Administrador/A-ListaGestores";
