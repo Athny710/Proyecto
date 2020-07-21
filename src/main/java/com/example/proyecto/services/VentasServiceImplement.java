@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.URL;
 import java.util.List;
 
 @Service
@@ -145,7 +146,9 @@ public class VentasServiceImplement implements VentasService {
             paragraph.setIndentationLeft(50);
             paragraph.setIndentationRight(50);
             paragraph.setSpacingAfter(10);
-            Image imagen = Image.getInstance("src/main/resources/static/img/logoOriginal.png");
+            URL imageUrl = getClass().getResource("/static/img/logoOriginal.png");
+            //String urlimg = "src/main/resources/static/img/logoOriginal.png";
+            Image imagen = Image.getInstance(imageUrl);
             imagen.setAbsolutePosition(1000f, 705f);
             imagen.scaleToFit(170,170);
 
