@@ -337,6 +337,15 @@ public class SedeController {
             Usuarios u = (Usuarios) session.getAttribute("user");
             List<Inventariosede> listaInventarioSede = inventariosedeRepository.obtenerInventarioSede(u.getSede());
             List<Tienda> listaTiendas = tiendaRepository.findBySede(u.getSede());
+            String nombre = "Sin tienda " + "(" + u.getSede().getNombre() + ")";
+            List<Tienda> lista = new ArrayList<>();
+
+            for (Tienda t : listaTiendas) {
+                if (!t.getNombre().equals(nombre)) {
+                    lista.add(t);
+                }
+            }
+            model.addAttribute("listaTiendas", lista);
             List<Inventariosede> listaFinal = new ArrayList<>();
             for (Inventariosede inventariosede : listaInventarioSede) {
                 if (inventariosede.getStock() != 0) {
@@ -347,7 +356,6 @@ public class SedeController {
                     }
                 }
                 model.addAttribute("listaInventarioSede", listaFinal);
-                model.addAttribute("listaTiendas", listaTiendas);
                 return "UsuarioSede/U-NuevaVenta";
             }
         } else {
